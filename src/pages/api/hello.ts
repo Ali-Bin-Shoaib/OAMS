@@ -1,13 +1,54 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+// CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
+import type { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../../lib/prisma';
 
 type Data = {
-  name: string
-}
+  name: String;
+  gender: Boolean;
+  isMotherWorks: Boolean;
+  birthplace: String;
+  motherName: String;
+  currentAddress: String;
+  motherJob: String;
+  liveWith: String;
+  birthdate: Date;
+  fatherDeathDate: Date;
+  joinDate: Date;
+  evaluation: Number;
+};
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.status(200).json({ name: 'John Doe' })
+// export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    if (req.method === 'GET') {
+      res.status(200).json({message:"get method"});
+    } else if (req.method === 'POST') {
+      const data = await req.body ;
+      
+      
+      console.log("🚀 ---------------------------------------------🚀")
+      console.log("🚀 ~ file: hello.ts:27 ~ handler ~ data:", data)
+      console.log("🚀 ---------------------------------------------🚀")
+      
+      const newUser = await prisma.orphan.create({ data });
+      console.log('🚀 ---------------------------------------------------🚀');
+      console.log('🚀 ~ file: hello.ts:18 ~ handler ~ newUser:', newUser);
+      console.log('🚀 ---------------------------------------------------🚀');
+
+      res.status(200).json(newUser);
+    }
+    // else if (req.method === 'PUT') {
+    //   res.status(200).json({ name: 'PUT', email: 'PUT' });
+    // } else if (req.method === 'PATCH') {
+    //   res.status(200).json({ name: 'PATCH', email: 'PATCH' });
+    // } else if (req.method === 'DELETE') {
+    //   res.status(200).json({ name: 'DELETE', email: 'DELETE' });
+    // }
+  } catch (error) {
+    console.log('🚀 -----------------------------------------------🚀');
+    console.log('🚀 ~ file: hello.ts:30 ~ handler ~ error:', error);
+    console.log('🚀 -----------------------------------------------🚀');
+    res.status(200).json(error);
+  }
 }

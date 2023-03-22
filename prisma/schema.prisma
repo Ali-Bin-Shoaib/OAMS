@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Orphan {
+  id              Int      @id @default(autoincrement())
+  name            String ?
+  birthplace      String ?
+  motherName      String ?
+  currentAddress  String ?
+  motherJob       String ?
+  liveWith        String ?
+  gender          Boolean ?
+  isMotherWorks   Boolean ?
+  birthdate       DateTime ?
+  fatherDeathDate DateTime ?
+  joinDate        DateTime ?
+  evaluation      Float ?
+}
