@@ -1,33 +1,14 @@
-import { Button } from '@mui/material';
-// import { Button, Checkbox, Container, Form, Icon } from 'semantic-ui-react'
+import React, { MouseEventHandler } from 'react';
 
-// import { Button } from "@nextui-org/react";
-
-export default function MyButton({
-	text,
-	type,
-}: {
-	text: string;
-	type: 'submit' | 'button' | 'reset' ;
-}) {
-	if (type === 'submit') {
-		return (
-			<Button type='submit' variant='contained' color='primary'>
-				{text}
-			</Button>
-		);
-	} else if (type === 'button') {
-		return (
-			<Button type='button' variant='contained' color='inherit'>
-				{text}
-			</Button>
-		);
-	}
+function MyButton({ value = 'button' }, event: any) {
+	console.log('🚀 ---------------------------------------------------🚀');
+	console.log('🚀 ~ file: MyButton.tsx:4 ~ MyButton ~ event:', event);
+	console.log('🚀 ---------------------------------------------------🚀');
 	return (
-		<Button type='reset' variant='contained' color='warning'>
-			{text}
-		</Button>
+		<>
+			<button className='border rounded bg-stone-500 text-white'>{value}</button>
+		</>
 	);
-
-	// <Button >{text}</Button>
 }
+
+export default MyButton;

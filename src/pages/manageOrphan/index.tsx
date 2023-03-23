@@ -1,7 +1,14 @@
 // 'use client'
 // import {  } from "@nextui-org/react";
-import AddOrphanForm from '@/components/AddOrphanForm';
-import { FormEvent } from 'react';
+import {
+	RadioGroup,
+	FormControlLabel,
+	FormHelperText,
+	FormControl,
+	FormLabel,
+	Radio,
+} from '@mui/material';
+import { ChangeEvent, FormEvent } from 'react';
 
 function ManageOrphan() {
 	const handleSubmit = async (e: FormEvent) => {
@@ -35,14 +42,15 @@ function ManageOrphan() {
 			console.log('🚀 -----------------------------------------------------🚀');
 		}
 	};
-	enum GENDER {
-		MALE,
-		FEMALE,
+
+	function handleRadioChange(event: ChangeEvent<HTMLInputElement>, value: string): void {
+		throw new Error('Function not implemented.');
 	}
+
 	return (
 		<>
 			<h1 className='text-3xl'>ManageOrphan</h1>
-			<AddOrphanForm />
+
 		</>
 	);
 }
