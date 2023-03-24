@@ -5,7 +5,11 @@ import { Modal } from 'react-bootstrap/';
  *and make the edit form call the handleUpdate function and pass new name and role to it with the id of Employee
  *handleUpdate will execute on the form is submitted
  */
-function AddNewEmployee({ handleAdd }: { handleAdd: any }) {
+function AddNewEmployee({
+	handleAdd,
+}: {
+	handleAdd: (name?: string, role?: string, img?: string) => void;
+}) {
 	const [show, setShow] = useState(false);
 	//*defined to change values in update form and to send new values to handleUpdate function.
 	const [newName, setNewName] = useState('');
@@ -26,10 +30,9 @@ function AddNewEmployee({ handleAdd }: { handleAdd: any }) {
 		<>
 			<button
 				onClick={handleShow}
-				className='bg-stone-500 text-white p-1.5 m1.5 rounded hover:bg-stone-700'>
-				Add new Employee
+				className='bg-stone-500 font-bold  text-white p-1.5 m1.5 rounded hover:bg-stone-700'>
+				+ Add new Employee
 			</button>
-
 			<Modal show={show} onHide={handleClose} backdrop='static' keyboard={false}>
 				<Modal.Header closeButton>
 					<Modal.Title>Update Employee info</Modal.Title>

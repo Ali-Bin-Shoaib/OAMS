@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import EditEmployeeForm from './EditEmployeeForm';
 //*take employee values and handleUpdate function form its parent.
 function Employee({
@@ -7,17 +7,17 @@ function Employee({
 	name,
 	role,
 	img,
-	handleUpdate,
+	editEmployee,
 }: {
 	id: string;
 	name: string;
 	role: string;
 	img: string;
-	handleUpdate: any;
+	editEmployee: ReactNode;
 }) {
 	return (
 		<>
-			<div className='py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6'>
+			<div className='p-8 m-1  max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-3 sm:space-x-6'>
 				<Image
 					priority
 					width={100}
@@ -33,7 +33,8 @@ function Employee({
 					</div>
 					{/*pass needed values to the editEmployee component with handleUpdate function that will update the 
 					employee list in index component with new values. */}
-					<EditEmployeeForm id={id} name={name} role={role} handleUpdate={handleUpdate} />
+					{/* <EditEmployeeForm id={id} name={name} role={role} handleUpdate={handleUpdate} /> */}
+					{editEmployee}
 				</div>
 			</div>
 		</>
