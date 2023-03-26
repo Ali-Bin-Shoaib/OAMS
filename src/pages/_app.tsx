@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
 import { v4 } from 'uuid';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,10 +18,10 @@ export default function App({ Component, pageProps }: AppProps) {
 			{/* Nav */}
 			{/* <MyNavbar /> */}
 			<MyHeader key={v4()}>
-				<NewComponent/>
+				{/* <NewComponent/> */}
+					<Component {...pageProps} />
 			</MyHeader>
 				<div className='m-1 p-1'>
-					<Component {...pageProps} />
 
 					{/* footer */}
 				</div>

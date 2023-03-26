@@ -30,7 +30,7 @@ function AddNewEmployee({
 		<>
 			<button
 				onClick={handleShow}
-				className='bg-stone-500 font-bold  text-white p-1.5 m1.5 rounded hover:bg-stone-700'>
+				className='px-4 py-1 text-sm text-stone-600 font-semibold rounded border border-stone-200 hover:text-white hover:bg-stone-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-stone-600 focus:ring-offset-2'>
 				+ Add new Employee
 			</button>
 			<Modal show={show} onHide={handleClose} backdrop='static' keyboard={false}>
@@ -75,9 +75,7 @@ function AddNewEmployee({
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<button
-						onClick={handleClose}
-						className='bg-gray-500 m-1.5 text-white p-1.5 rounded hover:bg-gray-700'>
+					<button onClick={handleClose} className='bg-gray-500 m-1.5 text-white p-1.5 rounded hover:bg-gray-700'>
 						Close
 					</button>
 

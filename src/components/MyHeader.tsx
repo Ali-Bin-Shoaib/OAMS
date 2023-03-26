@@ -6,10 +6,10 @@ import { useRouter } from 'next/router';
 
 const navigation = [
 	{ name: 'Home', href: '/', current: true },
-	{ name: 'Employees', href: '/Employees', current: false },
-	{ name: 'Dictionary', href: '/Dictionary', current: false },
+	{ name: 'Employees', href: '/employees', current: false },
+	{ name: 'Dictionary', href: '/dictionary', current: false },
+	{ name: 'Definition', href: '/definition/', current: false },
 	{ name: 'Manage Orphans', href: '/manageOrphan', current: false },
-	{ name: 'Manage Attendance', href: '/manageAttendance', current: false },
 ];
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ');
@@ -104,11 +104,6 @@ export default function MyHeader(props: { children: JSX.Element }) {
 					</>
 				)}
 			</Disclosure>
-			<header className='bg-white shadow'>
-				<div className='mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8'>
-					<h1 className='text-3xl font-bold tracking-tight text-gray-900'>Dashboard</h1>
-				</div>
-			</header>
 			<main>
 				<div className='mx-auto max-w-7xl py-6 sm:px-6 lg:px-8'>{props.children}</div>
 			</main>

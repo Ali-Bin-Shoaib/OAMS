@@ -3,7 +3,6 @@ import EditEmployeeForm from '@/components/EditEmployeeForm';
 import Employee from '@/components/Employee';
 import React, { useState } from 'react';
 import { v4 } from 'uuid';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Employees() {
 	const employees = [
