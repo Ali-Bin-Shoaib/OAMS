@@ -1,16 +1,18 @@
-export interface ORPHAN {
-	id: number;
-	name: String;
-	gender: GENDER;
-	birthplace: String;
-	motherName: String;
-	currentAddress: String;
-	motherJob: String;
-	liveWith: String;
-	isMotherWorks: Boolean;
-	birthdate: Date;
-	fatherDeathDate: Date;
-	joinDate: Date;
-	evaluation: Number;
+export enum GENDER {
+	MALE = 'MALE',
+	FEMALE = 'FEMALE',
 }
-export enum GENDER{MALE="MALE",FEMALE="FEMALE"}
+
+export enum REQUEST_METHODS {
+	GET = 'GET',
+	POST = 'POST',
+	DELETE = 'DELETE',
+	PUT = 'PUT',
+	PATCH = 'PATCH',
+}
+export enum STATUS_CODE {
+	NotFound = 404,
+	Success = 200,
+	Accepted = 202,
+	BadRequest = 400,
+}

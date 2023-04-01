@@ -12,8 +12,8 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (
 		//* the whole app
 		<>
-			<AppHead />
-			<div className={inter.className}>
+			<div className={inter.className + 'flex flex-col h-screen justify-between'}>
+				<AppHead />
 				{/* Nav */}
 				<AppNavbar />
 				<Component {...pageProps} />

@@ -14,17 +14,20 @@ export default function AddOrphan() {
 				name: form.Name.value,
 				gender: form.gender.value,
 				birthdate: form.birthdate.value,
-
-				// birthplace: form.birthplace.value as string,
-				// isMotherWorks: form.isMotherWorks.value as Boolean,
-				// motherName: form.motherName.value as string,
-				// currentAddress: form.currentAddress.value as string,
-				// fatherDeathDate: form.fatherDeathDate.value as Date,
-				// motherJob: form.motherJob.value as string,
-				// liveWith: form.liveWith.value as string,
+				birthplace: form.birthplace.value ,
+				currentAddress: form.currentAddress.value ,
+				liveWith: form.liveWith.value ,
+				fatherDeathDate: form.fatherDeathDate.value ,
+				motherName: form.motherName.value ,
+				isMotherWorks: form.isMotherWorks.value ,
+				motherJob: form.motherJob.value ,
 			};
+			if(x.isMotherWorks=='true')
+			x.isMotherWorks=true;
+			else x.isMotherWorks=false;
+			console.log("🚀 ~ file: addOrphan.tsx:25 ~ handleSubmit ~ x:", x);
 
-			await fetch('/api/hello', {
+			await fetch('/api/orphan/create', {
 				method: 'post',
 				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify(x),
@@ -37,10 +40,11 @@ export default function AddOrphan() {
 	return (
 		<>
 			<div className='bg-slate-200 justify-center text-center p-2 mx-96 border border-black m-2'>
-				<h1 className='border border-black'>Orphan Info</h1>
+
+				<h1 className='border border-black inline-block text-3xl'>Orphan Info</h1>
 				<form action='post' onSubmit={handleSubmit}>
 					<MyInput type='text' value='Name' key={v4()} text='Name' />
-					<div className='p-5 '>
+					<div className='text-start'>
 						<MyLabel text='gender' />
 						<MyLabel text='male'>
 							<input type='radio' value={GENDER.MALE} name='gender' className='p-2 m-2' />
@@ -50,14 +54,23 @@ export default function AddOrphan() {
 						</MyLabel>
 					</div>
 					<MyInput type='date' key={v4()} text='birthdate' />
-					{/* <MyInput type='text' value='birthplace' key={v4()} text='birthplace' />
-					<MyInput type='text' value='motherName' key={v4()} text='motherName' />
-					<MyInput type='text' value='currentAddress' key={v4()} text='currentAddress' />
-					<MyInput type='text' value='motherJob' key={v4()} text='motherJob' />
+					<MyInput type='text' value='birthplace' key={v4()} text='birthplace' />
 					<MyInput type='text' value='liveWith' key={v4()} text='liveWith' />
-					<MyInput type='text' key={v4()} text='isMotherWorks' />
+					<MyInput type='text' value='currentAddress' key={v4()} text='currentAddress' />
 					<MyInput type='date' key={v4()} text='fatherDeathDate' />
-					<MyInput type='file' key={v4()} text='image' /> */}
+					<MyInput type='text' value='motherName' key={v4()} text='motherName' />
+					<div className='text-start'>
+						<MyLabel text='is mother works' />
+						<MyLabel text='YES'>
+							<input type='radio' value={'true'} name='isMotherWorks' className='p-2 m-2 ' />
+						</MyLabel>
+						<MyLabel text='NO'>
+							<input type='radio'  value={'false'} name='isMotherWorks' className='p-2 m-2' />
+						</MyLabel>
+					</div>
+					<MyInput type='text' value='motherJob' key={v4()} text='motherJob' />
+					<MyLabel text='image' />
+						<input type='file' name='image'/>
 					<button className='bg-blue-600 p-2 m-2 rounded text-white '>submit</button>
 				</form>
 			</div>

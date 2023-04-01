@@ -1,6 +1,6 @@
 {
 	"cSpell.words": ["birthdate"],
 	"turboConsoleLog.addSemicolonInTheEnd": true,
-	"turboConsoleLog.insertEnclosingFunction": false,
+	"turboConsoleLog.insertEnclosingFunction": true,
 	"turboConsoleLog.insertEnclosingClass": false
 }

@@ -39,17 +39,11 @@ function Employees() {
 			<div className='flex flex-wrap  m-2 p-2 '>
 				<>
 					{employeeList.map((emp) => {
-                        const editEmployee = (
-							<EditEmployeeForm
-								key={emp.id}
-								id={emp.id}
-								name={emp.name}
-								role={emp.role}
-								handleUpdate={handleUpdate}
-                                />
-                                );
-                                return (
-                                    <Employee
+						const editEmployee = (
+							<EditEmployeeForm key={emp.id} id={emp.id} name={emp.name} role={emp.role} handleUpdate={handleUpdate} />
+						);
+						return (
+							<Employee
 								key={emp.id}
 								id={emp.id}
 								name={emp.name}
@@ -57,13 +51,13 @@ function Employees() {
 								img={emp.img}
 								// handleUpdate={handleUpdate}
 								editEmployee={editEmployee}
-                                />
-                                );
-                            })}
+							/>
+						);
+					})}
 				</>
 			</div>
 			<div className='text-center '>
-                            {/* {addNewEmployee} */}
+				{/* {addNewEmployee} */}
 				<AddNewEmployee handleAdd={handleAdd} />
 			</div>
 		</>

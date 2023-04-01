@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/MyRadioGroup.tsx", "src/pages/sum.test.js", "src/pages/sum.js", "src/pages/manageOrphans/index.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/MyRadioGroup.tsx", "src/pages/sum.test.js", "src/pages/sum.js", "src/pages/manageOrphans/index.tsx", "src/components/tailwind/MyTable.jsx"],
   "exclude": ["node_modules"]
 }

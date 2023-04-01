@@ -19,17 +19,25 @@ enum Gender {
 }
 
 model Orphan {
+  id              Int       @id @default(autoincrement())
+  name            String
+  gender          Gender
+  birthdate       DateTime  @db.Date
+  joinDate        DateTime  @default(now())
+  birthplace      String?
+  currentAddress  String?
+  liveWith        String?
+  fatherDeathDate DateTime  @db.Date
+  motherName      String?
+  motherJob       String?
+  isMotherWorks   Boolean @default(false)
+  evaluation      Float?
+}
+
+model Note {
   id        Int      @id @default(autoincrement())
-  name      String
-  gender    Gender
-  birthdate DateTime @db.Date
-  joinDate  DateTime @default(now())
-  // birthplace      String ?
-  // currentAddress  String ?
-  // liveWith        String ?
-  // fatherDeathDate DateTime ?
-  // motherName      String ?
-  // motherJob       String ?
-  // isMotherWorks   Boolean ?
-  // evaluation      Float ?
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }
