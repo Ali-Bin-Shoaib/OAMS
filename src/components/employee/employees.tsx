@@ -1,6 +1,6 @@
-import AddNewEmployee from '@/components/AddNewEmployee';
-import EditEmployeeForm from '@/components/EditEmployeeForm';
-import Employee from '@/components/Employee';
+import AddNewEmployee from '@/components/employee/AddNewEmployee';
+import EditEmployeeForm from '@/components/employee/EditEmployeeForm';
+import Employee from '@/components/employee/Employee';
 import React, { useState } from 'react';
 import { v4 } from 'uuid';
 

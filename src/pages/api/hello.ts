@@ -2,6 +2,15 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
+import { ORPHAN } from '../../../types/types';
+
+// *make it run then make it pretty.
+//TODO create models for each entity "start with orphan"
+//TODO implement CRUD operation on models "start with orphan"
+//TODO create UI for each operation
+//TODO implement Login
+//TODO after creating models and implement CRUD operations on them. validate these operation and fix bugs.
+//TODO style after implementing operations successfully.or style after finishing the project.
 
 type Data = {
 	name: String;
@@ -28,13 +37,13 @@ enum StatusCodes {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === 'GET') {
-			res.status(StatusCodes.Success).json({ message: 'get method' });
+			const orphans = await prisma.orphan.findMany();
+
+			res.status(StatusCodes.Success).json(orphans);
 		} else if (req.method === 'POST') {
 			const data = await req.body;
-
-			console.log('🚀 ---------------------------------------------🚀');
-			console.log('🚀 ~ file: hello.ts:27 ~ handler ~ data:', data);
-			console.log('🚀 ---------------------------------------------🚀');
+			// DB need type Date to store birthdate
+			data.birthdate = new Date(data.birthdate);
 
 			const newUser = await prisma.orphan.create({ data });
 			console.log('🚀 ---------------------------------------------------🚀');

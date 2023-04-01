@@ -1,17 +1,9 @@
-import Stats from '@/components/Stats';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function Home({
-	params,
-	searchParams,
-}: {
-	params: { slug: string };
-	searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+export default function Home() {
 	return (
 		<>
-				<h1>Index page</h1>
-				<Stats />
+
+			<h1 >Index page</h1>
 		</>
 	);
 }

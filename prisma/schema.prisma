@@ -6,24 +6,30 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlserver"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+enum Gender {
+  MALE
+  FEMALE
+}
 
 model Orphan {
-  id              Int      @id @default(autoincrement())
-  name            String ?
-  birthplace      String ?
-  motherName      String ?
-  currentAddress  String ?
-  motherJob       String ?
-  liveWith        String ?
-  gender          Boolean ?
-  isMotherWorks   Boolean ?
-  birthdate       DateTime ?
-  fatherDeathDate DateTime ?
-  joinDate        DateTime ?
-  evaluation      Float ?
+  id        Int      @id @default(autoincrement())
+  name      String
+  gender    Gender
+  birthdate DateTime @db.Date
+  joinDate  DateTime @default(now())
+  // birthplace      String ?
+  // currentAddress  String ?
+  // liveWith        String ?
+  // fatherDeathDate DateTime ?
+  // motherName      String ?
+  // motherJob       String ?
+  // isMotherWorks   Boolean ?
+  // evaluation      Float ?
 }
