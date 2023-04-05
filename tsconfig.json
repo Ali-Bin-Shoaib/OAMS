@@ -1,28 +1,38 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    
+	"compilerOptions": {
+		"target": "ES6",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"strictNullChecks": true,
 
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/MyRadioGroup.tsx", "src/pages/sum.test.js", "src/pages/sum.js", "src/pages/manageOrphans/index.tsx", "src/components/tailwind/MyTable.jsx"],
-  "exclude": ["node_modules"]
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"src/components/MyRadioGroup.tsx",
+		"src/pages/sum.test.js",
+		"src/pages/sum.js",
+		"src/pages/manageOrphans/index.tsx",
+		"src/components/tailwind/MyTable.jsx",
+		"src/components/AppNavbar.tsx",
+		"src/pages/index.jsx"
+	],
+	"exclude": ["node_modules"]
 }

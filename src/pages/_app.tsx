@@ -1,22 +1,21 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Inter } from 'next/font/google';
 
-import AppNavbar from '@/components/AppNavbar';
-import AppFooter from '@/components/AppFooter';
-import AppHead from '@/components/AppHead';
-
-const inter = Inter({ subsets: ['latin'] });
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import AppNavbar from '../../components/common/AppNavbar';
+import AppFooter from '../../components/common/AppFooter';
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
 		//* the whole app
 		<>
-			<div className={inter.className + 'flex flex-col h-screen justify-between'}>
-				<AppHead />
+			<div className='h-full w-full'>
 				{/* Nav */}
 				<AppNavbar />
-				<Component {...pageProps} />
+				{/*content */}
+				<div className='bg-slate-50'>
+					<Component {...pageProps} />
+				</div>
 				{/* Footer */}
 				<AppFooter />
 			</div>

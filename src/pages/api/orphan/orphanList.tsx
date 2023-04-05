@@ -11,7 +11,7 @@ const data = [
 		currentAddress: 'mukalla',
 		fatherDeathDate: new Date('2017,05,18'),
 		motherName: 'x',
-		isMotherWorks: false,
+		isMotherWorks: true,
 		motherJob: 'mother',
 		joinDate: new Date(),
 		evaluation: null,
@@ -49,8 +49,8 @@ const data = [
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const dumpDate = await prisma.orphan.createMany({ data: data });
-	console.log('🚀 ~ file: orphanList.tsx:40 ~ handler ~ dumpDate:', dumpDate);
+	// const dumpDate = await prisma.orphan.createMany({ data: data });
+	// console.log('🚀 ~ file: orphanList.tsx:40 ~ handler ~ dumpDate:', dumpDate);
 
 	try {
 		if (req.method === 'GET') {
