@@ -8,12 +8,10 @@ export default function MyButton({
 	color: string;
 }) {
 	return (
-		<div>
-			<button
-				className={`text-white p-2 m-1 bg-${color}-500 rounded hover:bg-${color}-900`}
-				type={type}>
-				{text}
-			</button>
-		</div>
+		<button
+			className={`text-white p-2 m-1 bg-${color}-500 rounded hover:bg-${color}-900`}
+			type={type}>
+			{text}
+		</button>
 	);
 }

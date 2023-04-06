@@ -61,13 +61,12 @@ model Orphan {
   noOfFamilyMembers Int?
   males             Int?
   females           Int?
-  total             Int?
 
   motherName     String?
   status         Status?
   isMotherWorks  Boolean @default(false)
   motherJob      String?
-  motherJobPhone Int?
+  motherJobPhone String?
   monthlyIncom   Float?
 
   liveWith         String?

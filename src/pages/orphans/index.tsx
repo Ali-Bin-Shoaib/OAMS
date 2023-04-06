@@ -2,15 +2,17 @@ import { GetServerSideProps, GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { Orphan } from '@prisma/client';
 
-export default function index(props: { data: Orphan[] }) {
-	console.log('🚀 ~ file: index.tsx:6 ~ index ~ data:', props.data);
-
-	return <h1 className='text-3xl'>Orphans index</h1>;
+export default function index({ data }: { data: Orphan[] }) {
+	return (
+		<>
+			<h1 className='text-3xl'>Orphans index</h1>
+			{data.length === 0 ? <p>no orphan registered</p> : <p>no of orphans {data.length}</p>}
+		</>
+	);
 }
 
-const getStaticProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 	const data = await prisma.orphan.findMany();
-	console.log('🚀 ~ file: index.tsx:10 ~ constgetStaticProps:GetStaticProps= ~ data:', data);
 	//or
 	// const url='http://localhost:3000/orphans'
 	// fetch(url).then((res)=>res.json()).then((data)=>data)

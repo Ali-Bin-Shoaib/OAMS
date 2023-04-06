@@ -11,22 +11,25 @@ import { Orphan } from '@prisma/client';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
-			const orphan: Orphan = await req.body;
+			const data = await req.body;
+			console.log('🚀 ~ file: create.tsx:15 ~ handler ~ data:', data);
+			const orphan = JSON.parse(JSON.stringify(data));
+			console.log('🚀 ~ file: create.tsx:17 ~ handler ~ orphan:', orphan);
 			// DB need type Date to store birthdate
-			orphan.birthdate = new Date(orphan.birthdate);
-			orphan.fatherDeathDate = new Date(orphan.fatherDeathDate);
+			// orphan.birthdate = new Date(orphan.birthdate);
+			// orphan.fatherDeathDate = new Date(orphan.fatherDeathDate);
 
 			// if(orphan.isMotherWorks=='true')
 			// orphan.isMotherWorks=true;
 			// else orphan.isMotherWorks=false;
 
 			const newOrphan = await prisma.orphan.create({ data: orphan });
-			console.log('🚀 ~ file: create.tsx:31 ~ newOrphan:', newOrphan);
+			console.log('🚀 ~ file: create.tsx:24 ~ handler ~ newOrphan:', newOrphan);
 
 			res.status(STATUS_CODE.Success).json(newOrphan);
 		}
 	} catch (error) {
-		console.log('🚀 ~ file: create.tsx:26 ~ handler ~ error:', error);
+		console.log('🚀 ~ file: create.tsx:29 ~ handler ~ error:', error);
 		res.status(STATUS_CODE.BadRequest).json(error);
 	}
 }
