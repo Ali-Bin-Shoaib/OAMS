@@ -41,43 +41,43 @@ enum UserType {
 }
 
 model Orphan {
-  id         Int       @id @default(autoincrement())
-  image      String?
-  name       String?
-  gender     Gender?
-  age        Int?
-  birthplace String?
-  birthdate  DateTime?
-  joinDate   DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  image     String
+  // name      String
+  gender    Gender
+  // age        Int
+  // birthplace String
+  birthdate DateTime
+  // joinDate  DateTime @default(now())
 
-  schoolName         String?
-  gradeLevel         Grade?
-  lastYearPercentage Float?
+  // schoolName String
+  gradeLevel Grade
+  // lastYearPercentage Float
 
-  fatherDeathDate DateTime?
-  fatherWork      String?
-  fatherDeathCos  String?
+  // fatherDeathDate DateTime
+  // fatherWork      String
+  // fatherDeathCos  String
 
-  noOfFamilyMembers Int?
-  males             Int?
-  females           Int?
+  // noOfFamilyMembers Int
+  // males             Int
+  // females           Int
 
-  motherName     String?
-  status         Status?
-  isMotherWorks  Boolean @default(false)
-  motherJob      String?
-  motherJobPhone String?
-  monthlyIncom   Float?
+  // motherName     String
+  status        Status
+  isMotherWorks Boolean @default(false)
+  // motherJob      String
+  // motherJobPhone String
+  // monthlyIncom   Float
 
-  liveWith         String?
-  homeType         String?
-  homePhone        String?
-  currentAddress   String?
-  isSponsored      Boolean?
-  foundationName   String?
-  foundationAmount Float?
+  // liveWith         String
+  homeType    String
+  homePhone   String
+  // currentAddress   String
+  isSponsored Boolean
+  // foundationName   String
+  // foundationAmount Float
 
-  evaluation Float?
+  // evaluation Float
   //* relations
 
   //* one Orphan has many EmergancyContactInfo
@@ -88,38 +88,38 @@ model Orphan {
 }
 
 model Guardian {
-  id           Int     @id @default(autoincrement())
-  name         String?
-  relationship String?
-  phone        String?
+  id           Int    @id @default(autoincrement())
+  name         String
+  relationship String
+  phone        String
 
   //* relations
   //* one Guardian has many Orphan
   orphan Orphan[]
   //* one Guardian is a User
-  user   User?    @relation(fields: [userId], references: [id])
-  userId Int?     @unique
+  user   User     @relation(fields: [userId], references: [id])
+  userId Int      @unique
 }
 
 model EmergencyContactInfo {
-  id    Int     @id @default(autoincrement())
-  name  String?
-  phone String?
+  id    Int    @id @default(autoincrement())
+  name  String
+  phone String
 
   //* relations
-  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
-  orphanId Int?
+  Orphan   Orphan @relation(fields: [orphanId], references: [id])
+  orphanId Int
 }
 
 model User {
   id       Int       @id @default(autoincrement())
-  name     String?
-  gender   Gender?
-  userName String?
-  password String?
-  email    String?
-  address  String?
-  phone    String?
-  type     UserType?
+  name     String
+  gender   Gender
+  userName String
+  password String
+  email    String
+  address  String
+  phone    String
+  type     UserType
   Guardian Guardian?
 }

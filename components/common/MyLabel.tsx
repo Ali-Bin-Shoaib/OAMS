@@ -6,11 +6,9 @@ export default function MyLabel({
 	children?: JSX.Element | any;
 }) {
 	return (
-		<div className=' p-2 border rounded-xl m-2'>
-			<label className='p-1 w-full block' htmlFor={text}>
-				{text}
-			</label>
-			<div className='w-auto rounded hover:shadow-lg'>{children}</div>
-		</div>
+		<label className='p-2 m-2 bg-slate-100  border' htmlFor={text}>
+			{text}
+			{children}
+		</label>
 	);
 }
