@@ -1,3 +1,4 @@
-export default function remove() {
-	return <h1 className='text-3xl'>remove</h1>;
-}
+import AppHead from '../../../components/common/AppHead';
+
+function Remove() {}
+export default Remove;

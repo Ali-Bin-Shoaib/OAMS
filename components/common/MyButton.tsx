@@ -1,18 +1,12 @@
-export default function MyButton({
-	text,
-	type,
-	color,
-	onClick,
-	other,
-	className,
-}: {
+interface Props {
 	text: string;
 	type: 'submit' | 'button';
 	color: string;
 	onClick?: any;
 	other?: {};
 	className?: string;
-}) {
+}
+export default function MyButton({ text, type, color, onClick, other, className }: Props) {
 	return (
 		<button
 			onClick={onClick}

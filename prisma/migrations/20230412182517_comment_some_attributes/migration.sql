@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Orphan" ALTER COLUMN "homePhone" DROP NOT NULL,
+ALTER COLUMN "isSponsored" DROP NOT NULL,
+ALTER COLUMN "homeType" DROP NOT NULL;

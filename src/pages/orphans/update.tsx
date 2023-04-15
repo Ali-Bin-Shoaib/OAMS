@@ -1,3 +1,11 @@
-export default function update() {
-	return <h1 className='text-3xl'>update</h1>;
+import AppHead from '../../../components/common/AppHead';
+
+function Update() {
+	return (
+		<>
+			<AppHead title='Edit Orphan' />
+			<h1>Update</h1>
+		</>
+	);
 }
+export default Update;

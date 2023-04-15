@@ -1,7 +1,11 @@
+import AppHead from '../../components/common/AppHead';
+
 export default function Home() {
 	return (
 		<>
-			<h1 className='text-neutral-700 text-9xl'>Index page</h1>
+			<AppHead title='Home' />
+			<h1>Index page</h1>
+			<div></div>
 		</>
 	);
 }

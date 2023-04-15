@@ -13,6 +13,7 @@ enum Gender {
 }
 
 enum Status {
+  ALIVE
   DEAD
   MARRIED
 }
@@ -40,44 +41,49 @@ enum UserType {
   GUARDIAN
 }
 
+enum HomeType {
+  RENT
+  OWNED
+}
+
 model Orphan {
-  id        Int      @id @default(autoincrement())
-  image     String
-  // name      String
-  gender    Gender
-  // age        Int
-  // birthplace String
-  birthdate DateTime
-  // joinDate  DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  name       String?
+  image      String?
+  gender     Gender?
+  age        Int?
+  birthplace String?
+  birthdate  DateTime?
+  joinDate   DateTime? @default(now())
 
-  // schoolName String
-  gradeLevel Grade
-  // lastYearPercentage Float
+  schoolName         String?
+  gradeLevel         Grade?
+  lastYearPercentage Float?
 
-  // fatherDeathDate DateTime
-  // fatherWork      String
-  // fatherDeathCos  String
+  fatherDeathDate DateTime?
+  fatherWork      String?
+  fatherDeathCos  String?
 
-  // noOfFamilyMembers Int
-  // males             Int
-  // females           Int
+  noOfFamilyMembers Int?
+  males             Int?
+  females           Int?
 
-  // motherName     String
-  status        Status
-  isMotherWorks Boolean @default(false)
-  // motherJob      String
-  // motherJobPhone String
-  // monthlyIncom   Float
+  motherName     String?
+  motherStatus   Status?
+  isMotherWorks  Boolean? @default(false)
+  motherJob      String?
+  motherJobPhone String?
+  monthlyIncome  Float?
 
-  // liveWith         String
-  homeType    String
-  homePhone   String
-  // currentAddress   String
-  isSponsored Boolean
-  // foundationName   String
-  // foundationAmount Float
+  liveWith         String?
+  homeType         String?
+  homePhone        String?
+  currentAddress   String?
+  isSponsored      Boolean?
+  foundationName   String?
+  foundationAmount Float?
 
-  // evaluation Float
+  evaluation Float?
   //* relations
 
   //* one Orphan has many EmergancyContactInfo

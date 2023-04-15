@@ -1,14 +1,13 @@
-export default function MyLabel({
-	text,
-	children,
-}: {
+interface Props {
+	htmlFor: string;
 	text: string;
-	children?: JSX.Element | any;
-}) {
+	className?: string;
+}
+function MyLabel({ htmlFor, text, className }: Props) {
 	return (
-		<label className='p-2 m-2 bg-slate-100  border' htmlFor={text}>
-			{text}
-			{children}
+		<label htmlFor={htmlFor} className={`m-1 p-1 ${className}`}>
+			{text}:{' '}
 		</label>
 	);
 }
+export default MyLabel;

@@ -48,13 +48,20 @@ const data = [
 
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+	req: NextApiRequest,
+	res: NextApiResponse
+) {
 	// const dumpDate = await prisma.orphan.createMany({ data: data });
 	// console.log('🚀 ~ file: orphanList.tsx:40 ~ handler ~ dumpDate:', dumpDate);
 
 	try {
 		if (req.method === 'GET') {
 			const orphans = await prisma.orphan.findMany();
+			console.log(
+				'🚀 ~ file: orphanList.tsx:58 ~ handler ~ orphans:',
+				orphans
+			);
 			res.status(STATUS_CODE.Success).json(orphans);
 		}
 	} catch (error) {

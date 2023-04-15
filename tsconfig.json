@@ -32,7 +32,8 @@
 		"src/pages/manageOrphans/index.tsx",
 		"src/components/tailwind/MyTable.jsx",
 		"src/components/AppNavbar.tsx",
-		"src/pages/index.jsx"
+		"src/pages/index.jsx",
+		"components/orphans/orphanForm.tsx"
 	],
 	"exclude": ["node_modules"]
 }

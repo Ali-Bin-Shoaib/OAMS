@@ -1,40 +1,31 @@
-export default function MyInput({
+import { ChangeEventHandler, HTMLInputTypeAttribute } from 'react';
+
+interface Props {
+	type: HTMLInputTypeAttribute;
+	name: string;
+	id?: string;
+	className?: string;
+	value?: any;
+	onChange: ChangeEventHandler<HTMLInputElement> | undefined;
+	other?: {};
+}
+function MyInput({
 	type,
-	id,
-	defaultValue,
-	onChange,
-	onClick,
-	other,
-	text,
 	name,
 	className,
 	value,
-}: {
-	type: string;
-	name: string;
-	id?: string;
-	defaultValue?: any;
-	onChange?: any;
-	onClick?: any;
-	other?: {};
-	text?: string;
-	className?: string;
-	value?: any;
-}) {
+	other,
+	onChange,
+}: Props) {
 	return (
-		<div>
-			<input
-				className={'rounded hover:shadow p-2 m-2 ' + className}
-				id={id}
-				type={type}
-				value={value}
-				defaultValue={defaultValue}
-				name={name}
-				onChange={onChange}
-				onClick={onClick}
-				{...other}
-			/>
-			{text}
-		</div>
+		<input
+			type={type}
+			name={name}
+			id={name}
+			value={value}
+			className={`p-2 m-2 hover:shadow-lg  ${className}`}
+			onChange={onChange}
+		/>
 	);
 }
+export default MyInput;

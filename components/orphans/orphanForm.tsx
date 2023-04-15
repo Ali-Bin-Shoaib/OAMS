@@ -1,135 +1,318 @@
-import MyLabel from '../common/MyLabel';
 import { $enum } from 'ts-enum-util';
-// import { SubmitHandler, set, useForm } from 'react-hook-form';
-import { Gender, Grade, Orphan, Status } from '@prisma/client';
+import { FormEvent, useEffect, useState } from 'react';
+import { Gender, Grade, Status } from '@prisma/client';
 import { v4 } from 'uuid';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import MyInput from '../common/MyInput';
-import MyButton from '../common/MyButton';
-export default function OrphanForm() {
-	let data = {
-		image: '',
+import {
+	Button,
+	FileInput,
+	Flex,
+	Group,
+	NumberInput,
+	Radio,
+	Select,
+	TextInput,
+} from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
+import { useForm, Controller } from 'react-hook-form';
+
+export default function OrphanForm(): JSX.Element {
+	interface FormData {
+		id?: number;
+		name: string;
+		image?: File | null;
+		gender: Gender;
+		age: number;
+		birthplace: string;
+		birthdate: Date;
+		joinDate?: Date;
+		schoolName: string;
+		gradeLevel: Grade;
+		lastYearPercentage: number;
+		fatherDeathDate: Date;
+		fatherWork: string;
+		fatherDeathCos: string;
+		noOfFamilyMembers: number;
+		males: number;
+		females: number;
+		motherName: string;
+		motherStatus: Status;
+		isMotherWorks: boolean;
+		motherJob: string;
+		motherJobPhone: string;
+		monthlyIncome: number;
+		liveWith: string;
+		homeType: string;
+		homePhone: string;
+		currentAddress: string;
+		isSponsored: boolean;
+		foundationName: string;
+		foundationAmount: number;
+		evaluation?: number;
+		guardianId?: number;
+	}
+
+	const [data, setData] = useState<FormData>({
+		id: 0,
+		name: 'default',
+		image: null,
 		gender: Gender.FEMALE,
-		birthdate: Date.now(),
+		age: 6,
+		birthplace: 'string',
+		birthdate: new Date(),
+		joinDate: new Date(),
+		schoolName: 'string',
 		gradeLevel: Grade.EIGHTH,
-		status: '',
+		lastYearPercentage: 0,
+		fatherDeathDate: new Date(),
+		fatherWork: 'string',
+		fatherDeathCos: 'string',
+		noOfFamilyMembers: 0,
+		males: 0,
+		females: 0,
+		motherName: 'string',
+		motherStatus: Status.ALIVE,
 		isMotherWorks: false,
-		homeType: 'rent',
-		homePhone: '777777777',
+		motherJob: 'string',
+		motherJobPhone: 'string',
+		monthlyIncome: 0,
+		liveWith: 'string',
+		homeType: 'string',
+		homePhone: 'string',
+		currentAddress: 'string',
 		isSponsored: false,
+		foundationName: 'string',
+		foundationAmount: 0,
+		evaluation: 0,
+		guardianId: 0,
+	});
+	const [hydrate, setHydrate] = useState(false);
+	const {
+		register,
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		defaultValues: { ...data },
+		// resolver: zodResolver(schema),
+	});
+
+	const onSubmit = async (data: FormData) => {
+		console.log('🚀 ~ file: orphanForm.tsx:100 ~ onSubmit ~ data:', data);
+		console.log(
+			'🚀 ~ file: orphanForm.jsx:10 ~ handelSubmit ~ errors.root?.message',
+			errors.root?.message
+		);
+		// const url = '/api/orphan/create/';
+		// const res = await fetch(url, {
+		// 	method: 'post',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify(data),
+		// });
 	};
 
-	const [state, setState] = useState(data);
-	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-		let value: typeof state[keyof typeof state] = e.target.value;
-		if (e.target.type === 'radio') {
-			if (e.target.checked) {
-				value = e.target.value;
-			}
+	const stringFormatter = (
+		target:
+			| (EventTarget & HTMLInputElement)
+			| (EventTarget & HTMLSelectElement),
+		name?: string
+	) => {
+		const value = target.value;
+		switch (name) {
+			case 'isMotherWorks':
+				if (value && typeof value === 'string') {
+					if (value.toLowerCase() === 'true') return true;
+					if (value.toLowerCase() === 'false') return false;
+				}
+				return value;
+			case 'birthdate':
+				if (value) return new Date(value);
+				return value;
+			default:
+				console.log(`value: ${value} --- name: ${name}`);
+				break;
 		}
-		setState({ ...state, [e.target.name]: value });
 	};
-	const onSubmit = (e: FormEvent) => {
-		e.preventDefault();
-	};
+
 	useEffect(() => {
-		console.log(state);
-	}, [state]);
+		setHydrate(true);
+	}, [hydrate]);
+
+	if (!hydrate) return <h1>...Loading</h1>;
 	return (
 		<>
-			<form className=' flex flex-wrap ' onSubmit={onSubmit}>
-				<MyLabel text='image'>
-					<MyInput
+			<form
+				className=' flex flex-wrap p-2 m-2'
+				onSubmit={handleSubmit(onSubmit)}>
+				<Flex
+					direction={{ base: 'column', sm: 'row' }}
+					wrap='wrap'
+					gap={{ base: 'sm', sm: 'lg' }}
+					justify={{ sm: 'center' }}>
+					<Controller
+						name='name'
+						control={control}
+						rules={{ required: 'name is required' }}
+						render={({ field }) => {
+							return !errors.name ? (
+								<TextInput
+									{...field}
+									label='name'
+									placeholder='name'
+									withAsterisk
+								/>
+							) : (
+								<TextInput
+									{...field}
+									label='name'
+									placeholder='name'
+									error={errors.name.message}
+									withAsterisk
+								/>
+							);
+						}}
+					/>
+					<Controller
 						name='image'
-						type='file'
-						id='image'
-						className=' border-2'
-						onChange={onChange}
-						value={Gender.MALE}
+						control={control}
+						rules={{ required: 'image is required' }}
+						render={({ field }) => {
+							return !errors.image ? (
+								<FileInput
+									{...field}
+									id='image'
+									label='image'
+									accept='image/*'
+									w={200}
+									placeholder='choose an image'
+									withAsterisk
+								/>
+							) : (
+								<FileInput
+									{...field}
+									id='image'
+									label='image'
+									accept='image/*'
+									w={200}
+									placeholder='choose an image'
+									error={errors.image.message}
+									withAsterisk
+								/>
+							);
+						}}
 					/>
-				</MyLabel>
-				<MyLabel text='gender'>
-					<MyInput onChange={onChange} type='radio' id='male' name='gender' text='Male' />
-					<MyInput
-						onChange={onChange}
-						type='radio'
-						id='female'
+					<Controller
 						name='gender'
-						text='Female'
-						value={Gender.FEMALE}
-					/>
-				</MyLabel>
-				<MyLabel text='birthdate'>
-					<MyInput onChange={onChange} name='birthdate' type='date' id='birthdate' />
-				</MyLabel>
-				<MyLabel text='gradeLevel'>
-					<select>
-						{$enum(Grade).map((grade) => {
+						control={control}
+						rules={{ required: 'gender is required' }}
+						render={({ field }) => {
 							return (
-								<option key={v4()} value={grade}>
-									{grade}
-								</option>
+								<Radio.Group {...field} name='gender' label='Gender' withAsterisk>
+									<Group mt='md'>
+										{$enum(Gender).map((g) => (
+											<Radio key={v4()} value={g} label={g.toLocaleLowerCase()} />
+										))}
+									</Group>
+								</Radio.Group>
 							);
-						})}
-					</select>
-				</MyLabel>
-				<MyLabel text='status'>
-					<select
-						onChange={(e) => {
-							// console.log(e.target.value);
+						}}
+					/>
 
-							setState({ ...state, status: e.target.value });
-						}}>
-						{$enum(Status).map((state) => {
-							return (
-								<option key={v4()} value={state}>
-									{state}
-								</option>
-							);
-						})}
-					</select>
-				</MyLabel>
-				<MyLabel text='isMotherWorks'>
-					<MyInput
-						onChange={onChange}
-						type='radio'
-						id='yes'
+					<TextInput
+						name='birthplace'
+						label='birthplace'
+						placeholder='birthplace'
+						withAsterisk
+						value={data.birthplace}
+						onChange={(e) => {
+							setData({ ...data, birthplace: e.target.value });
+						}}
+					/>
+					<DatePickerInput
+						valueFormat='D M YYYY'
+						name='birthdate'
+						label='birthdate'
+						placeholder='birthdate'
+						w={100}
+						onChange={(e) => {
+							setData({ ...data, birthdate: e as Date });
+							console.log(data);
+						}}
+					/>
+					<DatePickerInput
+						valueFormat='D M YYYY'
+						name='joinDate'
+						label='joinDate'
+						placeholder='joinDate'
+						w={100}
+						onChange={(e) => {
+							setData({ ...data, joinDate: e as Date });
+							console.log(data);
+						}}
+					/>
+					<TextInput
+						label='schoolName'
+						placeholder='schoolName'
+						withAsterisk
+						value={data.schoolName}
+						onChange={(e) => {
+							setData({ ...data, schoolName: e.target.value });
+						}}
+					/>
+					<Select
+						data={$enum(Grade).map((g) => g.toLowerCase())}
+						label='grade level'
+						value={data.gradeLevel.toString()}
+						name='gradeLevel'
+						onChange={(e) =>
+							setData({ ...data, gradeLevel: e?.toString() as Grade })
+						}
+					/>
+					<NumberInput
+						defaultValue={18}
+						placeholder='lastYearPercentage'
+						label='lastYearPercentage'
+						name='lastYearPercentage'
+						radius='md'
+						size='md'
+						withAsterisk
+						hideControls
+						value={data.lastYearPercentage}
+						// onChange={}
+					/>
+
+					<Select
+						data={['rent', 'owned']}
+						label='home type'
+						value={data.homeType}
+						name='homeType'
+						onChange={(e) =>
+							setData({ ...data, homeType: e as 'owned' | 'rent' })
+						}
+					/>
+
+					<Select
+						data={$enum(Status).map((s) => s.toLowerCase())}
+						label='mother status'
+						value={data.motherStatus}
+						name='motherStatus'
+						onChange={(e) => setData({ ...data, motherStatus: e as Status })}
+					/>
+
+					<Radio.Group
 						name='isMotherWorks'
-						text='yes'
-						value={'yes'}
-					/>
-					<MyInput
-						onChange={onChange}
-						type='radio'
-						id='female'
-						name='isMotherWorks'
-						text='no'
-						value={'no'}
-					/>
-				</MyLabel>
-				<MyLabel text='homeType'>
-					<select onChange={(e) => setState({ ...state, homeType: e.target.value })}>
-						<option value={'owned'}>Owned</option>
-						<option value={'rent'}>Rent</option>
-					</select>
-				</MyLabel>
-				<MyLabel text='homePhone'>
-					<MyInput onChange={onChange} name='homePhone' type='tel' id='homePhone' />
-				</MyLabel>
-				<MyLabel text='isSponsored'>
-					<MyInput
-						onChange={onChange}
-						type='radio'
-						id='yes'
-						name='isSponsored'
-						text='yes'
-						value={'yes'}
-					/>
-					<MyInput onChange={onChange} type='radio' id='no' name='isSponsored' text='no' value={'no'} />
-				</MyLabel>
-				<div>
-					<MyButton color='blue' type='submit' text='Sign up' />
-				</div>
+						label='isMotherWorks'
+						value={data.isMotherWorks ? 'true' : 'false'}
+						onChange={(e) =>
+							setData({ ...data, isMotherWorks: e === 'true' ? true : false })
+						}>
+						<Group mt='md'>
+							<Radio key={v4()} value={'true'} label={'Yes'} />
+							<Radio key={v4()} value={'false'} label={'No'} />
+						</Group>
+					</Radio.Group>
+
+					<Button type='submit'>Submit</Button>
+				</Flex>
 			</form>
 		</>
 	);
