@@ -1,7 +1,11 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import { STATUS_CODE, REQUEST_METHODS } from '../../../../types/types';
+import {
+	STATUS_CODE,
+	REQUEST_METHODS,
+	ORPHAN,
+} from '../../../../types/types';
 import { Orphan } from '@prisma/client';
 
 // *make it run then make it pretty.
@@ -14,10 +18,12 @@ export default async function handler(
 ) {
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
-			const data: Orphan = await req.body;
+			const data: ORPHAN = await req.body;
 			console.log('🚀 ~ file: create.tsx:15 ~ handler ~ data:', data);
+			const orphan: Orphan = JSON.parse(JSON.stringify(data));
 
-			const orphan = JSON.parse(JSON.stringify(data));
+			console.log('🚀 ~ file: create.tsx:27 ~ data.image:', data.image?.name);
+			orphan.image = data.image?.name as string;
 			console.log('🚀 ~ file: create.tsx:21 ~ orphan:', orphan);
 			const newOrphan = await prisma.orphan.create({ data: orphan });
 			console.log(

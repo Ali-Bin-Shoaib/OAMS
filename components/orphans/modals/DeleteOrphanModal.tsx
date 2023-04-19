@@ -2,7 +2,8 @@ import { Button, Group, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
-import { URL } from '../../../sharid/links';
+import { URL } from '../../../shared/links';
+import { Orphan } from '@prisma/client';
 
 export default function DeleteOrphanModal({ id = -1 }) {
 	const openDeleteModal = () =>

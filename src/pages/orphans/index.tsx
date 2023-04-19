@@ -3,12 +3,24 @@ import prisma from '../../../lib/prisma';
 import { Orphan } from '@prisma/client';
 import AppHead from '../../../components/common/AppHead';
 import { v4 } from 'uuid';
-import { ReactNode, useEffect, useState } from 'react';
+import {
+	ReactNode,
+	useEffect,
+	useState,
+	createContext,
+	useContext,
+} from 'react';
 import { Button, Card } from '@mantine/core';
 import DeleteOrphanModal from '../../../components/orphans/modals/DeleteOrphanModal';
+const context = createContext(null);
 export default function Index({ data }: { data: Orphan[] }) {
+	const x = useContext(context);
+
 	const [cardInfo, setCardInfo] = useState<Orphan>(data[0]);
-	useEffect(() => {}, [data]);
+	useEffect(() => {
+		getStaticProps;
+		setCardInfo(data[0]);
+	}, [data]);
 	return (
 		<>
 			<AppHead title='Orphans' />

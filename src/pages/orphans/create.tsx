@@ -1,6 +1,5 @@
 import AppHead from '../../../components/common/AppHead';
 import OrphanForm from '../../../components/orphans/orphanForm';
-import Test from '../../../components/orphans/Test';
 function Create() {
 	return (
 		<>

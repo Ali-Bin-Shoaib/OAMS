@@ -11,79 +11,46 @@ import {
 	Radio,
 	Select,
 	TextInput,
+	Textarea,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
+import { ORPHAN } from '../../types/types';
 
 export default function OrphanForm(): JSX.Element {
-	interface FormData {
-		id?: number;
-		name: string;
-		image?: File | null;
-		gender: Gender;
-		age: number;
-		birthplace: string;
-		birthdate: Date;
-		joinDate?: Date;
-		schoolName: string;
-		gradeLevel: Grade;
-		lastYearPercentage: number;
-		fatherDeathDate: Date;
-		fatherWork: string;
-		fatherDeathCos: string;
-		noOfFamilyMembers: number;
-		males: number;
-		females: number;
-		motherName: string;
-		motherStatus: Status;
-		isMotherWorks: boolean;
-		motherJob: string;
-		motherJobPhone: string;
-		monthlyIncome: number;
-		liveWith: string;
-		homeType: string;
-		homePhone: string;
-		currentAddress: string;
-		isSponsored: boolean;
-		foundationName: string;
-		foundationAmount: number;
-		evaluation?: number;
-		guardianId?: number;
-	}
-
-	const [data, setData] = useState<FormData>({
-		id: 0,
+	const [data, setData] = useState<ORPHAN>({
+		id: undefined,
 		name: 'default',
 		image: null,
 		gender: Gender.FEMALE,
-		age: 6,
-		birthplace: 'string',
-		birthdate: new Date(),
-		joinDate: new Date(),
-		schoolName: 'string',
+		age: 7,
+		birthplace: 'birthplace',
+		birthdate: undefined,
+		joinDate: undefined,
+		schoolName: 'schoolName',
 		gradeLevel: Grade.EIGHTH,
-		lastYearPercentage: 0,
-		fatherDeathDate: new Date(),
-		fatherWork: 'string',
-		fatherDeathCos: 'string',
-		noOfFamilyMembers: 0,
-		males: 0,
-		females: 0,
-		motherName: 'string',
+		lastYearPercentage: 80,
+		fatherDeathDate: undefined,
+		fatherWork: 'fatherWork',
+		fatherDeathCos: 'fatherDeathCos',
+		noOfFamilyMembers: 3,
+		males: 2,
+		females: 1,
+		motherName: 'motherName',
 		motherStatus: Status.ALIVE,
 		isMotherWorks: false,
-		motherJob: 'string',
-		motherJobPhone: 'string',
+		motherJob: 'motherJob',
+		motherJobPhone: '777666555',
 		monthlyIncome: 0,
-		liveWith: 'string',
-		homeType: 'string',
-		homePhone: 'string',
-		currentAddress: 'string',
+		liveWith: 'liveWith',
+		homeType: 'homeType',
+		homePhone: '514369',
+		currentAddress: 'currentAddress',
 		isSponsored: false,
-		foundationName: 'string',
+		foundationName: 'foundationName',
 		foundationAmount: 0,
-		evaluation: 0,
-		guardianId: 0,
+		evaluation: undefined,
+		guardianId: undefined,
 	});
 	const [hydrate, setHydrate] = useState(false);
 	const {
@@ -93,44 +60,25 @@ export default function OrphanForm(): JSX.Element {
 		formState: { errors },
 	} = useForm({
 		defaultValues: { ...data },
-		// resolver: zodResolver(schema),
 	});
 
-	const onSubmit = async (data: FormData) => {
+	const onSubmit = async (data: ORPHAN) => {
 		console.log('🚀 ~ file: orphanForm.tsx:100 ~ onSubmit ~ data:', data);
-		console.log(
-			'🚀 ~ file: orphanForm.jsx:10 ~ handelSubmit ~ errors.root?.message',
-			errors.root?.message
-		);
-		// const url = '/api/orphan/create/';
-		// const res = await fetch(url, {
-		// 	method: 'post',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify(data),
-		// });
+
+		const url = '/api/orphan/create/';
+		const res = await fetch(url, {
+			method: 'post',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		});
 	};
 
-	const stringFormatter = (
-		target:
-			| (EventTarget & HTMLInputElement)
-			| (EventTarget & HTMLSelectElement),
-		name?: string
-	) => {
-		const value = target.value;
-		switch (name) {
-			case 'isMotherWorks':
-				if (value && typeof value === 'string') {
-					if (value.toLowerCase() === 'true') return true;
-					if (value.toLowerCase() === 'false') return false;
-				}
-				return value;
-			case 'birthdate':
-				if (value) return new Date(value);
-				return value;
-			default:
-				console.log(`value: ${value} --- name: ${name}`);
-				break;
+	const strToBool = (value: string) => {
+		if (value && typeof value === 'string') {
+			if (value.toLowerCase() === 'true' || 'yes') return true;
+			if (value.toLowerCase() === 'false' || 'no') return false;
 		}
+		return value;
 	};
 
 	useEffect(() => {
@@ -153,21 +101,18 @@ export default function OrphanForm(): JSX.Element {
 						control={control}
 						rules={{ required: 'name is required' }}
 						render={({ field }) => {
-							return !errors.name ? (
-								<TextInput
-									{...field}
-									label='name'
-									placeholder='name'
-									withAsterisk
-								/>
-							) : (
-								<TextInput
-									{...field}
-									label='name'
-									placeholder='name'
-									error={errors.name.message}
-									withAsterisk
-								/>
+							return (
+								<div>
+									<TextInput
+										{...field}
+										label='name'
+										placeholder='name'
+										withAsterisk
+									/>
+									{errors.name && (
+										<p className='text-red-500'>*{errors.name.message}</p>
+									)}
+								</div>
 							);
 						}}
 					/>
@@ -176,27 +121,21 @@ export default function OrphanForm(): JSX.Element {
 						control={control}
 						rules={{ required: 'image is required' }}
 						render={({ field }) => {
-							return !errors.image ? (
-								<FileInput
-									{...field}
-									id='image'
-									label='image'
-									accept='image/*'
-									w={200}
-									placeholder='choose an image'
-									withAsterisk
-								/>
-							) : (
-								<FileInput
-									{...field}
-									id='image'
-									label='image'
-									accept='image/*'
-									w={200}
-									placeholder='choose an image'
-									error={errors.image.message}
-									withAsterisk
-								/>
+							return (
+								<div>
+									<FileInput
+										{...field}
+										id='image'
+										label='image'
+										accept='image/*'
+										w={200}
+										placeholder='choose an image'
+										withAsterisk
+									/>
+									{errors.image && (
+										<p className='text-red-500'>*{errors.image.message}</p>
+									)}
+								</div>
 							);
 						}}
 					/>
@@ -209,107 +148,587 @@ export default function OrphanForm(): JSX.Element {
 								<Radio.Group {...field} name='gender' label='Gender' withAsterisk>
 									<Group mt='md'>
 										{$enum(Gender).map((g) => (
-											<Radio key={v4()} value={g} label={g.toLocaleLowerCase()} />
+											<Radio key={v4()} value={g} label={g.toLowerCase()} />
 										))}
 									</Group>
+									{errors.gender && (
+										<p className='text-red-500'>*{errors.gender.message}</p>
+									)}
 								</Radio.Group>
 							);
 						}}
 					/>
-
-					<TextInput
+					<Controller
 						name='birthplace'
-						label='birthplace'
-						placeholder='birthplace'
-						withAsterisk
-						value={data.birthplace}
-						onChange={(e) => {
-							setData({ ...data, birthplace: e.target.value });
+						control={control}
+						rules={{ required: 'birthplace is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<TextInput
+										{...field}
+										label='birthplace'
+										placeholder='birthplace'
+										withAsterisk
+									/>
+									{errors.birthplace && (
+										<p className='text-red-500'>*{errors.birthplace.message}</p>
+									)}
+								</div>
+							);
 						}}
 					/>
-					<DatePickerInput
-						valueFormat='D M YYYY'
+					<Controller
 						name='birthdate'
-						label='birthdate'
-						placeholder='birthdate'
-						w={100}
-						onChange={(e) => {
-							setData({ ...data, birthdate: e as Date });
-							console.log(data);
+						control={control}
+						rules={{ required: 'birthdate is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<DatePickerInput
+										{...field}
+										valueFormat='D M YYYY'
+										name='birthdate'
+										label='birthdate'
+										placeholder='birthdate'
+										w={100}
+										withAsterisk
+									/>
+									{errors.birthdate && (
+										<p className='text-red-500'>*{errors.birthdate.message}</p>
+									)}
+								</div>
+							);
 						}}
 					/>
-					<DatePickerInput
-						valueFormat='D M YYYY'
+					<Controller
 						name='joinDate'
-						label='joinDate'
-						placeholder='joinDate'
-						w={100}
-						onChange={(e) => {
-							setData({ ...data, joinDate: e as Date });
-							console.log(data);
+						control={control}
+						rules={{ required: 'joinDate is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<DatePickerInput
+										{...field}
+										valueFormat='D M YYYY'
+										name='joinDate'
+										label='joinDate'
+										placeholder='joinDate'
+										w={100}
+									/>
+									{errors.joinDate && (
+										<p className='text-red-500'>*{errors.joinDate.message}</p>
+									)}
+								</div>
+							);
 						}}
 					/>
-					<TextInput
-						label='schoolName'
-						placeholder='schoolName'
-						withAsterisk
-						value={data.schoolName}
-						onChange={(e) => {
-							setData({ ...data, schoolName: e.target.value });
+					<Controller
+						name='schoolName'
+						control={control}
+						rules={{ required: 'schoolName is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<TextInput
+										{...field}
+										label='schoolName'
+										placeholder='schoolName'
+										withAsterisk
+									/>
+									{errors.schoolName && (
+										<p className='text-red-500'>*{errors.schoolName.message}</p>
+									)}
+								</div>
+							);
 						}}
 					/>
-					<Select
-						data={$enum(Grade).map((g) => g.toLowerCase())}
-						label='grade level'
-						value={data.gradeLevel.toString()}
+					<Controller
 						name='gradeLevel'
-						onChange={(e) =>
-							setData({ ...data, gradeLevel: e?.toString() as Grade })
-						}
+						control={control}
+						rules={{ required: 'gradeLevel is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<Select
+										{...field}
+										data={$enum(Grade).map((g) => g)}
+										label='grade level'
+										name='gradeLevel'
+									/>
+									{errors.gradeLevel && (
+										<p className='text-red-500'>*{errors.gradeLevel.message}</p>
+									)}
+								</div>
+							);
+						}}
 					/>
-					<NumberInput
-						defaultValue={18}
-						placeholder='lastYearPercentage'
-						label='lastYearPercentage'
+					<Controller
 						name='lastYearPercentage'
-						radius='md'
-						size='md'
-						withAsterisk
-						hideControls
-						value={data.lastYearPercentage}
-						// onChange={}
-					/>
+						control={control}
+						rules={{
+							required: 'lastYearPercentage is required',
 
-					<Select
-						data={['rent', 'owned']}
-						label='home type'
-						value={data.homeType}
-						name='homeType'
-						onChange={(e) =>
-							setData({ ...data, homeType: e as 'owned' | 'rent' })
-						}
+							max: {
+								value: 100,
+								message: 'value must be less than or equal 100',
+							},
+							min: {
+								value: 50,
+								message: 'value must be greater than or equal 50',
+							},
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+									<NumberInput
+										{...field}
+										placeholder='lastYearPercentage'
+										label='lastYearPercentage'
+										name='lastYearPercentage'
+										withAsterisk
+										precision={2}
+										hideControls
+									/>
+									{errors.lastYearPercentage && (
+										<p className='text-red-500'>
+											*{errors.lastYearPercentage.message}
+										</p>
+									)}
+								</div>
+							);
+						}}
 					/>
-
-					<Select
-						data={$enum(Status).map((s) => s.toLowerCase())}
-						label='mother status'
-						value={data.motherStatus}
+					<Controller
+						name='fatherDeathDate'
+						control={control}
+						rules={{ required: 'fatherDeathDate is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<DatePickerInput
+										{...field}
+										valueFormat='D M YYYY'
+										name='fatherDeathDate'
+										label='fatherDeathDate'
+										placeholder='fatherDeathDate'
+										w={120}
+									/>
+									{errors.fatherDeathDate && (
+										<p className='text-red-500'>*{errors.fatherDeathDate.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Controller
+						name='fatherWork'
+						control={control}
+						rules={{ required: 'fatherWork is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<TextInput
+										{...field}
+										label='fatherWork'
+										placeholder='fatherWork'
+										withAsterisk
+									/>
+									{errors.fatherWork && (
+										<p className='text-red-500'>*{errors.fatherWork.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Controller
+						name='fatherDeathCos'
+						control={control}
+						rules={{ required: 'fatherDeathCos is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<Textarea
+										{...field}
+										label='fatherDeathCos'
+										placeholder='fatherDeathCos'
+										withAsterisk
+									/>
+									{errors.fatherDeathCos && (
+										<p className='text-red-500'>*{errors.fatherDeathCos.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					{/* <Controller
+						name='noOfFamilyMembers'
+						control={control}
+						rules={{ required: 'noOfFamilyMembers is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<NumberInput
+										{...field}
+										hideControls
+										label='noOfFamilyMembers'
+										placeholder='noOfFamilyMembers'
+										withAsterisk
+									/>
+									{errors.noOfFamilyMembers && (
+										<p className='text-red-500'>
+											*{errors.noOfFamilyMembers.message}
+										</p>
+									)}
+								</div>
+							);
+						}}
+					/> */}
+					<Controller
+						name='males'
+						control={control}
+						rules={{ required: 'males is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<NumberInput
+										{...field}
+										hideControls
+										label='males'
+										placeholder='males'
+										w={99}
+										withAsterisk
+									/>
+									{errors.males && (
+										<p className='text-red-500'>*{errors.males.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Controller
+						name='females'
+						control={control}
+						rules={{ required: 'females is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<NumberInput
+										{...field}
+										hideControls
+										label='females'
+										placeholder='females'
+										w={99}
+										withAsterisk
+									/>
+									{errors.females && (
+										<p className='text-red-500'>*{errors.females.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Controller
+						name='motherName'
+						control={control}
+						rules={{ required: 'motherName is required' }}
+						render={({ field }) => {
+							return (
+								<div>
+									<TextInput
+										{...field}
+										label='motherName'
+										placeholder='motherName'
+										withAsterisk
+									/>
+									{errors.motherName && (
+										<p className='text-red-500'>*{errors.motherName.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Controller
 						name='motherStatus'
-						onChange={(e) => setData({ ...data, motherStatus: e as Status })}
+						control={control}
+						rules={{
+							required: 'motherStatus is required',
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+									<Select
+										{...field}
+										data={$enum(Status).map((s) => s)}
+										label='mother status'
+										name='motherStatus'
+									/>
+									{errors.motherStatus && (
+										<p className='text-red-500'>*{errors.motherStatus?.message}</p>
+									)}
+								</div>
+							);
+						}}
 					/>
 
-					<Radio.Group
+					{/* <Controller
 						name='isMotherWorks'
-						label='isMotherWorks'
-						value={data.isMotherWorks ? 'true' : 'false'}
-						onChange={(e) =>
-							setData({ ...data, isMotherWorks: e === 'true' ? true : false })
-						}>
-						<Group mt='md'>
-							<Radio key={v4()} value={'true'} label={'Yes'} />
-							<Radio key={v4()} value={'false'} label={'No'} />
-						</Group>
-					</Radio.Group>
+						control={control}
+						rules={{
+							required: false,
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+							
+									<Checkbox label='is mother works' {...field} />
+									{errors.isMotherWorks && (
+										<p className='text-red-500'>*{errors.isMotherWorks?.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/> */}
+					{data.isMotherWorks && (
+						<>
+							<Controller
+								name='motherJob'
+								control={control}
+								rules={{
+									required: false,
+								}}
+								render={({ field }) => {
+									return (
+										<div>
+											<TextInput {...field} label='motherJob' name='motherJob' />
+											{errors.motherJob && (
+												<p className='text-red-500'>*{errors.motherJob?.message}</p>
+											)}
+										</div>
+									);
+								}}
+							/>
+							<Controller
+								name='motherJobPhone'
+								control={control}
+								rules={{
+									required: false,
+									max: { value: 799999999, message: '> 799999999' },
+									min: { value: 699999999, message: '> 699999999' },
+								}}
+								render={({ field }) => {
+									return (
+										<div>
+											<TextInput
+												{...field}
+												type='tel'
+												label='mother job Phone'
+												name='motherJobPhone'
+											/>
+											{errors.motherJobPhone && (
+												<p className='text-red-500'>
+													*{errors.motherJobPhone?.message}
+												</p>
+											)}
+										</div>
+									);
+								}}
+							/>
+							<Controller
+								name='monthlyIncome'
+								control={control}
+								rules={{
+									required: false,
+								}}
+								render={({ field }) => {
+									return (
+										<div>
+											<NumberInput
+												{...field}
+												placeholder='monthlyIncome'
+												label='monthlyIncome'
+												name='monthlyIncome'
+												precision={2}
+												hideControls
+											/>
+											{errors.monthlyIncome && (
+												<p className='text-red-500'>
+													*{errors.monthlyIncome?.message}
+												</p>
+											)}
+										</div>
+									);
+								}}
+							/>
+						</>
+					)}
+					<Controller
+						name='liveWith'
+						control={control}
+						rules={{
+							required: 'liveWith is required.',
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+									<TextInput
+										{...field}
+										label='liveWith'
+										name='liveWith'
+										withAsterisk
+									/>
+									{errors.liveWith && (
+										<p className='text-red-500'>*{errors.liveWith?.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+
+					<Controller
+						name='homeType'
+						control={control}
+						rules={{
+							required: 'homeType is required',
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+									<Select
+										{...field}
+										data={['Rent', 'Owned']}
+										label='home type'
+										name='homeType'
+									/>
+									{errors.homeType && (
+										<p className='text-red-500'>*{errors.homeType.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Controller
+						name='homePhone'
+						control={control}
+						rules={{
+							required: 'homePhone is required',
+							// max: { value: 799999999, message: '> 799999999' },
+							// min: { value: 699999999, message: '> 699999999' },
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+									<TextInput
+										{...field}
+										type='tel'
+										label='homePhone'
+										name='homePhone'
+										placeholder='514640'
+										withAsterisk
+									/>
+									{errors.homePhone && (
+										<p className='text-red-500'>*{errors.homePhone?.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Controller
+						name='currentAddress'
+						control={control}
+						rules={{
+							required: 'currentAddress is required.',
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+									<TextInput
+										{...field}
+										label='currentAddress'
+										name='currentAddress'
+										placeholder='currentAddress'
+										withAsterisk
+									/>
+									{errors.currentAddress && (
+										<p className='text-red-500'>*{errors.currentAddress?.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+					{/* <Controller
+						name='isSponsored'
+						control={control}
+						rules={{
+							required: false,
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+							
+									<Checkbox label='isSponsored' {...field} />
+									{errors.homeType && (
+										<p className='text-red-500'>*{errors.isSponsored?.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/> */}
+					{data.isSponsored && (
+						<>
+							<Controller
+								name='foundationName'
+								control={control}
+								rules={{
+									required: false,
+								}}
+								render={({ field }) => {
+									return (
+										<div>
+											<TextInput
+												{...field}
+												label='foundationName'
+												name='foundationName'
+												placeholder='foundationName'
+											/>
+											{errors.foundationName && (
+												<p className='text-red-500'>
+													*{errors.foundationName?.message}
+												</p>
+											)}
+										</div>
+									);
+								}}
+							/>
+							<Controller
+								name='foundationAmount'
+								control={control}
+								rules={{
+									required: false,
+								}}
+								render={({ field }) => {
+									return (
+										<div>
+											<NumberInput
+												{...field}
+												placeholder='15000.00'
+												label='foundationAmount'
+												name='foundationAmount'
+												precision={2}
+												hideControls
+												withAsterisk
+											/>
+											{errors.foundationAmount && (
+												<p className='text-red-500'>
+													*{errors.foundationAmount?.message}
+												</p>
+											)}
+										</div>
+									);
+								}}
+							/>
+						</>
+					)}
 
 					<Button type='submit'>Submit</Button>
 				</Flex>
