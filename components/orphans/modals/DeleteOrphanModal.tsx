@@ -1,11 +1,17 @@
 import { Button, Group, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
+import {
+	IconCheck,
+	IconSettingsCancel,
+	IconX,
+} from '@tabler/icons-react';
 import { URL } from '../../../shared/links';
 import { Orphan } from '@prisma/client';
-
+import { useRouter } from 'next/router';
+import { STATUS_CODE } from '../../../types/types';
 export default function DeleteOrphanModal({ id = -1 }) {
+	const router = useRouter();
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
 			title: 'Delete Orphan info',
@@ -15,15 +21,39 @@ export default function DeleteOrphanModal({ id = -1 }) {
 			),
 			labels: { confirm: 'Delete ', cancel: "No don't delete it" },
 			confirmProps: { color: 'red' },
-			onCancel: () => console.log('Cancel'),
-			onConfirm: () => {
-				deleteOrphan(id);
+			onCancel: () =>
 				notifications.show({
-					title: 'Deleted',
-					message: 'Orphan Deleted',
-					color: 'green',
-					icon: <IconCheck />,
-				});
+					title: 'Cancel',
+					message: 'cancel delete',
+					color: 'gray',
+
+				}),
+			onConfirm: async () => {
+				const result = await deleteOrphan(id);
+				console.log(
+					'🚀 ~ file: DeleteOrphanModal.tsx:23 ~ onConfirm: ~ result:',
+					result
+				);
+				try {
+					if (result) {
+						notifications.show({
+							title: `${result.orphan.name} Deleted`,
+							message: `${result.orphan.id}: ${result.orphan.name} Was Deleted`,
+							color: 'green',
+							icon: <IconCheck />,
+						});
+						router.push(router.asPath);
+					} else {
+						notifications.show({
+							title: 'Error',
+							message: `Orphan dose not exist.`,
+							color: 'red',
+							icon: <IconX />,
+						});
+					}
+				} catch (error) {
+					console.log(error);
+				}
 			},
 		});
 
@@ -34,7 +64,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 	);
 }
 
-const deleteOrphan: any = async (id: number) => {
+const deleteOrphan = async (id: number) => {
 	console.log(
 		'🚀 ~ file: DeleteOrphanModal.tsx:8 ~ deleteOrphan ~ id:',
 		id
@@ -43,9 +73,7 @@ const deleteOrphan: any = async (id: number) => {
 		method: 'delete',
 		headers: { 'content-type': 'application/json' },
 	});
-	const response = res.json();
-	console.log(
-		'🚀 ~ file: DeleteOrphanModal.tsx:46 ~ constdeleteOrphan:any= ~ response:',
-		response
-	);
+
+	if (res.status === STATUS_CODE.Success) return res.json();
+	return;
 };

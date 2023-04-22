@@ -1,6 +1,6 @@
 import { $enum } from 'ts-enum-util';
-import { FormEvent, useEffect, useState } from 'react';
-import { Gender, Grade, Status } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { Gender, Grade, Orphan, Status } from '@prisma/client';
 import { v4 } from 'uuid';
 import {
 	Button,
@@ -16,69 +16,79 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
 import { ORPHAN } from '../../types/types';
+import { URL } from '../../shared/links';
 
-export default function OrphanForm(): JSX.Element {
-	const [data, setData] = useState<ORPHAN>({
-		id: undefined,
-		name: 'default',
-		image: null,
-		gender: Gender.FEMALE,
-		age: 7,
-		birthplace: 'birthplace',
-		birthdate: undefined,
-		joinDate: undefined,
-		schoolName: 'schoolName',
-		gradeLevel: Grade.EIGHTH,
-		lastYearPercentage: 80,
-		fatherDeathDate: undefined,
-		fatherWork: 'fatherWork',
-		fatherDeathCos: 'fatherDeathCos',
-		noOfFamilyMembers: 3,
-		males: 2,
-		females: 1,
-		motherName: 'motherName',
-		motherStatus: Status.ALIVE,
-		isMotherWorks: false,
-		motherJob: 'motherJob',
-		motherJobPhone: '777666555',
-		monthlyIncome: 0,
-		liveWith: 'liveWith',
-		homeType: 'homeType',
-		homePhone: '514369',
-		currentAddress: 'currentAddress',
-		isSponsored: false,
-		foundationName: 'foundationName',
-		foundationAmount: 0,
-		evaluation: undefined,
-		guardianId: undefined,
-	});
+export default function OrphanForm({
+	orphan,
+}: {
+	orphan?: Orphan;
+}): JSX.Element {
+	const [data, setData] = useState<ORPHAN>(
+		(orphan as ORPHAN) || {
+			id: undefined,
+			name: '',
+			image: null,
+			gender: '',
+			age: 0,
+			birthplace: '',
+			birthdate: undefined,
+			joinDate: undefined,
+			schoolName: '',
+			gradeLevel: '',
+			lastYearPercentage: 0,
+			fatherDeathDate: undefined,
+			fatherWork: '',
+			fatherDeathCos: '',
+			noOfFamilyMembers: 0,
+			males: 0,
+			females: 0,
+			motherName: '',
+			motherStatus: '',
+			isMotherWorks: false,
+			motherJob: '',
+			motherJobPhone: '',
+			monthlyIncome: 0,
+			liveWith: '',
+			homeType: '',
+			homePhone: '',
+			currentAddress: '',
+			isSponsored: false,
+			foundationName: '',
+			foundationAmount: 0,
+			evaluation: undefined,
+			guardianId: undefined,
+		}
+	);
 	const [hydrate, setHydrate] = useState(false);
 	const {
-		register,
 		control,
 		handleSubmit,
+
 		formState: { errors },
 	} = useForm({
 		defaultValues: { ...data },
 	});
 
 	const onSubmit = async (data: ORPHAN) => {
-		console.log('🚀 ~ file: orphanForm.tsx:100 ~ onSubmit ~ data:', data);
+		console.log(
+			`males: ${data.males} -- females: ${
+				data.females
+			} -- ${typeof data.males} -- ${typeof data.females}`
+		);
 
+		if (data.males != undefined && data.females != undefined) {
+			data.noOfFamilyMembers = data.males + data.females;
+			console.log(
+				'🚀 ~ file: orphanForm.tsx:77 ~ onSubmit ~ data.noOfFamilyMembers:',
+				data.noOfFamilyMembers
+			);
+		}
 		const url = '/api/orphan/create/';
 		const res = await fetch(url, {
 			method: 'post',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data),
 		});
-	};
-
-	const strToBool = (value: string) => {
-		if (value && typeof value === 'string') {
-			if (value.toLowerCase() === 'true' || 'yes') return true;
-			if (value.toLowerCase() === 'false' || 'no') return false;
-		}
-		return value;
 	};
 
 	useEffect(() => {
@@ -89,7 +99,7 @@ export default function OrphanForm(): JSX.Element {
 	return (
 		<>
 			<form
-				className=' flex flex-wrap p-2 m-2'
+				className=' flex flex-wrap p-2 m-2 bg-slate-500'
 				onSubmit={handleSubmit(onSubmit)}>
 				<Flex
 					direction={{ base: 'column', sm: 'row' }}
@@ -128,6 +138,7 @@ export default function OrphanForm(): JSX.Element {
 										id='image'
 										label='image'
 										accept='image/*'
+										defaultValue={null}
 										w={200}
 										placeholder='choose an image'
 										withAsterisk
@@ -158,6 +169,33 @@ export default function OrphanForm(): JSX.Element {
 							);
 						}}
 					/>
+					<Controller
+						name='age'
+						control={control}
+						rules={{
+							required: 'age is required',
+							min: { value: 6, message: 'age must be 6 or higher' },
+							max: { value: 14, message: 'age must be 14 or less' },
+						}}
+						render={({ field }) => {
+							return (
+								<div>
+									<NumberInput
+										{...field}
+										hideControls
+										label='age'
+										placeholder='age'
+										w={99}
+										withAsterisk
+									/>
+									{errors.age && (
+										<p className='text-red-500'>*{errors.age.message}</p>
+									)}
+								</div>
+							);
+						}}
+					/>
+
 					<Controller
 						name='birthplace'
 						control={control}
@@ -268,7 +306,6 @@ export default function OrphanForm(): JSX.Element {
 						control={control}
 						rules={{
 							required: 'lastYearPercentage is required',
-
 							max: {
 								value: 100,
 								message: 'value must be less than or equal 100',
@@ -729,7 +766,6 @@ export default function OrphanForm(): JSX.Element {
 							/>
 						</>
 					)}
-
 					<Button type='submit'>Submit</Button>
 				</Flex>
 			</form>

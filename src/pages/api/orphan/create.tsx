@@ -19,7 +19,6 @@ export default async function handler(
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const data: ORPHAN = await req.body;
-			console.log('🚀 ~ file: create.tsx:15 ~ handler ~ data:', data);
 			const orphan: Orphan = JSON.parse(JSON.stringify(data));
 
 			console.log('🚀 ~ file: create.tsx:27 ~ data.image:', data.image?.name);

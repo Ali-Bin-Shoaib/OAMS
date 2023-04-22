@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import { GENDER, STATUS_CODE } from '../../../../types/types';
+import { STATUS_CODE } from '../../../../types/types';
+import { Gender } from '@prisma/client';
 const data = [
 	{
 		name: 'ali',
-		gender: GENDER.MALE,
+		gender: Gender.MALE,
 		birthdate: new Date('2000,05,21'),
 		birthplace: 'makkah',
 		liveWith: 'mother',
@@ -18,7 +19,7 @@ const data = [
 	},
 	{
 		name: 'ahmed',
-		gender: GENDER.MALE,
+		gender: Gender.MALE,
 		birthdate: new Date('2000,05,21'),
 		birthplace: 'makkah',
 		liveWith: 'mother',
@@ -32,7 +33,7 @@ const data = [
 	},
 	{
 		name: 'nor',
-		gender: GENDER.MALE,
+		gender: Gender.MALE,
 		birthdate: new Date('2000,05,21'),
 		birthplace: 'makkah',
 		liveWith: 'mother',

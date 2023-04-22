@@ -1,41 +1,52 @@
-import { GetServerSideProps, GetStaticProps } from 'next';
+import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { Orphan } from '@prisma/client';
 import AppHead from '../../../components/common/AppHead';
 import { v4 } from 'uuid';
-import {
-	ReactNode,
-	useEffect,
-	useState,
-	createContext,
-	useContext,
-} from 'react';
+
+import { ReactNode, useEffect, useState } from 'react';
 import { Button, Card } from '@mantine/core';
 import DeleteOrphanModal from '../../../components/orphans/modals/DeleteOrphanModal';
-const context = createContext(null);
-export default function Index({ data }: { data: Orphan[] }) {
-	const x = useContext(context);
+import EditOrphanModal from '../../../components/orphans/modals/EditeOrphanModal';
+export const getStaticProps: GetStaticProps = async () => {
+	const res = await prisma.orphan.findMany();
+	const data = JSON.parse(JSON.stringify(res));
+	return { props: { data }, revalidate: 10 };
+};
 
+export default function Index({ data }: { data: Orphan[] }) {
+	// export default function Index() {
+	const [orphans, setOrphans] = useState<Orphan[]>(data);
 	const [cardInfo, setCardInfo] = useState<Orphan>(data[0]);
 	useEffect(() => {
-		getStaticProps;
+		setOrphans(data);
 		setCardInfo(data[0]);
 	}, [data]);
+	if (!orphans)
+		return (
+			<>
+				<h1>no orphans</h1>
+			</>
+		);
+	if (!cardInfo) {
+		return;
+	}
 	return (
 		<>
 			<AppHead title='Orphans' />
 
 			<h1 className='text-3xl'>Orphans index</h1>
-			{data.length === 0 ? (
+			{orphans?.length === 0 ? (
 				<p>no orphan registered</p>
 			) : (
-				<p>no of orphans {data.length}</p>
+				<p>no of orphans {orphans.length}</p>
 			)}
 			<div>
 				<Card
 					key={v4()}
 					withBorder
 					className='mx-auto my-2 p-2 w-3/5 bg-slate-300'>
+					<p>id:{cardInfo.id}</p>
 					<p>name: {cardInfo.name || 'XXX'}</p>
 					<p>image: {cardInfo.image || 'XXX'}</p>
 					<p>birthdate: {(cardInfo.birthdate as ReactNode) || 'XXX'}</p>
@@ -46,9 +57,7 @@ export default function Index({ data }: { data: Orphan[] }) {
 					<p>motherName: {cardInfo.motherName || 'XXX'}</p>
 					<p>evaluation: {cardInfo.evaluation || 'XXX'}</p>
 					<Button.Group>
-						<Button color='yellow' onClick={(e) => {}}>
-							Edit
-						</Button>
+						<EditOrphanModal orphan={cardInfo} />
 						<DeleteOrphanModal id={cardInfo.id} />
 					</Button.Group>
 				</Card>
@@ -91,7 +100,7 @@ export default function Index({ data }: { data: Orphan[] }) {
 							</tr>
 						</thead>
 						<tbody>
-							{data.map((orphan) => {
+							{orphans.map((orphan) => {
 								return (
 									<tr
 										key={v4()}
@@ -147,16 +156,3 @@ export default function Index({ data }: { data: Orphan[] }) {
 		</>
 	);
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-	const res = await prisma.orphan.findMany();
-	const data = JSON.parse(JSON.stringify(res));
-	// console.log(
-	// 	'🚀 ~ file: index.tsx:23 ~ constgetStaticProps:GetStaticProps= ~ data:',
-	// 	data
-	// );
-	//or
-	// const url='http://localhost:3000/orphans'
-	// fetch(url).then((res)=>res.json()).then((data)=>data)
-	return { props: { data } };
-};
