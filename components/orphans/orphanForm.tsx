@@ -70,19 +70,9 @@ export default function OrphanForm({
 	});
 
 	const onSubmit = async (data: ORPHAN) => {
-		console.log(
-			`males: ${data.males} -- females: ${
-				data.females
-			} -- ${typeof data.males} -- ${typeof data.females}`
-		);
-
-		if (data.males != undefined && data.females != undefined) {
+		if (data.males != undefined && data.females != undefined)
 			data.noOfFamilyMembers = data.males + data.females;
-			console.log(
-				'🚀 ~ file: orphanForm.tsx:77 ~ onSubmit ~ data.noOfFamilyMembers:',
-				data.noOfFamilyMembers
-			);
-		}
+
 		const url = '/api/orphan/create/';
 		const res = await fetch(url, {
 			method: 'post',
