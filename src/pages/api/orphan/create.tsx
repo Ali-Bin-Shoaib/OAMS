@@ -1,21 +1,14 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import {
-	STATUS_CODE,
-	REQUEST_METHODS,
-	ORPHAN,
-} from '../../../../types/types';
+import { STATUS_CODE, REQUEST_METHODS, ORPHAN } from '../../../../types/types';
 import { Orphan } from '@prisma/client';
 
 // *make it run then make it pretty.
 //TODO fix form to accept all orphan info "ALL"
 
 // export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const data: ORPHAN = await req.body;
@@ -24,11 +17,9 @@ export default async function handler(
 			console.log('🚀 ~ file: create.tsx:27 ~ data.image:', data.image?.name);
 			orphan.image = data.image?.name as string;
 			console.log('🚀 ~ file: create.tsx:21 ~ orphan:', orphan);
+			orphan.noOfFamilyMembers = orphan.males && orphan.females ? orphan.males + orphan.females : 0;
 			const newOrphan = await prisma.orphan.create({ data: orphan });
-			console.log(
-				'🚀 ~ file: create.tsx:24 ~ handler ~ newOrphan:',
-				newOrphan
-			);
+			console.log('🚀 ~ file: create.tsx:24 ~ handler ~ newOrphan:', newOrphan);
 
 			res.status(STATUS_CODE.Success).json(newOrphan);
 		}

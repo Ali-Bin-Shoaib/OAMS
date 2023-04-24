@@ -1,11 +1,7 @@
 import { Button, Group, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import {
-	IconCheck,
-	IconSettingsCancel,
-	IconX,
-} from '@tabler/icons-react';
+import { IconCheck, IconSettingsCancel, IconX } from '@tabler/icons-react';
 import { URL } from '../../../shared/links';
 import { Orphan } from '@prisma/client';
 import { useRouter } from 'next/router';
@@ -16,9 +12,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 		modals.openConfirmModal({
 			title: 'Delete Orphan info',
 			centered: true,
-			children: (
-				<Text size='sm'>Are you sure you want to delete Orphan?</Text>
-			),
+			children: <Text size='sm'>Are you sure you want to delete Orphan?</Text>,
 			labels: { confirm: 'Delete ', cancel: "No don't delete it" },
 			confirmProps: { color: 'red' },
 			onCancel: () =>
@@ -26,14 +20,10 @@ export default function DeleteOrphanModal({ id = -1 }) {
 					title: 'Cancel',
 					message: 'cancel delete',
 					color: 'gray',
-
 				}),
 			onConfirm: async () => {
 				const result = await deleteOrphan(id);
-				console.log(
-					'🚀 ~ file: DeleteOrphanModal.tsx:23 ~ onConfirm: ~ result:',
-					result
-				);
+				console.log('🚀 ~ file: DeleteOrphanModal.tsx:23 ~ onConfirm: ~ result:', result);
 				try {
 					if (result) {
 						notifications.show({
@@ -59,16 +49,13 @@ export default function DeleteOrphanModal({ id = -1 }) {
 
 	return (
 		<Button onClick={openDeleteModal} color='red'>
-			Delete
+			<IconX />
 		</Button>
 	);
 }
 
 const deleteOrphan = async (id: number) => {
-	console.log(
-		'🚀 ~ file: DeleteOrphanModal.tsx:8 ~ deleteOrphan ~ id:',
-		id
-	);
+	console.log('🚀 ~ file: DeleteOrphanModal.tsx:8 ~ deleteOrphan ~ id:', id);
 	const res = await fetch(URL + 'api/orphan/' + id, {
 		method: 'delete',
 		headers: { 'content-type': 'application/json' },

@@ -8,37 +8,15 @@ import { Notifications } from '@mantine/notifications';
 import AppNavbar from '../../components/common/AppNavbar';
 import AppFooter from '../../components/common/AppFooter';
 import { useState } from 'react';
+import Providers from '../../components/common/Providers';
+import MainLayout from '../../components/common/MainLayout';
 
 export default function App({ Component, pageProps }: AppProps) {
-	const [them, setThem] = useState<'light' | 'dark'>('light');
-	const updateThem = () =>
-		them === 'light' ? setThem('dark') : setThem('light');
-	// them === 'light' ? console.log('true') : console.log('false');
-
 	return (
-		//* the whole app
 		<>
-			<MantineProvider
-				withGlobalStyles
-				withNormalizeCSS
-				theme={{
-					/** Put your mantine theme override here */
-					colorScheme: them,
-				}}>
-				<ModalsProvider>
-					<Notifications />
-					<div className='h-full w-full'>
-						{/* Nav */}
-						<AppNavbar updateThem={updateThem} />
-						{/*content */}
-						<div className='bg-slate-100'>
-							<Component {...pageProps} />
-						</div>
-						{/* Footer */}
-						<AppFooter />
-					</div>
-				</ModalsProvider>
-			</MantineProvider>
+			<MainLayout>
+				<Component {...pageProps} />
+			</MainLayout>
 		</>
 	);
 }

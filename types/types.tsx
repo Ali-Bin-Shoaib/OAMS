@@ -12,6 +12,7 @@ export enum STATUS_CODE {
 	Success = 200,
 	Accepted = 202,
 	BadRequest = 400,
+	UnexpectedError = 500,
 }
 
 export interface ORPHAN {
