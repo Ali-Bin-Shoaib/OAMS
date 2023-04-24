@@ -1,5 +1,14 @@
-import { ReactNode } from 'react';
-import { createStyles, Container, Group, Burger, rem, Header, ActionIcon } from '@mantine/core';
+import {
+	createStyles,
+	Group,
+	Burger,
+	rem,
+	Header,
+	ActionIcon,
+	useMantineColorScheme,
+	Switch,
+	useMantineTheme,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconHome, IconMoonStars, IconSun } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
@@ -10,7 +19,7 @@ const useStyles = createStyles((theme) => ({
 	header: {
 		backgroundColor: theme.fn.variant({
 			variant: 'filled',
-			color: theme.primaryColor,
+			color: theme.colors.blue[1],
 		}).background,
 		borderBottom: 0,
 	},
@@ -57,16 +66,13 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-interface Props {
-	updateThem: () => void;
-	// children: ReactNode;
-	them: 'light' | 'dark';
-}
-
-export default function AppNavbar({ updateThem, them }: Props) {
+export default function AppNavbar() {
 	const [opened, { toggle }] = useDisclosure(false);
+	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+	const theme = useMantineTheme();
 	const { classes } = useStyles();
 	const router = useRouter();
+
 	const items = Paths.links.map((link) => {
 		return (
 			<MyLink
@@ -82,20 +88,20 @@ export default function AppNavbar({ updateThem, them }: Props) {
 		<>
 			<Header height={56} className={classes.header + ' px-2'} mb={15}>
 				<div className={classes.inner}>
-					<IconHome onClick={() => router.push('/')} size={28} />
+					<IconHome onClick={() => router.push('/')} size={35} />
 					<Group spacing={5} className={classes.links}>
 						{items}
 					</Group>
 					<Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' color='#fff' />
 					<Group position='center' my='xl'>
 						<ActionIcon
-							onClick={() => updateThem()}
+							onClick={() => toggleColorScheme()}
 							size='lg'
 							sx={(theme) => ({
 								backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-								color: theme.colorScheme === 'dark' ? theme.colors.yellow[6] : theme.colors.blue[6],
+								color: theme.colorScheme === 'dark' ? theme.colors.yellow[6] : theme.colors.gray[6],
 							})}>
-							{them === 'dark' ? <IconSun size='1.2rem' /> : <IconMoonStars size='1.2rem' />}
+							{colorScheme === 'dark' ? <IconSun size='1.2rem' /> : <IconMoonStars size='1.2rem' />}
 						</ActionIcon>
 					</Group>
 				</div>

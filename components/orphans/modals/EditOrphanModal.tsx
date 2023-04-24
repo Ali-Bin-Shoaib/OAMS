@@ -7,10 +7,7 @@ interface Props {
 	orphan: Orphan;
 }
 export default function EditOrphanModal({ orphan }: Props) {
-	console.log('🚀 ~ file: EditOrphanModal.tsx:24 ~ EditOrphanModal ~ orphan:', orphan);
-
 	const [opened, { open, close }] = useDisclosure(false);
-
 	return (
 		<>
 			<Modal opened={opened} size={'auto'} onClose={close} title='Edit Orphan'>
@@ -20,7 +17,7 @@ export default function EditOrphanModal({ orphan }: Props) {
 			</Modal>
 			<Group position='center'>
 				<Button onClick={open} color='yellow'>
-					<IconEdit />
+					<IconEdit onClick={open} />
 				</Button>
 			</Group>
 		</>

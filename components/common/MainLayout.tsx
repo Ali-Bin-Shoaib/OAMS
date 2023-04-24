@@ -6,21 +6,17 @@ interface Props {
 	children: ReactNode;
 }
 function MainLayout({ children }: Props) {
-	const [them, setThem] = useState<'light' | 'dark'>('light');
-	const updateThem = () => {
-		them === 'light' ? setThem('dark') : setThem('light');
-	};
 	return (
 		<>
-			<Providers them={them}>
+			<Providers>
 				<div className='h-full w-full'>
 					{/* Nav */}
-					<AppNavbar updateThem={updateThem} them={them} />
+					<AppNavbar />
 					{children}
 					{/*content */}
 
 					{/* Footer */}
-					{/* <AppFooter /> */}
+					<AppFooter />
 				</div>
 			</Providers>
 		</>

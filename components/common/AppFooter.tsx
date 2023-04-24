@@ -1,26 +1,80 @@
+import { createStyles, Container, Group, Anchor, rem } from '@mantine/core';
+import { IconBrandMantine } from '@tabler/icons-react';
+import { Paths } from '../../shared/links';
+import Image from 'next/image';
+import logo from '../../src/img/logo.png';
+import Link from 'next/link';
+const useStyles = createStyles((theme) => ({
+	footer: {
+		marginTop: rem(120),
+		borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
+		backgroundColor: theme.fn.variant({
+			variant: 'filled',
+			color: theme.colors.blue[1],
+		}).background,
+		borderBottom: 0,
+	},
+
+	inner: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingTop: theme.spacing.xl,
+		paddingBottom: theme.spacing.xl,
+
+		[theme.fn.smallerThan('xs')]: {
+			flexDirection: 'column',
+		},
+	},
+
+	links: {
+		[theme.fn.smallerThan('sm')]: {
+			display: 'none',
+		},
+	},
+	link: {
+		display: 'block',
+		lineHeight: 1,
+		padding: `${rem(8)} ${rem(12)}`,
+		borderRadius: theme.radius.sm,
+		textDecoration: 'none',
+		color: theme.white,
+		fontSize: theme.fontSizes.sm,
+		fontWeight: 500,
+
+		'&:hover': {
+			backgroundColor: theme.fn.lighten(
+				theme.fn.variant({ variant: 'filled', color: theme.primaryColor }).background!,
+				0.1
+			),
+		},
+	},
+
+	linkLabel: {
+		marginRight: rem(5),
+	},
+}));
+
+interface FooterSimpleProps {
+	links: { link: string; label: string }[];
+}
 export default function AppFooter() {
+	const { classes } = useStyles();
+	const items = Paths.links.map((link) => (
+		<Link key={link.label} href={link.link} className={classes.link}>
+			{link.label}
+		</Link>
+	));
+
 	return (
-		<footer className='bg-blue-500 text-white p-1 mt-10 rounded-t  -bottom-full'>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, cum itaque voluptatum totam
-			consequuntur facilis eveniet delectus. Tenetur, suscipit enim. Adipisci, quidem expedita.
-			Accusamus labore minima saepe reprehenderit aliquam! Sunt est, labore, porro distinctio, amet
-			expedita doloribus quasi fugiat ducimus unde voluptate ad. Sit qui, tempora vero doloribus ex
-			porro distinctio vitae. Minus repudiandae consequatur mollitia vero adipisci velit ullam quasi
-			voluptates esse ut dolorem quae quo repellendus saepe, error neque modi veniam suscipit cumque
-			necessitatibus ducimus in optio? Consectetur ipsum facilis blanditiis libero ea, dicta beatae
-			doloribus porro repudiandae, exercitationem provident fugit saepe quam amet. Deserunt omnis in ut
-			minus enim molestiae deleniti ea saepe fuga, dignissimos, dolor non rem, molestias ipsam
-			recusandae officiis iusto similique quas. Nobis at maiores, dolorum necessitatibus magni laborum
-			iure dolore temporibus quasi enim rerum quidem harum dignissimos architecto aperiam, omnis
-			consequatur eum, debitis sint. Autem neque vero nulla impedit eaque similique optio praesentium
-			tempore labore unde voluptates, eveniet numquam ipsum, ex provident, omnis aliquid iure sequi
-			consectetur. Commodi omnis neque in ullam reprehenderit, a sit rem natus ex distinctio
-			perferendis, exercitationem saepe quis odit fugit provident quae officia eius dolores, ducimus
-			vel porro. Assumenda, quas iure enim laudantium harum neque id velit aliquam natus animi
-			consequatur! Veritatis adipisci at repudiandae, saepe reiciendis deserunt, quod numquam alias
-			hic, modi vero. Incidunt quae, natus veritatis, ipsa aperiam eum qui quas quasi, necessitatibus
-			delectus nulla. Doloremque culpa at earum? Molestias nulla veniam ut a earum ipsam, quos non,
-			autem voluptatem magnam ipsum iusto quod laborum tempore.{' '}
-		</footer>
+		<div className={classes.footer}>
+			<Container className={classes.inner}>
+				<div>
+					<Image src={logo} width={150} className='rounded-full' alt={'logo'} />
+					OAMS
+				</div>
+				<Group className={classes.links}>{items}</Group>
+			</Container>
+		</div>
 	);
 }

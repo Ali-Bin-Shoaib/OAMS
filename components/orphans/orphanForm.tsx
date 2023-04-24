@@ -6,7 +6,7 @@ import { Button, Card, FileInput, Flex, Group, NumberInput, Radio, Select, TextI
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
 import { ORPHAN } from '../../types/types';
-import { DefaultOrphan } from '../../shared/DefaultValues';
+import { DefaultOrphanValues } from '../../shared/DefaultValues';
 interface Props {
 	orphan?: Orphan;
 }
@@ -14,7 +14,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 	// orphan.joinDate = orphan.joinDate.
 	// console.log('🚀 ~ file: orphanForm.tsx:14 ~ OrphanForm ~ orphan:', orphan.joinDate);
 
-	const [data, setData] = useState<ORPHAN>((orphan as ORPHAN) || DefaultOrphan);
+	const [data, setData] = useState<ORPHAN>((orphan as ORPHAN) || DefaultOrphanValues);
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,

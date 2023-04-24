@@ -1,28 +1,32 @@
-import { MantineProvider } from '@mantine/core';
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import { ReactNode } from 'react';
+import { ReactNode, createContext, useState } from 'react';
 
 interface Props {
 	children: ReactNode;
-	them: 'light' | 'dark';
 }
 
-function Providers({ them, children }: Props) {
+function Providers({ children }: Props) {
+	const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+	const toggleColorScheme = (value?: ColorScheme) =>
+		setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
 	return (
 		<>
-			<MantineProvider
-				withGlobalStyles
-				withNormalizeCSS
-				theme={{
-					/** Put your mantine theme override here */
-					colorScheme: them,
-				}}>
-				<ModalsProvider>
-					<Notifications />
-					{children}
-				</ModalsProvider>
-			</MantineProvider>
+			<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+				<MantineProvider
+					theme={{
+						colorScheme,
+					}}
+					withGlobalStyles
+					withNormalizeCSS>
+					<ModalsProvider>
+						<Notifications />
+						{children}
+					</ModalsProvider>
+				</MantineProvider>
+			</ColorSchemeProvider>
 		</>
 	);
 }

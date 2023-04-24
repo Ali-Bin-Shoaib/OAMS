@@ -1,4 +1,6 @@
-export const DefaultOrphan = {
+import { DefaultMantineColor } from '@mantine/core';
+
+export const DefaultOrphanValues = {
 	id: undefined,
 	name: '',
 	image: null,
