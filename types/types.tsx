@@ -14,38 +14,37 @@ export enum STATUS_CODE {
 	BadRequest = 400,
 	UnexpectedError = 500,
 }
-
-export interface ORPHAN {
-	id?: number | undefined;
-	name: string | undefined;
-	image?: File | null;
-	gender: Gender | undefined;
-	age: number | undefined;
-	birthplace: string | undefined;
-	birthdate: Date | undefined;
-	joinDate: Date | undefined;
+export interface _Orphan {
+	id?: number;
+	name: string;
+	image: File | null;
+	gender: string | undefined;
+	age: number | '';
+	birthplace: string;
+	birthdate: Date | null;
+	joinDate: Date | null;
 	schoolName: string;
-	gradeLevel: Grade | undefined;
-	lastYearPercentage: number;
-	fatherDeathDate: Date | undefined;
-	fatherWork?: string | undefined;
-	fatherDeathCos?: string | undefined;
-	noOfFamilyMembers: number | undefined;
-	males: number | undefined;
-	females: number | undefined;
-	motherName: string | undefined;
-	motherStatus: Status | undefined;
-	isMotherWorks: boolean | string | undefined;
-	motherJob?: string | undefined;
-	motherJobPhone?: string | undefined;
-	monthlyIncome?: number | undefined;
-	liveWith: string | undefined;
-	homeType: string | undefined;
-	homePhone: string | undefined;
-	currentAddress: string | undefined;
-	isSponsored: boolean | string | undefined;
-	foundationName?: string | undefined;
-	foundationAmount?: number | undefined;
-	evaluation?: number | undefined;
-	guardianId?: number | undefined;
+	gradeLevel: Grade | null;
+	lastYearPercentage: number | '';
+	fatherDeathDate: Date | null;
+	fatherWork: string;
+	fatherDeathCos: string;
+	noOfFamilyMembers: number | '';
+	males: number | '';
+	females: number | '';
+	motherName: string;
+	motherStatus: Status | null;
+	isMotherWorks: string | number | readonly string[] | undefined;
+	motherJob: string;
+	motherJobPhone: string;
+	monthlyIncome: number | '';
+	liveWith: string;
+	homeType: string;
+	homePhone: string;
+	currentAddress: string;
+	isSponsored: string | number | readonly string[] | undefined;
+	foundationName: string;
+	foundationAmount: number | '';
+	evaluation: number | '';
+	guardianId: number | '';
 }

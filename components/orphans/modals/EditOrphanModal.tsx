@@ -1,6 +1,6 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Group } from '@mantine/core';
-import OrphanForm from '../orphanForm';
+import OrphanForm from '../OrphanForm';
 import { Orphan } from '@prisma/client';
 import { IconEdit } from '@tabler/icons-react';
 interface Props {

@@ -1,12 +1,10 @@
 import { Card, Title, CardSection, List, Button, Group, Box, Rating } from '@mantine/core';
-import { ReactNode } from 'react';
 import { v4 } from 'uuid';
 import DeleteOrphanModal from './modals/DeleteOrphanModal';
 import EditOrphanModal from './modals/EditOrphanModal';
 import Image from 'next/image';
 import img1 from '../../src/img/1.jpg';
 import { Orphan } from '@prisma/client';
-import { IconInfoCircle } from '@tabler/icons-react';
 interface Props {
 	orphan: Orphan;
 }
@@ -22,18 +20,20 @@ function OrphanCard({ orphan }: Props) {
 					<List className=''>
 						<List.Item className=''>id:{orphan.id}</List.Item>
 						<List.Item className=''>name: {orphan.name || '---'}</List.Item>
-						<List.Item className=''>birthdate: {(orphan.birthdate as ReactNode) || '---'}</List.Item>
+						{/* <List.Item className=''>birthdate: {(orphan.birthdate as ReactNode) || '---'}</List.Item> */}
+						<List.Item className=''>birthdate: {orphan.birthdate?.toUTCString() || '---'}</List.Item>
+
 						<List.Item className=''>gender: {orphan.gender || '---'}</List.Item>
 						<List.Item className=''>gradeLevel: {orphan.gradeLevel || '---'}</List.Item>
 						<List.Item className=''>schoolName: {orphan.schoolName || '---'}</List.Item>
 						<List.Item className=''>motherName: {orphan.motherName || '---'}</List.Item>
 						<List.Item className=''>birthplace: {orphan.birthplace}</List.Item>
-						<List.Item className=''>joinDate: {orphan.joinDate as ReactNode}</List.Item>
+						<List.Item className=''>joinDate: {orphan.joinDate?.toUTCString()}</List.Item>
 
 						<List.Item className=''>lastYearPercentage: {orphan.lastYearPercentage}</List.Item>
 						<List.Item className=''>
 							fatherDeathDate:
-							{orphan.fatherDeathDate as ReactNode}
+							{orphan.fatherDeathDate?.toUTCString()}
 						</List.Item>
 						<List.Item className=''>fatherWork: {orphan.fatherWork}</List.Item>
 						<List.Item className=''>fatherDeathCos: {orphan.fatherDeathCos}</List.Item>

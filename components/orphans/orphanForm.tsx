@@ -1,32 +1,29 @@
 import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
-import { Gender, Grade, Orphan, Status } from '@prisma/client';
+import { Gender, Grade, Status } from '@prisma/client';
 import { v4 } from 'uuid';
-import { Button, Card, FileInput, Flex, Group, NumberInput, Radio, Select, TextInput, Textarea } from '@mantine/core';
+import { Button, Card, Checkbox, FileInput, Flex, Group, NumberInput, Radio, Select, TextInput, Textarea } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
-import { ORPHAN } from '../../types/types';
-import { DefaultOrphanValues } from '../../shared/DefaultValues';
+
+import { _Orphan } from '../../types/types';
+import { useRouter } from 'next/router';
 interface Props {
-	orphan?: Orphan;
+	orphan?: _Orphan;
 }
 export default function OrphanForm({ orphan }: Props): JSX.Element {
-	// orphan.joinDate = orphan.joinDate.
-	// console.log('🚀 ~ file: orphanForm.tsx:14 ~ OrphanForm ~ orphan:', orphan.joinDate);
-
-	const [data, setData] = useState<ORPHAN>((orphan as ORPHAN) || DefaultOrphanValues);
+	const router = useRouter();
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
+		watch,
 		handleSubmit,
-
 		formState: { errors },
-	} = useForm({
-		defaultValues: { ...data },
-	});
+	} = useForm<_Orphan>({ defaultValues: { ...orphan } });
 
-	const onSubmit = async (data: ORPHAN) => {
-		// if (data.males != undefined && data.females != undefined) data.noOfFamilyMembers = data.males + data.females;
+	const onSubmit = async (data: _Orphan) => {
+		console.log('🚀 ~ file: orphanForm.tsx:22 ~ onSubmit ~ data:', data);
+
 		if (!orphan) {
 			console.log('orphan not exist.');
 
@@ -46,6 +43,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 				body: JSON.stringify(data),
 			});
 		}
+		router.push(router.asPath);
 	};
 
 	useEffect(() => {
@@ -57,11 +55,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 		<>
 			<form className=' flex flex-wrap p-2 m-2 ' onSubmit={handleSubmit(onSubmit)}>
 				<Card withBorder>
-					<Flex
-						direction={{ base: 'column', sm: 'row' }}
-						wrap='wrap'
-						gap={{ base: 'sm', sm: 'lg' }}
-						justify={{ sm: 'center' }}>
+					<Flex direction={{ base: 'column', sm: 'row' }} wrap='wrap' gap={{ base: 'sm', sm: 'lg' }} justify={{ sm: 'center' }}>
 						<Controller
 							name='name'
 							control={control}
@@ -69,7 +63,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput {...field} label='name' placeholder='name' withAsterisk size='md' />
+										<TextInput {...field} label='name' placeholder='name' withAsterisk />
 										{errors.name && <p className='text-red-500'>*{errors.name.message}</p>}
 									</div>
 								);
@@ -83,7 +77,6 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 								return (
 									<div>
 										<FileInput
-											size='md'
 											{...field}
 											id='image'
 											label='image'
@@ -104,7 +97,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							rules={{ required: 'gender is required' }}
 							render={({ field }) => {
 								return (
-									<Radio.Group {...field} name='gender' label='Gender' withAsterisk size='md'>
+									<Radio.Group {...field} label={'Gender'} withAsterisk>
 										<Group mt='md'>
 											{$enum(Gender).map((g) => (
 												<Radio key={v4()} value={g} label={g.toLowerCase()} />
@@ -126,7 +119,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<NumberInput {...field} size='md' hideControls label='age' placeholder='age' w={99} withAsterisk />
+										<NumberInput {...field} hideControls label='age' placeholder='age' w={99} withAsterisk />
 										{errors.age && <p className='text-red-500'>*{errors.age.message}</p>}
 									</div>
 								);
@@ -139,13 +132,13 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput {...field} size='md' label='birthplace' placeholder='birthplace' withAsterisk />
+										<TextInput {...field} label='birthplace' placeholder='birthplace' withAsterisk />
 										{errors.birthplace && <p className='text-red-500'>*{errors.birthplace.message}</p>}
 									</div>
 								);
 							}}
 						/>
-						{/* <Controller
+						<Controller
 							name='birthdate'
 							control={control}
 							rules={{ required: 'birthdate is required' }}
@@ -154,8 +147,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									<div>
 										<DatePickerInput
 											{...field}
-											size='md'
-											valueFormat='D M YYYY'
+											valueFormat='YYYY MM D'
 											name='birthdate'
 											label='birthdate'
 											placeholder='birthdate'
@@ -166,28 +158,20 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									</div>
 								);
 							}}
-						/> */}
-						{/* <Controller
+						/>
+						<Controller
 							name='joinDate'
 							control={control}
 							rules={{ required: 'joinDate is required' }}
 							render={({ field }) => {
 								return (
 									<div>
-										<DatePickerInput
-											{...field}
-											size='md'
-											valueFormat='D M YYYY'
-											name='joinDate'
-											label='joinDate'
-											placeholder='joinDate'
-											w={100}
-										/>
+										<DatePickerInput {...field} valueFormat='D M YYYY' name='joinDate' label='joinDate' placeholder='joinDate' w={100} />
 										{errors.joinDate && <p className='text-red-500'>*{errors.joinDate.message}</p>}
 									</div>
 								);
 							}}
-						/> */}
+						/>
 						<Controller
 							name='schoolName'
 							control={control}
@@ -195,7 +179,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput {...field} size='md' label='schoolName' placeholder='schoolName' withAsterisk />
+										<TextInput {...field} label='schoolName' placeholder='schoolName' withAsterisk />
 										{errors.schoolName && <p className='text-red-500'>*{errors.schoolName.message}</p>}
 									</div>
 								);
@@ -208,7 +192,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<Select {...field} size='md' data={$enum(Grade).map((g) => g)} label='grade level' name='gradeLevel' />
+										<Select {...field} data={$enum(Grade).map((g) => g)} label='grade level' name='gradeLevel' />
 										{errors.gradeLevel && <p className='text-red-500'>*{errors.gradeLevel.message}</p>}
 									</div>
 								);
@@ -233,7 +217,6 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									<div>
 										<NumberInput
 											{...field}
-											size='md'
 											placeholder='lastYearPercentage'
 											label='lastYearPercentage'
 											name='lastYearPercentage'
@@ -246,7 +229,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 								);
 							}}
 						/>
-						{/* <Controller
+						<Controller
 							name='fatherDeathDate'
 							control={control}
 							rules={{ required: 'fatherDeathDate is required' }}
@@ -255,7 +238,6 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									<div>
 										<DatePickerInput
 											{...field}
-											size='md'
 											valueFormat='D M YYYY'
 											name='fatherDeathDate'
 											label='fatherDeathDate'
@@ -266,7 +248,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									</div>
 								);
 							}}
-						/> */}
+						/>
 						<Controller
 							name='fatherWork'
 							control={control}
@@ -274,7 +256,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput {...field} size='md' label='fatherWork' placeholder='fatherWork' withAsterisk />
+										<TextInput {...field} label='fatherWork' placeholder='fatherWork' withAsterisk />
 										{errors.fatherWork && <p className='text-red-500'>*{errors.fatherWork.message}</p>}
 									</div>
 								);
@@ -287,36 +269,13 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<Textarea {...field} size='md' label='fatherDeathCos' placeholder='fatherDeathCos' withAsterisk />
+										<Textarea {...field} label='fatherDeathCos' placeholder='fatherDeathCos' withAsterisk />
 										{errors.fatherDeathCos && <p className='text-red-500'>*{errors.fatherDeathCos.message}</p>}
 									</div>
 								);
 							}}
 						/>
-						{/* <Controller
-					
-						name='noOfFamilyMembers'
-						control={control}
-						rules={{ required: 'noOfFamilyMembers is required' }}
-						render={({ field }) => {
-							return (
-								<div>
-									<NumberInput
-										{...field} size='md'
-										hideControls
-										label='noOfFamilyMembers'
-										placeholder='noOfFamilyMembers'
-										withAsterisk
-									/>
-									{errors.noOfFamilyMembers && (
-										<p className='text-red-500'>
-											*{errors.noOfFamilyMembers.message}
-										</p>
-									)}
-								</div>
-							);
-						}}
-					/> */}
+
 						<Controller
 							name='males'
 							control={control}
@@ -324,7 +283,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<NumberInput {...field} size='md' hideControls label='males' placeholder='males' w={99} withAsterisk />
+										<NumberInput {...field} hideControls label='males' placeholder='males' w={99} withAsterisk />
 										{errors.males && <p className='text-red-500'>*{errors.males.message}</p>}
 									</div>
 								);
@@ -337,7 +296,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<NumberInput {...field} size='md' hideControls label='females' placeholder='females' w={99} withAsterisk />
+										<NumberInput {...field} hideControls label='females' placeholder='females' w={99} withAsterisk />
 										{errors.females && <p className='text-red-500'>*{errors.females.message}</p>}
 									</div>
 								);
@@ -350,7 +309,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput {...field} size='md' label='motherName' placeholder='motherName' withAsterisk />
+										<TextInput {...field} label='motherName' placeholder='motherName' withAsterisk />
 										{errors.motherName && <p className='text-red-500'>*{errors.motherName.message}</p>}
 									</div>
 								);
@@ -365,33 +324,29 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<Select {...field} size='md' data={$enum(Status).map((s) => s)} label='mother status' name='motherStatus' />
+										<Select {...field} data={$enum(Status).map((s) => s)} label='mother status' name='motherStatus' />
 										{errors.motherStatus && <p className='text-red-500'>*{errors.motherStatus?.message}</p>}
 									</div>
 								);
 							}}
 						/>
 
-						{/* <Controller
-					
-						name='isMotherWorks'
-						control={control}
-						rules={{
-							required: false,
-						}}
-						render={({ field }) => {
-							return (
-								<div>
-							
-									<Checkbox label='is mother works' {...field} size='md' />
-									{errors.isMotherWorks && (
-										<p className='text-red-500'>*{errors.isMotherWorks?.message}</p>
-									)}
-								</div>
-							);
-						}}
-					/> */}
-						{data.isMotherWorks && (
+						<Controller
+							name='isMotherWorks'
+							control={control}
+							rules={{
+								required: false,
+							}}
+							render={({ field }) => {
+								return (
+									<div>
+										<Checkbox label='is mother works' {...field} />
+										{errors.isMotherWorks && <p className='text-red-500'>*{errors.isMotherWorks?.message}</p>}
+									</div>
+								);
+							}}
+						/>
+						{watch('isMotherWorks')?.valueOf() && (
 							<>
 								<Controller
 									name='motherJob'
@@ -402,7 +357,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									render={({ field }) => {
 										return (
 											<div>
-												<TextInput {...field} size='md' label='motherJob' name='motherJob' />
+												<TextInput {...field} label='motherJob' name='motherJob' />
 												{errors.motherJob && <p className='text-red-500'>*{errors.motherJob?.message}</p>}
 											</div>
 										);
@@ -419,7 +374,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									render={({ field }) => {
 										return (
 											<div>
-												<TextInput {...field} size='md' type='tel' label='mother job Phone' name='motherJobPhone' />
+												<TextInput {...field} type='tel' label='mother job Phone' name='motherJobPhone' />
 												{errors.motherJobPhone && <p className='text-red-500'>*{errors.motherJobPhone?.message}</p>}
 											</div>
 										);
@@ -434,15 +389,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									render={({ field }) => {
 										return (
 											<div>
-												<NumberInput
-													{...field}
-													size='md'
-													placeholder='monthlyIncome'
-													label='monthlyIncome'
-													name='monthlyIncome'
-													precision={2}
-													hideControls
-												/>
+												<NumberInput {...field} placeholder='monthlyIncome' label='monthlyIncome' name='monthlyIncome' precision={2} hideControls />
 												{errors.monthlyIncome && <p className='text-red-500'>*{errors.monthlyIncome?.message}</p>}
 											</div>
 										);
@@ -459,7 +406,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput {...field} size='md' label='liveWith' name='liveWith' withAsterisk />
+										<TextInput {...field} label='liveWith' name='liveWith' withAsterisk />
 										{errors.liveWith && <p className='text-red-500'>*{errors.liveWith?.message}</p>}
 									</div>
 								);
@@ -475,7 +422,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<Select {...field} size='md' data={['Rent', 'Owned']} label='home type' name='homeType' />
+										<Select {...field} data={['Rent', 'Owned']} label='home type' name='homeType' />
 										{errors.homeType && <p className='text-red-500'>*{errors.homeType.message}</p>}
 									</div>
 								);
@@ -492,15 +439,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput
-											{...field}
-											size='md'
-											type='tel'
-											label='homePhone'
-											name='homePhone'
-											placeholder='514640'
-											withAsterisk
-										/>
+										<TextInput {...field} type='tel' label='homePhone' name='homePhone' placeholder='514640' withAsterisk />
 										{errors.homePhone && <p className='text-red-500'>*{errors.homePhone?.message}</p>}
 									</div>
 								);
@@ -515,39 +454,28 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<div>
-										<TextInput
-											{...field}
-											size='md'
-											label='currentAddress'
-											name='currentAddress'
-											placeholder='currentAddress'
-											withAsterisk
-										/>
+										<TextInput {...field} label='currentAddress' name='currentAddress' placeholder='currentAddress' withAsterisk />
 										{errors.currentAddress && <p className='text-red-500'>*{errors.currentAddress?.message}</p>}
 									</div>
 								);
 							}}
 						/>
-						{/* <Controller
-					
-						name='isSponsored'
-						control={control}
-						rules={{
-							required: false,
-						}}
-						render={({ field }) => {
-							return (
-								<div>
-							
-									<Checkbox label='isSponsored' {...field} size='md' />
-									{errors.homeType && (
-										<p className='text-red-500'>*{errors.isSponsored?.message}</p>
-									)}
-								</div>
-							);
-						}}
-					/> */}
-						{data.isSponsored && (
+						<Controller
+							name='isSponsored'
+							control={control}
+							rules={{
+								required: false,
+							}}
+							render={({ field }) => {
+								return (
+									<div>
+										<Checkbox label='isSponsored' {...field} />
+										{errors.homeType && <p className='text-red-500'>*{errors.isSponsored?.message}</p>}
+									</div>
+								);
+							}}
+						/>
+						{watch('isSponsored')?.valueOf() && (
 							<>
 								<Controller
 									name='foundationName'
@@ -558,7 +486,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									render={({ field }) => {
 										return (
 											<div>
-												<TextInput {...field} size='md' label='foundationName' name='foundationName' placeholder='foundationName' />
+												<TextInput {...field} label='foundationName' name='foundationName' placeholder='foundationName' />
 												{errors.foundationName && <p className='text-red-500'>*{errors.foundationName?.message}</p>}
 											</div>
 										);
@@ -575,7 +503,6 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 											<div>
 												<NumberInput
 													{...field}
-													size='md'
 													placeholder='15000.00'
 													label='foundationAmount'
 													name='foundationAmount'
@@ -590,9 +517,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 								/>
 							</>
 						)}
-						<Button type='submit' size='md'>
-							Submit
-						</Button>
+						<Button type='submit'>Submit</Button>
 					</Flex>
 				</Card>
 			</form>

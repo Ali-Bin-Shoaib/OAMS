@@ -7,13 +7,23 @@ const nextConfig = {
 module.exports = nextConfig;
 // module.exports = nextTranslate();
 module.exports = {
+	experimental: {
+		swcPlugins: [
+			[
+				'next-superjson-plugin',
+				{
+					excluded: [],
+				},
+			],
+		],
+	},
 	images: {
 		remotePatterns: [
 			{
 				protocol: 'https',
-				hostname: 'www.amazon.com',
+				hostname: '',
 				port: '',
-				pathname: '/Best-Sellers-Books/zgbs/books/**',
+				pathname: '/**',
 			},
 		],
 	},
