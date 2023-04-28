@@ -2,15 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE } from '../../../../types/types';
 
-// CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
-		if (req.method === 'GET') {
-			const orphans = await prisma.orphan.findMany();
+		const image = req.body as File;
+		console.log('🚀 ~ file: Test.tsx:9 ~ handler ~ image:', image);
 
-			res.status(STATUS_CODE.Success).json(orphans);
-		}
+		res.status(STATUS_CODE.Success).json({ image: image, message: 'image' });
 	} catch (error) {
 		res.status(STATUS_CODE.BadRequest).json(error);
 	}

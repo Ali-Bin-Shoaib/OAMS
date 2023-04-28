@@ -5,10 +5,15 @@ import EditOrphanModal from './modals/EditOrphanModal';
 import Image from 'next/image';
 import img1 from '../../src/img/1.jpg';
 import { Orphan } from '@prisma/client';
+import { _Orphan } from '../../types/types';
+import { IconInfoCircle } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
+import { Pages } from '../../shared/links';
 interface Props {
 	orphan: Orphan;
 }
 function OrphanCard({ orphan }: Props) {
+	const router = useRouter();
 	return (
 		<Card key={v4()} withBorder className=' mx-auto my-2 p-2 w-3/6 '>
 			<CardSection className='text-center'>
@@ -20,48 +25,36 @@ function OrphanCard({ orphan }: Props) {
 					<List className=''>
 						<List.Item className=''>id:{orphan.id}</List.Item>
 						<List.Item className=''>name: {orphan.name || '---'}</List.Item>
-						{/* <List.Item className=''>birthdate: {(orphan.birthdate as ReactNode) || '---'}</List.Item> */}
 						<List.Item className=''>birthdate: {orphan.birthdate?.toUTCString() || '---'}</List.Item>
-
 						<List.Item className=''>gender: {orphan.gender || '---'}</List.Item>
 						<List.Item className=''>gradeLevel: {orphan.gradeLevel || '---'}</List.Item>
 						<List.Item className=''>schoolName: {orphan.schoolName || '---'}</List.Item>
 						<List.Item className=''>motherName: {orphan.motherName || '---'}</List.Item>
 						<List.Item className=''>birthplace: {orphan.birthplace}</List.Item>
 						<List.Item className=''>joinDate: {orphan.joinDate?.toUTCString()}</List.Item>
-
 						<List.Item className=''>lastYearPercentage: {orphan.lastYearPercentage}</List.Item>
 						<List.Item className=''>
 							fatherDeathDate:
 							{orphan.fatherDeathDate?.toUTCString()}
 						</List.Item>
-						<List.Item className=''>fatherWork: {orphan.fatherWork}</List.Item>
-						<List.Item className=''>fatherDeathCos: {orphan.fatherDeathCos}</List.Item>
-						<List.Item className=''>noOfFamilyMembers: {orphan.noOfFamilyMembers}</List.Item>
 						<List.Item className=''>males: {orphan.males}</List.Item>
 						<List.Item className=''>females: {orphan.females}</List.Item>
-						<List.Item className=''>motherName: {orphan.motherName}</List.Item>
 						<List.Item className=''>motherStatus: {orphan.motherStatus}</List.Item>
-						{/* <List.Item className=''>isMotherWorks: {orphan.isMotherWorks ? 'yes' : 'no'}</List.Item> */}
-						{/* <List.Item className=''>motherJob: {orphan.motherJob && 'none'}</List.Item> */}
-						{/* <List.Item className=''>motherJobPhone: {orphan.motherJobPhone}</List.Item> */}
-						{/* <List.Item className=''>monthlyIncome: {orphan.monthlyIncome}</List.Item> */}
 						<List.Item className=''>liveWith: {orphan.liveWith}</List.Item>
-						{/* <List.Item className=''>homeType: {orphan.homeType}</List.Item> */}
 						<List.Item className=''>homePhone: {orphan.homePhone}</List.Item>
 						<List.Item className=''>currentAddress: {orphan.currentAddress}</List.Item>
-						{/* <List.Item className=''>isSponsored: {orphan.isSponsored}</List.Item>
-					<List.Item className=''>foundationName: {orphan.foundationName}</List.Item>
-				<List.Item className=''>foundationAmount: {orphan.foundationAmount}</List.Item> */}
 						<List.Item className=''>evaluation: {orphan.evaluation || '---'}</List.Item>
 					</List>
 					<div className='m-auto '>
-						<Rating value={5} fractions={1} count={10} readOnly size='xl' />
+						<Rating value={orphan.evaluation as number | undefined} fractions={1} count={10} readOnly size='xl' />
 					</div>
 				</Box>
-
 				<Group position='right'>
 					<Button.Group>
+						<Button>evaluate</Button>
+						<Button color='gray' onClick={() => router.push(Pages.Orphans + orphan.id)}>
+							<IconInfoCircle />
+						</Button>
 						<EditOrphanModal orphan={orphan} />
 						<DeleteOrphanModal id={orphan.id} />
 					</Button.Group>

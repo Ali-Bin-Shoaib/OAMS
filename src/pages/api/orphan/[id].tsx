@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ORPHAN, REQUEST_METHODS, STATUS_CODE } from '../../../../types/types';
+import { _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types/types';
 import prisma from '../../../../lib/prisma';
 import { Orphan } from '@prisma/client';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -13,10 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
 			try {
-				const data: ORPHAN = await req.body;
+				const data: Orphan = await req.body;
 				const orphan: Orphan = JSON.parse(JSON.stringify(data));
+				const image: File = orphan.image as unknown as File;
+				console.log('🚀 ~ file: [id].tsx:19 ~ handler ~ image:', image.name);
 
-				orphan.image = data.image?.name as string;
 				const updateOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: orphan });
 				console.log('🚀 ~ file: [id].tsx:19 ~ handler ~ updateOrphan:', updateOrphan);
 
@@ -33,6 +34,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				const orphan = await prisma.orphan.delete({ where: { id: orphanId } });
 				if (orphan) return res.status(STATUS_CODE.Success).json({ orphan: orphan, msg: 'Deleted Successfully' });
 				return res.status(STATUS_CODE.BadRequest).json('failed to delete orphan with id :' + orphanId);
+			} catch (error) {
+				console.log('🚀 ~ file: [id].tsx:30 ~ handler ~ error:', error);
+				return res.status(STATUS_CODE.UnexpectedError).json('Some thing went wrong :' + error);
+			}
+		}
+		//* ************************GET************************
+		case REQUEST_METHODS.GET: {
+			console.log('getting orphan info');
+
+			try {
+				const orphan = await prisma.orphan.findUnique({ where: { id: orphanId } });
+				if (orphan) return res.status(STATUS_CODE.Success).json({ orphan: orphan, msg: 'Orphan Founded' });
+				return res.status(STATUS_CODE.BadRequest).json('Orphan not founded with id:' + orphanId);
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:30 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.UnexpectedError).json('Some thing went wrong :' + error);

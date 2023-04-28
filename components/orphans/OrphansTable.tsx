@@ -2,14 +2,15 @@ import { Orphan } from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Container } from '@mantine/core';
+import { _Orphan } from '../../types/types';
 
 interface Props {
-	orphans: Orphan[];
-	updateCard(orphan: Orphan): void;
+	orphans: _Orphan[];
+	updateCard(orphan: _Orphan): void;
 }
 
 function OrphansTable({ orphans, updateCard }: Props) {
-	const columns = useMemo<MRT_ColumnDef<Orphan>[]>(
+	const columns = useMemo<MRT_ColumnDef<_Orphan>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'id' },
 			{ accessorFn: (row) => row.name, id: 'name', header: 'name', maxSize: 300, size: 200, enableResizing: true },
@@ -51,7 +52,14 @@ function OrphansTable({ orphans, updateCard }: Props) {
 			{ accessorFn: (row) => row.females, id: 'females', header: 'females', maxSize: 200, size: 120, enableResizing: true },
 			{ accessorFn: (row) => row.motherName, id: 'motherName', header: 'motherName', maxSize: 200, size: 150, enableResizing: true },
 			{ accessorFn: (row) => row.motherStatus, id: 'motherStatus', header: 'motherStatus', maxSize: 200, size: 150, enableResizing: true },
-			{ accessorFn: (row) => row.isMotherWorks, id: 'isMotherWorks', header: 'MotherWork', maxSize: 200, size: 150, enableResizing: true },
+			{
+				accessorFn: (row) => (row.isMotherWorks ? 'yes' : 'no'),
+				id: 'isMotherWorks',
+				header: 'MotherWork',
+				maxSize: 200,
+				size: 150,
+				enableResizing: true,
+			},
 			{ accessorFn: (row) => row.motherJob, id: 'motherJob', header: 'motherJob', maxSize: 200, size: 150, enableResizing: true },
 			{
 				accessorFn: (row) => row.motherJobPhone,
@@ -73,7 +81,14 @@ function OrphansTable({ orphans, updateCard }: Props) {
 				size: 150,
 				enableResizing: true,
 			},
-			{ accessorFn: (row) => row.isSponsored, id: 'isSponsored', header: 'isSponsored', maxSize: 200, size: 150, enableResizing: true },
+			{
+				accessorFn: (row) => (row.isSponsored ? 'yes' : 'no'),
+				id: 'isSponsored',
+				header: 'isSponsored',
+				maxSize: 200,
+				size: 150,
+				enableResizing: true,
+			},
 			{
 				accessorFn: (row) => row.foundationName,
 				id: 'foundationName',

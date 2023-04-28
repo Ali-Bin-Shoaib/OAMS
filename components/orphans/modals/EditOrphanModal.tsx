@@ -3,6 +3,7 @@ import { Modal, Button, Group } from '@mantine/core';
 import OrphanForm from '../OrphanForm';
 import { Orphan } from '@prisma/client';
 import { IconEdit } from '@tabler/icons-react';
+import { _Orphan } from '../../../types/types';
 interface Props {
 	orphan: Orphan;
 }
@@ -13,7 +14,7 @@ export default function EditOrphanModal({ orphan }: Props) {
 			<Modal opened={opened} size={'auto'} onClose={close} title='Edit Orphan'>
 				{/* Modal content */}
 				<h1>{orphan.id}</h1>
-				<OrphanForm orphan={orphan} />
+				<OrphanForm orphan={orphan as unknown as _Orphan} />
 			</Modal>
 			<Group position='center'>
 				<Button onClick={open} color='yellow'>

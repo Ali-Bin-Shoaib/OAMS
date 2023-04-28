@@ -1,7 +1,7 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import { STATUS_CODE, REQUEST_METHODS, ORPHAN } from '../../../../types/types';
+import { STATUS_CODE, REQUEST_METHODS, _Orphan } from '../../../../types/types';
 import { Orphan } from '@prisma/client';
 
 // *make it run then make it pretty.
@@ -11,10 +11,10 @@ import { Orphan } from '@prisma/client';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
-			const data: ORPHAN = await req.body;
+			const data: _Orphan = await req.body;
 			const orphan: Orphan = JSON.parse(JSON.stringify(data));
 
-			console.log('🚀 ~ file: create.tsx:27 ~ data.image:', data.image?.name);
+			console.log('🚀 ~ file: create.tsx:27 ~ data.image:', data.image);
 			orphan.image = data.image?.name as string;
 			console.log('🚀 ~ file: create.tsx:21 ~ orphan:', orphan);
 			orphan.noOfFamilyMembers = orphan.males && orphan.females ? orphan.males + orphan.females : 0;
