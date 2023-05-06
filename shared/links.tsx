@@ -1,4 +1,4 @@
-export const URL = 'http://localhost:3000/';
+export const serverLink = 'http://localhost:3000/';
 
 export const Paths = {
 	links: [

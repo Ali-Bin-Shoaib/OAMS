@@ -14,7 +14,7 @@ export default function EditOrphanModal({ orphan }: Props) {
 			<Modal opened={opened} size={'auto'} onClose={close} title='Edit Orphan'>
 				{/* Modal content */}
 				<h1>{orphan.id}</h1>
-				<OrphanForm orphan={orphan as unknown as _Orphan} />
+				<OrphanForm orphan={orphan as unknown as _Orphan} close={close} />
 			</Modal>
 			<Group position='center'>
 				<Button onClick={open} color='yellow'>

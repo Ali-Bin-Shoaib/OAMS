@@ -4,15 +4,27 @@ import DeleteOrphanModal from '../../../components/orphans/modals/DeleteOrphanMo
 import EditOrphanModal from '../../../components/orphans/modals/EditOrphanModal';
 import { _Orphan } from '../../../types/types';
 import Image from 'next/image';
-import orphanImage from '../../img/logo.png';
-import { GetServerSideProps, GetStaticProps } from 'next';
-import SuperJSON from 'superjson';
+import orphanImage from '../../img/simeLogo.png';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import { useRouter } from 'next/router';
-import { URL } from '../../../shared/links';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Orphan } from '@prisma/client';
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+import { NextParsedUrlQuery } from 'next/dist/server/request-meta';
+//*  needed to define possible ids that id parameter can accepts to create static pages for each id at build time
+export const getStaticPaths: GetStaticPaths = async () => {
+	const data = await prisma.orphan.findMany();
+	const params: { params: NextParsedUrlQuery }[] = [];
+	data.forEach((orphan) => {
+		params.push({ params: { id: orphan.id.toString() } });
+	});
+
+	return {
+		paths: params,
+		fallback: false,
+	};
+};
+// export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const data = await prisma.orphan.findUnique({
 		where: {
 			id: Number(params?.id),

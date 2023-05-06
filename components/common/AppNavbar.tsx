@@ -14,6 +14,8 @@ import { IconHome, IconMoonStars, IconSun } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import MyLink from './MyLink';
 import { Paths } from '../../shared/links';
+import Image from 'next/image';
+import img from '../../src/img/simeLogo.png';
 
 const useStyles = createStyles((theme) => ({
 	header: {
@@ -88,7 +90,7 @@ export default function AppNavbar() {
 		<>
 			<Header height={56} className={classes.header + ' px-2'} mb={15}>
 				<div className={classes.inner}>
-					<IconHome onClick={() => router.push('/')} size={35} />
+					<Image src={img} onClick={() => router.push('/')} width={50} className='rounded-full' height={50} alt={'Home'} />
 					<Group spacing={5} className={classes.links}>
 						{items}
 					</Group>

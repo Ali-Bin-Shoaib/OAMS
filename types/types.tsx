@@ -1,4 +1,4 @@
-import { Gender, Grade, Status } from '@prisma/client';
+import { Gender, Grade, Prisma, Status } from '@prisma/client';
 
 export enum REQUEST_METHODS {
 	GET = 'GET',

@@ -12,6 +12,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			res.status(STATUS_CODE.Success).json(orphans);
 		}
 	} catch (error) {
-		res.status(STATUS_CODE.BadRequest).json(error);
+		res.json(error);
 	}
 }

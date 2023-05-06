@@ -19,11 +19,14 @@ import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
 import { _Orphan } from '../../types/types';
 import { useRouter } from 'next/router';
-import ImageUploader from 'react-images-uploading';
+import axios, { AxiosRequestConfig } from 'axios';
+import { serverLink } from '../../shared/links';
+import SuperJSON from 'superjson';
 interface Props {
 	orphan?: _Orphan;
+	close: () => void;
 }
-export default function OrphanForm({ orphan }: Props): JSX.Element {
+export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 	const router = useRouter();
 	const [hydrate, setHydrate] = useState(false);
 	const {
@@ -35,28 +38,29 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 	} = useForm<_Orphan>({ defaultValues: { ...orphan } });
 
 	const onSubmit = async (data: _Orphan) => {
-		console.log('🚀 ~ file: OrphanForm.tsx:38 ~ onSubmit ~ data:', data);
+		const config: AxiosRequestConfig = {
+			headers: { 'content-type': 'multipart/form-data' },
+		};
+		const form = new FormData();
+		// form.append('image', data.image as File);
+		for (const key in data) {
+			form.append(key, data[key]);
+		}
 
 		if (!orphan) {
 			console.log('orphan not exist.');
 
-			const url = '/api/orphan/create/';
-			const res = await fetch(url, {
-				method: 'post',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(data),
-			});
+			const url = serverLink + '/api/orphan/create/';
+			const res = await axios.post(url, data, config).catch((err) => console.log('error uploaded file', err));
+			console.log('🚀 ~ file: OrphanForm.tsx:54 ~ onSubmit ~ res:', res);
 		} else {
-			console.log('orphan exist.', orphan);
-
-			const url = '/api/orphan/' + orphan.id;
-			const res = await fetch(url, {
-				method: 'put',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(data),
-			});
+			console.log('orphan exist.', orphan.id);
+			const url = serverLink + '/api/orphan/' + orphan.id;
+			const res = await axios.put(url, data, config);
+			console.log('🚀 ~ file: OrphanForm.tsx:58 ~ onSubmit ~ res:', res);
 		}
-		router.push(router.asPath);
+		// close();
+		// router.push(router.asPath);
 	};
 
 	useEffect(() => {
@@ -84,6 +88,7 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 										label='name'
 										error={errors.name && errors.name.message}
 										placeholder='name'
+										defaultValue={orphan && (orphan.image as unknown as string | number | readonly string[] | undefined)}
 										withAsterisk
 									/>
 								);
@@ -98,10 +103,8 @@ export default function OrphanForm({ orphan }: Props): JSX.Element {
 									<FileInput
 										{...field}
 										error={errors.image && errors.image.message}
-										id='image'
 										label='image'
 										accept='image/*'
-										defaultValue={orphan && orphan.image}
 										w={200}
 										placeholder='choose an image'
 										withAsterisk

@@ -49,7 +49,7 @@ enum HomeType {
 model Orphan {
   id         Int       @id @default(autoincrement())
   name       String?
-  image      String?
+  image      Json?
   gender     Gender?
   age        Int?
   birthplace String?

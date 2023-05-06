@@ -2,7 +2,7 @@ import { Button, Group, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconSettingsCancel, IconX } from '@tabler/icons-react';
-import { URL } from '../../../shared/links';
+import { serverLink } from '../../../shared/links';
 import { Orphan } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { STATUS_CODE } from '../../../types/types';
@@ -56,7 +56,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 
 const deleteOrphan = async (id: number) => {
 	console.log('🚀 ~ file: DeleteOrphanModal.tsx:8 ~ deleteOrphan ~ id:', id);
-	const res = await fetch(URL + 'api/orphan/' + id, {
+	const res = await fetch(serverLink + 'api/orphan/' + id, {
 		method: 'delete',
 		headers: { 'content-type': 'application/json' },
 	});
