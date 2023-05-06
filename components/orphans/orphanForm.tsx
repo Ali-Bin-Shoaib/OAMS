@@ -41,26 +41,26 @@ export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 		const config: AxiosRequestConfig = {
 			headers: { 'content-type': 'multipart/form-data' },
 		};
-		const form = new FormData();
+		// const form = new FormData();
 		// form.append('image', data.image as File);
-		for (const key in data) {
-			form.append(key, data[key]);
-		}
+		// for (const key in data) {
+		// 	form.append(key, data[key]);
+		// }
 
 		if (!orphan) {
 			console.log('orphan not exist.');
 
 			const url = serverLink + '/api/orphan/create/';
-			const res = await axios.post(url, data, config).catch((err) => console.log('error uploaded file', err));
+			const res = await axios.post(url, data).catch((err) => console.log('error uploaded file', err));
 			console.log('🚀 ~ file: OrphanForm.tsx:54 ~ onSubmit ~ res:', res);
 		} else {
 			console.log('orphan exist.', orphan.id);
 			const url = serverLink + '/api/orphan/' + orphan.id;
-			const res = await axios.put(url, data, config);
+			const res = await axios.put(url, data);
 			console.log('🚀 ~ file: OrphanForm.tsx:58 ~ onSubmit ~ res:', res);
 		}
 		// close();
-		// router.push(router.asPath);
+		router.push(router.asPath);
 	};
 
 	useEffect(() => {

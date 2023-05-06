@@ -4,7 +4,7 @@ import prisma from '../../../../lib/prisma';
 import { Orphan } from '@prisma/client';
 import SuperJSON from 'superjson';
 import formidable from 'formidable';
-export const config = { api: { bodyParser: false } };
+// export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const orphanId = Number(req.query.id);
@@ -15,33 +15,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
 			try {
-				const form = formidable({ multiples: true });
+				// const form = formidable({ multiples: true });
 
-				form.parse(req, async (err, fields, files) => {
-					console.log('🚀 ~ file: [id].tsx:21 ~ form.parse ~ req:', req);
-					console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ files:', files);
-					console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ fields:', fields);
-					if (err) res.json(err);
+				// form.parse(req, async (err, fields, files) => {
+				// console.log('🚀 ~ file: [id].tsx:21 ~ form.parse ~ req:', req);
+				// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ files:', files);
+				// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ fields:', fields);
+				// if (err) res.json(err);
 
-					const data: _Orphan = fields as unknown as _Orphan;
-					const orphan: Orphan = data as unknown as Orphan;
+				// const data: _Orphan = fields as unknown as _Orphan;
+				// const orphan: Orphan = data as unknown as Orphan;
+				const data = req.body;
+				const orphan: Orphan = data;
+				orphan.image = null;
+				orphan.noOfFamilyMembers = orphan.males && orphan.females ? orphan.males + orphan.females : null;
 
-					orphan.noOfFamilyMembers = orphan.males && orphan.females ? orphan.males + orphan.females : 0;
+				const updatedOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: orphan });
+				console.log('🚀 ~ file: [id].tsx:37 ~ //form.parse ~ updatedOrphan:', updatedOrphan);
+				return res.json({ data: orphan, message: 'update success' });
 
-					return res.json({ data: orphan });
-					// const updateOrphan = await prisma.orphan.update({
-					// 	where: { id: orphanId },
-					// 	data: orphan,
-					// });
-					// console.log('🚀 ~ file: [id].tsx:19 ~ handler ~ updateOrphan:', updateOrphan);
-
-					// return res.status(STATUS_CODE.Success).json({ message: 'updated successfully', updateOrphan: updateOrphan });
-					// res.json({ message: 'update', data: orphan });
-				});
+				// return res.status(STATUS_CODE.Success).json({ message: 'updated successfully', updateOrphan: updateOrphan });
+				// res.json({ message: 'update', data: orphan });
+				// });
 				break;
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:26 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.UnexpectedError).json('Something went wrong.');
+				return res.status(STATUS_CODE.UnexpectedError).json({ data: error, message: 'Something went wrong.' });
 			}
 		}
 		//* ************************DELETE************************

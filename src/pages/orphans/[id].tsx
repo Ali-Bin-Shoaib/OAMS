@@ -11,20 +11,20 @@ import { useState } from 'react';
 import { Orphan } from '@prisma/client';
 import { NextParsedUrlQuery } from 'next/dist/server/request-meta';
 //*  needed to define possible ids that id parameter can accepts to create static pages for each id at build time
-export const getStaticPaths: GetStaticPaths = async () => {
-	const data = await prisma.orphan.findMany();
-	const params: { params: NextParsedUrlQuery }[] = [];
-	data.forEach((orphan) => {
-		params.push({ params: { id: orphan.id.toString() } });
-	});
+// export const getStaticPaths: GetStaticPaths = async () => {
+// 	const data = await prisma.orphan.findMany();
+// 	const params: { params: NextParsedUrlQuery }[] = [];
+// 	data.forEach((orphan) => {
+// 		params.push({ params: { id: orphan.id.toString() } });
+// 	});
 
-	return {
-		paths: params,
-		fallback: false,
-	};
-};
-// export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+// 	return {
+// 		paths: params,
+// 		fallback: false,
+// 	};
+// };
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+	// export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const data = await prisma.orphan.findUnique({
 		where: {
 			id: Number(params?.id),

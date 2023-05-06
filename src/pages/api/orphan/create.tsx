@@ -6,13 +6,6 @@ import { Orphan, Prisma } from '@prisma/client';
 import formidable from 'formidable';
 import nextConnect from 'next-connect';
 // export const config = { api: { bodyParser: false } };
-export const config = {
-	api: {
-		bodyParser: {
-			sizeLimit: '10mb',
-		},
-	},
-};
 
 // *make it run then make it pretty.
 
@@ -24,22 +17,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		if (req.method === REQUEST_METHODS.POST) {
 			// form.parse(req, async (err, fields, files) => {
 			// if (!err) {
-			// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ files:', files);
-			// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ fields:', fields);
 
 			const orphan: Orphan = req.body;
-			console.log('🚀 ~ file: create.tsx:25 ~ //form.parse ~ orphan:', orphan.age);
-			return res.end(200);
-			// const newOrphan = await prisma.orphan.create({ data: orphan });
-			// console.log('🚀 ~ file: create.tsx:20 ~ handler ~ newOrphan:', newOrphan);
-			// return res.end(res.status(STATUS_CODE.Success).json({ data: newOrphan }));
+			orphan.image = null;
+			console.log('🚀 ~ file: create.tsx:25 ~ //form.parse ~ orphan:', orphan);
+			const newOrphan = await prisma.orphan.create({ data: orphan });
+			console.log('🚀 ~ file: create.tsx:20 ~ handler ~ newOrphan:', newOrphan);
+			return res.end(res.status(STATUS_CODE.Success).json({ data: newOrphan }));
 			// }
-			// console.log('🚀 ~ file: create.tsx:22 ~ form.parse ~ err:');
+			console.log('🚀 ~ file: create.tsx:22 ~ form.parse ~ err:');
 			// return res.json(err);
 			// });
 		}
 	} catch (error) {
-		console.log('🚀 ~ file: create.tsx:29 ~ handler ~ error:');
+		console.log('🚀 ~ file: create.tsx:29 ~ handler ~ error:', error);
 		// return res.status(STATUS_CODE.BadRequest).json(error);
 		return res.end(res.status(STATUS_CODE.BadRequest).json(error));
 	}
