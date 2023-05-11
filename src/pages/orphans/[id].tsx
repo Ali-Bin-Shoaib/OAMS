@@ -10,6 +10,8 @@ import prisma from '../../../lib/prisma';
 import { useState } from 'react';
 import { Orphan } from '@prisma/client';
 import { NextParsedUrlQuery } from 'next/dist/server/request-meta';
+import { usePageTitle } from '../../../hooks/usePageTitle';
+import AppHead from '../../../components/common/AppHead';
 //*  needed to define possible ids that id parameter can accepts to create static pages for each id at build time
 // export const getStaticPaths: GetStaticPaths = async () => {
 // 	const data = await prisma.orphan.findMany();
@@ -39,6 +41,8 @@ interface Props {
 }
 
 function OrphanDetails({ data }: Props) {
+	const title = usePageTitle();
+
 	console.log('🚀 ~ file: [id].tsx:30 ~ OrphanDetails ~ data:', data);
 	const [orphan, SetOrphan] = useState<Orphan>(data);
 
@@ -50,6 +54,7 @@ function OrphanDetails({ data }: Props) {
 		);
 	return (
 		<>
+			<AppHead title={title} />
 			<Card key={v4()} withBorder className=' mx-auto my-2 p-2 w-3/6 '>
 				<CardSection className='text-center'>
 					<Title>Orphan Info</Title>

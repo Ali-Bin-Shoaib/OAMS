@@ -1,5 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Group, Text, Title } from '@mantine/core';
+import { Modal, Button, Group, Title } from '@mantine/core';
 import OrphanForm from '../OrphanForm';
 import { IconPlus } from '@tabler/icons-react';
 

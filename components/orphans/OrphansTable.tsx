@@ -10,32 +10,32 @@ interface Props {
 }
 
 function OrphansTable({ orphans, updateCard }: Props) {
-	const columns = useMemo<MRT_ColumnDef<_Orphan>[]>(
+	const columns = useMemo<MRT_ColumnDef<(typeof orphans)[0]>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'id' },
+			{ accessorFn: (row) => row.id, id: 'id', header: 'ID' },
 			{ accessorFn: (row) => row.name, id: 'name', header: 'name', maxSize: 300, size: 200, enableResizing: true },
 
 			// { accessorFn: (row) => row.image, id: 'image', header: 'image', maxSize: 200, size: 100, enableResizing: true },
 			{ accessorFn: (row) => row.gender, id: 'gender', header: 'gender', maxSize: 200, size: 120, enableResizing: true },
-			{ accessorFn: (row) => row.age, id: 'age', header: 'age', maxSize: 200, size: 100, enableResizing: true },
+			// { accessorFn: (row) => row.age, id: 'age', header: 'age', maxSize: 200, size: 100, enableResizing: true },
 			{ accessorFn: (row) => row.birthdate?.toDateString(), id: 'birthdate', header: 'birthdate' },
-			{
-				accessorFn: (row) => row.birthplace,
-				id: 'birthplace',
-				header: 'birthplace',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.birthplace,
+			// 	id: 'birthplace',
+			// 	header: 'birthplace',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 			{ accessorFn: (row) => row.joinDate?.toDateString(), id: 'joinDate', header: 'joinDate' },
-			{
-				accessorFn: (row) => row.schoolName,
-				id: 'schoolName',
-				header: 'schoolName',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.schoolName,
+			// 	id: 'schoolName',
+			// 	header: 'schoolName',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 			{
 				accessorFn: (row) => row.gradeLevel,
 				id: 'gradeLevel',
@@ -86,22 +86,22 @@ function OrphansTable({ orphans, updateCard }: Props) {
 			// 	size: 120,
 			// 	enableResizing: true,
 			// },
-			{
-				accessorFn: (row) => row.motherName,
-				id: 'motherName',
-				header: 'motherName',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
-			{
-				accessorFn: (row) => row.motherStatus,
-				id: 'motherStatus',
-				header: 'motherStatus',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.motherName,
+			// 	id: 'motherName',
+			// 	header: 'motherName',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
+			// {
+			// 	accessorFn: (row) => row.motherStatus,
+			// 	id: 'motherStatus',
+			// 	header: 'motherStatus',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 			// {
 			// 	accessorFn: (row) => (row.isMotherWorks ? 'yes' : 'no'),
 			// 	id: 'isMotherWorks',
@@ -158,14 +158,14 @@ function OrphansTable({ orphans, updateCard }: Props) {
 				size: 150,
 				enableResizing: true,
 			},
-			{
-				accessorFn: (row) => row.currentAddress,
-				id: 'currentAddress',
-				header: 'currentAddress',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.currentAddress,
+			// 	id: 'currentAddress',
+			// 	header: 'currentAddress',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 			// {
 			// 	accessorFn: (row) => (row.isSponsored ? 'yes' : 'no'),
 			// 	id: 'isSponsored',
@@ -206,6 +206,8 @@ function OrphansTable({ orphans, updateCard }: Props) {
 		<Container fluid>
 			<MantineReactTable
 				columns={columns}
+				// enableRowActions
+				// positionActionsColumn='last'
 				data={orphans}
 				initialState={{ density: 'xs' }}
 				mantineTableBodyRowProps={({ row }) => ({

@@ -59,7 +59,7 @@ export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 			const res = await axios.put(url, data);
 			console.log('🚀 ~ file: OrphanForm.tsx:58 ~ onSubmit ~ res:', res);
 		}
-		// close();
+		close();
 		router.push(router.asPath);
 	};
 

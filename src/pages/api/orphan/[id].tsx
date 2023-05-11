@@ -16,13 +16,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		case REQUEST_METHODS.PUT: {
 			try {
 				// const form = formidable({ multiples: true });
-
 				// form.parse(req, async (err, fields, files) => {
 				// console.log('🚀 ~ file: [id].tsx:21 ~ form.parse ~ req:', req);
 				// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ files:', files);
 				// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ fields:', fields);
 				// if (err) res.json(err);
-
 				// const data: _Orphan = fields as unknown as _Orphan;
 				// const orphan: Orphan = data as unknown as Orphan;
 				const data = req.body;
@@ -33,7 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				const updatedOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: orphan });
 				console.log('🚀 ~ file: [id].tsx:37 ~ //form.parse ~ updatedOrphan:', updatedOrphan);
 				return res.json({ data: orphan, message: 'update success' });
-
 				// return res.status(STATUS_CODE.Success).json({ message: 'updated successfully', updateOrphan: updateOrphan });
 				// res.json({ message: 'update', data: orphan });
 				// });

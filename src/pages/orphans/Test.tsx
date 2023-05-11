@@ -3,8 +3,11 @@ import Image from 'next/image';
 import { serverLink } from '../../../shared/links';
 import axios from 'axios';
 import { v4 } from 'uuid';
+import { usePageTitle } from '../../../hooks/usePageTitle';
+import AppHead from '../../../components/common/AppHead';
 
 function Test() {
+	const title = usePageTitle();
 	let [count, setCount] = useState(-1);
 	const [image, setImage] = useState<File | null>(null);
 	const [src, setSrc] = useState<string[]>([]);
@@ -24,11 +27,12 @@ function Test() {
 	}
 	useEffect(() => {
 		if (image) setSrc(src?.concat(URL.createObjectURL(image)));
-	}, [image]);
+	}, [image, src]);
 	console.log('🚀 ~ file: Test.tsx:26 ~ useEffect ~ src:', src);
 
 	return (
 		<>
+			<AppHead title={title} />
 			<input
 				type='file'
 				onChange={(e) => {

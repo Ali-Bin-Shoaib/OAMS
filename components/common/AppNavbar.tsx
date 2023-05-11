@@ -71,7 +71,6 @@ const useStyles = createStyles((theme) => ({
 export default function AppNavbar() {
 	const [opened, { toggle }] = useDisclosure(false);
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-	const theme = useMantineTheme();
 	const { classes } = useStyles();
 	const router = useRouter();
 
@@ -80,7 +79,7 @@ export default function AppNavbar() {
 			<MyLink
 				key={link.label}
 				href={link.link}
-				className={`${router.asPath === link.link ? ' underline underline-offset-8 ' : ''} ${classes.link}`}
+				className={`${router.asPath == link.link ? 'underline underline-offset-8 ' : ''} ${classes.link}`}
 				text={link.label}
 			/>
 		);
