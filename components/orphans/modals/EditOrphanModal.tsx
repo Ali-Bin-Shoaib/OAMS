@@ -1,5 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Group } from '@mantine/core';
+import { Modal, Button, Group, Tooltip } from '@mantine/core';
 import OrphanForm from '../OrphanForm';
 import { Orphan } from '@prisma/client';
 import { IconEdit } from '@tabler/icons-react';
@@ -17,9 +17,11 @@ export default function EditOrphanModal({ orphan }: Props) {
 				<OrphanForm orphan={orphan as unknown as _Orphan} close={close} />
 			</Modal>
 			<Group position='center'>
-				<Button onClick={open} color='yellow'>
-					<IconEdit onClick={open} />
-				</Button>
+				<Tooltip label='Edit'>
+					<Button onClick={open} color='yellow'>
+						<IconEdit onClick={open} />
+					</Button>
+				</Tooltip>
 			</Group>
 		</>
 	);

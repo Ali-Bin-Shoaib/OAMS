@@ -8,7 +8,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 			try {
 				const guardians = prisma.guardian.findMany();
 				console.log('🚀 ~ file: index.tsx:9 ~ handler ~ guardians:', guardians);
-				return res.end(res.status(STATUS_CODE.Success).json({ data: guardians, message: 'get all guardians' }));
+				return res.end(res.status(STATUS_CODE.OK).json({ data: guardians, message: 'get all guardians' }));
 			} catch (error) {
 				console.log('🚀 ~ file: index.tsx:14 ~ handler ~ error:SOMETHING WENT WRONG', error);
 			}

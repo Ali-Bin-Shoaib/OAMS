@@ -7,9 +7,9 @@ import { STATUS_CODE } from '../../../../types/types';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === 'GET') {
-			const users = await prisma.user.findMany();
+			const sponsorships = await prisma.sponsorship.findMany({ include: { Sponsor: true, Orphan: true } });
 
-			res.status(STATUS_CODE.OK).json(users);
+			res.status(STATUS_CODE.Success).json(sponsorships);
 		}
 	} catch (error) {
 		res.json(error);

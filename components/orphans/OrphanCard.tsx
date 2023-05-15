@@ -1,4 +1,4 @@
-import { Card, Title, CardSection, List, Button, Group, Box, Rating } from '@mantine/core';
+import { Card, Title, CardSection, List, Button, Group, Box, Rating, Tooltip } from '@mantine/core';
 import { v4 } from 'uuid';
 import DeleteOrphanModal from './modals/DeleteOrphanModal';
 import EditOrphanModal from './modals/EditOrphanModal';
@@ -61,10 +61,14 @@ function OrphanCard({ orphan }: Props) {
 						</Box>
 						<Group position='right'>
 							<Button.Group>
-								<Button>evaluate</Button>
-								<Button color='gray' onClick={() => router.push(Pages.Orphans + orphan.id)}>
-									<IconInfoCircle />
-								</Button>
+								{/* <Tooltip label='Evaluate orphan'> */}
+								<Button>Evaluate</Button>
+								{/* </Tooltip> */}
+								<Tooltip label='Orphan Info'>
+									<Button color='gray' onClick={() => router.push(Pages.Orphans + orphan.id)}>
+										<IconInfoCircle />
+									</Button>
+								</Tooltip>
 								<EditOrphanModal orphan={orphan} />
 								<DeleteOrphanModal id={orphan.id} />
 							</Button.Group>

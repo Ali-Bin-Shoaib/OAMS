@@ -46,6 +46,16 @@ enum HomeType {
   OWNED
 }
 
+enum PaymentMethod {
+  CASH
+  TRANSACTION
+}
+
+enum SponsorshipPeriod {
+  ONE_YEAR
+  TWO_YEAR
+}
+
 model Orphan {
   id         Int       @id @default(autoincrement())
   name       String?
@@ -91,6 +101,9 @@ model Orphan {
   //* one Orphan has one Guardian
   Guardian             Guardian?              @relation(fields: [guardianId], references: [userId])
   guardianId           Int?
+  //* one Orphan has many Sponsorship
+  Sponsorship          Sponsorship[]
+  Attendance           Attendance[]
 }
 
 model Guardian {
@@ -105,7 +118,7 @@ model Guardian {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   name       String?
   gender     Gender?
   userName   String?
@@ -116,7 +129,7 @@ model User {
   type       UserType?
   Guardian   Guardian?
   Sponsor    Sponsor?
-  Attendance Attendance?
+  Attendance Attendance[]
 }
 
 model EmergencyContactInfo {
@@ -131,19 +144,39 @@ model EmergencyContactInfo {
 }
 
 model Sponsor {
-  id             Int       @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   birthdate      DateTime?
   fax            String?
   identityNumber String?
   //* relations
-  userId         Int       @unique
-  user           User      @relation(fields: [userId], references: [id])
+  userId         Int           @unique
+  user           User          @relation(fields: [userId], references: [id])
+  //* one Sponsor has many Sponsorship
+  Sponsorship    Sponsorship[]
+}
+
+model Sponsorship {
+  id                Int               @id @default(autoincrement())
+  createdAt         DateTime          @default(now())
+  startDate         DateTime
+  endDate           DateTime
+  paymentMethod     PaymentMethod
+  sponsorshipPeriod SponsorshipPeriod
+  isActive          Boolean           @default(false)
+  // * relation
+  // * one sponsorship has one spondor
+  sponsorId         Int
+  Sponsor           Sponsor           @relation(fields: [sponsorId], references: [id])
+  // * one sponsorship has one or more Orphan
+  orphanId          Int
+  Orphan            Orphan            @relation(fields: [orphanId], references: [id])
 }
 
 model Attendance {
   id             Int       @id @default(autoincrement())
   attendanceDate DateTime?
   //* relations
-  userId         Int       @unique
-  user           User      @relation(fields: [userId], references: [id])
+  User           User?     @relation(fields: [userId], references: [id])
+  userId         Int?
+  Orphan         Orphan[]
 }

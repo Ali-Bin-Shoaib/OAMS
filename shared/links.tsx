@@ -7,6 +7,7 @@ export const Paths = {
 		{ label: 'Users', link: '/users' },
 		{ label: 'Guardians', link: '/guardians' },
 		{ label: 'Sponsors', link: '/sponsors' },
+		{ label: 'Sponsorships', link: '/sponsorships' },
 		{ label: 'Test', link: '/orphans/Test' },
 	],
 };

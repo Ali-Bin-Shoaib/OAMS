@@ -1,7 +1,7 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconSettingsCancel, IconX } from '@tabler/icons-react';
+import { IconBasket, IconCheck, IconSettingsCancel, IconTrash, IconX } from '@tabler/icons-react';
 import { serverLink } from '../../../shared/links';
 import { Orphan } from '@prisma/client';
 import { useRouter } from 'next/router';
@@ -48,9 +48,11 @@ export default function DeleteOrphanModal({ id = -1 }) {
 		});
 
 	return (
-		<Button onClick={openDeleteModal} color='red'>
-			<IconX />
-		</Button>
+		<Tooltip label={'Delete'}>
+			<Button onClick={openDeleteModal} color='red'>
+				<IconTrash />
+			</Button>
+		</Tooltip>
 	);
 }
 
@@ -61,6 +63,6 @@ const deleteOrphan = async (id: number) => {
 		headers: { 'content-type': 'application/json' },
 	});
 
-	if (res.status === STATUS_CODE.Success) return res.json();
+	if (res.status === STATUS_CODE.OK) return res.json();
 	return;
 };
