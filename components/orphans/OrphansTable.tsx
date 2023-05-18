@@ -10,7 +10,7 @@ interface Props {
 }
 
 function OrphansTable({ orphans, updateCard }: Props) {
-	const columns = useMemo<MRT_ColumnDef<(typeof orphans)[0]>[]>(
+	const columns = useMemo<MRT_ColumnDef<_Orphan>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID' },
 			{ accessorFn: (row) => row.name, id: 'name', header: 'name', maxSize: 300, size: 200, enableResizing: true },

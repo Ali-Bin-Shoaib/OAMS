@@ -4,6 +4,7 @@ import {
 	Grade,
 	Guardian,
 	Orphan,
+	OrphanAttendance,
 	PaymentMethod,
 	Prisma,
 	Sponsor,
@@ -115,7 +116,11 @@ export interface _UserWithGuardianAndSponsor {
 	phone: string | number | readonly string[] | undefined;
 	type: UserType | undefined;
 
-	guardian?: { relationship: string | number | readonly string[] | undefined; userId?: number; id?: number };
+	guardian?: {
+		relationship: string | number | readonly string[] | undefined;
+		userId?: number;
+		id?: number;
+	};
 	sponsor?: {
 		birthdate: Date | null;
 		fax: string | number | readonly string[] | undefined;
@@ -134,7 +139,11 @@ export interface _SponsorshipWithSponsorAndOrphan {
 	sponsorId?: number;
 	orphanId?: number;
 }
-export type _User = User & { sponsor?: Sponsor; guardian?: Guardian };
+// export type _Sponsorship_Sponsor_Orphan={}
+export type _User = Prisma.UserCreateInput & {
+	sponsor?: Prisma.SponsorCreateInput;
+	guardian?: Prisma.GuardianCreateInput;
+};
 export type _Guardian = Guardian & { user: User };
 export type _Sponsor = Sponsor & { user: User; Sponsorship: Sponsorship[] };
 
@@ -172,3 +181,17 @@ const userValidator = Prisma.validator<Prisma.UserArgs>()({
 	},
 });
 export type User = Prisma.UserGetPayload<typeof userValidator>;
+
+export type _Attendance = Prisma.AttendanceCreateInput & {
+	User: User | null;
+	OrphanAttendance: (Prisma.OrphanAttendanceCreateInput & {
+		Orphan: Orphan;
+	})[];
+};
+
+export type _OrphanAttendance = OrphanAttendance & {
+	Attendance: Attendance & { User: User };
+	Orphan: Orphan | null;
+};
+// export type _OrphanAttendance = (OrphanAttendance & { Orphan: Orphan  });
+let x: _OrphanAttendance;

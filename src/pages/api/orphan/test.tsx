@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { STATUS_CODE } from '../../../../types/types';
 import formidable from 'formidable';
-export const config = { api: { bodyParser: false } };
+// export const config = { api: { bodyParser: false } };
 
 // 	const options: formidable.Options = {};
 // 	if (saveLocally) {
@@ -12,15 +12,19 @@ export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
-		const form = formidable();
+		// const form = formidable();
 
-		form.parse(req, (err, fields, files) => {
-			console.log('🚀 ~ file: test.tsx:40 ~ form.parse ~ files:', typeof files.image);
-			if (err) res.json(err);
+		// form.parse(req, (err, fields, files) => {
+		// 	console.log('🚀 ~ file: test.tsx:40 ~ form.parse ~ files:', typeof files.image);
+		// 	if (err) res.json(err);
 
-			res.status(STATUS_CODE.Success).json({ files: files });
-		});
+		// 	res.status(STATUS_CODE.OK).json({ files: files });
+		// });
+		const image = req.body;
+		// console.log('🚀 ~ file: test.tsx:24 ~ handler ~ image:', image);
+		res.status(STATUS_CODE.OK).json({ files: image });
 	} catch (error) {
-		res.status(STATUS_CODE.BadRequest).json(error);
+		console.log('🚀 ~ file: test.tsx:27 ~ handler ~ error:', error);
+		res.status(STATUS_CODE.BAD_REQUEST).json(error);
 	}
 }

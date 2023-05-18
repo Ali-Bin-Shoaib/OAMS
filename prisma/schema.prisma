@@ -96,14 +96,15 @@ model Orphan {
   evaluation Float?
   //* relations
 
-  //* one Orphan has many EmergancyContactInfo
+  //* one Orphan has many EmergencyContactInfo
   emergencyContactInfo EmergencyContactInfo[]
   //* one Orphan has one Guardian
   Guardian             Guardian?              @relation(fields: [guardianId], references: [userId])
   guardianId           Int?
   //* one Orphan has many Sponsorship
   Sponsorship          Sponsorship[]
-  Attendance           Attendance[]
+  //* one Orphan has many OrphanAttendance
+  OrphanAttendance     OrphanAttendance[]
 }
 
 model Guardian {
@@ -164,7 +165,7 @@ model Sponsorship {
   sponsorshipPeriod SponsorshipPeriod
   isActive          Boolean           @default(false)
   // * relation
-  // * one sponsorship has one spondor
+  // * one sponsorship has one sponsor
   sponsorId         Int
   Sponsor           Sponsor           @relation(fields: [sponsorId], references: [id])
   // * one sponsorship has one or more Orphan
@@ -173,10 +174,26 @@ model Sponsorship {
 }
 
 model Attendance {
-  id             Int       @id @default(autoincrement())
-  attendanceDate DateTime?
+  id               Int                @id @default(autoincrement())
   //* relations
-  User           User?     @relation(fields: [userId], references: [id])
-  userId         Int?
-  Orphan         Orphan[]
+  date             DateTime           @default(now())
+  User             User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int?
+  OrphanAttendance OrphanAttendance[]
+}
+
+model OrphanAttendance {
+  id            Int     @id @default(autoincrement())
+  isAttended    Boolean @default(true)
+  // wing          String?
+  absentReason  String?
+  notes         String?
+  returnDay     String?
+  justification String?
+
+  // relation
+  Attendance   Attendance @relation(fields: [attendanceId], references: [id])
+  attendanceId Int
+  Orphan       Orphan     @relation(fields: [orphanId], references: [id])
+  orphanId     Int
 }

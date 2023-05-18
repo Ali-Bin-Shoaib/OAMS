@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		if (req.method === 'GET') {
 			const orphans = await prisma.orphan.findMany();
 
-			res.status(STATUS_CODE.Success).json(orphans);
+			res.status(STATUS_CODE.OK).json(orphans);
 		}
 	} catch (error) {
 		res.json(error);

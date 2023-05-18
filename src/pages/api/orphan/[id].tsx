@@ -9,7 +9,7 @@ import formidable from 'formidable';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const orphanId = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:8 ~ handler ~ orphanId:', orphanId);
-	if (orphanId < 0) return res.status(STATUS_CODE.NotFound).json('orphan dose not exist.');
+	if (orphanId < 0) return res.status(STATUS_CODE.BAD_REQUEST).json('orphan dose not exist.');
 
 	switch (req.method) {
 		//* ************************UPDATE************************
@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				break;
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:26 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.UnexpectedError).json({ data: error, message: 'Something went wrong.' });
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, message: 'Something went wrong.' });
 			}
 		}
 		//* ************************DELETE************************
@@ -45,11 +45,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		case REQUEST_METHODS.DELETE: {
 			try {
 				const orphan = await prisma.orphan.delete({ where: { id: orphanId } });
-				if (orphan) return res.status(STATUS_CODE.Success).json({ orphan: orphan, msg: 'Deleted Successfully' });
-				return res.status(STATUS_CODE.BadRequest).json('failed to delete orphan with id :' + orphanId);
+				if (orphan) return res.status(STATUS_CODE.OK).json({ orphan: orphan, msg: 'Deleted Successfully' });
+				return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete orphan with id :' + orphanId);
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:30 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.UnexpectedError).json('Some thing went wrong :' + error);
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json('Some thing went wrong :' + error);
 			}
 		}
 		//* ************************GET************************
@@ -58,11 +58,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 			try {
 				const orphan = await prisma.orphan.findUnique({ where: { id: orphanId } });
-				if (orphan) return res.status(STATUS_CODE.Success).json({ orphan: orphan, msg: 'Orphan Founded' });
-				return res.status(STATUS_CODE.BadRequest).json('Orphan not founded with id:' + orphanId);
+				if (orphan) return res.status(STATUS_CODE.OK).json({ orphan: orphan, msg: 'Orphan Founded' });
+				return res.status(STATUS_CODE.BAD_REQUEST).json('Orphan not founded with id:' + orphanId);
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:30 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.UnexpectedError).json('Some thing went wrong :' + error);
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json('Some thing went wrong :' + error);
 			}
 		}
 	}

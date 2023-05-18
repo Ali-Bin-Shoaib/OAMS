@@ -12,7 +12,7 @@ export const Paths = {
 		{ label: 'Activities', link: '/activities' },
 		{ label: 'Health Info', link: '/healthInfo' },
 		{ label: 'Behavior Info', link: '/behaviorInfo' },
-		{ label: 'Test', link: '/orphans/Test' },
+		// { label: 'Test', link: '/orphans/Test' },
 	],
 };
 export const Pages = { Home: URL, Orphans: '/orphans/' };
