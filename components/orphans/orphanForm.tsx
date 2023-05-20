@@ -12,16 +12,17 @@ import {
 	Textarea,
 } from '@mantine/core';
 import { $enum } from 'ts-enum-util';
-import { useEffect, useState } from 'react';
-import { Gender, Grade, Status } from '@prisma/client';
+import { useContext, useEffect, useState } from 'react';
+import { Gender, Grade, Guardian, HomeType, Status } from '@prisma/client';
 import { v4 } from 'uuid';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
-import { _Orphan } from '../../types/types';
+import { _Orphan, _Guardian } from '../../types/types';
 import { useRouter } from 'next/router';
 import axios, { AxiosRequestConfig } from 'axios';
 import { serverLink } from '../../shared/links';
 import SuperJSON from 'superjson';
+import { GuardianContext } from '@/pages/orphans/contexts';
 interface Props {
 	orphan?: _Orphan;
 	close: () => void;
@@ -29,15 +30,21 @@ interface Props {
 export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 	const router = useRouter();
 	const [hydrate, setHydrate] = useState(false);
+	const guardians = useContext(GuardianContext);
+
 	const {
 		control,
 		watch,
 		handleSubmit,
 		getValues,
 		formState: { errors },
-	} = useForm<_Orphan>({ defaultValues: { ...orphan } });
+	} = useForm<_Orphan>({ defaultValues: orphan });
 
 	const onSubmit = async (data: _Orphan) => {
+		console.log('🚀 ~ file: OrphanForm.tsx:44 ~ onSubmit ~ data:', data);
+		if (data.guardianId) {
+			data.guardianId = Number(data.guardianId);
+		}
 		const config: AxiosRequestConfig = {
 			headers: { 'content-type': 'multipart/form-data' },
 		};
@@ -60,7 +67,7 @@ export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 			console.log('🚀 ~ file: OrphanForm.tsx:58 ~ onSubmit ~ res:', res);
 		}
 		close();
-		router.push(router.asPath);
+		// router.push(router.asPath);
 	};
 
 	useEffect(() => {
@@ -77,6 +84,30 @@ export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 						wrap='wrap'
 						gap={{ base: 'md', sm: 'lg' }}
 						justify={{ sm: 'center' }}>
+						<Controller
+							name='guardianId'
+							control={control}
+							rules={{ required: "select orphan's guardian" }}
+							render={({ field }) => {
+								// const { ref, onChange, onBlur, value } = field;
+								// const stringValue = value ? value + '' : '';
+
+								return (
+									<Select
+										{...field}
+										data={guardians.map((guardian) => ({
+											value: guardian.userId!.toString(),
+											label: guardian.user.name,
+										}))}
+										label="Select Orphan's Guardian"
+										name='guardianId'
+										value={orphan?.guardianId.toString()}
+										withAsterisk
+										error={errors.guardianId && errors.guardianId.message}
+									/>
+								);
+							}}
+						/>
 						<Controller
 							name='name'
 							control={control}
@@ -495,7 +526,7 @@ export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 								return (
 									<Select
 										{...field}
-										data={['Rent', 'Owned']}
+										data={$enum(HomeType).map((type) => type)}
 										error={errors.homeType && errors.homeType.message}
 										label='home type'
 										name='homeType'

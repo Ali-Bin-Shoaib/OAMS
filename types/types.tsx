@@ -71,7 +71,7 @@ export enum STATUS_CODE {
 
 export interface _Orphan {
 	id?: number;
-	name: string;
+	name: string | undefined;
 	image: File | null;
 	gender: string | undefined;
 	age: number | '';
@@ -102,7 +102,7 @@ export interface _Orphan {
 	foundationAmount: number | '';
 	evaluation: number | '';
 	guardianId: number | '';
-	guardian: Guardian;
+	// guardian?: Guardian;
 }
 
 export interface _UserWithGuardianAndSponsor {
@@ -144,7 +144,10 @@ export type _User = Prisma.UserCreateInput & {
 	sponsor?: Prisma.SponsorCreateInput;
 	guardian?: Prisma.GuardianCreateInput;
 };
-export type _Guardian = Guardian & { user: User };
+export interface _Guardian extends Guardian {
+	user: User;
+}
+
 export type _Sponsor = Sponsor & { user: User; Sponsorship: Sponsorship[] };
 
 export type _Sponsorship = {
@@ -182,9 +185,9 @@ const userValidator = Prisma.validator<Prisma.UserArgs>()({
 });
 export type User = Prisma.UserGetPayload<typeof userValidator>;
 
-export type _Attendance = Prisma.AttendanceCreateInput & {
+export type _Attendance = Attendance & {
 	User: User | null;
-	OrphanAttendance: (Prisma.OrphanAttendanceCreateInput & {
+	OrphanAttendance: (OrphanAttendance & {
 		Orphan: Orphan;
 	})[];
 };

@@ -1,19 +1,19 @@
 import { Orphan } from '@prisma/client';
-import { _Orphan } from '../../types/types';
+import { _Orphan, _Attendance } from '../../types/types';
 import { Checkbox } from '@mantine/core';
+import { v4 } from 'uuid';
 
 interface Props {
-	orphan: _Orphan;
+	orphan?: _Orphan;
+	attendance?: _Attendance;
+	Controller: any;
 }
-function OrphanAttendanceComponent({ orphan }: Props) {
+function OrphanAttendanceComponent({ orphan, attendance, Controller }: Props) {
 	return (
 		<>
-			<td>{orphan.id}</td>
-
-			<td>{orphan.name}</td>
-			<td>
-				<Checkbox />
-			</td>
+			{attendance?.OrphanAttendance.map((oa) => {
+				return '';
+			})}
 		</>
 	);
 }

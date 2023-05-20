@@ -8,8 +8,9 @@ import { Orphan } from '@prisma/client';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { Pages } from '../../shared/links';
+import { _Orphan } from '../../types/types';
 interface Props {
-	orphan: Orphan;
+	orphan: _Orphan;
 }
 function OrphanCard({ orphan }: Props) {
 	console.log('🚀 ~ file: ~ OrphanCard ~ OrphanCard');
@@ -25,38 +26,31 @@ function OrphanCard({ orphan }: Props) {
 					</CardSection>
 					<CardSection withBorder className='p-4'>
 						<Box className='flex flex-wrap'>
-							<List className=''>
-								<List.Item className=''>id:{orphan.id}</List.Item>
-								<List.Item className=''>name: {orphan.name || '---'}</List.Item>
-								<List.Item className=''>birthdate: {orphan.birthdate?.toUTCString() || '---'}</List.Item>
-								<List.Item className=''>gender: {orphan.gender || '---'}</List.Item>
-								<List.Item className=''>gradeLevel: {orphan.gradeLevel || '---'}</List.Item>
-								<List.Item className=''>schoolName: {orphan.schoolName || '---'}</List.Item>
-								<List.Item className=''>motherName: {orphan.motherName || '---'}</List.Item>
-								<List.Item className=''>birthplace: {orphan.birthplace}</List.Item>
-								<List.Item className=''>joinDate: {orphan.joinDate?.toUTCString()}</List.Item>
-								<List.Item className=''>lastYearPercentage: {orphan.lastYearPercentage}</List.Item>
-								<List.Item className=''>
+							<List>
+								<List.Item>id:{orphan.id}</List.Item>
+								<List.Item>name: {orphan.name || '---'}</List.Item>
+								<List.Item>birthdate: {orphan.birthdate?.toUTCString() || '---'}</List.Item>
+								<List.Item>gender: {orphan.gender || '---'}</List.Item>
+								<List.Item>gradeLevel: {orphan.gradeLevel || '---'}</List.Item>
+								<List.Item>schoolName: {orphan.schoolName || '---'}</List.Item>
+								{/* <List.Item >motherName: {orphan.motherName || '---'}</List.Item> */}
+								{/* <List.Item >birthplace: {orphan.birthplace}</List.Item> */}
+								{/* <List.Item >joinDate: {orphan.joinDate?.toUTCString()}</List.Item> */}
+								<List.Item>lastYearPercentage: {orphan.lastYearPercentage}</List.Item>
+								{/* <List.Item >
 									fatherDeathDate:
 									{orphan.fatherDeathDate?.toUTCString()}
-								</List.Item>
-								<List.Item className=''>males: {orphan.males}</List.Item>
-								<List.Item className=''>females: {orphan.females}</List.Item>
-								<List.Item className=''>motherStatus: {orphan.motherStatus}</List.Item>
-								<List.Item className=''>liveWith: {orphan.liveWith}</List.Item>
-								<List.Item className=''>homePhone: {orphan.homePhone}</List.Item>
-								<List.Item className=''>currentAddress: {orphan.currentAddress}</List.Item>
-								<List.Item className=''>evaluation: {orphan.evaluation || '---'}</List.Item>
+								</List.Item> */}
+								<List.Item>males: {orphan.males}</List.Item>
+								<List.Item>females: {orphan.females}</List.Item>
+								{/* <List.Item >motherStatus: {orphan.motherStatus}</List.Item>
+								<List.Item >liveWith: {orphan.liveWith}</List.Item>
+								<List.Item >homePhone: {orphan.homePhone}</List.Item> */}
+								<List.Item>currentAddress: {orphan.currentAddress}</List.Item>
+								<List.Item>evaluation: {orphan.evaluation || '---'}</List.Item>
 							</List>
 							<div className='m-auto '>
-								<Rating
-									value={orphan.evaluation as number | undefined}
-									fractions={1}
-									defaultValue={6}
-									count={10}
-									readOnly
-									size='xl'
-								/>
+								<Rating value={orphan.evaluation as number} fractions={1} defaultValue={5} count={10} />
 							</div>
 						</Box>
 						<Group position='right'>

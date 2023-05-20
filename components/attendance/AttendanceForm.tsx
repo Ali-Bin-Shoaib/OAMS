@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Group, Loader, Select, TextInput } from '@mantine/core';
+import { Button, Container, Divider, Group, Loader, Select, TextInput, Checkbox } from '@mantine/core';
 import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -21,9 +21,13 @@ interface Props {
 export default function AttendanceForm({ orphans, attendance }: Props): JSX.Element {
 	console.log('🚀 ~ file: AttendanceForm.tsx:22 ~ AttendanceForm ~ attendance:', attendance);
 
-	if (!attendance) {
-		// attendance.
-	}
+	// if (!attendance) {
+	// 	attendance = { OrphanAttendance: orphans.map((x) => ({ Orphan: x })) };
+	// 	console.log('🚀 ~ file: AttendanceForm.tsx:26 ~ AttendanceForm ~ attendance:', attendance);
+	// 	// orphans.map((orphan) => {
+	// 	// 	attendance.OrphanAttendance.push(orphan);
+	// 	// });
+	// }
 
 	const router = useRouter();
 	const [hydrate, setHydrate] = useState(false);
@@ -70,7 +74,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 		<>
 			<Container fluid>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<Container className='flex flex-wrap ' p={15}>
+					<Container className='flex flex-wrap' p={15}>
 						<Controller
 							name='date'
 							control={control}
@@ -97,10 +101,33 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 									<td>name</td>
 									<td>isAttended</td>
 								</tr>
-								{orphans?.map((orphan) => (
-									// <div key={v4()}>{orphan.name}</div>
+
+								{/* <OrphanAttendanceComponent attendance={attendance} controller={Controller} /> */}
+								{orphans.map((orphan) => (
 									<tr key={v4()}>
-										<OrphanAttendanceComponent orphan={orphan} />
+										<td>{orphan.id}</td>
+
+										<td>{orphan.name}</td>
+										<td>
+											<Controller
+												name='OrphanAttendance'
+												control={control}
+												rules={{
+													required: false,
+												}}
+												render={({ field }) => {
+													return (
+														<Checkbox
+															// defaultChecked={oa.isAttended && (oa.isAttended as unknown as boolean)}
+															// error={errors.isMotherWorks && errors.isMotherWorks.message}
+															error={errors.OrphanAttendance && errors.OrphanAttendance.message}
+															// label='is mother works'
+															{...field}
+														/>
+													);
+												}}
+											/>
+										</td>
 									</tr>
 								))}
 							</thead>

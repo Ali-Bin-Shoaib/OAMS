@@ -57,39 +57,39 @@ enum SponsorshipPeriod {
 }
 
 model Orphan {
-  id         Int       @id @default(autoincrement())
-  name       String?
+  id         Int      @id @default(autoincrement())
+  name       String
   image      String?
-  gender     Gender?
-  age        Int?
-  birthplace String?
-  birthdate  DateTime?
-  joinDate   DateTime? @default(now())
+  gender     Gender
+  age        Int
+  birthplace String
+  birthdate  DateTime
+  joinDate   DateTime @default(now())
 
-  schoolName         String?
-  gradeLevel         Grade?
-  lastYearPercentage Float?
+  schoolName         String
+  gradeLevel         Grade
+  lastYearPercentage Float
 
-  fatherDeathDate DateTime?
+  fatherDeathDate DateTime
   fatherWork      String?
   fatherDeathCos  String?
 
   noOfFamilyMembers Int?
-  males             Int?
-  females           Int?
+  males             Int
+  females           Int
 
-  motherName     String?
-  motherStatus   Status?
-  isMotherWorks  Boolean? @default(false)
+  motherName     String
+  motherStatus   Status
+  isMotherWorks  Boolean @default(false)
   motherJob      String?
   motherJobPhone String?
   monthlyIncome  Float?
 
-  liveWith         String?
-  homeType         String?
+  liveWith         String
+  homeType         HomeType
   homePhone        String?
-  currentAddress   String?
-  isSponsored      Boolean? @default(false)
+  currentAddress   String
+  isSponsored      Boolean  @default(false)
   foundationName   String?
   foundationAmount Float?
 
@@ -100,7 +100,7 @@ model Orphan {
   emergencyContactInfo EmergencyContactInfo[]
   //* one Orphan has one Guardian
   Guardian             Guardian?              @relation(fields: [guardianId], references: [userId])
-  guardianId           Int?
+  guardianId           Int
   //* one Orphan has many Sponsorship
   Sponsorship          Sponsorship[]
   //* one Orphan has many OrphanAttendance
@@ -111,7 +111,7 @@ model Guardian {
   id           Int      @id @default(autoincrement())
   userId       Int      @unique
   user         User     @relation(fields: [userId], references: [id])
-  relationship String?
+  relationship String
   //* relations
   //* one Guardian has many Orphan
   orphan       Orphan[]
@@ -120,14 +120,14 @@ model Guardian {
 
 model User {
   id         Int          @id @default(autoincrement())
-  name       String?
-  gender     Gender?
-  userName   String?
-  password   String?
+  name       String
+  gender     Gender
+  userName   String
+  password   String
   email      String?
-  address    String?
-  phone      String?
-  type       UserType?
+  address    String
+  phone      String
+  type       UserType
   Guardian   Guardian?
   Sponsor    Sponsor?
   Attendance Attendance[]
@@ -148,7 +148,7 @@ model Sponsor {
   id             Int           @id @default(autoincrement())
   birthdate      DateTime?
   fax            String?
-  identityNumber String?
+  identityNumber String
   //* relations
   userId         Int           @unique
   user           User          @relation(fields: [userId], references: [id])
@@ -177,8 +177,8 @@ model Attendance {
   id               Int                @id @default(autoincrement())
   //* relations
   date             DateTime           @default(now())
-  User             User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           Int?
+  User             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int
   OrphanAttendance OrphanAttendance[]
 }
 
