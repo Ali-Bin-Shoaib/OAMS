@@ -49,10 +49,11 @@ function AttendanceTable({ attendance }: Props) {
 				columns={columns}
 				data={attendance}
 				initialState={{ density: 'xs' }}
-				// mantineTableBodyRowProps={(row) => ({
-				// 	onClick: () => {
-				// 	},
-				// })}
+				mantineTableBodyRowProps={(row) => ({
+					onClick: () => {
+						console.log(row.row.original);
+					},
+				})}
 				mantineTableBodyCellProps={{
 					sx: { border: '2px solid #dee2e6' },
 				}}

@@ -11,9 +11,11 @@ import { _Guardian, _Orphan } from '../../../types/types';
 import { Guardian } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { GuardianContext } from './contexts';
-
+import { initOrphans } from '../../../data/orphans';
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
+	(await prisma.orphan.count()) < 40 && (await prisma.orphan.createMany({ data: initOrphans }));
+
 	const orphans = await prisma.orphan.findMany();
 	const guardians = await prisma.guardian.findMany({ include: { user: true } });
 	//* to use generated types from prisma client

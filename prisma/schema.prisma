@@ -56,6 +56,30 @@ enum SponsorshipPeriod {
   TWO_YEAR
 }
 
+enum Degree {
+  EXCELLENT
+  VERY_GOOD
+  GOOD
+  ACCEPTED
+  FAIL
+}
+
+enum NotificationType {
+  Attendance
+  Sponsorship
+  Behavior
+  Health
+  Activity
+  ActivityExecution
+}
+
+enum Quarter {
+  First
+  Second
+  Third
+  Fourth
+}
+
 model Orphan {
   id         Int      @id @default(autoincrement())
   name       String
@@ -97,14 +121,24 @@ model Orphan {
   //* relations
 
   //* one Orphan has many EmergencyContactInfo
-  emergencyContactInfo EmergencyContactInfo[]
+  EmergencyContactInfo    EmergencyContactInfo[]
   //* one Orphan has one Guardian
-  Guardian             Guardian?              @relation(fields: [guardianId], references: [userId])
-  guardianId           Int
+  Guardian                Guardian?                 @relation(fields: [guardianId], references: [userId])
+  guardianId              Int
   //* one Orphan has many Sponsorship
-  Sponsorship          Sponsorship[]
+  Sponsorship             Sponsorship[]
   //* one Orphan has many OrphanAttendance
-  OrphanAttendance     OrphanAttendance[]
+  OrphanAttendance        OrphanAttendance[]
+  //* one Orphan has many HealthInfo
+  HealthInfo              HealthInfo[]
+  //* one Orphan has many EducationInfo
+  EducationInfo           EducationInfo[]
+  Room                    Room?                     @relation(fields: [roomId], references: [id])
+  roomId                  Int?
+  OrphanActivityExecution OrphanActivityExecution[]
+
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
 }
 
 model Guardian {
@@ -119,18 +153,41 @@ model Guardian {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  name       String
-  gender     Gender
-  userName   String
-  password   String
-  email      String?
-  address    String
-  phone      String
-  type       UserType
-  Guardian   Guardian?
-  Sponsor    Sponsor?
-  Attendance Attendance[]
+  id       Int      @id @default(autoincrement())
+  name     String
+  gender   Gender
+  userName String
+  password String
+  email    String?
+  address  String
+  phone    String
+  type     UserType
+  //* relations
+
+  Guardian              Guardian?
+  Sponsor               Sponsor?
+  Orphan                Orphan[]
+  Attendance            Attendance[]
+  HealthInfo            HealthInfo[]
+  EducationInfo         EducationInfo[]
+  ActivityExecutionInfo ActivityExecutionInfo[]
+  EmergencyContactInfo  EmergencyContactInfo[]
+
+  Sponsorship      Sponsorship[]
+  OrphanAttendance OrphanAttendance[]
+
+  BehaviorInfo       BehaviorInfo[]
+  Criteria           Criteria[]
+  BehaviorCriteria   BehaviorCriteria[]
+  Room               Room[]
+  Notification       Notification[]
+  ActivityInfo       ActivityInfo[]
+  UnAchievedActivity UnAchievedActivity[]
+  ActivityGoal       ActivityGoal[]
+  GoalTitle          GoalTitle[]
+  GoalInfo           GoalInfo[]
+
+  OrphanActivityExecution OrphanActivityExecution[]
 }
 
 model EmergencyContactInfo {
@@ -142,6 +199,8 @@ model EmergencyContactInfo {
   //* one orphan has many contact
   Orphan   Orphan @relation(fields: [orphanId], references: [id])
   orphanId Int
+  User     User?  @relation(fields: [userId], references: [id])
+  userId   Int?
 }
 
 model Sponsor {
@@ -171,13 +230,15 @@ model Sponsorship {
   // * one sponsorship has one or more Orphan
   orphanId          Int
   Orphan            Orphan            @relation(fields: [orphanId], references: [id])
+  User              User?             @relation(fields: [userId], references: [id])
+  userId            Int?
 }
 
 model Attendance {
   id               Int                @id @default(autoincrement())
-  //* relations
   date             DateTime           @default(now())
-  User             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  //* relations
+  User             User               @relation(fields: [userId], references: [id])
   userId           Int
   OrphanAttendance OrphanAttendance[]
 }
@@ -191,9 +252,192 @@ model OrphanAttendance {
   returnDay     String?
   justification String?
 
-  // relation
-  Attendance   Attendance @relation(fields: [attendanceId], references: [id])
+  //* relations
+  Attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
   attendanceId Int
   Orphan       Orphan     @relation(fields: [orphanId], references: [id])
   orphanId     Int
+  User         User?      @relation(fields: [userId], references: [id])
+  userId       Int?
+}
+
+//* ********************************* TO IMPLEMENT*********************************
+model HealthInfo {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  disease     String?
+  description String?
+  //* relations
+
+  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
+  orphanId Int?
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   Int?
+}
+
+model EducationInfo {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  scoreSheet String?
+  degree     Degree
+  schoolName String?
+  //* relations
+
+  //* one Orphan has many EducationInfo
+  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
+  orphanId Int?
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   Int?
+}
+
+model BehaviorInfo {
+  id   Int      @id @default(autoincrement())
+  date DateTime
+  note String?
+  //* relations
+
+  BehaviorCriteria BehaviorCriteria[]
+  User             User?              @relation(fields: [userId], references: [id])
+  userId           Int?
+}
+
+model Criteria {
+  id    Int     @id @default(autoincrement())
+  title String?
+  //* relations
+
+  BehaviorCriteria BehaviorCriteria[]
+  User             User?              @relation(fields: [userId], references: [id])
+  userId           Int?
+}
+
+model BehaviorCriteria {
+  id         Int   @id @default(autoincrement())
+  evaluation Float
+  //* relations
+
+  Criteria       Criteria?     @relation(fields: [criteriaId], references: [id])
+  criteriaId     Int?
+  BehaviorInfo   BehaviorInfo? @relation(fields: [behaviorInfoId], references: [id], onDelete: Cascade)
+  behaviorInfoId Int?
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         Int?
+}
+
+model Room {
+  id       Int     @id @default(autoincrement())
+  wing     String?
+  capacity Int?
+  //* relations
+
+  Orphan Orphan[]
+  User   User?    @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model Notification {
+  id   Int               @id @default(autoincrement())
+  date DateTime?
+  type NotificationType?
+  //* relations
+
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model ActivityInfo {
+  id      Int      @id @default(autoincrement())
+  date    DateTime
+  title   String?
+  budget  Float?
+  target  String?
+  type    String?
+  quarter Quarter
+  //* relations
+
+  ActivityGoal          ActivityGoal[]
+  ActivityExecutionInfo ActivityExecutionInfo[]
+  UnAchievedActivity    UnAchievedActivity[]
+  User                  User?                   @relation(fields: [userId], references: [id])
+  userId                Int?
+}
+
+model UnAchievedActivity {
+  id   Int     @id @default(autoincrement())
+  note String?
+  //* relations
+
+  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
+  activityInfoId Int?
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         Int?
+}
+
+model ActivityGoal {
+  id Int @id @default(autoincrement())
+  //* relations
+
+  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
+  activityInfoId Int?
+  GoalTitle      GoalTitle?    @relation(fields: [goalTitleId], references: [id])
+  goalTitleId    Int?
+  GoalInfo       GoalInfo[]
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         Int?
+}
+
+model GoalTitle {
+  id    Int    @id @default(autoincrement())
+  title String
+  //* relations
+
+  ActivityGoal ActivityGoal[]
+  User         User?          @relation(fields: [userId], references: [id])
+  userId       Int?
+}
+
+model GoalInfo {
+  id         Int      @id @default(autoincrement())
+  evaluation Float
+  date       DateTime
+  //* relations
+
+  ActivityGoal            ActivityGoal?          @relation(fields: [activityGoalId], references: [id])
+  activityGoalId          Int?
+  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
+  activityExecutionInfoId Int?
+  User                    User?                  @relation(fields: [userId], references: [id])
+  userId                  Int?
+}
+
+model ActivityExecutionInfo {
+  id          Int       @id @default(autoincrement())
+  cost        Float?
+  description String?
+  startDate   DateTime?
+  note        String?
+  // * Relations
+
+  Executor User @relation(fields: [userId], references: [id])
+  userId   Int
+
+  ActivityInfo   ActivityInfo @relation(fields: [activityInfoId], references: [id])
+  activityInfoId Int
+
+  GoalInfo GoalInfo[]
+
+  OrphanActivityExecution OrphanActivityExecution[]
+}
+
+model OrphanActivityExecution {
+  id         Int    @id @default(autoincrement())
+  evaluation Float?
+  //* relations
+
+  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
+  activityExecutionInfoId Int?
+  Orphan                  Orphan?                @relation(fields: [orphanId], references: [id])
+  orphanId                Int?
+  User                    User?                  @relation(fields: [userId], references: [id])
+  userId                  Int?
 }

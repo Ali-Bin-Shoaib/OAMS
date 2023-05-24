@@ -11,6 +11,7 @@ import {
 	Sponsorship,
 	SponsorshipPeriod,
 	Status,
+	User,
 	UserType,
 } from '@prisma/client';
 import prisma from '../lib/prisma';
@@ -183,18 +184,26 @@ const userValidator = Prisma.validator<Prisma.UserArgs>()({
 		Attendance: true,
 	},
 });
-export type User = Prisma.UserGetPayload<typeof userValidator>;
+// export type User = Prisma.UserGetPayload<typeof userValidator>;
 
-export type _Attendance = Attendance & {
+export type _Attendance = {
+	id?: number;
+	date: Date;
+	userId: number;
+} & {
 	User: User | null;
-	OrphanAttendance: (OrphanAttendance & {
-		Orphan: Orphan;
+	OrphanAttendance: (_OrphanAttendance & {
+		Orphan?: _Orphan;
 	})[];
 };
 
-export type _OrphanAttendance = OrphanAttendance & {
-	Attendance: Attendance & { User: User };
-	Orphan: Orphan | null;
-};
-// export type _OrphanAttendance = (OrphanAttendance & { Orphan: Orphan  });
-let x: _OrphanAttendance;
+export interface _OrphanAttendance {
+	id?: number | '';
+	isAttended: boolean;
+	absentReason: string | number | readonly string[] | undefined;
+	notes: string | number | readonly string[] | undefined;
+	returnDay: Date | null;
+	justification: string | number | readonly string[] | undefined;
+	// attendanceId?: number;
+	orphanId: number | '';
+}

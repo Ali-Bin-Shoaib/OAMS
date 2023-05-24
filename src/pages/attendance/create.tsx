@@ -15,31 +15,29 @@ export const getStaticProps: GetStaticProps = async () => {
 	orphans.sort(function (a, b) {
 		return a.id > b.id ? 1 : -1;
 	});
-	const orphanAttendance = await prisma.orphanAttendance.findMany({ include: { Attendance: true, Orphan: true } });
-	const stringData = SuperJSON.stringify({ orphans, orphanAttendance });
-	const x = SuperJSON.parse<jsonData>(stringData);
-	console.log('🚀 ~ file: create.tsx:20 ~ constgetStaticProps:GetStaticProps= ~ x:', x);
+	const stringData = SuperJSON.stringify(orphans);
+
+	const x = SuperJSON.parse<_Orphan[]>(stringData);
 	return { props: { stringData } };
 };
-type jsonData = { orphans: _Orphan[]; orphanAttendance: _OrphanAttendance[] };
+
 interface Props {
 	stringData: string;
 }
 
 function Create({ stringData }: Props) {
-	const jsonData: jsonData = SuperJSON.parse(stringData);
-	const { orphans, orphanAttendance } = jsonData;
-	const [orphanList, setOrphanList] = useState<_Orphan[]>(orphans);
+	const jsonData: _Orphan[] = SuperJSON.parse(stringData);
+	const orphans = jsonData;
+
+	// const [orphanList, setOrphanList] = useState<_Orphan[]>(orphans);
 	const [hydration, setHydration] = useState(false);
-	// const router = useRouter();
 	const title = usePageTitle();
 	useEffect(() => {
-		setOrphanList(SuperJSON.parse(stringData));
+		// setOrphanList(SuperJSON.parse(stringData));
 		setHydration(true);
 	}, [hydration, stringData]);
 
 	if (!hydration || !jsonData) return <Loader size={100} />;
-	let test: (OrphanAttendance & { Attendance: Attendance | null; Orphan: _Orphan | null })[] = [];
 
 	return (
 		<>
