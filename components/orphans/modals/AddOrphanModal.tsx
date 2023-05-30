@@ -15,7 +15,7 @@ export default function AddOrphanModal() {
 				{/* <FormTest /> */}
 			</Modal>
 			<Group position='center'>
-				<Button size='md' onClick={open}>
+				<Button size='xl' onClick={open}>
 					<IconPlus />
 					Add New Orphan
 				</Button>

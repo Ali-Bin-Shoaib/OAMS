@@ -21,7 +21,7 @@ export default function MyModal({ ModelForm, modalTitle, buttonText, buttonColor
 				{ModelForm}
 			</Modal>
 			<Group position='center'>
-				<Button color={buttonColor} size='md' onClick={open}>
+				<Button color={buttonColor} size='xl' m={15} onClick={open}>
 					<IconPlus />
 					{buttonText}
 				</Button>

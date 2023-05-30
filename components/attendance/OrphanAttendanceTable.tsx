@@ -13,7 +13,7 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
 			{
-				accessorFn: (row) => row.Orphan?.name,
+				accessorFn: (row) => row.orphanId,
 				id: 'Orphan.name',
 				header: 'Orphan Name',
 				maxSize: 300,

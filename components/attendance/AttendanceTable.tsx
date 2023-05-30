@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Container } from '@mantine/core';
 import { _Attendance, _Orphan, _OrphanAttendance } from '../../types/types';
+import { useRouter } from 'next/router';
+import { serverLink } from '../../shared/links';
 
 interface Props {
 	attendance: _Attendance[];
@@ -10,8 +12,7 @@ interface Props {
 
 function AttendanceTable({ attendance }: Props) {
 	console.log('🚀 ~ file: ~ AttendanceTable');
-
-	console.log('🚀 ~ file: AttendanceTable.tsx:12 ~ AttendanceTable ~ attendance:', attendance);
+	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<_Attendance>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
@@ -34,7 +35,7 @@ function AttendanceTable({ attendance }: Props) {
 			{
 				accessorFn: (row) => row.OrphanAttendance.length,
 				id: 'OrphanAttendance.length',
-				header: 'attended orphans',
+				header: 'Absent orphans',
 				maxSize: 300,
 				size: 120,
 				enableResizing: true,
@@ -51,7 +52,8 @@ function AttendanceTable({ attendance }: Props) {
 				initialState={{ density: 'xs' }}
 				mantineTableBodyRowProps={(row) => ({
 					onClick: () => {
-						console.log(row.row.original);
+						// on row click change the card to the clicked attendance and then user can edit or delete.
+						router.push(serverLink + 'attendance/' + row.row.original.id);
 					},
 				})}
 				mantineTableBodyCellProps={{

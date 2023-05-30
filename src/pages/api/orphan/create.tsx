@@ -17,6 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		if (req.method === REQUEST_METHODS.POST) {
 			const orphan: Orphan = req.body;
 			orphan.image = null;
+			orphan.noOfFamilyMembers = orphan.males + orphan.females;
 			console.log('🚀 ~ file: create.tsx:25 ~ //form.parse ~ orphan:', orphan);
 			const newOrphan = await prisma.orphan.create({ data: orphan });
 			console.log('🚀 ~ file: create.tsx:20 ~ handler ~ newOrphan:', newOrphan);

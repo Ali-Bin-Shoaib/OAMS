@@ -184,23 +184,10 @@ model User {
   ActivityInfo       ActivityInfo[]
   UnAchievedActivity UnAchievedActivity[]
   ActivityGoal       ActivityGoal[]
-  GoalTitle          GoalTitle[]
+  // GoalTitle          GoalTitle[]
   GoalInfo           GoalInfo[]
 
   OrphanActivityExecution OrphanActivityExecution[]
-}
-
-model EmergencyContactInfo {
-  id    Int    @id @default(autoincrement())
-  name  String
-  phone String
-
-  //* relations
-  //* one orphan has many contact
-  Orphan   Orphan @relation(fields: [orphanId], references: [id])
-  orphanId Int
-  User     User?  @relation(fields: [userId], references: [id])
-  userId   Int?
 }
 
 model Sponsor {
@@ -229,7 +216,7 @@ model Sponsorship {
   Sponsor           Sponsor           @relation(fields: [sponsorId], references: [id])
   // * one sponsorship has one or more Orphan
   orphanId          Int
-  Orphan            Orphan            @relation(fields: [orphanId], references: [id])
+  Orphan            Orphan            @relation(fields: [orphanId], references: [id], onDelete: Cascade)
   User              User?             @relation(fields: [userId], references: [id])
   userId            Int?
 }
@@ -255,13 +242,92 @@ model OrphanAttendance {
   //* relations
   Attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
   attendanceId Int
-  Orphan       Orphan     @relation(fields: [orphanId], references: [id])
-  orphanId     Int
+  Orphan       Orphan?    @relation(fields: [orphanId], references: [id], onDelete: Cascade)
+  orphanId     Int?
   User         User?      @relation(fields: [userId], references: [id])
   userId       Int?
 }
 
 //* ********************************* TO IMPLEMENT*********************************
+model ActivityInfo {
+  id                    Int                     @id @default(autoincrement())
+  date                  DateTime
+  title                 String?
+  budget                Float?
+  target                String?
+  type                  String?
+  quarter               Quarter
+  //* relations
+  ActivityGoal          ActivityGoal[]
+  ActivityExecutionInfo ActivityExecutionInfo[]
+  UnAchievedActivity    UnAchievedActivity[]
+  User                  User?                   @relation(fields: [userId], references: [id])
+  userId                Int?
+}
+
+model ActivityGoal {
+  id                      Int                    @id @default(autoincrement())
+  evaluation              Float
+  date                    DateTime               @default(now())
+  //* relations
+  ActivityInfo            ActivityInfo?          @relation(fields: [activityInfoId], references: [id])
+  activityInfoId          Int?
+  GoalInfo                GoalInfo?              @relation(fields: [goalInfoId], references: [id])
+  goalInfoId              Int?
+  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
+  activityExecutionInfoId Int?
+  User                    User?                  @relation(fields: [userId], references: [id])
+  userId                  Int?
+}
+
+model GoalInfo {
+  id           Int            @id @default(autoincrement())
+  title        String
+  //* relations
+  ActivityGoal ActivityGoal[]
+  User         User?          @relation(fields: [userId], references: [id])
+  userId       Int?
+}
+
+model ActivityExecutionInfo {
+  id                      Int                       @id @default(autoincrement())
+  cost                    Float?
+  description             String?
+  startDate               DateTime?
+  note                    String?
+  // * Relations
+  Executor                User                      @relation(fields: [userId], references: [id])
+  userId                  Int
+  ActivityInfo            ActivityInfo              @relation(fields: [activityInfoId], references: [id])
+  activityInfoId          Int
+  ActivityGoal            ActivityGoal[]
+  OrphanActivityExecution OrphanActivityExecution[]
+}
+
+model UnAchievedActivity {
+  id   Int     @id @default(autoincrement())
+  note String?
+  //* relations
+
+  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
+  activityInfoId Int?
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         Int?
+}
+
+model OrphanActivityExecution {
+  id         Int    @id @default(autoincrement())
+  evaluation Float?
+  //* relations
+
+  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
+  activityExecutionInfoId Int?
+  Orphan                  Orphan?                @relation(fields: [orphanId], references: [id])
+  orphanId                Int?
+  User                    User?                  @relation(fields: [userId], references: [id])
+  userId                  Int?
+}
+
 model HealthInfo {
   id          Int      @id @default(autoincrement())
   date        DateTime
@@ -324,6 +390,19 @@ model BehaviorCriteria {
   userId         Int?
 }
 
+model EmergencyContactInfo {
+  id    Int    @id @default(autoincrement())
+  name  String
+  phone String
+
+  //* relations
+  //* one orphan has many contact
+  Orphan   Orphan @relation(fields: [orphanId], references: [id])
+  orphanId Int
+  User     User?  @relation(fields: [userId], references: [id])
+  userId   Int?
+}
+
 model Room {
   id       Int     @id @default(autoincrement())
   wing     String?
@@ -343,101 +422,4 @@ model Notification {
 
   User   User? @relation(fields: [userId], references: [id])
   userId Int?
-}
-
-model ActivityInfo {
-  id      Int      @id @default(autoincrement())
-  date    DateTime
-  title   String?
-  budget  Float?
-  target  String?
-  type    String?
-  quarter Quarter
-  //* relations
-
-  ActivityGoal          ActivityGoal[]
-  ActivityExecutionInfo ActivityExecutionInfo[]
-  UnAchievedActivity    UnAchievedActivity[]
-  User                  User?                   @relation(fields: [userId], references: [id])
-  userId                Int?
-}
-
-model UnAchievedActivity {
-  id   Int     @id @default(autoincrement())
-  note String?
-  //* relations
-
-  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
-  activityInfoId Int?
-  User           User?         @relation(fields: [userId], references: [id])
-  userId         Int?
-}
-
-model ActivityGoal {
-  id Int @id @default(autoincrement())
-  //* relations
-
-  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
-  activityInfoId Int?
-  GoalTitle      GoalTitle?    @relation(fields: [goalTitleId], references: [id])
-  goalTitleId    Int?
-  GoalInfo       GoalInfo[]
-  User           User?         @relation(fields: [userId], references: [id])
-  userId         Int?
-}
-
-model GoalTitle {
-  id    Int    @id @default(autoincrement())
-  title String
-  //* relations
-
-  ActivityGoal ActivityGoal[]
-  User         User?          @relation(fields: [userId], references: [id])
-  userId       Int?
-}
-
-model GoalInfo {
-  id         Int      @id @default(autoincrement())
-  evaluation Float
-  date       DateTime
-  //* relations
-
-  ActivityGoal            ActivityGoal?          @relation(fields: [activityGoalId], references: [id])
-  activityGoalId          Int?
-  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
-  activityExecutionInfoId Int?
-  User                    User?                  @relation(fields: [userId], references: [id])
-  userId                  Int?
-}
-
-model ActivityExecutionInfo {
-  id          Int       @id @default(autoincrement())
-  cost        Float?
-  description String?
-  startDate   DateTime?
-  note        String?
-  // * Relations
-
-  Executor User @relation(fields: [userId], references: [id])
-  userId   Int
-
-  ActivityInfo   ActivityInfo @relation(fields: [activityInfoId], references: [id])
-  activityInfoId Int
-
-  GoalInfo GoalInfo[]
-
-  OrphanActivityExecution OrphanActivityExecution[]
-}
-
-model OrphanActivityExecution {
-  id         Int    @id @default(autoincrement())
-  evaluation Float?
-  //* relations
-
-  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
-  activityExecutionInfoId Int?
-  Orphan                  Orphan?                @relation(fields: [orphanId], references: [id])
-  orphanId                Int?
-  User                    User?                  @relation(fields: [userId], references: [id])
-  userId                  Int?
 }

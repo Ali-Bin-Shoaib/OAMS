@@ -12,13 +12,13 @@ interface Props {
 function OrphansTable({ orphans, updateCard }: Props) {
 	const columns = useMemo<MRT_ColumnDef<_Orphan>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID' },
+			// { accessorFn: (row) => row.id, id: 'id', header: 'ID' },
 			{ accessorFn: (row) => row.name, id: 'name', header: 'name', maxSize: 300, size: 200, enableResizing: true },
 
 			// { accessorFn: (row) => row.image, id: 'image', header: 'image', maxSize: 200, size: 100, enableResizing: true },
-			{ accessorFn: (row) => row.gender, id: 'gender', header: 'gender', maxSize: 200, size: 120, enableResizing: true },
+			// { accessorFn: (row) => row.gender, id: 'gender', header: 'gender', maxSize: 200, size: 120, enableResizing: true },
 			// { accessorFn: (row) => row.age, id: 'age', header: 'age', maxSize: 200, size: 100, enableResizing: true },
-			{ accessorFn: (row) => row.birthdate?.toDateString(), id: 'birthdate', header: 'birthdate' },
+			// { accessorFn: (row) => row.birthdate?.toDateString(), id: 'birthdate', header: 'birthdate' },
 			// {
 			// 	accessorFn: (row) => row.birthplace,
 			// 	id: 'birthplace',
@@ -27,7 +27,7 @@ function OrphansTable({ orphans, updateCard }: Props) {
 			// 	size: 150,
 			// 	enableResizing: true,
 			// },
-			{ accessorFn: (row) => row.joinDate?.toDateString(), id: 'joinDate', header: 'joinDate' },
+			// { accessorFn: (row) => row.joinDate?.toDateString(), id: 'joinDate', header: 'joinDate' },
 			// {
 			// 	accessorFn: (row) => row.schoolName,
 			// 	id: 'schoolName',
@@ -36,22 +36,22 @@ function OrphansTable({ orphans, updateCard }: Props) {
 			// 	size: 150,
 			// 	enableResizing: true,
 			// },
-			{
-				accessorFn: (row) => row.gradeLevel,
-				id: 'gradeLevel',
-				header: 'gradeLevel',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
-			{
-				accessorFn: (row) => row.lastYearPercentage,
-				id: 'lastYearPercentage',
-				header: 'lastYearPercentage',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.gradeLevel,
+			// 	id: 'gradeLevel',
+			// 	header: 'gradeLevel',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
+			// {
+			// 	accessorFn: (row) => row.lastYearPercentage,
+			// 	id: 'lastYearPercentage',
+			// 	header: 'lastYearPercentage',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 			// { accessorFn: (row) => row.fatherDeathDate?.toDateString(), id: 'fatherDeathDate', header: 'fatherDeathDate' },
 			// {
 			// 	accessorFn: (row) => row.fatherWork,
@@ -150,14 +150,14 @@ function OrphansTable({ orphans, updateCard }: Props) {
 			// 	size: 150,
 			// 	enableResizing: true,
 			// },
-			{
-				accessorFn: (row) => row.homePhone,
-				id: 'homePhone',
-				header: 'homePhone',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.homePhone,
+			// 	id: 'homePhone',
+			// 	header: 'homePhone',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 			// {
 			// 	accessorFn: (row) => row.currentAddress,
 			// 	id: 'currentAddress',
@@ -190,14 +190,14 @@ function OrphansTable({ orphans, updateCard }: Props) {
 			// 	size: 150,
 			// 	enableResizing: true,
 			// },
-			{
-				accessorFn: (row) => row.evaluation,
-				id: 'evaluation',
-				header: 'evaluation',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.evaluation,
+			// 	id: 'evaluation',
+			// 	header: 'evaluation',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 		],
 		[]
 	);
@@ -206,16 +206,16 @@ function OrphansTable({ orphans, updateCard }: Props) {
 		<Container fluid>
 			<MantineReactTable
 				columns={columns}
+				mantineTableBodyRowProps={(row) => ({
+					onClick: () => {
+						updateCard(row.row.original);
+					},
+					sx: { border: '2px solid #dee2e6' },
+				})}
 				// enableRowActions
 				// positionActionsColumn='last'
 				data={orphans}
 				initialState={{ density: 'xs' }}
-				mantineTableBodyRowProps={({ row }) => ({
-					onClick: () => {
-						updateCard(row.original);
-					},
-					sx: { border: '2px solid #dee2e6' },
-				})}
 				mantineTableBodyCellProps={{
 					sx: { border: '2px solid #dee2e6' },
 				}}
@@ -226,8 +226,8 @@ function OrphansTable({ orphans, updateCard }: Props) {
 					striped: true,
 					sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' },
 				}}
-				enableColumnResizing
-				columnResizeMode='onEnd' //instead of the default "onChange" mode
+				// enableColumnResizing
+				// columnResizeMode='onEnd' //instead of the default "onChange" mode
 			/>
 		</Container>
 	);

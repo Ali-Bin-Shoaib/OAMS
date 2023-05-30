@@ -9,9 +9,9 @@ import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { useState } from 'react';
 import { Orphan } from '@prisma/client';
-import { NextParsedUrlQuery } from 'next/dist/server/request-meta';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import AppHead from '../../../components/common/AppHead';
+
 //*  needed to define possible ids that id parameter can accepts to create static pages for each id at build time
 // export const getStaticPaths: GetStaticPaths = async () => {
 // 	const data = await prisma.orphan.findMany();
@@ -32,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 			id: Number(params?.id),
 		},
 	});
+	if (!data) return { notFound: true };
 	return {
 		props: { data },
 	};
@@ -42,16 +43,12 @@ interface Props {
 
 function OrphanDetails({ data }: Props) {
 	const title = usePageTitle();
-
 	console.log('🚀 ~ file: [id].tsx:30 ~ OrphanDetails ~ data:', data);
 	const [orphan, SetOrphan] = useState<Orphan>(data);
 
-	if (!orphan)
-		return (
-			<Group position='center'>
-				<Loader />
-			</Group>
-		);
+	// if (!orphan) {
+	// 	notFound();
+	// }
 	return (
 		<>
 			<AppHead title={title} />
@@ -106,7 +103,7 @@ function OrphanDetails({ data }: Props) {
 
 					<Group position='right'>
 						<Button.Group>
-							<EditOrphanModal orphan={orphan} />
+							<EditOrphanModal orphan={orphan as unknown as _Orphan} />
 							<DeleteOrphanModal id={orphan.id} />
 						</Button.Group>
 					</Group>

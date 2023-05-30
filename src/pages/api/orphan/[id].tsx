@@ -30,14 +30,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 				const updatedOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: orphan });
 				console.log('🚀 ~ file: [id].tsx:37 ~ //form.parse ~ updatedOrphan:', updatedOrphan);
-				return res.json({ data: orphan, message: 'update success' });
+				return res.json({ data: orphan, msg: 'update success' });
 				// return res.status(STATUS_CODE.Success).json({ message: 'updated successfully', updateOrphan: updateOrphan });
 				// res.json({ message: 'update', data: orphan });
 				// });
 				break;
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:26 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, message: 'Something went wrong.' });
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, msg: 'Something went wrong.' });
 			}
 		}
 		//* ************************DELETE************************

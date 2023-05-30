@@ -1,4 +1,18 @@
-import { Card, Title, CardSection, List, Button, Group, Box, Rating, Tooltip } from '@mantine/core';
+import {
+	Card,
+	Title,
+	CardSection,
+	List,
+	Button,
+	Group,
+	Box,
+	Rating,
+	Tooltip,
+	Text,
+	Grid,
+	Badge,
+	Divider,
+} from '@mantine/core';
 import { v4 } from 'uuid';
 import DeleteOrphanModal from './modals/DeleteOrphanModal';
 import EditOrphanModal from './modals/EditOrphanModal';
@@ -8,71 +22,121 @@ import { Orphan } from '@prisma/client';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { Pages } from '../../shared/links';
-import { _Orphan } from '../../types/types';
+import { _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../types/types';
+import { useMediaQuery } from '@mantine/hooks';
 interface Props {
-	orphan: _Orphan;
+	orphan: orphanWithGuardianAndSponsorshipInfo;
 }
 function OrphanCard({ orphan }: Props) {
 	console.log('🚀 ~ file: ~ OrphanCard ~ OrphanCard');
 
 	const router = useRouter();
 	return (
-		<Card key={v4()} withBorder mih={150} className=' mx-auto my-2 p-2 w-3/6  '>
-			{orphan ? (
-				<>
-					<CardSection className='text-center'>
-						<Title>Orphan Info</Title>
-						<Image src={img1} width={300} alt='orphan image' className='rounded-3xl  my-2 ' />
-					</CardSection>
-					<CardSection withBorder className='p-4'>
-						<Box className='flex flex-wrap'>
-							<List>
-								<List.Item>id:{orphan.id}</List.Item>
-								<List.Item>name: {orphan.name || '---'}</List.Item>
-								<List.Item>birthdate: {orphan.birthdate?.toUTCString() || '---'}</List.Item>
-								<List.Item>gender: {orphan.gender || '---'}</List.Item>
-								<List.Item>gradeLevel: {orphan.gradeLevel || '---'}</List.Item>
-								<List.Item>schoolName: {orphan.schoolName || '---'}</List.Item>
-								{/* <List.Item >motherName: {orphan.motherName || '---'}</List.Item> */}
-								{/* <List.Item >birthplace: {orphan.birthplace}</List.Item> */}
-								{/* <List.Item >joinDate: {orphan.joinDate?.toUTCString()}</List.Item> */}
-								<List.Item>lastYearPercentage: {orphan.lastYearPercentage}</List.Item>
-								{/* <List.Item >
-									fatherDeathDate:
-									{orphan.fatherDeathDate?.toUTCString()}
-								</List.Item> */}
-								<List.Item>males: {orphan.males}</List.Item>
-								<List.Item>females: {orphan.females}</List.Item>
-								{/* <List.Item >motherStatus: {orphan.motherStatus}</List.Item>
-								<List.Item >liveWith: {orphan.liveWith}</List.Item>
-								<List.Item >homePhone: {orphan.homePhone}</List.Item> */}
-								<List.Item>currentAddress: {orphan.currentAddress}</List.Item>
-								<List.Item>evaluation: {orphan.evaluation || '---'}</List.Item>
-							</List>
-							<div className='m-auto '>
-								<Rating value={orphan.evaluation as number} fractions={1} defaultValue={5} count={10} />
-							</div>
-						</Box>
-						<Group position='right'>
-							<Button.Group>
-								{/* <Tooltip label='Evaluate orphan'> */}
-								<Button>Evaluate</Button>
-								{/* </Tooltip> */}
-								<Tooltip label='Orphan Info'>
-									<Button color='gray' onClick={() => router.push(Pages.Orphans + orphan.id)}>
-										<IconInfoCircle />
-									</Button>
-								</Tooltip>
-								<EditOrphanModal orphan={orphan} />
-								<DeleteOrphanModal id={orphan.id} />
-							</Button.Group>
-						</Group>
-					</CardSection>
-				</>
-			) : (
-				<Title align='center'>no orphan registered.</Title>
-			)}
-		</Card>
+		<>
+			<Card key={v4()} withBorder mih={850} shadow='md' radius='md' padding='md' className=' mx-auto my-2 p-2 w-5/6'>
+				{/* <div className='m-auto '>
+				<Rating value={orphan.evaluation as number} fractions={1} defaultValue={5} count={10} />
+			</div> */}
+
+				<div>
+					<div className='text-center'>
+						<Image src={img1} alt={orphan.name!} width={250} height={250} />
+					</div>
+					<Divider />
+				</div>
+				<Title order={2} className='text-center'>
+					{orphan.name}
+				</Title>
+
+				<div className='p-2 m-2'>
+					<Text size='xl'>Gender: {orphan.gender}</Text>
+
+					<Text size='xl'>Age: {orphan.age}</Text>
+					<Text size='xl'>School Name: {orphan.schoolName}</Text>
+					<Text size='xl'>Grade Level: {orphan.gradeLevel}</Text>
+					<Text size='xl'>Evaluation: {orphan.evaluation}</Text>
+					<Text size='xl'>Guardian: {orphan.Guardian?.user.name}</Text>
+					<Text size='xl'>Sponsor: {orphan.Sponsorship.find((x) => x.isActive === true)?.Sponsor.user.name}</Text>
+				</div>
+				<Divider />
+
+				<Group position='right'>
+					<Button.Group>
+						<Tooltip label='Evaluate orphan'>
+							<Button>Evaluate</Button>
+						</Tooltip>
+
+						<Tooltip label='Orphan Info'>
+							<Button color='gray' onClick={() => router.push(Pages.Orphans + orphan.id)}>
+								<IconInfoCircle />
+							</Button>
+						</Tooltip>
+						<EditOrphanModal orphan={orphan as unknown as _Orphan} />
+						<DeleteOrphanModal id={orphan.id} />
+					</Button.Group>
+				</Group>
+			</Card>
+		</>
+		// <InfoCard orphan={orphan} />
 	);
 }
 export default OrphanCard;
+// export function InfoCard({ orphan }: Props) {
+// 	// define the edit and delete handlers here
+// 	const handleEdit = () => {
+// 		// your edit logic here
+// 	};
+
+// 	const handleDelete = () => {
+// 		// your delete logic here
+// 	};
+
+// 	// use the useMediaQuery hook to check the screen size
+
+// 	return (
+// 		<Card key={v4()} withBorder mih={150} shadow='md' radius='md' padding='md' className=' mx-auto my-2 p-2 w-3/6'>
+// 			{/* <div className='m-auto '>
+// 				<Rating value={orphan.evaluation as number} fractions={1} defaultValue={5} count={10} />
+// 			</div> */}
+// 			<Title order={3} style={{ marginBottom: 10 }}>
+// 				{orphan.name}
+// 			</Title>
+// 			<Text size='sm'>{orphan.name}</Text>
+
+// 			<div>
+// 				<Text>Gender:{orphan.gender}</Text>
+// 				{/* <Badge color='teal' variant='filled' style={{ marginRight: 10 }}>
+// 					Orphans: {orphan.age}
+// 				</Badge>
+// 				<Badge color='indigo' variant='filled' style={{ marginRight: 10 }}>
+// 					Sponsors: {orphan.schoolName}
+// 				</Badge>
+// 				<Badge color='cyan' variant='filled' style={{ marginRight: 10 }}>
+// 					Users: {orphan.name}
+// 				</Badge>
+// 				<Badge color='purple' variant='filled' style={{ marginRight: 10 }}>
+// 					Activities: {orphan.name}
+// 				</Badge>
+// 				<Badge color='red' variant='filled' style={{ marginRight: 10 }}>
+// 					Attendance: {orphan.name}
+// 				</Badge> */}
+// 			</div>
+
+// 			<Group position='right'>
+// 				<Button.Group>
+// 					<Tooltip label='Evaluate orphan'>
+// 						<Button>Evaluate</Button>
+// 					</Tooltip>
+
+// 					<Tooltip label='Orphan Info'>
+// 						<Button color='gray' onClick={() => router.push(Pages.Orphans + orphan.id)}>
+// 							<IconInfoCircle />
+// 						</Button>
+// 					</Tooltip>
+// 					<EditOrphanModal orphan={orphan} />
+// 					<DeleteOrphanModal id={orphan.id} />
+// 				</Button.Group>
+// 			</Group>
+// 		</Card>
+// 	);
+// }

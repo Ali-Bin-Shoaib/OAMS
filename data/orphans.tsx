@@ -1,6 +1,6 @@
-import { Gender, Grade, HomeType, Status } from '@prisma/client';
+import { Gender, Grade, HomeType, Orphan, Prisma, Status } from '@prisma/client';
 
-export const initOrphans = [
+export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 	{
 		name: 'saeed',
 		image: null,
@@ -32,7 +32,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'omar',
@@ -65,7 +65,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'mohsen',
@@ -98,7 +98,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'abubaker',
@@ -131,7 +131,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'mohammad',
@@ -164,7 +164,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'hossain',
@@ -197,7 +197,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'abdo',
@@ -230,7 +230,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'jehad',
@@ -263,7 +263,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'hamod',
@@ -296,7 +296,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'ajrh',
@@ -329,7 +329,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'sadeq',
@@ -362,7 +362,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'hamzah',
@@ -395,7 +395,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'othman',
@@ -428,7 +428,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'adnan',
@@ -461,7 +461,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'alowe',
@@ -494,7 +494,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'kramh',
@@ -527,7 +527,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'seraj',
@@ -560,7 +560,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'somahe',
@@ -593,7 +593,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'hassan',
@@ -626,7 +626,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'krem',
@@ -659,7 +659,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'nor',
@@ -692,7 +692,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'mrowa',
@@ -725,7 +725,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'nada',
@@ -758,7 +758,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'fatemah',
@@ -791,7 +791,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'maryam',
@@ -824,7 +824,7 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 	{
 		name: 'zynh',
@@ -857,6 +857,6 @@ export const initOrphans = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 1,
+		guardianId: 2,
 	},
 ];

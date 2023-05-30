@@ -7,8 +7,19 @@ import { serverLink } from '../../shared/links';
 import { DateInput, DatePickerInput } from '@mantine/dates';
 import React from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Checkbox, Textarea, TextInput } from 'react-hook-form-mantine';
-import { Button, Group, Paper, Container, Stack, Loader, Divider, Table } from '@mantine/core';
+import {
+	Button,
+	Group,
+	Paper,
+	Container,
+	Stack,
+	Loader,
+	Divider,
+	Table,
+	Textarea,
+	TextInput,
+	Checkbox,
+} from '@mantine/core';
 // import { DevTool } from '@hookform/devtools';
 
 interface Props {
@@ -16,40 +27,64 @@ interface Props {
 	orphans: _Orphan[];
 }
 export default function AttendanceForm({ orphans, attendance }: Props): JSX.Element {
-	const defaultValues: _Attendance = attendance
-		? attendance
-		: // : { OrphanAttendance: orphans.map((orphan) => ({ Orphan: orphan, orphanId: orphan.id, isAttended: true })) };
-		  {
-				OrphanAttendance: orphans.map((orphan) => {
-					return {
-						Orphan: orphan,
-						orphanId: orphan.id as number,
-						absentReason: null as unknown as undefined,
-						isAttended: true,
-						justification: null as unknown as undefined,
-						notes: null as unknown as undefined,
-						returnDay: undefined as unknown as null,
-					};
-				}),
-				User: null,
-				date: new Date(),
-				userId: 1,
-		  };
+	// console.log('🚀 ~ file: AttendanceForm.tsx:19 ~ AttendanceForm ~ attendance:', attendance);
+	let defaultValues: _Attendance;
+	if (attendance) {
+		orphans.map((orphan) => {
+			if (!attendance.OrphanAttendance.map((x) => x.Orphan?.id ?? -1).includes(orphan.id as number))
+				attendance.OrphanAttendance.push({
+					Orphan: orphan,
+					orphanId: orphan.id as number,
+					absentReason: null as unknown as undefined,
+					// attendanceId: attendance.id as number,
+					userId: attendance.userId,
+					id: undefined,
+					isAttended: true,
+					justification: undefined,
+					notes: undefined,
+					returnDay: undefined as unknown as null,
+				});
+		});
+		defaultValues = attendance;
+	} else {
+		defaultValues = {
+			OrphanAttendance: orphans.map((orphan) => {
+				return {
+					Orphan: orphan,
+					orphanId: orphan.id as number,
+					absentReason: undefined,
+					// id: undefined,
+					isAttended: true,
+					justification: undefined,
+					notes: undefined,
+					returnDay: undefined as unknown as null,
+				};
+			}),
+			User: undefined,
+			date: new Date(),
+			userId: 1,
+		};
+	}
 
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
 		watch,
 		handleSubmit,
+		resetField,
+		setValue,
+
+		reset,
 		formState: { errors },
 	} = useForm<_Attendance>({
 		defaultValues: defaultValues,
 	});
 
-	const { fields } = useFieldArray({ control, name: 'OrphanAttendance' });
+	const { fields, update } = useFieldArray({ control, name: 'OrphanAttendance' });
 	const router = useRouter();
 	const onSubmit = async (data: _Attendance) => {
-		data.OrphanAttendance = data.OrphanAttendance.filter((x) => x.isAttended != true);
+		// data.OrphanAttendance = data.OrphanAttendance.filter((x) => x.isAttended == false);
+		data.OrphanAttendance.map((oa) => delete oa.Orphan);
 		console.log('🚀 ~ file: AttendanceForm.tsx:49 ~ onSubmit ~ data:', data);
 		// const config: AxiosRequestConfig = {
 		// 	headers: { 'content-type': 'multipart/form-data' },
@@ -57,7 +92,6 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 		if (!attendance) {
 			console.log('attendance not exist.');
 			const url = serverLink + 'api/attendance/create';
-			data.OrphanAttendance.map((oa) => delete oa.Orphan);
 			const res = await axios.post(url, data).catch((err) => console.log('error at creating new attendance--', err));
 			console.log('🚀 ~ file: AttendanceForm.tsx:40 ~ onSubmit ~ res:', res);
 		} else {
@@ -66,8 +100,9 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 			const res = await axios.put(url, data);
 			console.log('🚀 ~ file: AttendanceForm.tsx:45 ~ onSubmit ~ res:', res);
 		}
-		close();
-		router.push(router.asPath);
+		// close();
+		// router.push(router.asPath);
+		router.push(serverLink + 'attendance');
 	};
 
 	useEffect(() => {
@@ -90,6 +125,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 										{...field}
 										label='Attendance data'
 										w={'45%'}
+										defaultDate={attendance?.date}
 										placeholder='date'
 										withAsterisk
 										error={errors.date && errors.date.message}
@@ -97,27 +133,27 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 								);
 							}}
 						/>
-						{/* <Controller
+						<Controller
 							name='User.name'
+							control={control}
 							// rules={{ required: 'User' }}
 							render={({ field }) => {
-							return */}
-						<TextInput
-							//   {...field}
-							control={control}
-							disabled
-							name='User.name'
-							label='User name'
-							defaultValue={'fix user name'}
-							w={'45%'}
+								return (
+									<TextInput
+										{...field}
+										disabled
+										name='User.name'
+										label='User name'
+										defaultValue={attendance?.User?.name}
+										w={'45%'}
+									/>
+								);
+							}}
 						/>
-
-						{/* }}
-						/> */}
 					</Container>
 					<Divider py={30} />
 					<Container fluid className='text-center'>
-						<Table>
+						<Table withBorder>
 							<thead>
 								<tr className='text-center'>
 									<th>id</th>
@@ -135,66 +171,68 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 										<td>{item.Orphan?.id}</td>
 										<td>{item.Orphan?.name}</td>
 										<td>
-											{/* <Controller
-												render={({ field }) => {
-												return ( */}
-											<Checkbox
+											<Controller
 												name={`OrphanAttendance.${index}.isAttended`}
-												rules={{ required: 'this field is required' }}
 												control={control}
-												defaultChecked={item.isAttended ? item.isAttended : true}
-												// defaultChecked={item.isAttended===true ? item.isAttended.toString():'false'}
-												error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-												// {...field}
-											/>
-											{/* );
-												}}
-											/> */}
-										</td>
-										<td>
-											{/* <Controller
+												// defaultValue={item.isAttended ? item.isAttended : true}
 												render={({ field }) => {
-												return ( */}
-											<Textarea
+													// field.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
+													return (
+														<Checkbox
+															defaultChecked={item.isAttended}
+															// defaultChecked={item.isAttended ? item.isAttended : true}
+															// defaultChecked={item.isAttended===true ? item.isAttended.toString():'false'}
+															{...field}
+														/>
+													);
+												}}
+											/>
+										</td>
+
+										<td>
+											<Controller
 												name={`OrphanAttendance.${index}.absentReason`}
 												control={control}
-												disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
-												error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-												// {...field}
-											/>
-											{/* );
+												render={({ field }) => {
+													return (
+														<Textarea
+															disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+															error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
+															{...field}
+														/>
+													);
 												}}
-											/> */}
+											/>
 										</td>
 										<td>
-											{/* <Controller
-												render={({ field }) => {
-												return ( */}
-											<Textarea
+											<Controller
 												name={`OrphanAttendance.${index}.justification`}
 												control={control}
-												disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
-												error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-												// {...field}
-											/>
-											{/* );
+												render={({ field }) => {
+													return (
+														<Textarea
+															disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+															error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
+															{...field}
+														/>
+													);
 												}}
-											/> */}
+											/>
 										</td>
 										<td>
-											{/* <Controller
-												render={({ field }) => {
-												return ( */}
-											<Textarea
+											<Controller
 												name={`OrphanAttendance.${index}.notes`}
 												control={control}
-												disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
-												error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-												// {...field}
-											/>
-											{/* );
+												render={({ field }) => {
+													return (
+														<Textarea
+															disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+															error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
+															{...field}
+														/>
+													);
 												}}
-											/> */}
+											/>
 										</td>
 										<td>
 											<Controller
@@ -216,7 +254,6 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 							</tbody>
 						</Table>
 					</Container>
-
 					<Group position='center' pt={50}>
 						<Button type='submit'>Submit</Button>
 					</Group>

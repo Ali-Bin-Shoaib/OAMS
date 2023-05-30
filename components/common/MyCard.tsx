@@ -9,10 +9,10 @@ interface Props {
 	color: MantineColor;
 	icon: JSX.Element;
 	className?: string | 'text-3xl text-white mr-4'; // optional prop
-	path?: string;
+	// path: Url;
 }
 
-export default function MyCard({ title, count, color, icon, className, path }: Props) {
+export default function MyCard({ title, count, color, icon, className }: Props) {
 	const router = useRouter();
 	return (
 		<Card
@@ -23,7 +23,9 @@ export default function MyCard({ title, count, color, icon, className, path }: P
 			w={350}
 			h={250}
 			bg={color}
-			//
+			onClick={() => {
+				router.push(serverLink + title.toLowerCase());
+			}}
 			style={{
 				display: 'flex',
 				alignItems: 'center',

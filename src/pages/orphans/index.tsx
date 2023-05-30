@@ -4,19 +4,27 @@ import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import OrphanCard from '../../../components/orphans/OrphanCard';
 import OrphansTable from '../../../components/orphans/OrphansTable';
-import { Loader } from '@mantine/core';
+import { Button, Container, Flex, List, Loader, ScrollArea, Stack, Text, Title } from '@mantine/core';
 import SuperJSON from 'superjson';
 import AddOrphanModal from '../../../components/orphans/modals/AddOrphanModal';
-import { _Guardian, _Orphan } from '../../../types/types';
-import { Guardian } from '@prisma/client';
+import { _Guardian, _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../../types/types';
+import { Guardian, Orphan, Sponsor, Sponsorship } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { GuardianContext } from './contexts';
 import { initOrphans } from '../../../data/orphans';
+import { v4 } from 'uuid';
+
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
-	(await prisma.orphan.count()) < 40 && (await prisma.orphan.createMany({ data: initOrphans }));
+	(await prisma.orphan.count()) === 0 && (await prisma.orphan.createMany({ data: initOrphans }));
 
-	const orphans = await prisma.orphan.findMany();
+	const orphans = await prisma.orphan.findMany({
+		include: {
+			Guardian: { include: { user: true } },
+			Sponsorship: { include: { Sponsor: { include: { user: true } } }, where: { isActive: true } },
+		},
+		orderBy: { id: 'asc' },
+	});
 	const guardians = await prisma.guardian.findMany({ include: { user: true } });
 	//* to use generated types from prisma client
 	//* "no need to create new types for form inputs"
@@ -31,27 +39,35 @@ export const getStaticProps: GetStaticProps = async () => {
 	const stringData = SuperJSON.stringify({ orphans, guardians });
 	return { props: { stringData } };
 };
+
 interface Props {
 	stringData: string;
 }
 
 export default function Index({ stringData }: Props) {
 	console.log('OrphanList Index');
-	const jsonOrphans: _Orphan[] = SuperJSON.parse(stringData);
-	const jsonData = SuperJSON.parse<{ orphans: _Orphan[]; guardians: Guardian[] }>(stringData);
-	const { orphans, guardians } = SuperJSON.parse<{ orphans: _Orphan[]; guardians: _Guardian[] }>(stringData);
-	const [orphanList, setOrphanList] = useState<_Orphan[]>(orphans);
-	const [cardInfo, setCardInfo] = useState<_Orphan>(orphans[0]);
+	// const jsonOrphans: _Orphan[] = SuperJSON.parse(stringData);
+	// const jsonData = SuperJSON.parse<{ orphans: data[]; guardians: Guardian[] }>(stringData);
+	const { orphans, guardians } = SuperJSON.parse<{
+		orphans: orphanWithGuardianAndSponsorshipInfo[];
+		guardians: _Guardian[];
+	}>(stringData);
+	const [orphanList, setOrphanList] = useState<orphanWithGuardianAndSponsorshipInfo[]>(orphans);
+	const [cardInfo, setCardInfo] = useState<orphanWithGuardianAndSponsorshipInfo>(orphans[0]);
 	const [hydration, setHydration] = useState(false);
-	const updateCard = (orphan: _Orphan) => setCardInfo(orphan);
+	const updateCard = (orphan: orphanWithGuardianAndSponsorshipInfo) => setCardInfo(orphan);
 	const title = usePageTitle();
 	useEffect(() => {
-		setOrphanList(SuperJSON.parse(stringData));
+		const { orphans: newOrphans } = SuperJSON.parse<{
+			orphans: orphanWithGuardianAndSponsorshipInfo[];
+			guardians: Guardian[];
+		}>(stringData);
+		setOrphanList(newOrphans);
 		updateCard(cardInfo);
 		setHydration(true);
 	}, [cardInfo, hydration, stringData]);
 
-	if (!hydration || !jsonOrphans) return <Loader size={100} />;
+	if (!hydration) return <Loader size={100} />;
 	return (
 		<>
 			<AppHead title={title} />
@@ -59,9 +75,24 @@ export default function Index({ stringData }: Props) {
 				<div className='text-center'>
 					<AddOrphanModal />
 				</div>
-				<OrphanCard orphan={cardInfo} />
+
+				<Flex wrap={'wrap'}>
+					<ul style={{ height: '525px' }} className='border border-solid p-3 rounded-md m-3'>
+						<ScrollArea h={500} p={5}>
+							{orphanList.map((orphan) => (
+								<li
+									className='hover:bg-slate-200 list-none py-3 p-1 rounded-md cursor-pointer'
+									onClick={() => updateCard(orphan)}
+									key={orphan.id}>
+									<Text>{orphan.name}</Text>
+								</li>
+							))}
+						</ScrollArea>
+					</ul>
+					<OrphanCard orphan={cardInfo} />
+				</Flex>
 			</GuardianContext.Provider>
-			<OrphansTable orphans={orphans} updateCard={updateCard} />
+			{/* <OrphansTable orphans={orphanList} updateCard={updateCard} /> */}
 		</>
 	);
 }

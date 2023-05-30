@@ -1,12 +1,16 @@
 import {
+	ActivityGoal,
+	ActivityInfo,
 	Attendance,
 	Gender,
+	GoalInfo,
 	Grade,
 	Guardian,
 	Orphan,
 	OrphanAttendance,
 	PaymentMethod,
 	Prisma,
+	Quarter,
 	Sponsor,
 	Sponsorship,
 	SponsorshipPeriod,
@@ -69,7 +73,18 @@ export enum STATUS_CODE {
 	GATEWAY_TIMEOUT = 504, // The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server
 	HTTP_VERSION_NOT_SUPPORTED = 505, // The server does not support the HTTP protocol version that was used in the request
 }
-
+export type orphanWithGuardianAndSponsorshipInfo = Orphan & {
+	Guardian:
+		| (Guardian & {
+				user: User;
+		  })
+		| null;
+	Sponsorship: (Sponsorship & {
+		Sponsor: Sponsor & {
+			user: User;
+		};
+	})[];
+};
 export interface _Orphan {
 	id?: number;
 	name: string | undefined;
@@ -140,7 +155,6 @@ export interface _SponsorshipWithSponsorAndOrphan {
 	sponsorId?: number;
 	orphanId?: number;
 }
-// export type _Sponsorship_Sponsor_Orphan={}
 export type _User = Prisma.UserCreateInput & {
 	sponsor?: Prisma.SponsorCreateInput;
 	guardian?: Prisma.GuardianCreateInput;
@@ -168,42 +182,55 @@ export type _SponsorshipFormData = {
 	sponsors: (Sponsor & { Sponsorship: Sponsorship[]; user: User })[];
 	orphans: Orphan[];
 };
-const userValidator = Prisma.validator<Prisma.UserArgs>()({
-	select: {
-		id: true,
-		name: true,
-		gender: true,
-		userName: true,
-		password: true,
-		email: true,
-		address: true,
-		phone: true,
-		type: true,
-		Guardian: true,
-		Sponsor: true,
-		Attendance: true,
-	},
-});
-// export type User = Prisma.UserGetPayload<typeof userValidator>;
 
 export type _Attendance = {
 	id?: number;
 	date: Date;
 	userId: number;
 } & {
-	User: User | null;
-	OrphanAttendance: (_OrphanAttendance & {
-		Orphan?: _Orphan;
-	})[];
+	OrphanAttendance: (_OrphanAttendance & { Orphan?: _Orphan })[];
+	User?: User;
 };
 
 export interface _OrphanAttendance {
-	id?: number | '';
+	id?: number;
 	isAttended: boolean;
 	absentReason: string | number | readonly string[] | undefined;
 	notes: string | number | readonly string[] | undefined;
 	returnDay: Date | null;
 	justification: string | number | readonly string[] | undefined;
-	// attendanceId?: number;
-	orphanId: number | '';
+	attendanceId?: number;
+	orphanId?: number;
+	userId?: number;
 }
+// let data: _ActivityInfo;
+export type ActivityAndGoals = Prisma.ActivityInfoCreateInput & { goals: GoalInfo[] };
+
+export type _ActivityInfo = {
+	id?: number;
+	date?: Date;
+	title?: string | string | number | readonly string[] | undefined;
+	budget?: number | '';
+	target?: string | number | readonly string[];
+	type?: string | number | readonly string[];
+	quarter?: Quarter;
+	userId?: number | null;
+} & {
+	ActivityGoal?: [_ActivityGoal & { GoalInfo?: _GoalInfo }];
+	User?: User | null;
+};
+export type _ActivityGoal = {
+	id?: number;
+	evaluation?: number;
+	date?: Date;
+	activityInfoId?: number | null;
+	goalInfoId?: number | null;
+	activityExecutionInfoId?: number | null;
+	userId?: number | null;
+};
+
+export type _GoalInfo = {
+	id?: number;
+	title: string;
+	userId?: number | null;
+};
