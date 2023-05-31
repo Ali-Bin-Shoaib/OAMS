@@ -32,7 +32,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 							color: 'green',
 							icon: <IconCheck />,
 						});
-						router.push(router.asPath);
+						router.push(serverLink + 'orphans');
 					} else {
 						notifications.show({
 							title: 'Error',
@@ -42,7 +42,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 						});
 					}
 				} catch (error) {
-					console.log(error);
+					console.log("🚀 ~ file: DeleteOrphanModal.tsx:45 ~ onConfirm: ~ error:", error);
 				}
 			},
 		});

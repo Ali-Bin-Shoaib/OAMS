@@ -8,7 +8,7 @@ import orphanImage from '../../img/simeLogo.png';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { useState } from 'react';
-import { Orphan } from '@prisma/client';
+import { Guardian, Orphan, User } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import AppHead from '../../../components/common/AppHead';
 
@@ -27,24 +27,42 @@ import AppHead from '../../../components/common/AppHead';
 // };
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	// export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const data = await prisma.orphan.findUnique({
-		where: {
-			id: Number(params?.id),
-		},
-	});
-	if (!data) return { notFound: true };
-	return {
-		props: { data },
-	};
+	if (params)
+		try {
+			const orphan = await prisma.orphan.findUnique({
+				where: {
+					id: Number(params?.id),
+				}, include: { Guardian: { include: { user: true } } }
+			});
+			const guardians = await prisma.guardian.findMany({ include: { user: true } });
+
+			if (!orphan || !guardians) return { notFound: true };
+			const data = { orphan, guardians }
+			return {
+				props: { data },
+			};
+		} catch (error) {
+			return { notFound: true }
+		}
 };
 interface Props {
-	data: Orphan;
+	data: {
+		orphan: Orphan & {
+			Guardian: Guardian & {
+				user: User;
+			};
+		};
+		guardians: (Guardian & {
+			user: User;
+		})[]
+	};
 }
 
 function OrphanDetails({ data }: Props) {
 	const title = usePageTitle();
 	console.log('🚀 ~ file: [id].tsx:30 ~ OrphanDetails ~ data:', data);
-	const [orphan, SetOrphan] = useState<Orphan>(data);
+	const { orphan, guardians } = data;
+	// const [orphan, SetOrphan] = useState<Orphan>(data);
 
 	// if (!orphan) {
 	// 	notFound();
@@ -103,7 +121,7 @@ function OrphanDetails({ data }: Props) {
 
 					<Group position='right'>
 						<Button.Group>
-							<EditOrphanModal orphan={orphan as unknown as _Orphan} />
+							<EditOrphanModal orphan={orphan as unknown as _Orphan} guardians={guardians} />
 							<DeleteOrphanModal id={orphan.id} />
 						</Button.Group>
 					</Group>

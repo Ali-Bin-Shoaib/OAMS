@@ -29,12 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				orphan.noOfFamilyMembers = orphan.males && orphan.females ? orphan.males + orphan.females : null;
 
 				const updatedOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: orphan });
-				console.log('🚀 ~ file: [id].tsx:37 ~ //form.parse ~ updatedOrphan:', updatedOrphan);
-				return res.json({ data: orphan, msg: 'update success' });
-				// return res.status(STATUS_CODE.Success).json({ message: 'updated successfully', updateOrphan: updateOrphan });
-				// res.json({ message: 'update', data: orphan });
-				// });
-				break;
+				console.log("🚀 ~ file: [id].tsx:32 ~ //form.parse ~ updatedOrphan:", updatedOrphan);
+				return res.status(STATUS_CODE.OK).json({ data: orphan, msg: 'update success' });
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:26 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, msg: 'Something went wrong.' });

@@ -9,6 +9,7 @@ import { usePageTitle } from '../../../hooks/usePageTitle';
 import AppHead from '../../../components/common/AppHead';
 import { GoalInfo } from '@prisma/client';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+	// if(params?.id)
 	const goalInfo = await prisma.goalInfo.findMany();
 	const stringData = SuperJSON.stringify(goalInfo);
 	return { props: { stringData } };

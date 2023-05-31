@@ -23,17 +23,16 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { Pages } from '../../shared/links';
 import { _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../types/types';
-import { useMediaQuery } from '@mantine/hooks';
 interface Props {
 	orphan: orphanWithGuardianAndSponsorshipInfo;
 }
 function OrphanCard({ orphan }: Props) {
 	console.log('🚀 ~ file: ~ OrphanCard ~ OrphanCard');
-
+	const { Guardian, Sponsorship, ...onlyOrphanInfo } = orphan;
 	const router = useRouter();
 	return (
 		<>
-			<Card key={v4()} withBorder mih={850} shadow='md' radius='md' padding='md' className=' mx-auto my-2 p-2 w-5/6'>
+			<Card key={v4()} withBorder mih={625} shadow='md' radius='md' padding='md' className=' mx-auto my-2 p-2 w-5/6'>
 				{/* <div className='m-auto '>
 				<Rating value={orphan.evaluation as number} fractions={1} defaultValue={5} count={10} />
 			</div> */}
@@ -50,7 +49,6 @@ function OrphanCard({ orphan }: Props) {
 
 				<div className='p-2 m-2'>
 					<Text size='xl'>Gender: {orphan.gender}</Text>
-
 					<Text size='xl'>Age: {orphan.age}</Text>
 					<Text size='xl'>School Name: {orphan.schoolName}</Text>
 					<Text size='xl'>Grade Level: {orphan.gradeLevel}</Text>
@@ -71,7 +69,7 @@ function OrphanCard({ orphan }: Props) {
 								<IconInfoCircle />
 							</Button>
 						</Tooltip>
-						<EditOrphanModal orphan={orphan as unknown as _Orphan} />
+						<EditOrphanModal orphan={onlyOrphanInfo as unknown as _Orphan} guardians={[]} />
 						<DeleteOrphanModal id={orphan.id} />
 					</Button.Group>
 				</Group>
@@ -81,17 +79,8 @@ function OrphanCard({ orphan }: Props) {
 	);
 }
 export default OrphanCard;
-// export function InfoCard({ orphan }: Props) {
-// 	// define the edit and delete handlers here
-// 	const handleEdit = () => {
-// 		// your edit logic here
-// 	};
 
-// 	const handleDelete = () => {
-// 		// your delete logic here
-// 	};
 
-// 	// use the useMediaQuery hook to check the screen size
 
 // 	return (
 // 		<Card key={v4()} withBorder mih={150} shadow='md' radius='md' padding='md' className=' mx-auto my-2 p-2 w-3/6'>

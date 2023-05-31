@@ -1,17 +1,17 @@
+import { Modal, Group, Tooltip, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Group, Tooltip } from '@mantine/core';
-import OrphanForm from '../OrphanForm';
-import { Guardian, Orphan, User } from '@prisma/client';
+import { Guardian, User } from '@prisma/client';
 import { IconEdit } from '@tabler/icons-react';
-import { _Guardian, _Orphan } from '../../../types/types';
 import { useContext } from 'react';
+import { _Orphan } from '../../types/types';
+import OrphanForm from '../orphans/OrphanForm';
 interface Props {
 	orphan: _Orphan;
 	guardians: (Guardian & {
 		user: User;
 	})[]
 }
-export default function EditOrphanModal({ orphan, guardians }: Props) {
+export default function EditModel({ orphan, guardians }: Props) {
 	const [opened, { open, close }] = useDisclosure(false);
 	return (
 		<>

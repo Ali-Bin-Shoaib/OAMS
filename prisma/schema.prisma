@@ -212,11 +212,11 @@ model Sponsorship {
   isActive          Boolean           @default(false)
   // * relation
   // * one sponsorship has one sponsor
-  sponsorId         Int
-  Sponsor           Sponsor           @relation(fields: [sponsorId], references: [id])
+  sponsorId         Int?
+  Sponsor           Sponsor?          @relation(fields: [sponsorId], references: [id])
   // * one sponsorship has one or more Orphan
-  orphanId          Int
-  Orphan            Orphan            @relation(fields: [orphanId], references: [id], onDelete: Cascade)
+  orphanId          Int?
+  Orphan            Orphan?           @relation(fields: [orphanId], references: [id], onDelete: Cascade)
   User              User?             @relation(fields: [userId], references: [id])
   userId            Int?
 }
@@ -256,18 +256,18 @@ model ActivityInfo {
   budget                Float?
   target                String?
   type                  String?
-  quarter               Quarter
+  quarter               Quarter?
   //* relations
   ActivityGoal          ActivityGoal[]
   ActivityExecutionInfo ActivityExecutionInfo[]
   UnAchievedActivity    UnAchievedActivity[]
-  User                  User?                   @relation(fields: [userId], references: [id])
-  userId                Int?
+  User                  User                    @relation(fields: [userId], references: [id])
+  userId                Int
 }
 
 model ActivityGoal {
   id                      Int                    @id @default(autoincrement())
-  evaluation              Float
+  evaluation              Float?
   date                    DateTime               @default(now())
   //* relations
   ActivityInfo            ActivityInfo?          @relation(fields: [activityInfoId], references: [id])

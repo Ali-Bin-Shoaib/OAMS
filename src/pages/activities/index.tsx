@@ -14,6 +14,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
 import ActivityTable from '../../../components/activities/ActivityTable';
+import CardInfo from '../../../components/common/CardInfo';
 // ******************************** ACTIVITYiNFO PAGE ********************************
 // * get activity from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
@@ -48,11 +49,17 @@ export default function Index({ stringData }: Props) {
 	const [opened, { open, close }] = useDisclosure(false);
 	const title = usePageTitle();
 	const router = useRouter();
-	const updateCard = (activityInfo: _ActivityInfo) => setCardInfo(activityInfo);
+	const updateCard = (activityInfo: _ActivityInfo) => {
+
+		setCardInfo(activityInfo)
+	};
 	useEffect(() => {
 		setActivitiesList(SuperJSON.parse(stringData));
+		updateCard(cardInfo)
+		// setActivitiesList(activitiesList.filter((x) => x.id != cardInfo.id))
+
 		setHydration(true);
-	}, [hydration, stringData]);
+	}, [hydration, stringData, cardInfo]);
 
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
@@ -65,7 +72,8 @@ export default function Index({ stringData }: Props) {
 						Add New Activity
 					</Button>
 				</Group>
-				<ActivityTable activities={activities} />
+				<CardInfo activityInfo={cardInfo} />
+				<ActivityTable activities={activities} updateCard={updateCard} />
 			</div>
 		</>
 	);

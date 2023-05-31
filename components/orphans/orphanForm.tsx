@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 import { $enum } from 'ts-enum-util';
 import { useContext, useEffect, useState } from 'react';
-import { Gender, Grade, Guardian, HomeType, Status } from '@prisma/client';
+import { Gender, Grade, Guardian, HomeType, Status, User } from '@prisma/client';
 import { v4 } from 'uuid';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
@@ -22,15 +22,34 @@ import { useRouter } from 'next/router';
 import axios, { AxiosRequestConfig } from 'axios';
 import { serverLink } from '../../shared/links';
 import SuperJSON from 'superjson';
-import { GuardianContext } from '@/pages/orphans/contexts';
+import { GuardianContext } from '../../src/pages/orphans/contexts';
+import { GetServerSideProps, GetStaticProps } from 'next';
+import prisma from '../../lib/prisma';
+// export const getStaticProps: GetStaticProps = async () => {
+// 	// export const getStaticProps: GetStaticProps = async ({ params }) => {
+// 	try {
+// 		const guardians = prisma.guardian.findMany();
+
+// 		if (!guardians) return { notFound: true };
+// 		return {
+// 			props: { guardians },
+// 		};
+// 	} catch (error) {
+// 		return { notFound: true }
+// 	}
+// };
 interface Props {
 	orphan?: _Orphan;
+	guardians: (Guardian & {
+		user: User;
+	})[]
 	close: () => void;
 }
-export default function OrphanForm({ orphan, close }: Props): JSX.Element {
+export default function OrphanForm({ orphan, close, guardians }: Props): JSX.Element {
+	// const [guardians, setGuardians] = useState(useContext(GuardianContext));
 	const router = useRouter();
 	const [hydrate, setHydrate] = useState(false);
-	const guardians = useContext(GuardianContext);
+	console.log("🚀 ~ file: OrphanForm.tsx:36 ~ OrphanForm ~ guardians:", guardians);
 
 	const {
 		control,
@@ -66,7 +85,7 @@ export default function OrphanForm({ orphan, close }: Props): JSX.Element {
 			const res = await axios.put(url, data);
 			console.log('🚀 ~ file: OrphanForm.tsx:58 ~ onSubmit ~ res:', res);
 		}
-		// close();
+		close();
 		router.push(router.asPath);
 	};
 

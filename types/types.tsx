@@ -74,14 +74,14 @@ export enum STATUS_CODE {
 	HTTP_VERSION_NOT_SUPPORTED = 505, // The server does not support the HTTP protocol version that was used in the request
 }
 export type orphanWithGuardianAndSponsorshipInfo = Orphan & {
-	Guardian:
-		| (Guardian & {
-				user: User;
-		  })
-		| null;
-	Sponsorship: (Sponsorship & {
-		Sponsor: Sponsor & {
-			user: User;
+	Guardian?:
+	| (Guardian & {
+		user?: User;
+	})
+	| null;
+	Sponsorship?: (Sponsorship & {
+		Sponsor?: Sponsor & {
+			user?: User;
 		};
 	})[];
 };
@@ -204,7 +204,7 @@ export interface _OrphanAttendance {
 	userId?: number;
 }
 // let data: _ActivityInfo;
-export type ActivityAndGoals = Prisma.ActivityInfoCreateInput & { goals: GoalInfo[] };
+// export type ActivityAndGoals = _ActivityInfo;
 
 export type _ActivityInfo = {
 	id?: number;
@@ -215,8 +215,9 @@ export type _ActivityInfo = {
 	type?: string | number | readonly string[];
 	quarter?: Quarter;
 	userId?: number | null;
+	selectedGoals?: string[] | undefined
 } & {
-	ActivityGoal?: [_ActivityGoal & { GoalInfo?: _GoalInfo }];
+	ActivityGoal?: (_ActivityGoal & { GoalInfo?: _GoalInfo })[];
 	User?: User | null;
 };
 export type _ActivityGoal = {
@@ -231,6 +232,6 @@ export type _ActivityGoal = {
 
 export type _GoalInfo = {
 	id?: number;
-	title: string;
+	title?: string;
 	userId?: number | null;
 };

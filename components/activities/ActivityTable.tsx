@@ -17,9 +17,10 @@ import { serverLink } from '../../shared/links';
 
 interface Props {
 	activities: _ActivityInfo[];
+	updateCard?: (activityInfo: _ActivityInfo) => void;
 }
 
-function ActivityTable({ activities }: Props) {
+function ActivityTable({ activities, updateCard }: Props) {
 	console.log('🚀 ~ file: ~ ActivityTable');
 	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<_ActivityInfo>[]>(
@@ -113,6 +114,7 @@ function ActivityTable({ activities }: Props) {
 					onClick: () => {
 						// on row click change the card to the clicked activities and then user can edit or delete.
 						// router.push(serverLink + 'activities/' + row.row.original.id);
+						updateCard(row.row.original)
 					},
 				})}
 				mantineTableBodyCellProps={{

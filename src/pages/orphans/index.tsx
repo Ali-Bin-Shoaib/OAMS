@@ -4,11 +4,11 @@ import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import OrphanCard from '../../../components/orphans/OrphanCard';
 import OrphansTable from '../../../components/orphans/OrphansTable';
-import { Button, Container, Flex, List, Loader, ScrollArea, Stack, Text, Title } from '@mantine/core';
+import { Flex, Loader, ScrollArea, Text } from '@mantine/core';
 import SuperJSON from 'superjson';
 import AddOrphanModal from '../../../components/orphans/modals/AddOrphanModal';
 import { _Guardian, _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../../types/types';
-import { Guardian, Orphan, Sponsor, Sponsorship } from '@prisma/client';
+import { Guardian, Orphan, Sponsor, Sponsorship, User } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { GuardianContext } from './contexts';
 import { initOrphans } from '../../../data/orphans';
@@ -50,8 +50,13 @@ export default function Index({ stringData }: Props) {
 	// const jsonData = SuperJSON.parse<{ orphans: data[]; guardians: Guardian[] }>(stringData);
 	const { orphans, guardians } = SuperJSON.parse<{
 		orphans: orphanWithGuardianAndSponsorshipInfo[];
-		guardians: _Guardian[];
+		guardians: (Guardian & {
+			user: User;
+		})[];
 	}>(stringData);
+	const [guardiansList, setGuardiansList] = useState<(Guardian & {
+		user: User;
+	})[]>(guardians);
 	const [orphanList, setOrphanList] = useState<orphanWithGuardianAndSponsorshipInfo[]>(orphans);
 	const [cardInfo, setCardInfo] = useState<orphanWithGuardianAndSponsorshipInfo>(orphans[0]);
 	const [hydration, setHydration] = useState(false);
@@ -70,15 +75,15 @@ export default function Index({ stringData }: Props) {
 	if (!hydration) return <Loader size={100} />;
 	return (
 		<>
-			<AppHead title={title} />
-			<GuardianContext.Provider value={guardians}>
+			<GuardianContext.Provider value={guardiansList}>
+				<AppHead title={title} />
 				<div className='text-center'>
 					<AddOrphanModal />
 				</div>
 
 				<Flex wrap={'wrap'}>
-					<ul style={{ height: '525px' }} className='border border-solid p-3 rounded-md m-3'>
-						<ScrollArea h={500} p={5}>
+					<ul style={{ height: '625px' }} className='border border-solid p-3 rounded-md m-3 '>
+						<ScrollArea h={615} p={5}>
 							{orphanList.map((orphan) => (
 								<li
 									className='hover:bg-slate-200 list-none py-3 p-1 rounded-md cursor-pointer'
