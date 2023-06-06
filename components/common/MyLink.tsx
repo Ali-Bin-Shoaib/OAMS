@@ -1,24 +1,18 @@
-import { NavLink } from '@mantine/core';
+import { Button, NavLink, useMantineTheme } from '@mantine/core';
 import Link from 'next/link';
 
-export default function MyLink({ href = '/', text = 'link', className = '' }) {
+interface Props {
+	href: string;
+	text: string;
+	className?: string;
+	// onClick?: any | undefined;
+}
+export default function MyLink({ href = '/', text = 'link', className = '' }: Props) {
+	const theme = useMantineTheme();
+
 	return (
-		<Link href={href} className={'p-2 m-2 text-xl font-semibold ' + className}>
+		<Link href={href} className={'p-2 m-2 text-xl font-semibold  ' + className}>
 			{text}
 		</Link>
-
-		// <NavLink
-		// 	label={
-		// 		<Link href={href} className={'p-2 m-2 text-xl font-semibold '}>
-		// 			{text}
-		// 		</Link>
-		// 	}
-		// />
-
-		// <List.Item className={'p-2  list-item rounded ' + className}>
-		// <Link href={href} className={'p-2 m-2 text-xl font-semibold '}>
-		// 	{text}
-		// </Link>
-		// </List.Item>
 	);
 }

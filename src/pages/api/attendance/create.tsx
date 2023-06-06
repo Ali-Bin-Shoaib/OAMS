@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				OrphanAttendance: Prisma.OrphanAttendanceCreateManyAttendanceInput[];
 			} = req.body;
 			// const attendance:Attendance=req.body;
-			const user = await prisma.user.findFirst();
+			const user = await prisma.user.findFirst({ where: { type: "ADMIN" } });
 			attendance.User = user!;
 
 			const { User, date, OrphanAttendance, userId } = attendance;
@@ -25,11 +25,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				data: {
 					date: date,
 					User: { connect: { id: User.id } },
-					OrphanAttendance: { createMany: { data: OrphanAttendance } },
+					OrphanAttendance: { createMany: { data: OrphanAttendance.filter(x => !x.isAttended) } },
 				},
 			});
 			console.log('🚀 ~ file: create.tsx:27 ~ handler ~ newAttendance:', newAttendance);
-			return res.end(res.status(STATUS_CODE.OK).json({ data: newAttendance }));
+			return res.end(res.status(STATUS_CODE.OK).json({ data: newAttendance, msg: 'Create New Attendance' }));
 		}
 	} catch (error) {
 		console.log('🚀 ~ file: create.tsx:32 ~ handler ~ error:', error);

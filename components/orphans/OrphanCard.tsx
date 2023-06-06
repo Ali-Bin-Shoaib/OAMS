@@ -53,8 +53,8 @@ function OrphanCard({ orphan }: Props) {
 					<Text size='xl'>School Name: {orphan.schoolName}</Text>
 					<Text size='xl'>Grade Level: {orphan.gradeLevel}</Text>
 					<Text size='xl'>Evaluation: {orphan.evaluation}</Text>
-					<Text size='xl'>Guardian: {orphan.Guardian?.user.name}</Text>
-					<Text size='xl'>Sponsor: {orphan.Sponsorship.find((x) => x.isActive === true)?.Sponsor.user.name}</Text>
+					<Text size='xl'>Guardian: {orphan?.Guardian?.user?.name}</Text>
+					<Text size='xl'>Sponsor: {orphan?.Sponsorship?.find((x) => x.isActive === true)?.Sponsor?.user?.name}</Text>
 				</div>
 				<Divider />
 
@@ -65,7 +65,7 @@ function OrphanCard({ orphan }: Props) {
 						</Tooltip>
 
 						<Tooltip label='Orphan Info'>
-							<Button color='gray' onClick={() => router.push(Pages.Orphans + orphan.id)}>
+							<Button color='gray' onClick={() => router.push(Pages?.Orphans.link + orphan?.id)}>
 								<IconInfoCircle />
 							</Button>
 						</Tooltip>
@@ -79,8 +79,6 @@ function OrphanCard({ orphan }: Props) {
 	);
 }
 export default OrphanCard;
-
-
 
 // 	return (
 // 		<Card key={v4()} withBorder mih={150} shadow='md' radius='md' padding='md' className=' mx-auto my-2 p-2 w-3/6'>

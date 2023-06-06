@@ -1,10 +1,19 @@
-import { IconActivity, IconReceipt, IconUser, IconUserPlus, IconUserShield, IconUserStar } from '@tabler/icons-react';
+import {
+	IconActivity,
+	IconActivityHeartbeat,
+	IconReceipt,
+	IconUser,
+	IconUserPlus,
+	IconUserShield,
+	IconUserStar,
+} from '@tabler/icons-react';
 import AppHead from '../../components/common/AppHead';
 import MyCard from '../../components/common/MyCard';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { GetStaticProps } from 'next';
 import prisma from '../../lib/prisma';
 import { _Orphan } from '../../types/types';
+import { serverLink } from '../../shared/links';
 
 export const getStaticProps: GetStaticProps = async () => {
 	const orphans = await prisma.orphan.count();
@@ -36,8 +45,13 @@ export default function Home({ orphans, sponsors, guardians, sponsorships, users
 				<MyCard title={'Guardians'} count={guardians} color={'blue'} icon={<IconUserShield size={100} />} />
 				{/* <MyCard title={'Users'} count={users} color={'blue'} icon={<IconUser size={100} />} /> */}
 				<MyCard title={'Activities'} count={activities} color={'blue'} icon={<IconActivity size={100} />} />
-				{/* <MyCard title={'Health Info'} count={50} color={'blue'} icon={<IconHeartPlus size={80} />} />
-				<MyCard title={'Behavior Info'} count={50} color={'blue'} icon={<IconAdjustments size={80} />} />
+				<MyCard
+					title={'Activities Execution Info'}
+					count={50}
+					color={'blue'}
+					icon={<IconActivityHeartbeat size={80} path={serverLink + 'activities/execute'} />}
+				/>
+				{/*<MyCard title={'Behavior Info'} count={50} color={'blue'} icon={<IconAdjustments size={80} />} />
 				<MyCard title={'Education Info'} count={50} color={'blue'} icon={<IconSchool size={80} />} />
 				<MyCard title={'Attendance Info'} count={50} color={'blue'} icon={<IconCalendarCheck size={80} />} /> */}
 			</div>

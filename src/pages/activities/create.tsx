@@ -7,11 +7,11 @@ import { Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import AppHead from '../../../components/common/AppHead';
-import { GoalInfo } from '@prisma/client';
+import { Goal } from '@prisma/client';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	// if(params?.id)
-	const goalInfo = await prisma.goalInfo.findMany();
-	const stringData = SuperJSON.stringify(goalInfo);
+	const goals = await prisma.goal.findMany();
+	const stringData = SuperJSON.stringify(goals);
 	return { props: { stringData } };
 };
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
 
 function Create({ stringData }: Props) {
 	// const jsonData: { activity: _ActivityInfo; goalsTitle: GoalInfo[] } = SuperJSON.parse(stringData);
-	const jsonData: GoalInfo[] = SuperJSON.parse(stringData);
+	const jsonData: Goal[] = SuperJSON.parse(stringData);
 	// const { activity, goalsTitle } = jsonData;
 	const goals = jsonData;
 	const [hydration, setHydration] = useState(false);

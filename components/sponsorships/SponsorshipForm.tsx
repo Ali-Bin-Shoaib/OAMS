@@ -18,7 +18,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { serverLink } from '../../shared/links';
 
 import { IconCheck, IconX } from '@tabler/icons-react';
-import myNotification from '../orphans/modals/MyNotification';
+import myNotification from '../MyNotification';
 //* factor the form to accept sponsorship and list of orphans and sponsors to display them in select lest
 interface Props {
 	sponsorship?: _Sponsorship;
@@ -47,12 +47,10 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 			console.log('user not exist.');
 			const url = serverLink + '/api/sponsorship/create/';
 			// const res = await axios.post(url, data).catch((err: AxiosError<{ msg: string }>) => {
-			const res = await axios
-				.post(url, data)
-				.then((data) => {
-					console.log(data);
-					myNotification('Success', 'create new sponsorship successfully', 'green', <IconCheck />);
-				})
+			const res = await axios.post(url, data).then((data) => {
+				console.log(data);
+				myNotification('Success', 'create new sponsorship successfully', 'green', <IconCheck />);
+			})
 				.catch((err: AxiosError<{ msg: string }>) => {
 					console.log('error at creating new sponsorship', err);
 					myNotification('Error', err.response?.data.msg as string, 'red', <IconX />);

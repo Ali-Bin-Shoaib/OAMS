@@ -17,6 +17,7 @@ import { IconPlus } from '@tabler/icons-react';
 export const getStaticProps: GetStaticProps = async () => {
 	const attendance = await prisma.attendance.findMany({
 		include: { User: true, OrphanAttendance: true },
+		orderBy: { id: 'asc' },
 	});
 	const stringJson = SuperJSON.stringify(attendance);
 	return { props: { stringJson } };

@@ -36,10 +36,11 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 					Orphan: orphan,
 					orphanId: orphan.id as number,
 					absentReason: null as unknown as undefined,
+
 					// attendanceId: attendance.id as number,
 					userId: attendance.userId,
 					id: undefined,
-					isAttended: true,
+					isAttended: true as unknown as string,
 					justification: undefined,
 					notes: undefined,
 					returnDay: undefined as unknown as null,
@@ -54,7 +55,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 					orphanId: orphan.id as number,
 					absentReason: undefined,
 					// id: undefined,
-					isAttended: true,
+					isAttended: true as unknown as string,
 					justification: undefined,
 					notes: undefined,
 					returnDay: undefined as unknown as null,
@@ -159,10 +160,18 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 									<th>id</th>
 									<th>Name</th>
 									<th>Is Attended</th>
-									<th>Absent Reason</th>
-									<th>Justification</th>
-									<th>Notes</th>
-									<th>Return Day</th>
+									{watch(`OrphanAttendance`)
+										.map((x) => x.isAttended)
+										.includes(false as unknown as string) ? (
+										<>
+											<th>Absent Reason</th>
+											<th>Justification</th>
+											<th>Notes</th>
+											<th>Return Day</th>
+										</>
+									) : (
+										''
+									)}
 								</tr>
 							</thead>
 							<tbody>
@@ -174,81 +183,77 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 											<Controller
 												name={`OrphanAttendance.${index}.isAttended`}
 												control={control}
-												// defaultValue={item.isAttended ? item.isAttended : true}
 												render={({ field }) => {
-													// field.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
-													return (
-														<Checkbox
-															defaultChecked={item.isAttended}
-															// defaultChecked={item.isAttended ? item.isAttended : true}
-															// defaultChecked={item.isAttended===true ? item.isAttended.toString():'false'}
-															{...field}
-														/>
-													);
+													return <Checkbox defaultChecked={(item.isAttended as unknown as boolean) || false} {...field} />;
 												}}
 											/>
 										</td>
-
-										<td>
-											<Controller
-												name={`OrphanAttendance.${index}.absentReason`}
-												control={control}
-												render={({ field }) => {
-													return (
-														<Textarea
-															disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
-															error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-															{...field}
-														/>
-													);
-												}}
-											/>
-										</td>
-										<td>
-											<Controller
-												name={`OrphanAttendance.${index}.justification`}
-												control={control}
-												render={({ field }) => {
-													return (
-														<Textarea
-															disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
-															error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-															{...field}
-														/>
-													);
-												}}
-											/>
-										</td>
-										<td>
-											<Controller
-												name={`OrphanAttendance.${index}.notes`}
-												control={control}
-												render={({ field }) => {
-													return (
-														<Textarea
-															disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
-															error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-															{...field}
-														/>
-													);
-												}}
-											/>
-										</td>
-										<td>
-											<Controller
-												name={`OrphanAttendance.${index}.returnDay`}
-												control={control}
-												render={({ field }) => {
-													return (
-														<DatePickerInput
-															disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
-															error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
-															{...field}
-														/>
-													);
-												}}
-											/>
-										</td>
+										{watch(`OrphanAttendance`)[index].isAttended ? (
+											''
+										) : (
+											<>
+												<td>
+													<Controller
+														name={`OrphanAttendance.${index}.absentReason`}
+														control={control}
+														render={({ field }) => {
+															return (
+																<Textarea
+																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
+																	{...field}
+																/>
+															);
+														}}
+													/>
+												</td>
+												<td>
+													<Controller
+														name={`OrphanAttendance.${index}.justification`}
+														control={control}
+														render={({ field }) => {
+															return (
+																<Textarea
+																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
+																	{...field}
+																/>
+															);
+														}}
+													/>
+												</td>
+												<td>
+													<Controller
+														name={`OrphanAttendance.${index}.notes`}
+														control={control}
+														render={({ field }) => {
+															return (
+																<Textarea
+																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
+																	{...field}
+																/>
+															);
+														}}
+													/>
+												</td>
+												<td>
+													<Controller
+														name={`OrphanAttendance.${index}.returnDay`}
+														control={control}
+														render={({ field }) => {
+															return (
+																<DatePickerInput
+																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
+																	{...field}
+																/>
+															);
+														}}
+													/>
+												</td>
+											</>
+										)}
 									</tr>
 								))}
 							</tbody>

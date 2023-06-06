@@ -185,9 +185,10 @@ model User {
   UnAchievedActivity UnAchievedActivity[]
   ActivityGoal       ActivityGoal[]
   // GoalTitle          GoalTitle[]
-  GoalInfo           GoalInfo[]
+  // GoalInfo           GoalInfo[]
 
   OrphanActivityExecution OrphanActivityExecution[]
+  Goal                    Goal[]
 }
 
 model Sponsor {
@@ -265,28 +266,41 @@ model ActivityInfo {
   userId                Int
 }
 
-model ActivityGoal {
-  id                      Int                    @id @default(autoincrement())
-  evaluation              Float?
-  date                    DateTime               @default(now())
+model Goal {
+  id             Int              @id @default(autoincrement())
+  title          String
   //* relations
-  ActivityInfo            ActivityInfo?          @relation(fields: [activityInfoId], references: [id])
-  activityInfoId          Int?
-  GoalInfo                GoalInfo?              @relation(fields: [goalInfoId], references: [id])
-  goalInfoId              Int?
-  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
-  activityExecutionInfoId Int?
-  User                    User?                  @relation(fields: [userId], references: [id])
-  userId                  Int?
+  ActivityGoal   ActivityGoal[]
+  GoalEvaluation GoalEvaluation[]
+  User           User?            @relation(fields: [userId], references: [id])
+  userId         Int?
 }
 
-model GoalInfo {
-  id           Int            @id @default(autoincrement())
-  title        String
+model ActivityGoal {
+  id             Int           @id @default(autoincrement())
   //* relations
-  ActivityGoal ActivityGoal[]
-  User         User?          @relation(fields: [userId], references: [id])
-  userId       Int?
+  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
+  activityInfoId Int?
+  Goal           Goal?         @relation(fields: [goalId], references: [id])
+  goalId         Int?
+  // ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
+  // activityExecutionInfoId Int?
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         Int?
+
+  @@unique([goalId, activityInfoId])
+}
+
+model GoalEvaluation {
+  id                      Int                   @id @default(autoincrement())
+  evaluation              Float?
+  date                    DateTime              @default(now())
+  ActivityExecutionInfo   ActivityExecutionInfo @relation(fields: [activityExecutionInfoId], references: [id], onDelete: Cascade)
+  activityExecutionInfoId Int
+  Goal                    Goal                  @relation(fields: [goalId], references: [id])
+  goalId                  Int
+
+  @@unique([goalId, activityExecutionInfoId])
 }
 
 model ActivityExecutionInfo {
@@ -298,10 +312,24 @@ model ActivityExecutionInfo {
   // * Relations
   Executor                User                      @relation(fields: [userId], references: [id])
   userId                  Int
-  ActivityInfo            ActivityInfo              @relation(fields: [activityInfoId], references: [id])
-  activityInfoId          Int
-  ActivityGoal            ActivityGoal[]
+  ActivityInfo            ActivityInfo?             @relation(fields: [activityInfoId], references: [id])
+  activityInfoId          Int?
+  GoalEvaluation          GoalEvaluation[]
   OrphanActivityExecution OrphanActivityExecution[]
+}
+
+model OrphanActivityExecution {
+  id         Int     @id @default(autoincrement())
+  isAttended Boolean @default(true)
+  evaluation Float?
+  //* relations
+
+  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id], onDelete: Cascade)
+  activityExecutionInfoId Int?
+  Orphan                  Orphan?                @relation(fields: [orphanId], references: [id])
+  orphanId                Int?
+  User                    User?                  @relation(fields: [userId], references: [id])
+  userId                  Int?
 }
 
 model UnAchievedActivity {
@@ -313,19 +341,6 @@ model UnAchievedActivity {
   activityInfoId Int?
   User           User?         @relation(fields: [userId], references: [id])
   userId         Int?
-}
-
-model OrphanActivityExecution {
-  id         Int    @id @default(autoincrement())
-  evaluation Float?
-  //* relations
-
-  ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
-  activityExecutionInfoId Int?
-  Orphan                  Orphan?                @relation(fields: [orphanId], references: [id])
-  orphanId                Int?
-  User                    User?                  @relation(fields: [userId], references: [id])
-  userId                  Int?
 }
 
 model HealthInfo {

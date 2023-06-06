@@ -1,12 +1,15 @@
 import {
+	ActivityExecutionInfo,
 	ActivityGoal,
 	ActivityInfo,
 	Attendance,
 	Gender,
-	GoalInfo,
+	Goal,
+	GoalEvaluation,
 	Grade,
 	Guardian,
 	Orphan,
+	OrphanActivityExecution,
 	OrphanAttendance,
 	PaymentMethod,
 	Prisma,
@@ -15,11 +18,12 @@ import {
 	Sponsorship,
 	SponsorshipPeriod,
 	Status,
+	UnAchievedActivity,
 	User,
 	UserType,
 } from '@prisma/client';
 import prisma from '../lib/prisma';
-
+import * as z from 'zod';
 export enum REQUEST_METHODS {
 	GET = 'GET',
 	POST = 'POST',
@@ -75,10 +79,10 @@ export enum STATUS_CODE {
 }
 export type orphanWithGuardianAndSponsorshipInfo = Orphan & {
 	Guardian?:
-	| (Guardian & {
-		user?: User;
-	})
-	| null;
+		| (Guardian & {
+				user?: User;
+		  })
+		| null;
 	Sponsorship?: (Sponsorship & {
 		Sponsor?: Sponsor & {
 			user?: User;
@@ -187,14 +191,13 @@ export type _Attendance = {
 	id?: number;
 	date: Date;
 	userId: number;
-} & {
 	OrphanAttendance: (_OrphanAttendance & { Orphan?: _Orphan })[];
 	User?: User;
 };
 
 export interface _OrphanAttendance {
 	id?: number;
-	isAttended: boolean;
+	isAttended: string | number | readonly string[] | undefined;
 	absentReason: string | number | readonly string[] | undefined;
 	notes: string | number | readonly string[] | undefined;
 	returnDay: Date | null;
@@ -203,9 +206,6 @@ export interface _OrphanAttendance {
 	orphanId?: number;
 	userId?: number;
 }
-// let data: _ActivityInfo;
-// export type ActivityAndGoals = _ActivityInfo;
-
 export type _ActivityInfo = {
 	id?: number;
 	date?: Date;
@@ -215,23 +215,71 @@ export type _ActivityInfo = {
 	type?: string | number | readonly string[];
 	quarter?: Quarter;
 	userId?: number | null;
-	selectedGoals?: string[] | undefined
-} & {
-	ActivityGoal?: (_ActivityGoal & { GoalInfo?: _GoalInfo })[];
+
+	selectedGoals?: string[] | undefined; //for getting goals ids
+
+	ActivityGoal?: (_ActivityGoal & { Goal?: _Goal })[];
+	ActivityExecutionInfo?: _ActivityExecutionInfo[];
+	UnAchievedActivity?: _UnAchievedActivity[];
 	User?: User | null;
 };
 export type _ActivityGoal = {
 	id?: number;
-	evaluation?: number;
-	date?: Date;
 	activityInfoId?: number | null;
-	goalInfoId?: number | null;
-	activityExecutionInfoId?: number | null;
+	goalId?: number | null;
 	userId?: number | null;
 };
 
-export type _GoalInfo = {
+export type _Goal = {
 	id?: number;
 	title?: string;
 	userId?: number | null;
+	ActivityGoal?: ActivityGoal[];
+	GoalEvaluation?: GoalEvaluation[];
+	User?: User;
+};
+export type _GoalEvaluation = {
+	id?: number;
+	evaluation?: number;
+	date?: Date;
+	activityExecutionInfoId?: number;
+	goalId: number;
+	// ActivityExecutionInfo: Prisma.ActivityExecutionInfoCreateNestedOneWithoutGoalEvaluationInput;
+	// Goal: Prisma.GoalCreateNestedOneWithoutGoalEvaluationInput;
+};
+export type _ActivityExecutionInfo = {
+	id?: number;
+	cost?: number | '';
+	description?: string;
+	startDate?: Date;
+	note?: string;
+	userId: number;
+	Executor?: User | undefined;
+	activityInfoId: number;
+	ActivityInfo?: ActivityInfo & { User: User };
+	GoalEvaluation?: (_GoalEvaluation & { Goal?: _Goal })[];
+	OrphanActivityExecution?: _OrphanActivityExecution[];
+};
+export type _OrphanActivityExecution = {
+	id?: number;
+	evaluation?: number | null;
+	isAttended: string | number | readonly string[] | undefined;
+	activityExecutionInfoId?: number | null;
+	orphanId?: number | null;
+	userId?: number | null;
+	ActivityExecutionInfo?: ActivityExecutionInfo;
+	Orphan?: Orphan;
+	User?: User;
+};
+
+export type _UnAchievedActivity = {
+	id?: number;
+	note?: string | null;
+	activityInfoId?: number | null;
+	userId?: number | null;
+};
+type test = {
+	ActivityExecutionInfo?: ActivityInfo;
+	Orphan?: Orphan;
+	User?: User;
 };

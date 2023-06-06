@@ -206,12 +206,12 @@ function OrphansTable({ orphans, updateCard }: Props) {
 		<Container fluid>
 			<MantineReactTable
 				columns={columns}
-				mantineTableBodyRowProps={(row) => ({
-					onClick: () => {
-						updateCard(row.row.original);
-					},
-					sx: { border: '2px solid #dee2e6' },
-				})}
+				// mantineTableBodyRowProps={(row) => ({
+				// 	onClick: () => {
+				// 		updateCard(row.row.original);
+				// 	},
+				// 	sx: { border: '2px solid #dee2e6' },
+				// })}
 				// enableRowActions
 				// positionActionsColumn='last'
 				data={orphans}

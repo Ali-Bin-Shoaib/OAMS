@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE, REQUEST_METHODS, _Attendance, _ActivityInfo, } from '../../../../types/types';
-import { GoalInfo, ActivityGoal, Prisma, User } from '@prisma/client';
+import { ActivityGoal, Prisma, User, Goal } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const user = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			const data: Prisma.ActivityInfoCreateInput & {
 				User: User;
 				ActivityGoal: (ActivityGoal & {
-					GoalInfo: GoalInfo;
+					Goal: Goal;
 				})[];
 			} = req.body;
 			// const { ActivityGoal, date, User, budget, quarter, selectedGoals, target, title, type } = data;
@@ -20,8 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			console.log("🚀 ~ file: create.tsx:20 ~ handler ~ data:", data);
 			const newActivity = await prisma.activityInfo.create({
 				data: {
-					...data,
-					// ...activityInfo,
+					// ...data,
+					...activityInfo,
 					// userId: user.id,
 					User: { connect: { id: user?.id } },
 					ActivityGoal: { create: ActivityGoal }

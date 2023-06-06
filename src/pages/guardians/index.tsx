@@ -57,9 +57,9 @@ export default function Index({ stringGuardians }: Props) {
 					ModelForm={<UserForm userType={UserType.GUARDIAN} close={close} />}
 					modalTitle={'Add Guardian info'}
 					buttonText={'Add New Guardian'}
-					open={open}
-					close={close}
-					opened={opened}
+					// open={open}
+					// close={close}
+					// opened={opened}
 				/>
 			</div>
 			{/* <OrphanCard orphan={cardInfo as unknown as Orphan} /> */}

@@ -27,48 +27,78 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 			const { OrphanAttendance, User, id: attendanceId, date, userId } = reqData;
 
-			const test: OrphanAttendance[] = [];
+			// const test: OrphanAttendance[] = [];
+			let attendAbsentOrphan;
 			OrphanAttendance.map(async (x) => {
+				// x.id && x.isAttended && console.log('attendAbsentOrphans' + await prisma.orphanAttendance.delete({ where: { id: x.id } }));
+
 				if (x.id) {
 					if (x.isAttended) {
 						const attendAbsentOrphan = await prisma.orphanAttendance.delete({ where: { id: x.id } });
+						console.log("🚀 ~ file: [id].tsx:35 ~ OrphanAttendance.map ~ attendAbsentOrphan:", attendAbsentOrphan);
 					}
 				}
 			});
-			const absentOrphans = OrphanAttendance.filter((x) => x.isAttended == false);
-			absentOrphans.map(async (x) => {
-				let y = await prisma.orphanAttendance.upsert({
-					where: { id: x.id ? x.id : -1 },
-					create: {
-						// id:x.id,
-						Attendance: { connect: { id: attendanceId } },
-						absentReason: x.absentReason,
-						isAttended: x.isAttended,
-						justification: x.justification,
-						notes: x.notes,
-						User: { connect: { id: userId } },
-						returnDay: x.returnDay,
-						Orphan: { connect: { id: x.orphanId as number } },
-					},
-					update: {
-						absentReason: x.absentReason,
-						justification: x.justification,
-						isAttended: x.isAttended,
-						returnDay: x.returnDay,
-						notes: x.notes,
-						User: { connect: { id: userId } },
-						Orphan: { connect: { id: x.orphanId as number } },
-					},
-				});
+			// const absentOrphans = OrphanAttendance.filter((x) => x.isAttended == false);
+			// absentOrphans.map(async (x) => {
+			// 	let y = await prisma.orphanAttendance.upsert({
+			// 		where: { id: x.id ? x.id : -1 },
+			// 		create: {
+			// 			// id:x.id,
+			// 			Attendance: { connect: { id: attendanceId } },
+			// 			absentReason: x.absentReason,
+			// 			isAttended: x.isAttended,
+			// 			justification: x.justification,
+			// 			notes: x.notes,
+			// 			User: { connect: { id: userId } },
+			// 			returnDay: x.returnDay,
+			// 			Orphan: { connect: { id: x.orphanId as number } },
+			// 		},
+			// 		update: {
+			// 			absentReason: x.absentReason,
+			// 			justification: x.justification,
+			// 			isAttended: x.isAttended,
+			// 			returnDay: x.returnDay,
+			// 			notes: x.notes,
+			// 			User: { connect: { id: userId } },
+			// 			Orphan: { connect: { id: x.orphanId as number } },
+			// 		},
+			// 	});
 
-				test.push(y);
-			});
+			// 	test.push(y);
+			// });
 			const updatedAttendance = await prisma.attendance.update({
 				where: { id: attendanceId },
 				data: {
 					date: date,
 					User: { connect: { id: userId } },
-					OrphanAttendance: { updateMany: { where: { attendanceId: attendanceId }, data: { ...test } } },
+					OrphanAttendance: {
+						upsert: OrphanAttendance.filter((x) => x.isAttended === false).map((x) => ({
+							where: { id: x.id ? x.id : -1 },
+							create: {
+								absentReason: x.absentReason,
+								isAttended: x.isAttended,
+								justification: x.justification,
+								notes: x.notes,
+								User: { connect: { id: userId } },
+								returnDay: x.returnDay,
+								Orphan: { connect: { id: x.orphanId as number } },
+
+							},
+							update: {
+								absentReason: x.absentReason,
+								justification: x.justification,
+								isAttended: x.isAttended,
+								returnDay: x.returnDay,
+								notes: x.notes,
+								User: { connect: { id: userId } },
+								Orphan: { connect: { id: x.orphanId as number } },
+
+							}
+						})),
+						deleteMany: { isAttended: true }
+						// updateMany: { where: { attendanceId: attendanceId }, data: test }
+					},
 				},
 			});
 
