@@ -135,7 +135,7 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 				positionActionsColumn='last'
 				renderRowActions={({ row }) => (
 					<Button.Group>
-						<Tooltip label={'Delete'}>
+						{/* <Tooltip label={'Delete'}>
 							<Button
 								size='xs'
 								onClick={() => {
@@ -146,15 +146,15 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 								color='red'>
 								<IconTrash />
 							</Button>
+						</Tooltip> */}
+						<Tooltip label={'Delete'}>
+							<DeleteModal
+								id={row.original.id!}
+								title={'Activity Execution'}
+								url={'api/execute/'}
+								// updateCard={updateCard}
+							/>
 						</Tooltip>
-
-						{/* <DeleteModal
-							id={row.original.id!}
-							title={'activity'}
-							url={'api/execute/'}
-							type='Delete'
-							updateCard={updateCard}
-						/> */}
 
 						<Tooltip label={'Edit'}>
 							<Button

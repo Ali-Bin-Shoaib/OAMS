@@ -111,7 +111,7 @@ function ActivityTable({ activities, updateCard }: Props) {
 							id={row.original.id!}
 							title={'activity'}
 							url={'api/activity/'}
-							type='Delete'
+							// type='Delete'
 							updateCard={updateCard}
 						/>
 

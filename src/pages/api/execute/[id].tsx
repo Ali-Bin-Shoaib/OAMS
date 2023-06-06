@@ -31,16 +31,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				// console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ ActivityGoal:', ActivityGoal);
 				// console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ User:', User);
 
-				const updatedActivity = await prisma.activityExecutionInfo.update({
+				const updatedExecution = await prisma.activityExecutionInfo.update({
 					where: { id: activityExecutionInfo.id },
 					data: {
 						...activityExecutionInfo,
 					},
 				});
-				console.log('🚀 ~ file: [id].tsx:54 ~ handler ~ updatedActivity:', updatedActivity);
-				return res.status(STATUS_CODE.OK).json({ data: activityExecutionInfo, msg: 'update success' });
+				console.log('🚀 ~ file: [id].tsx:40 ~ handler ~ updatedExecution:', updatedExecution);
+				return res.status(STATUS_CODE.OK).json({ data: activityExecutionInfo, msg: 'updated successfully' });
 			} catch (error) {
-				console.log('🚀 ~ file: [id].tsx:24 ~ handler ~ error:', error);
+				console.log('🚀 ~ file: [id].tsx:43 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, msg: 'Something went wrong.' });
 			}
 		}
@@ -48,18 +48,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		case REQUEST_METHODS.DELETE: {
 			try {
-				const deletedActivity = await prisma.activityInfo.delete({ where: { id: ID } });
-				console.log('🚀 ~ file: [id].tsx:31 ~ handler ~ deletedActivity:', deletedActivity);
-				if (deletedActivity) {
+				const deletedExecution = await prisma.activityExecutionInfo.delete({ where: { id: ID } });
+				console.log('🚀 ~ file: [id].tsx:31 ~ handler ~ deletedExecution:', deletedExecution);
+				if (deletedExecution) {
 					console.log('++++++++++++++++++++ at TRUE');
 
 					return res.status(STATUS_CODE.OK).json({
-						data: deletedActivity,
-						msg: `activity with id: ${deletedActivity.id} and Title: ${deletedActivity.title} was deleted successfully.`,
+						data: deletedExecution,
+						msg: `execution with id: ${deletedExecution.id}  was deleted successfully.`,
 					});
 				} else {
 					console.log('++++++++++++++++++++++++++ at else');
-					return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete activity with id :' + ID);
+					return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete activityExecution with id :' + ID);
 				}
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:81 ~ handler ~ error:', error);
@@ -73,10 +73,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			console.log('getting orphan info');
 
 			try {
-				const requiredActivity = await prisma.activityInfo.findUnique({ where: { id: ID } });
-				if (requiredActivity)
-					return res.status(STATUS_CODE.OK).json({ requiredActivity: requiredActivity, msg: 'Activity Founded' });
-				return res.status(STATUS_CODE.BAD_REQUEST).json('required Activity not founded with id:' + ID);
+				const requiredExecution = await prisma.activityExecutionInfo.findUnique({ where: { id: ID } });
+				if (requiredExecution)
+					return res.status(STATUS_CODE.OK).json({ requiredExecution: requiredExecution, msg: 'Execution Founded' });
+				return res.status(STATUS_CODE.BAD_REQUEST).json('required Activity Execution was not found. with id:' + ID);
 			} catch (error) {
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json('Some thing went wrong :' + error);
 			}

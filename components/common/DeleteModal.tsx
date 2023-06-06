@@ -15,21 +15,20 @@ interface Props {
 
 	title: string;
 	url: Url;
-	type: 'Add' | 'Edit' | 'Delete';
 }
-export default function DeleteModal({ id, title, url, type, updateCard }: Props) {
+export default function DeleteModal({ id, title, url, updateCard }: Props) {
 	const router = useRouter();
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
-			title: `${type} ${title} Info.`,
+			title: `Delete ${title} Info.`,
 			centered: true,
 			children: <Text size='sm'>Are you sure you want to delete this {title}?</Text>,
-			labels: { confirm: `${type}`, cancel: `No don't ${type} it` },
+			labels: { confirm: `Delete`, cancel: `No don't Delete it` },
 			confirmProps: { color: 'red' },
 			onCancel: () =>
 				notifications.show({
 					title: 'Cancel',
-					message: `cancel ${type}`,
+					message: `cancel Delete`,
 					color: 'gray',
 				}),
 			onConfirm: async () => {
@@ -46,7 +45,7 @@ export default function DeleteModal({ id, title, url, type, updateCard }: Props)
 						// 	color: 'green',
 						// 	icon: <IconCheck />,
 						// });
-						router.push(Pages.Activities.link);
+						router.push(router.asPath);
 					} else {
 						myNotification('Error', result.data.msg, 'red', <IconX />);
 
@@ -86,7 +85,7 @@ const deleteRecord = async (id: number, url: Url) => {
 	console.log('🚀 ~ file: DeleteModal.tsx:8 ~ deleteOrphan ~ id:', id);
 
 	try {
-		const res = await axios.delete<{ msg: string; data: ActivityInfo }>(serverLink + url + id);
+		const res = await axios.delete<{ msg: string; data: any }>(serverLink + url + id);
 		console.log('🚀 ~ file: DeleteModal.tsx:77 ~ deleteRecord ~ res:', res.data.msg);
 		return res;
 	} catch (error) {

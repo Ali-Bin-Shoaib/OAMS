@@ -19,6 +19,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 			GoalEvaluation: { include: { Goal: true } },
 			OrphanActivityExecution: true,
 		},
+		orderBy: { id: 'asc' },
 	});
 	if (activitiesExecutions) {
 		return { props: { activitiesExecutions } };
@@ -55,6 +56,7 @@ function Index({ activitiesExecutions }: Props) {
 
 	return (
 		<>
+			<h1>activities Ids:</h1>
 			<Container fluid px={10}>
 				{activitiesExecutions.map((x) => x.activityInfoId)}
 				<h1>activityExecution Index</h1>
