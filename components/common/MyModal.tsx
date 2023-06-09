@@ -33,9 +33,9 @@ export default function MyModal({
 				<Title align='center'>{modalTitle}</Title>
 				<Divider m={10} p={10} />
 				{ModelForm}
-				<Group position='center' p={10}>
+				{/* <Group position='right' p={10}>
 					<Button onClick={close}>OK</Button>
-				</Group>
+				</Group> */}
 			</Modal>
 			<Group position={position}>
 				<Button color={buttonColor} size={size} m={15} onClick={open}>
