@@ -1,44 +1,62 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types/types';
 import prisma from '../../../../lib/prisma';
-import { ActivityExecutionInfo, ActivityGoal, ActivityInfo, Goal, Orphan, User } from '@prisma/client';
+import {
+	ActivityExecutionInfo,
+	ActivityGoal,
+	ActivityInfo,
+	Goal,
+	GoalEvaluation,
+	Orphan,
+	OrphanActivityExecution,
+	User,
+} from '@prisma/client';
 // export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	console.log('🚀 ~ file: [id].tsx:8 ~ handler ~ req:', req.body);
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ ID:', ID);
-	const activityExecutionInfo = await prisma.activityExecutionInfo.findUnique({ where: { id: ID } });
-	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ activityExecutionInfo:', activityExecutionInfo);
-	if (!(ID || activityExecutionInfo))
-		return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'activity dose not exist.' });
+	const isDataExist = await prisma.activityExecutionInfo.findUnique({ where: { id: ID } });
+	if (!(ID || isDataExist)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'activity dose not exist.' });
 	switch (req.method) {
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
 			try {
 				const activityExecution: ActivityExecutionInfo & {
-					ActivityGoal: (ActivityGoal & {
-						Goal: Goal;
-					})[];
-
-					User: User;
+					Executor: User;
+					ActivityInfo?: ActivityInfo & { User: User };
+					GoalEvaluation?: (GoalEvaluation & { Goal?: Goal })[];
+					OrphanActivityExecution?: OrphanActivityExecution[];
 				} = req.body;
 				console.log('🚀 ~ file: [id].tsx:45 ~ handler ~ activityExecution:', activityExecution);
-
-				// console.log('🚀 ~ file: [id].tsx:19 ~ handler ~ activity:', activity);
-				// const { User, ActivityGoal, ...activityInfo } = activity;
-				// console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ activityInfo:', activityInfo);
-				// console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ ActivityGoal:', ActivityGoal);
-				// console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ User:', User);
+				const { OrphanActivityExecution, GoalEvaluation, ActivityInfo, Executor, ...a } = activityExecution;
 
 				const updatedExecution = await prisma.activityExecutionInfo.update({
-					where: { id: activityExecutionInfo.id },
+					where: { id: ID },
 					data: {
-						...activityExecutionInfo,
+						...a,
+						OrphanActivityExecution: {
+							upsert: OrphanActivityExecution.map((x) => ({
+								where: { id: x.id ? x.id : -1 },
+								create: { evaluation: x.evaluation, isAttended: x.isAttended, orphanId: x.orphanId, userId: x.userId },
+								update: { evaluation: x.evaluation, isAttended: x.isAttended, orphanId: x.orphanId, userId: x.userId },
+							})),
+						},
+						GoalEvaluation: {
+							update: GoalEvaluation.map((x) => ({
+								where: {
+									goalId_activityExecutionInfoId: { goalId: x.Goal.id, activityExecutionInfoId: x.activityExecutionInfoId },
+								},
+								data: { evaluation: x.evaluation },
+							})),
+						},
 					},
 				});
 				console.log('🚀 ~ file: [id].tsx:40 ~ handler ~ updatedExecution:', updatedExecution);
-				return res.status(STATUS_CODE.OK).json({ data: activityExecutionInfo, msg: 'updated successfully' });
+				return res.status(STATUS_CODE.OK).json({
+					data: updatedExecution,
+					msg: `Activity execution info with ID: ${updatedExecution.id}  was updated successfully`,
+				});
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:43 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, msg: 'Something went wrong.' });
@@ -55,11 +73,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 					return res.status(STATUS_CODE.OK).json({
 						data: deletedExecution,
-						msg: `execution with id: ${deletedExecution.id}  was deleted successfully.`,
+						msg: `Activity execution info with id: ${deletedExecution.id}  was deleted successfully.`,
 					});
 				} else {
 					console.log('++++++++++++++++++++++++++ at else');
-					return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete activityExecution with id :' + ID);
+					return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'failed to delete activityExecution with id :' + ID });
 				}
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:81 ~ handler ~ error:', error);

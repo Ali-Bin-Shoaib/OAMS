@@ -7,13 +7,7 @@ import { useRouter } from 'next/router';
 import { Orphan, PaymentMethod, Prisma, Sponsor, Sponsorship, SponsorshipPeriod } from '@prisma/client';
 import React from 'react';
 import { DatePickerInput } from '@mantine/dates';
-import {
-	_SponsorshipWithSponsorAndOrphan,
-	_Sponsorship,
-	_SponsorshipFormData,
-	_Sponsor,
-	STATUS_CODE,
-} from '../../types/types';
+import { _SponsorshipWithSponsorAndOrphan, _Sponsorship, _SponsorshipFormData, _Sponsor } from '../../types/types';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { serverLink } from '../../shared/links';
 
@@ -24,18 +18,20 @@ interface Props {
 	sponsorship?: _Sponsorship;
 	orphans: Orphan[];
 	sponsors: _Sponsor[];
-	close: () => void;
+	close?: () => void;
 }
 
 export default function SponsorshipForm({ sponsorship, sponsors, orphans, close }: Props) {
 	const router = useRouter();
+	function handleClose() {
+		console.log('close');
+
+		close();
+	}
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
-		watch,
 		handleSubmit,
-		getValues,
-		setValue,
 		formState: { errors },
 	} = useForm<_Sponsorship>({ defaultValues: { ...sponsorship, isActive: false as unknown as string } });
 	const onSubmit = async (data: _Sponsorship) => {
@@ -47,10 +43,12 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 			console.log('user not exist.');
 			const url = serverLink + '/api/sponsorship/create/';
 			// const res = await axios.post(url, data).catch((err: AxiosError<{ msg: string }>) => {
-			const res = await axios.post(url, data).then((data) => {
-				console.log(data);
-				myNotification('Success', 'create new sponsorship successfully', 'green', <IconCheck />);
-			})
+			const res = await axios
+				.post(url, data)
+				.then((data) => {
+					console.log(data);
+					myNotification('Success', 'create new sponsorship successfully', 'green', <IconCheck />);
+				})
 				.catch((err: AxiosError<{ msg: string }>) => {
 					console.log('error at creating new sponsorship', err);
 					myNotification('Error', err.response?.data.msg as string, 'red', <IconX />);
@@ -62,7 +60,7 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 			const res: AxiosResponse<{ data: any }> = await axios.put(url, data);
 			console.log('🚀 ~ file: SponsorshipForm.tsx:43 ~ onSubmit ~ res:', res);
 		}
-		close();
+		handleClose();
 		router.push(router.asPath);
 	};
 

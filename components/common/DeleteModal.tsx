@@ -12,11 +12,12 @@ import myNotification from '../MyNotification';
 interface Props {
 	id: number | -1;
 	updateCard?: (activityInfo: _ActivityInfo | undefined) => void;
+	tooltip?: string;
 
 	title: string;
 	url: Url;
 }
-export default function DeleteModal({ id, title, url, updateCard }: Props) {
+export default function DeleteModal({ id, title, url, tooltip = 'Delete', updateCard }: Props) {
 	const router = useRouter();
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -73,7 +74,7 @@ export default function DeleteModal({ id, title, url, updateCard }: Props) {
 			},
 		});
 	return (
-		<Tooltip label={'Delete'}>
+		<Tooltip label={tooltip}>
 			<Button size='xs' onClick={openDeleteModal} color='red'>
 				<IconTrash />
 			</Button>

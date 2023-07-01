@@ -12,18 +12,21 @@ import {
 import { GetServerSideProps } from 'next';
 import { useState, useEffect } from 'react';
 import SuperJSON from 'superjson';
-import ActivityForm from '../../../../components/activities/ActivityForm';
-import AppHead from '../../../../components/common/AppHead';
-import { usePageTitle } from '../../../../hooks/usePageTitle';
-import prisma from '../../../../lib/prisma';
-import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../types/types';
-import ExecutionForm from '../../../../components/activityExecution/ExecutionForm';
+import ActivityForm from '../../../../../components/activities/ActivityForm';
+import AppHead from '../../../../../components/common/AppHead';
+import { usePageTitle } from '../../../../../hooks/usePageTitle';
+import prisma from '../../../../../lib/prisma';
+import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../../types/types';
+import ExecutionForm from '../../../../../components/activityExecution/ExecutionForm';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-	const id = Number(params?.id);
-	console.log('🚀 ~ file: [id].tsx:24 ~ constgetServerSideProps:GetServerSideProps= ~ id:', id);
+	const executionId = Number(params?.executionId);
+	console.log(
+		'🚀 ~ file: [executionId].tsx:24 ~ constgetServerSideProps:GetServerSideProps= ~ executionId:',
+		executionId
+	);
 	const activityExecution = await prisma.activityExecutionInfo.findFirst({
-		where: { id: id },
+		where: { id: executionId },
 		include: {
 			Executor: true,
 			ActivityInfo: { include: { User: true } },

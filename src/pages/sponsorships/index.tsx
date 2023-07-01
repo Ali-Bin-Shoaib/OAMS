@@ -59,7 +59,7 @@ export default function Index({ stringData }: Props) {
 	const [sponsorshipsList, setSponsorshipsList] = useState<Sponsorship[]>(sponsorships);
 	const [cardInfo, setCardInfo] = useState<Sponsorship>(sponsorshipsList[0]);
 	const [hydration, setHydration] = useState(false);
-	const [opened, { open, close }] = useDisclosure(false);
+	// const [opened, { open, close }] = useDisclosure(false);
 	const title = usePageTitle();
 
 	const updateCard = (sponsorship: Sponsorship) => setCardInfo(sponsorship);
@@ -76,9 +76,9 @@ export default function Index({ stringData }: Props) {
 				<MyModal
 					modalTitle='Add Sponsorship'
 					buttonText='Add New Sponsorship'
-					close={close}
-					open={open}
-					opened={opened}
+					// close={close}
+					// open={open}
+					// opened={opened}
 					ModelForm={<SponsorshipForm close={close} orphans={orphans} sponsors={sponsors as _Sponsor[]} />}
 				/>
 			</div>

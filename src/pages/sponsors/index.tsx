@@ -11,7 +11,7 @@ import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useDisclosure } from '@mantine/hooks';
 import UserForm from '../../../components/users/UserForm';
 import GuardianTable from '../../../components/guardians/GuardianTable';
-import { generateDumpData } from '../../../data/functions';
+// import { generateDumpData } from '../../../data/functions';
 import SponsorTable from '../../../components/sponsors/SponsorTable';
 
 // * get orphans from database and pass the result as props to Index page.
@@ -57,9 +57,9 @@ export default function Index({ stringSponsor }: Props) {
 					ModelForm={<UserForm userType={UserType.SPONSOR} close={close} />}
 					modalTitle={'Add Sponsor info'}
 					buttonText={'Add New Sponsor'}
-					open={open}
-					close={close}
-					opened={opened}
+					// open={open}
+					// close={close}
+					// opened={opened}
 				/>
 			</div>
 			{/* <OrphanCard orphan={cardInfo as unknown as Orphan} /> */}

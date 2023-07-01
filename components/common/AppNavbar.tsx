@@ -1,61 +1,25 @@
 import {
 	createStyles,
-	Group,
-	Burger,
-	rem,
 	Header,
+	Menu,
+	Group,
+	Center,
+	Burger,
+	Container,
+	rem,
 	ActionIcon,
 	useMantineColorScheme,
-	Switch,
-	useMantineTheme,
+	Transition,
+	Paper,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconHome, IconMoonStars, IconSun } from '@tabler/icons-react';
-import { useRouter } from 'next/router';
+import { IconChevronDown, IconHome, IconMoonStars, IconSun } from '@tabler/icons-react';
+import { Paths } from '../../shared/links';
 import MyLink from './MyLink';
-import { Pages, Paths } from '../../shared/links';
-import Image from 'next/image';
-import img from '../../src/img/simeLogo.png';
-import DropDownList from './DropDownList';
+import Link from 'next/link';
 
 const useStyles = createStyles((theme) => ({
-	header: {
-		backgroundColor: theme.fn.variant({
-			variant: 'filled',
-			color: theme.colors.blue[1],
-		}).background,
-		borderBottom: 0,
-	},
-
-	inner: {
-		height: rem(56),
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-
-	links: {
-		[theme.fn.smallerThan('sm')]: {
-			display: 'none',
-		},
-	},
-
-	burger: {
-		[theme.fn.largerThan('sm')]: {
-			display: 'none',
-		},
-	},
-
 	link: {
-		display: 'block',
-		lineHeight: 1,
-		padding: `${rem(8)} ${rem(12)}`,
-		borderRadius: theme.radius.sm,
-		textDecoration: 'none',
-		color: theme.white,
-		fontSize: theme.fontSizes.sm,
-		fontWeight: 500,
-
 		'&:hover': {
 			backgroundColor: theme.fn.lighten(
 				theme.fn.variant({ variant: 'filled', color: theme.primaryColor }).background!,
@@ -63,120 +27,105 @@ const useStyles = createStyles((theme) => ({
 			),
 		},
 	},
-
-	linkLabel: {
-		marginRight: rem(5),
-	},
 }));
 
 export default function AppNavbar() {
 	const [opened, { toggle }] = useDisclosure(false);
+	const { classes, theme } = useStyles();
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-	const { classes } = useStyles();
-	const router = useRouter();
-
 	const items = Paths.links.map((link) => {
+		const menuItems = link.relatedLinks?.map((item) => (
+			<Menu.Item key={item.link} className={`${classes.link}`}>
+				<Link
+					href={item.link}
+					className={`block leading-none px-2 py-3 rounded-sm no-underline font-semibold -m-2 ${classes.link}`}
+					style={{
+						color: theme.colors.gray[0],
+						background: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[6],
+					}}>
+					<Center>{item.label}</Center>
+				</Link>
+			</Menu.Item>
+		));
+
+		if (menuItems) {
+			return (
+				<Menu key={link.label} trigger='hover' transitionProps={{ exitDuration: 0 }} withinPortal>
+					<Menu.Target>
+						<Link
+							href={link.link}
+							className={`text-lg block leading-none px-2 py-3 rounded-sm no-underline font-semibold ${classes.link}`}
+							style={{
+								color: theme.colors.gray[0],
+								background: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[6],
+							}}>
+							<Center>
+								{link.label}
+								<IconChevronDown size='0.9rem' stroke={1.5} />
+							</Center>
+						</Link>
+					</Menu.Target>
+					<Menu.Dropdown bg={'blue'}>{menuItems}</Menu.Dropdown>
+				</Menu>
+			);
+		}
+
 		return (
-			<MyLink
+			<Link
 				key={link.label}
 				href={link.link}
-				className={`${router.asPath == link.link ? 'underline underline-offset-8 ' : ''} ${classes.link}`}
-				// className={`${router.asPath == link.link ? ' underline-offset-8 no-underline' : ''} `}
-				text={link.label}
-			/>
+				className={`text-lg block leading-none px-2 py-3 rounded-sm no-underline font-semibold ${classes.link}`}
+				style={{
+					color: theme.colors.gray[0],
+				}}>
+				{link.label}
+			</Link>
 		);
 	});
-	// const x = [Pages.Orphans, Pages.BehaviorInfo, Pages.HealthInfo];
+
 	return (
-		<>
-			<Header height={72} className={classes.header + ' px-1'} mb={10}>
-				{/* <Header height={72} mb={10}> */}
-				<div className={classes.inner}>
-					{/* <Group position='apart'> */}
-					<Image src={img} onClick={() => router.push('/')} width={50} className='rounded-full' height={50} alt={'Home'} />
-					<Group spacing={1} className={classes.links}>
+		<Header height={56} mb={20} bg={'blue'}>
+			<Container>
+				<div className={`flex items-center justify-between h-14`}>
+					<Link
+						href={'/'}
+						className='no-underline '
+						style={{
+							color: theme.colors.gray[0],
+						}}>
+						<IconHome size={28} />
+					</Link>
+					<Group spacing={5} className={'max-[870px]:hidden'}>
 						{items}
 					</Group>
-					{/* <Group spacing={1} className={classes.links}>
-						<DropDownList
-							target={'Manage Orphans'}
-							label={'Orphans'}
-							classes={classes.link}
-							links={[{ label: Pages.Orphans.label, link: Pages.Orphans.link }]}
-						/>
-					</Group> */}
-					{/* <Group spacing={1}>{items}</Group> */}
-					<Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' color='#fff' />
-					{/* <Burger opened={opened} onClick={toggle} size='sm' color='#fff' /> */}
-
 					<Group position='center' my='xl'>
 						<ActionIcon
 							onClick={() => toggleColorScheme()}
 							size='lg'
 							sx={(theme) => ({
-								backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-								color: theme.colorScheme === 'dark' ? theme.colors.yellow[6] : theme.colors.gray[6],
+								color: theme.colorScheme === 'dark' ? theme.colors.yellow[0] : theme.colors.dark[9],
 							})}>
-							{colorScheme === 'dark' ? <IconSun size='1.2rem' /> : <IconMoonStars size='1.2rem' />}
+							{colorScheme === 'dark' ? (
+								<IconSun size='1.2rem' color={theme.colors.yellow[5]} />
+							) : (
+								<IconMoonStars size='1.2rem' />
+							)}
 						</ActionIcon>
 					</Group>
-					{/* </Group> */}
+
+					<Burger opened={opened} onClick={toggle} className={`min-[870px]:hidden`} size='md' />
+					<Transition transition='pop-top-right' duration={200} mounted={opened}>
+						{(styles) => (
+							<Paper
+								className={`absolute top-16 right-20 overflow-hidden z-50 min-[870px]:hidden`}
+								withBorder
+								style={{ background: theme.colors.blue[6] }}>
+								{items}
+							</Paper>
+						)}
+					</Transition>
 				</div>
-			</Header>
-		</>
+			</Container>
+		</Header>
 	);
 }
-// import { Header, Group, Menu, Button, Text, useMantineTheme, MediaQuery, Burger, ActionIcon } from '@mantine/core';
-// import { IconSun, IconMoonStars } from '@tabler/icons-react';
-// import { useRouter } from 'next/router';
-// import { useDisclosure } from '@mantine/hooks';
-// import { useMantineColorScheme } from '@mantine/core';
-// import Image from 'next/image';
-// import img from '../../src/img/simeLogo.png';
-// import MyLink from './MyLink';
-// import { Paths } from '../../shared/links';
-
-// export default function AppNavbar() {
-// 	const [opened, { toggle }] = useDisclosure(false);
-// 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-// 	const router = useRouter();
-// 	const theme = useMantineTheme();
-
-// 	const items = Paths.links.map((link) => {
-// 		return <MyLink key={link.label} href={link.link} text={link.label} onClick={undefined} />;
-// 	});
-
-// 	return (
-// 		<>
-// 			<Header height={72} mb={10}>
-// 				<Group position='apart'>
-// 					<Image src={img} onClick={() => router.push('/')} width={50} className='rounded-full' height={50} alt={'Home'} />
-// 					{/* Use MediaQuery component to hide the group of links on smaller screens */}
-// 					<MediaQuery smallerThan='xl' styles={{ display: 'none' }}>
-// 						<Group spacing={1} className=''>{items}</Group>
-// 					</MediaQuery>
-// 					{/* Use Burger component to create a toggle button for the navbar on smaller screens */}
-// 					<MediaQuery largerThan='xl' styles={{ display: 'none' }}>
-// 						<Burger opened={opened} onClick={toggle} size='sm' color={theme.black} />
-// 					</MediaQuery>
-
-// 					<Group position='center' my='xl'>
-// 						<ActionIcon
-// 							onClick={() => toggleColorScheme()}
-// 							size='lg'
-// 							sx={(theme) => ({
-// 								backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-// 								color: theme.colorScheme === 'dark' ? theme.colors.yellow[6] : theme.colors.gray[6],
-// 							})}>
-// 							{colorScheme === 'dark' ? <IconSun size='1.2rem' /> : <IconMoonStars size='1.2rem' />}
-// 						</ActionIcon>
-// 					</Group>
-// 				</Group>
-// 			</Header>
-// 			{/* Use MediaQuery component to show the navbar on smaller screens when the burger is opened */}
-// 			<MediaQuery smallerThan='xl' styles={{ display: opened ? 'block' : 'none' }}>
-// 				<Group spacing={1}>{items}</Group>
-// 			</MediaQuery>
-// 		</>
-// 	);
-// }

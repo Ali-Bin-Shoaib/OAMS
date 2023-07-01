@@ -98,6 +98,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 							return (
 								<DatePickerInput
 									{...field}
+									size={'md'}
 									label='data'
 									placeholder='date'
 									withAsterisk
@@ -115,7 +116,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 							return (
 								<TextInput
 									{...field}
-									size={'xl'}
+									size={'md'}
 									label='title'
 									placeholder='title'
 									withAsterisk

@@ -49,16 +49,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						})),
 					},
 					OrphanActivityExecution: {
-						create: OrphanActivityExecution?.filter((x) => x.isAttended).map((x) => ({
+						create: OrphanActivityExecution?.map((x) => ({
 							orphanId: x.Orphan.id,
+							isAttended: x.isAttended as unknown as boolean,
 							userId: userId,
 							activityInfoId: x.activityExecutionInfoId,
 							evaluation: x.evaluation,
 						})),
 					},
-					// OrphanActivityExecution: { createMany: { data: OrphanActivityExecution.filter((x) => x.isAttended).map(x=>({})) } },
 				},
 			});
+			// OrphanActivityExecution: {
+			// 	create: OrphanActivityExecution?.filter((x) => x.isAttended).map((x) => ({
+			// 		orphanId: x.Orphan.id,
+			// 		userId: userId,
+			// 		activityInfoId: x.activityExecutionInfoId,
+			// 		evaluation: x.evaluation,
+			// 	})),
+			// },
 
 			console.log('🚀 ~ file: create.tsx:17 ~ handler ~ newActivityExecution:', newActivityExecution);
 			return res.end(

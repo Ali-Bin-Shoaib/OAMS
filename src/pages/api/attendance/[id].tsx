@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				if (x.id) {
 					if (x.isAttended) {
 						const attendAbsentOrphan = await prisma.orphanAttendance.delete({ where: { id: x.id } });
-						console.log("🚀 ~ file: [id].tsx:35 ~ OrphanAttendance.map ~ attendAbsentOrphan:", attendAbsentOrphan);
+						console.log('🚀 ~ file: [id].tsx:35 ~ OrphanAttendance.map ~ attendAbsentOrphan:', attendAbsentOrphan);
 					}
 				}
 			});
@@ -73,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					date: date,
 					User: { connect: { id: userId } },
 					OrphanAttendance: {
-						upsert: OrphanAttendance.filter((x) => x.isAttended === false).map((x) => ({
+						upsert: OrphanAttendance.filter((x) => !x.isAttended).map((x) => ({
 							where: { id: x.id ? x.id : -1 },
 							create: {
 								absentReason: x.absentReason,
@@ -83,7 +83,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 								User: { connect: { id: userId } },
 								returnDay: x.returnDay,
 								Orphan: { connect: { id: x.orphanId as number } },
-
 							},
 							update: {
 								absentReason: x.absentReason,
@@ -93,10 +92,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 								notes: x.notes,
 								User: { connect: { id: userId } },
 								Orphan: { connect: { id: x.orphanId as number } },
-
-							}
+							},
 						})),
-						deleteMany: { isAttended: true }
+						deleteMany: { isAttended: true },
 						// updateMany: { where: { attendanceId: attendanceId }, data: test }
 					},
 				},

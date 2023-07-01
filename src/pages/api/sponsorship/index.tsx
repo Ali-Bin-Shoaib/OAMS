@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		if (req.method === 'GET') {
 			const sponsorships = await prisma.sponsorship.findMany({ include: { Sponsor: true, Orphan: true } });
 
-			res.status(STATUS_CODE.Success).json(sponsorships);
+			res.status(STATUS_CODE.OK).json(sponsorships);
 		}
 	} catch (error) {
 		res.json(error);

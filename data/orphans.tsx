@@ -32,7 +32,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'omar',
@@ -65,7 +65,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'mohsen',
@@ -98,7 +98,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'abubaker',
@@ -131,7 +131,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'mohammad',
@@ -164,7 +164,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'hossain',
@@ -197,7 +197,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'abdo',
@@ -230,7 +230,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'jehad',
@@ -263,7 +263,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'hamod',
@@ -296,7 +296,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'ajrh',
@@ -329,7 +329,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'sadeq',
@@ -362,7 +362,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'hamzah',
@@ -395,7 +395,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'othman',
@@ -428,7 +428,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'adnan',
@@ -461,7 +461,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'alowe',
@@ -494,7 +494,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'kramh',
@@ -527,7 +527,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'seraj',
@@ -560,7 +560,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'somahe',
@@ -593,7 +593,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'hassan',
@@ -626,7 +626,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'krem',
@@ -659,7 +659,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'nor',
@@ -692,7 +692,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'mrowa',
@@ -725,7 +725,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'nada',
@@ -758,7 +758,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'fatemah',
@@ -791,7 +791,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'maryam',
@@ -824,7 +824,7 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 	{
 		name: 'zynh',
@@ -857,6 +857,6 @@ export const initOrphans: Prisma.OrphanCreateManyInput[] = [
 		foundationName: null,
 		foundationAmount: null,
 		evaluation: null,
-		guardianId: 2,
+		guardianId: 3,
 	},
 ];

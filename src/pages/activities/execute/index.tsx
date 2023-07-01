@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import prisma from '../../../../lib/prisma';
 import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../types/types';
 import ActivityExecutionTable from '../../../../components/activityExecution/ActivityExecutionTable';
-import { Container, Loader } from '@mantine/core';
+import { Button, Container, Group, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/router';
@@ -10,6 +10,8 @@ import SuperJSON from 'superjson';
 import activities from '..';
 import { usePageTitle } from '../../../../hooks/usePageTitle';
 import ActivityExecutionCard from '../../../../components/activityExecution/ActivityExecutionCard';
+import { Pages, Paths } from '../../../../shared/links';
+import { IconPlus } from '@tabler/icons-react';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const activitiesExecutions = await prisma.activityExecutionInfo.findMany({
@@ -56,10 +58,15 @@ function Index({ activitiesExecutions }: Props) {
 
 	return (
 		<>
-			<h1>activities Ids:</h1>
 			<Container fluid px={10}>
-				{activitiesExecutions.map((x) => x.activityInfoId)}
 				<h1>activityExecution Index</h1>
+				<Group position='center'>
+					<Button size='xl' m={15} onClick={() => router.push(Pages.Activities.link)}>
+						<IconPlus />
+						Execute Activity
+					</Button>
+				</Group>
+
 				{/* <ActivityExecutionCard activityExecutionInfo={cardInfo} updateCard={updateCard} /> */}
 				<ActivityExecutionTable activitiesExecutions={activitiesExecutions} updateCard={updateCard} />
 			</Container>

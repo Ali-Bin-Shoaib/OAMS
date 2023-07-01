@@ -57,7 +57,7 @@ export default function ActivityExecutionCard({ activityExecutionInfo, updateCar
 						id={activityExecutionInfo.id!}
 						title={'activity'}
 						url={'api/activity/'}
-						type='Delete'
+						// type='Delete'
 						updateCard={updateCard}
 					/>
 

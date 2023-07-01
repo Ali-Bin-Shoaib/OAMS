@@ -1,18 +1,20 @@
-import { Button, NavLink, useMantineTheme } from '@mantine/core';
+import { Button, NavLink, UnstyledButton, useMantineTheme } from '@mantine/core';
 import Link from 'next/link';
 
 interface Props {
 	href: string;
-	text: string;
+	label: string;
 	className?: string;
-	// onClick?: any | undefined;
+	onClick?: (event: any) => void;
 }
-export default function MyLink({ href = '/', text = 'link', className = '' }: Props) {
+export default function MyLink({ href = '/', label = 'link', className = '', onClick }: Props) {
 	const theme = useMantineTheme();
 
 	return (
-		<Link href={href} className={'p-2 m-2 text-xl font-semibold  ' + className}>
-			{text}
-		</Link>
+		<>
+			<Link onClick={onClick} href={href} className={` ${className}`}>
+				{label}
+			</Link>
+		</>
 	);
 }

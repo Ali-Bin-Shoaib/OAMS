@@ -9,10 +9,10 @@ import { _ActivityInfo } from '../../../../../types/types';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	console.log('🚀 ~ file: [activityId].tsx:11 ~ constgetServerSideProps:GetServerSideProps= ~ params:', params);
-	const id = Number(params?.id);
+	const activityId = Number(params?.activityId);
 	try {
 		const activity = await prisma.activityInfo.findFirst({
-			where: { id: id },
+			where: { id: activityId },
 			// include: { User: { select: { name: true, id: true, type: true } }, ActivityGoal: { include:: true }, orderBy: { id: 'asc' } } },
 			// include: { User: true, ActivityGoal: { include: { Goal: true }, orderBy: { id: 'asc' } } },
 			include: { User: true, ActivityGoal: { include: { Goal: true }, orderBy: { id: 'asc' } } },

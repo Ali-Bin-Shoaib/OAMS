@@ -5,7 +5,7 @@ interface Props {
 	target: string;
 	label: string;
 	classes?: string;
-	links: [{ label: string; link: string }];
+	links: { label: string; link: string }[];
 }
 export default function DropDownList({ target, label, links, classes }: Props) {
 	return (
@@ -20,7 +20,7 @@ export default function DropDownList({ target, label, links, classes }: Props) {
 				{links.map((x) => {
 					return (
 						<Menu.Item key={v4()}>
-							<MyLink href={x.link} text={x.label} className={classes} />
+							<MyLink href={x.link} label={x.label} className={classes} />
 						</Menu.Item>
 					);
 				})}

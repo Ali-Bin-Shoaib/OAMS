@@ -39,7 +39,7 @@ export default function ActivityCard({ activityInfo, updateCard }: Props) {
 						id={activityInfo.id!}
 						title={'activity'}
 						url={'api/activity/'}
-						type='Delete'
+						// type='Delete'
 						updateCard={updateCard}
 					/>
 

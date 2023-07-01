@@ -4,7 +4,6 @@ import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Button, Container, Tooltip } from '@mantine/core';
 import { _ActivityInfo, _Attendance, _Orphan, _OrphanAttendance } from '../../types/types';
 import { useRouter } from 'next/router';
-import { serverLink } from '../../shared/links';
 import { IconEdit, IconTrash, IconInfoCircle, IconCheckbox } from '@tabler/icons-react';
 import DeleteModal from '../common/DeleteModal';
 
@@ -23,16 +22,16 @@ function ActivityTable({ activities, updateCard }: Props) {
 				accessorFn: (row) => row.title,
 				id: 'title',
 				header: 'title',
-				maxSize: 80,
-				size: 80,
+				maxSize: 60,
+				size: 50,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.date?.toDateString(),
 				id: 'date',
 				header: 'date',
-				maxSize: 80,
-				size: 80,
+				maxSize: 60,
+				size: 50,
 				enableResizing: true,
 			},
 
@@ -40,8 +39,8 @@ function ActivityTable({ activities, updateCard }: Props) {
 				accessorFn: (row) => row.budget,
 				id: 'budget',
 				header: 'Budget',
-				maxSize: 80,
-				size: 80,
+				maxSize: 60,
+				size: 50,
 				enableResizing: true,
 			},
 			// {
@@ -64,8 +63,8 @@ function ActivityTable({ activities, updateCard }: Props) {
 				accessorFn: (row) => row.quarter,
 				id: 'quarter',
 				header: 'quarter',
-				maxSize: 80,
-				size: 80,
+				maxSize: 60,
+				size: 50,
 				enableResizing: true,
 			},
 			{

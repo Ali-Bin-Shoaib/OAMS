@@ -87,12 +87,12 @@ function Info({ stringData }: Props) {
 						<Text>
 							{activity.ActivityExecutionInfo.map((x) => {
 								return x.GoalEvaluation.reduce((total, object) => total + object.evaluation, 0) / x.GoalEvaluation.length;
-							}).reduce((total, object) => total + object, 0) / activity.ActivityExecutionInfo.length}
+							}).reduce((total, object) => total + object, 0) / activity.ActivityExecutionInfo.length || 0}
 						</Text>
 					</SimpleGrid>
 					<Group position='right'>
 						<Button.Group>
-							<DeleteModal id={activity.id!} title={'activity'} url={'api/activity/'} type='Delete' updateCard={undefined} />
+							<DeleteModal id={activity.id!} title={'activity'} url={'api/activity/'} updateCard={undefined} />
 
 							<Tooltip label={'Edit'}>
 								<Button

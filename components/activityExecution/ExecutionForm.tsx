@@ -32,6 +32,7 @@ import { Goal, Prisma, Quarter, ActivityInfo, ActivityExecutionInfo, Orphan } fr
 import { v4 } from 'uuid';
 import myNotification from '../MyNotification';
 import MyModal from '../common/MyModal';
+import { IconCheck } from '@tabler/icons-react';
 //* type user is not allowed in creating or editing activityInfo TYpe remove it and fix the forms.
 interface Props {
 	activityInfo?: _ActivityInfo;
@@ -40,15 +41,24 @@ interface Props {
 }
 
 export default function ExecutionForm({ activityInfo, activityExecutionInfo, orphans }: Props): JSX.Element {
-	console.log('🚀 ~ file: ExecutionForm.tsx:43 ~ ExecutionForm ~ activityExecutionInfo:', activityExecutionInfo);
+	console.log('🚀 ~ file: ExecutionForm.tsx:43 ~ ExecutionForm ~  activityExecutionInfo:', activityExecutionInfo);
 	let defaultValues: _ActivityExecutionInfo;
+	// if (activityExecutionInfo is exist set DefaultValues to it and if activityExecutionInfo.OrphanActivityExecution is exist
+	//assign un assigned orphans to the OrphanActivityExecution with isAttended to false
 	if (activityExecutionInfo && activityExecutionInfo.GoalEvaluation) {
 		orphans.map((orphan) => {
-			activityExecutionInfo.OrphanActivityExecution.filter((x) => x.id != orphan.id);
-			console.log('true in orphans.map');
+			// activityExecutionInfo.OrphanActivityExecution.filter((x) => x.id != orphan.id);
+			if (activityExecutionInfo.OrphanActivityExecution.filter((x) => x.id != orphan.id).length === 0) {
+				// activityExecutionInfo.OrphanActivityExecution.push({
+				// 	Orphan: orphan,
+				// 	orphanId: orphan.id,
+				// 	isAttended: false as unknown as string,
+				// 	// evaluation: 5,
+				// });
+				console.log('true in orphans.map');
+			}
 		});
 		defaultValues = activityExecutionInfo;
-		console.log('🚀 ~ file: ++++++++++++++++++++ ~ defaultValues:', defaultValues);
 	} else {
 		defaultValues = {
 			activityInfoId: activityInfo?.id,
@@ -79,7 +89,6 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 	} = useForm<_ActivityExecutionInfo>({
 		defaultValues: defaultValues,
 	});
-	console.log('🚀 ~ file: ExecutionForm.tsx:69 ~ ExecutionForm ~ defaultValues:', defaultValues);
 	const { fields, update } = useFieldArray({ control, name: 'GoalEvaluation' });
 	const { fields: orphanActivityExecutionFields } = useFieldArray({ control, name: 'OrphanActivityExecution' });
 
@@ -92,7 +101,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 			await axios
 				.post<{ msg: string; data: _ActivityExecutionInfo }>(url, data)
 				.then((d) => {
-					console.log('🚀 ~ file: ExecutionForm.tsx:76 ~ onSubmit ~ d:', d);
+					// console.log('🚀 ~ file: ExecutionForm.tsx:76 ~ onSubmit ~ d:', d);
 					return d;
 				})
 				.catch((err) => console.log('error at creating new activityExecutionInfo--', err));
@@ -100,9 +109,9 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 			console.log('activityExecutionInfo exist.', activityExecutionInfo.id);
 			const url = serverLink + 'api/execute/' + activityExecutionInfo.id;
 			const res = await axios.put(url, data);
-			console.log('🚀 ~ file: ExecutionForm.tsx:86 ~ onSubmit ~ res:', res);
+			myNotification('Update', res.data.msg, 'green', <IconCheck />);
 
-			// router.push(serverLink + 'activity/execute/');
+			console.log('🚀 ~ file: ExecutionForm.tsx:86 ~ onSubmit ~ res:', res);
 		}
 		// // close();
 		router.push(serverLink + 'activities/execute/');
@@ -115,7 +124,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 	const methods = useForm<_ActivityExecutionInfo>();
 	if (!hydrate) return <Loader size={100} />;
 
-	watch(`OrphanActivityExecution`).map((x) => (x.isAttended ? '' : (x.evaluation = null)));
+	watch(`OrphanActivityExecution`).map((x) => ((x.isAttended as unknown as boolean) ? '' : (x.evaluation = null)));
 	return (
 		<Container fluid>
 			<Card withBorder p={'xl'}>

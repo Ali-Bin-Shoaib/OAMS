@@ -7,6 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//********************************** Enums *********************************
+
 enum Gender {
   MALE
   FEMALE
@@ -80,6 +82,8 @@ enum Quarter {
   Fourth
 }
 
+//********************************** Models *********************************
+
 model Orphan {
   id         Int      @id @default(autoincrement())
   name       String
@@ -131,6 +135,8 @@ model Orphan {
   OrphanAttendance        OrphanAttendance[]
   //* one Orphan has many HealthInfo
   HealthInfo              HealthInfo[]
+  //* one Orphan has many BehaviorInfo
+  BehaviorInfo            BehaviorInfo[]
   //* one Orphan has many EducationInfo
   EducationInfo           EducationInfo[]
   Room                    Room?                     @relation(fields: [roomId], references: [id])
@@ -249,7 +255,6 @@ model OrphanAttendance {
   userId       Int?
 }
 
-//* ********************************* TO IMPLEMENT*********************************
 model ActivityInfo {
   id                    Int                     @id @default(autoincrement())
   date                  DateTime
@@ -279,7 +284,7 @@ model Goal {
 model ActivityGoal {
   id             Int           @id @default(autoincrement())
   //* relations
-  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
+  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id], onDelete: Cascade)
   activityInfoId Int?
   Goal           Goal?         @relation(fields: [goalId], references: [id])
   goalId         Int?
@@ -310,8 +315,8 @@ model ActivityExecutionInfo {
   startDate               DateTime?
   note                    String?
   // * Relations
-  Executor                User                      @relation(fields: [userId], references: [id])
-  userId                  Int
+  Executor                User                      @relation(fields: [executorId], references: [id])
+  executorId              Int
   ActivityInfo            ActivityInfo?             @relation(fields: [activityInfoId], references: [id])
   activityInfoId          Int?
   GoalEvaluation          GoalEvaluation[]
@@ -332,54 +337,20 @@ model OrphanActivityExecution {
   userId                  Int?
 }
 
-model UnAchievedActivity {
-  id   Int     @id @default(autoincrement())
-  note String?
-  //* relations
-
-  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
-  activityInfoId Int?
-  User           User?         @relation(fields: [userId], references: [id])
-  userId         Int?
-}
-
-model HealthInfo {
-  id          Int      @id @default(autoincrement())
-  date        DateTime
-  disease     String?
-  description String?
-  //* relations
-
-  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
-  orphanId Int?
-  User     User?   @relation(fields: [userId], references: [id])
-  userId   Int?
-}
-
-model EducationInfo {
-  id         Int      @id @default(autoincrement())
-  date       DateTime
-  scoreSheet String?
-  degree     Degree
-  schoolName String?
-  //* relations
-
-  //* one Orphan has many EducationInfo
-  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
-  orphanId Int?
-  User     User?   @relation(fields: [userId], references: [id])
-  userId   Int?
-}
+//********************************** TO IMPLEMENT*********************************
 
 model BehaviorInfo {
   id   Int      @id @default(autoincrement())
-  date DateTime
   note String?
+  date DateTime
+
   //* relations
 
   BehaviorCriteria BehaviorCriteria[]
   User             User?              @relation(fields: [userId], references: [id])
   userId           Int?
+  Orphan           Orphan?            @relation(fields: [orphanId], references: [id])
+  orphanId         Int?
 }
 
 model Criteria {
@@ -405,6 +376,21 @@ model BehaviorCriteria {
   userId         Int?
 }
 
+model EducationInfo {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  scoreSheet String?
+  degree     Degree
+  schoolName String?
+  //* relations
+
+  //* one Orphan has many EducationInfo
+  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
+  orphanId Int?
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   Int?
+}
+
 model EmergencyContactInfo {
   id    Int    @id @default(autoincrement())
   name  String
@@ -415,6 +401,30 @@ model EmergencyContactInfo {
   Orphan   Orphan @relation(fields: [orphanId], references: [id])
   orphanId Int
   User     User?  @relation(fields: [userId], references: [id])
+  userId   Int?
+}
+
+model UnAchievedActivity {
+  id   Int     @id @default(autoincrement())
+  note String?
+  //* relations
+
+  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
+  activityInfoId Int?
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         Int?
+}
+
+model HealthInfo {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  disease     String?
+  description String?
+  //* relations
+
+  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
+  orphanId Int?
+  User     User?   @relation(fields: [userId], references: [id])
   userId   Int?
 }
 

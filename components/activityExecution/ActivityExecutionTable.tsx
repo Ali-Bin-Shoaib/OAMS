@@ -98,7 +98,12 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 					// 	/>
 					// );
 					return row.GoalEvaluation
-						? row.GoalEvaluation.reduce((total, goal) => total + goal.evaluation!, 0) / row.GoalEvaluation.length
+						? (
+								(row.GoalEvaluation.reduce((total, goal) => total + goal.evaluation!, 0) / row.GoalEvaluation.length +
+									row.OrphanActivityExecution.reduce((total, orphan) => total + orphan.evaluation, 0) /
+										row.OrphanActivityExecution.length) /
+								2
+						  ).toFixed(2)
 						: 0;
 				},
 				id: 'Evaluation',
@@ -160,9 +165,7 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 							<Button
 								size='xs'
 								onClick={() => {
-									console.log(`router::::::${Pages.ActivityExecution}${row.original.id}`);
-
-									router.push(`${Pages.ActivityExecution.link}${row.original.id}`);
+									router.push(`${Pages.ActivityExecution.link}edit/${row.original.id}`);
 								}}
 								color='yellow'>
 								<IconEdit />
