@@ -6,10 +6,8 @@ import { Button, Container, Group, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/router';
-import SuperJSON from 'superjson';
 import activities from '..';
 import { usePageTitle } from '../../../../hooks/usePageTitle';
-import ActivityExecutionCard from '../../../../components/activityExecution/ActivityExecutionCard';
 import { Pages, Paths } from '../../../../shared/links';
 import { IconPlus } from '@tabler/icons-react';
 
@@ -49,13 +47,10 @@ function Index({ activitiesExecutions }: Props) {
 	useEffect(() => {
 		// setActivitiesList(SuperJSON.parse(stringData));
 		setCardInfo(cardInfo);
-
 		setHydration(true);
 	}, [hydration, cardInfo]);
-
 	// if (!hydration || !jsonData) return <Loader size={100} />;
 	if (!hydration) return <Loader size={100} />;
-
 	return (
 		<>
 			<Container fluid px={10}>
@@ -66,7 +61,6 @@ function Index({ activitiesExecutions }: Props) {
 						Execute Activity
 					</Button>
 				</Group>
-
 				{/* <ActivityExecutionCard activityExecutionInfo={cardInfo} updateCard={updateCard} /> */}
 				<ActivityExecutionTable activitiesExecutions={activitiesExecutions} updateCard={updateCard} />
 			</Container>

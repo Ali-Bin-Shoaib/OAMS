@@ -22,7 +22,7 @@ import { useRouter } from 'next/router';
 import axios, { AxiosRequestConfig } from 'axios';
 import { serverLink } from '../../shared/links';
 import SuperJSON from 'superjson';
-import { GuardianContext } from '../../src/pages/orphans/contexts';
+import { GuardianContext } from '../../shared/contexts';
 import { GetServerSideProps, GetStaticProps } from 'next';
 import prisma from '../../lib/prisma';
 // export const getStaticProps: GetStaticProps = async () => {

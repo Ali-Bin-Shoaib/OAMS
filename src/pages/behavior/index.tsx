@@ -1,10 +1,8 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Button, Container, Loader, Select, Text } from '@mantine/core';
 import { Behavior, STATUS_CODE, _Attendance, _Orphan } from '../../../types';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons-react';
@@ -34,7 +32,6 @@ export default function Index({ orphans }: Props) {
 	console.log('Behavior Index');
 	const [hydration, setHydration] = useState(false);
 	const router = useRouter();
-	const title = usePageTitle();
 	const [id, setId] = useState<number>(undefined);
 	const [orphanBehavior, setOrphanBehavior] = useState<Behavior[]>(undefined);
 	const fetchOrphanBehavior = async (id: number) => {
@@ -58,7 +55,6 @@ export default function Index({ orphans }: Props) {
 	if (!hydration || !orphans) return <Loader size={100} />;
 	return (
 		<>
-			<AppHead title={title} />
 			<div className='text-center'>
 				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}behavior/create`)}>
 					<IconPlus />
@@ -66,9 +62,9 @@ export default function Index({ orphans }: Props) {
 				</Button>
 			</div>
 			<Container p={10}>
-				{/* <Text>Select an orphan to show related behavior info</Text> */}
 				<Select
-					onChange={async (id) => {
+					onChange={(id) => {
+						console.log('🚀 ~ file: index.tsx:71 ~ onChange={ ~ id:', id);
 						setId(Number(id));
 					}}
 					label='Orphans'

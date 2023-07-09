@@ -5,8 +5,6 @@ import prisma from '../../../lib/prisma';
 import { _ActivityInfo } from '../../../types';
 import { Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import AppHead from '../../../components/common/AppHead';
 import { Goal } from '@prisma/client';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	// if(params?.id)
@@ -24,14 +22,12 @@ function Create({ stringData }: Props) {
 	// const { activity, goalsTitle } = jsonData;
 	const goals = jsonData;
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<>
-			<AppHead title={title} />
 			<ActivityForm goalInfo={goals} />
 		</>
 	);

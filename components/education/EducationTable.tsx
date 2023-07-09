@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Container } from '@mantine/core';
+import { Button, Container, Tooltip } from '@mantine/core';
 import { User, EducationInfo, Orphan } from '@prisma/client';
+import { IconEdit, IconInfoCircle } from '@tabler/icons-react';
+import router from 'next/router';
+import DeleteModal from '../common/DeleteModal';
 type Education = EducationInfo & { User: User; Orphan: Orphan };
 interface Props {
 	education: Education[];
@@ -10,28 +13,28 @@ function EducationTable({ education }: Props) {
 	console.log('🚀 ~ file: ~ EducationTable');
 	const columns = useMemo<MRT_ColumnDef<Education>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
+			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
 			{
 				accessorFn: (row) => row.date.toDateString(),
 				id: 'date',
-				header: 'date',
-				maxSize: 300,
-				size: 200,
+				header: 'Date',
+				maxSize: 60,
+				size: 50,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User.name',
-				header: 'taken by',
-				maxSize: 300,
-				size: 150,
+				header: 'Taken By',
+				maxSize: 120,
+				size: 100,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.Orphan.name,
 				id: 'Orphan.name',
 				header: 'Orphan Name',
-				maxSize: 300,
+				maxSize: 200,
 				size: 120,
 				enableResizing: true,
 			},
@@ -56,6 +59,34 @@ function EducationTable({ education }: Props) {
 				}}
 				enableColumnResizing
 				columnResizeMode='onEnd'
+				renderRowActions={({ row }) => (
+					<Button.Group>
+						<DeleteModal id={row.original.id!} title={'Education'} url={'api/education/'} />
+
+						<Tooltip label={'Edit'}>
+							<Button
+								size='xs'
+								onClick={() => {
+									router.push(`${router.asPath}/edit/${row.original.id}`);
+								}}
+								color='yellow'>
+								<IconEdit />
+							</Button>
+						</Tooltip>
+						<Tooltip label={'Info'}>
+							<Button
+								size='xs'
+								onClick={() => {
+									router.push(`${router.asPath}/${row.original.id}`);
+								}}
+								color='blue'>
+								<IconInfoCircle />
+							</Button>
+						</Tooltip>
+					</Button.Group>
+				)}
+				positionActionsColumn='last'
+				enableRowActions
 			/>
 		</Container>
 	);

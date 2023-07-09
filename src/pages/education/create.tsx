@@ -2,10 +2,8 @@ import { GetStaticProps } from 'next';
 import SuperJSON from 'superjson';
 import prisma from '../../../lib/prisma';
 import { useState, useEffect } from 'react';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { _Attendance, _Orphan, _OrphanAttendance } from '../../../types';
 import { Loader } from '@mantine/core';
-import AppHead from '../../../components/common/AppHead';
 import { Orphan } from '@prisma/client';
 import EducationForm from '../../../components/education/EducationForm';
 export const getStaticProps: GetStaticProps = async () => {
@@ -26,7 +24,6 @@ function Create({ stringData }: Props) {
 	const orphans = jsonData;
 
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
@@ -35,7 +32,6 @@ function Create({ stringData }: Props) {
 
 	return (
 		<>
-			<AppHead title={title} />
 			<EducationForm orphans={orphans} />
 		</>
 	);

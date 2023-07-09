@@ -7,11 +7,12 @@ import { ActivityGoal, ActivityInfo, Goal, Orphan, Prisma, User } from '@prisma/
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ ID:', ID);
-	const behavior = await prisma.behaviorInfo.findUnique({ where: { id: ID } });
-	if (!(ID || behavior)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'behavior dose not exist.' });
 	switch (req.method) {
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
+			const behavior = await prisma.behaviorInfo.findUnique({ where: { id: ID } });
+			if (!(ID || behavior)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'behavior dose not exist.' });
+
 			try {
 				const behavior: Behavior = req.body;
 

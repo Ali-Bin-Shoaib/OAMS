@@ -1,20 +1,42 @@
 import { useEffect, useState } from 'react';
-import { Education, _Attendance, _Orphan, _OrphanAttendance, _UserWithGuardianAndSponsor } from '../../types';
+import {
+	Education,
+	STATUS_CODE,
+	_Attendance,
+	_Orphan,
+	_OrphanAttendance,
+	_UserWithGuardianAndSponsor,
+} from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { serverLink } from '../../shared/links';
 import { DatePickerInput } from '@mantine/dates';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Group, Loader, Select, TextInput, FileInput, Title, Center, Paper } from '@mantine/core';
+import {
+	Button,
+	Group,
+	Loader,
+	Select,
+	TextInput,
+	FileInput,
+	Title,
+	Center,
+	Paper,
+	Textarea,
+	Text,
+} from '@mantine/core';
 import { Degree, Orphan } from '@prisma/client';
 import { $enum } from 'ts-enum-util';
+import myNotification from '../MyNotification';
+import { IconCheck, IconX } from '@tabler/icons-react';
 
 interface Props {
 	education?: Education;
 	orphans: Orphan[];
 }
 export default function EducationForm({ orphans, education }: Props): JSX.Element {
+	console.log('🚀 ~ file: EducationForm.tsx:39 ~ EducationForm ~ education:', education);
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
@@ -36,17 +58,31 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 		if (!education) {
 			console.log('Education not exist.');
 			const url = `${serverLink}api/education/create`;
-			const res = await axios.post(url, data).catch((err) => console.log('error at creating new education--', err));
-			console.log('🚀 ~ file: EducationForm.tsx:38 ~ onSubmit ~ res:', res);
+			await axios
+				.post(url, data)
+				.then((data) => {
+					console.log('🚀 ~ file: EducationForm.tsx:49 ~ await axios.post ~ data:', data);
+					data.status === STATUS_CODE.OK
+						? (myNotification('Create', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'education'))
+						: myNotification('Create', data.data.msg, 'red', <IconX />);
+				})
+				.catch((err) => console.log('error at creating new education--', err));
 		} else {
 			console.log('Education exist.', education.id);
 			const url = `${serverLink}/api/education/${education.id}`;
-			const res = await axios.put(url, data);
-			console.log('🚀 ~ file: EducationForm.tsx:43 ~ onSubmit ~ res:', res);
+			await axios
+				.put(url, data)
+				.then((data) => {
+					data.status === STATUS_CODE.OK
+						? (myNotification('Update', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'education'))
+						: myNotification('Update', data.data.msg, 'red', <IconX />);
+				})
+				.catch((e) => {
+					console.log('🚀 ~ file: EducationForm.tsx:78 ~ await axios.put ~ e:', e);
+				});
 		}
 		// close();
 		// router.push(router.asPath);
-		router.push(serverLink + 'education');
 	};
 
 	useEffect(() => {
@@ -59,7 +95,38 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 			<Center p={10}>{education ? <Title>Edit Education Info</Title> : <Title>Education Info</Title>}</Center>
 			<Paper shadow='sm' withBorder p={10} mx={100}>
 				<form onSubmit={handleSubmit(onSubmit)}>
+					<Center pb={20}>
+						<Controller
+							name='orphanId'
+							control={control}
+							rules={{
+								required: 'Orphan is required',
+							}}
+							render={({ field: { onChange } }) => {
+								return (
+									<Select
+										onChange={(value) => {
+											setValue('orphanId', Number(value || education?.orphanId.toString()));
+										}}
+										label='Orphans'
+										placeholder='choose orphan'
+										// description='select an orphan '
+
+										defaultValue={education?.orphanId.toString()}
+										searchable
+										w={'45%'}
+										withAsterisk
+										error={errors.orphanId && errors.orphanId.message}
+										nothingFound='Not Found'
+										data={orphans.map((x) => ({ value: x.id.toString(), label: x.name }))}
+									/>
+								);
+							}}
+						/>
+					</Center>
 					<Group spacing={'xl'} position='center'>
+						{/* @ts-ignore */}
+
 						<Controller
 							name='date'
 							rules={{ required: 'Date is required' }}
@@ -78,12 +145,14 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 								);
 							}}
 						/>
+
 						<Controller
 							name='User.name'
 							control={control}
 							// rules={{ required: 'User' }}
 							render={({ field }) => {
 								return (
+									// @ts-ignore
 									<TextInput
 										{...field}
 										disabled
@@ -125,6 +194,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 											setValue('schoolYear', Number(value));
 										}}
 										data={dates.map((x) => x.toString())}
+										defaultValue={education?.schoolYear?.toString()}
 										w={'45%'}
 										multiple={true}
 										label='School Year'
@@ -152,12 +222,15 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 								);
 							}}
 						/>
+						{/* @ts-ignore */}
+
 						<Controller
 							name='Orphan.schoolName'
 							control={control}
 							rules={{ required: 'School Name  is required' }}
 							render={({ field }) => {
 								return (
+									// @ts-ignore
 									<TextInput
 										{...field}
 										w={'45%'}
@@ -169,9 +242,21 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 								);
 							}}
 						/>
+						<Controller
+							name='note'
+							control={control}
+							render={({ field }) => {
+								return (
+									// @ts-ignore
+									<Textarea {...field} name='note' label='Note' autosize minRows={3} maxRows={5} w={'80%'} />
+								);
+							}}
+						/>
 					</Group>
 					<Group position='center' p={50}>
-						<Button type='submit'>Submit</Button>
+						<Button type='submit' size='md' w={'100%'}>
+							Submit
+						</Button>
 					</Group>
 				</form>
 			</Paper>

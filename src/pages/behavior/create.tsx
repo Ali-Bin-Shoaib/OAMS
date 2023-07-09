@@ -1,9 +1,7 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { useState, useEffect } from 'react';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { Loader } from '@mantine/core';
-import AppHead from '../../../components/common/AppHead';
 import BehaviorForm from '../../../components/behavior/BehaviorForm';
 import { Criteria, Orphan } from '@prisma/client';
 import { _Orphan } from '../../../types';
@@ -24,7 +22,6 @@ interface Props {
 
 function Create({ orphans, criteria }: Props) {
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration]);
@@ -33,7 +30,6 @@ function Create({ orphans, criteria }: Props) {
 
 	return (
 		<>
-			<AppHead title={title} />
 			<BehaviorForm orphans={orphans} criteria={criteria} />
 		</>
 	);

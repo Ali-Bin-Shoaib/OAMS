@@ -16,6 +16,7 @@ import {
 	ActivityGoal,
 	ActivityInfo,
 	GoalEvaluation,
+	Degree,
 } from '@prisma/client';
 export enum REQUEST_METHODS {
 	GET = 'GET',
@@ -152,7 +153,37 @@ export interface _SponsorshipWithSponsorAndOrphan {
 	sponsorId?: number;
 	orphanId?: number;
 }
-export type _User = Prisma.UserCreateInput & {
+export type _User = {
+	id?: number;
+	name: string;
+	gender: Gender;
+	userName: string;
+	password: string;
+	email?: string | null;
+	address: string;
+	phone: string;
+	type: UserType;
+	Guardian?: Prisma.GuardianCreateNestedOneWithoutUserInput;
+	Sponsor?: Prisma.SponsorCreateNestedOneWithoutUserInput;
+	Orphan?: Prisma.OrphanCreateNestedManyWithoutUserInput;
+	Attendance?: Prisma.AttendanceCreateNestedManyWithoutUserInput;
+	HealthInfo?: Prisma.HealthInfoCreateNestedManyWithoutUserInput;
+	EducationInfo?: Prisma.EducationInfoCreateNestedManyWithoutUserInput;
+	ActivityExecutionInfo?: Prisma.ActivityExecutionInfoCreateNestedManyWithoutExecutorInput;
+	EmergencyContactInfo?: Prisma.EmergencyContactInfoCreateNestedManyWithoutUserInput;
+	Sponsorship?: Prisma.SponsorshipCreateNestedManyWithoutUserInput;
+	OrphanAttendance?: Prisma.OrphanAttendanceCreateNestedManyWithoutUserInput;
+	BehaviorInfo?: Prisma.BehaviorInfoCreateNestedManyWithoutUserInput;
+	Criteria?: Prisma.CriteriaCreateNestedManyWithoutUserInput;
+	BehaviorCriteria?: Prisma.BehaviorCriteriaCreateNestedManyWithoutUserInput;
+	Room?: Prisma.RoomCreateNestedManyWithoutUserInput;
+	Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+	ActivityInfo?: Prisma.ActivityInfoCreateNestedManyWithoutUserInput;
+	UnAchievedActivity?: Prisma.UnAchievedActivityCreateNestedManyWithoutUserInput;
+	ActivityGoal?: Prisma.ActivityGoalCreateNestedManyWithoutUserInput;
+	OrphanActivityExecution?: Prisma.OrphanActivityExecutionCreateNestedManyWithoutUserInput;
+	Goal?: Prisma.GoalCreateNestedManyWithoutUserInput;
+
 	sponsor?: Prisma.SponsorCreateInput;
 	guardian?: Prisma.GuardianCreateInput;
 };
@@ -282,13 +313,15 @@ export type Behavior = {
 	// BehaviorCriteria?: { id?: number; evaluation: number; criteriaId: number; userId: number | ''; Criteria: Criteria }[];
 	BehaviorCriteria?: Prisma.BehaviorCriteriaUncheckedCreateWithoutBehaviorInfoInput[];
 };
-export type Education =
-	| (Prisma.EducationInfoCreateInput & {
-			User: User;
-			Orphan: Orphan;
-			date: Date;
-			schoolYear: number;
-			scoreSheet: File | null;
-	  }) &
-			Prisma.EducationInfoUncheckedUpdateInput;
-let test: Education;
+export type Education = {
+	id?: number;
+	date: Date;
+	schoolYear?: number;
+	scoreSheet?: File | null;
+	degree: Degree;
+	note?: string;
+	User?: User;
+	Orphan?: Orphan;
+	orphanId?: number;
+	userId?: number;
+};

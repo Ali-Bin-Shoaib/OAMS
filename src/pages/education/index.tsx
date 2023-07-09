@@ -1,11 +1,9 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Button, Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { EducationInfo, Orphan, User } from '@prisma/client';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
 import { IconPlus } from '@tabler/icons-react';
@@ -30,7 +28,6 @@ export default function Index({ stringJson }: Props) {
 	console.log('🚀 ~ file: index.tsx:32 ~ Index ~ education:', education);
 	const [hydration, setHydration] = useState(false);
 	const router = useRouter();
-	const title = usePageTitle();
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringJson]);
@@ -38,7 +35,6 @@ export default function Index({ stringJson }: Props) {
 	if (!hydration || !education) return <Loader size={100} />;
 	return (
 		<>
-			<AppHead title={title} />
 			<div className='text-center'>
 				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}education/create`)}>
 					<IconPlus />

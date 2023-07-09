@@ -1,16 +1,4 @@
-import {
-	Card,
-	CardSection,
-	Title,
-	Box,
-	Text,
-	Rating,
-	Group,
-	Button,
-	Loader,
-	SimpleGrid,
-	Container,
-} from '@mantine/core';
+import { Card, CardSection, Title, Text, Rating, Group, Button, SimpleGrid, Container } from '@mantine/core';
 import { v4 } from 'uuid';
 import DeleteOrphanModal from '../../../components/orphans/modals/DeleteOrphanModal';
 import EditOrphanModal from '../../../components/orphans/modals/EditOrphanModal';
@@ -19,10 +7,7 @@ import Image from 'next/image';
 import orphanImage from '../../img/simeLogo.png';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import { useState } from 'react';
 import { Guardian, Orphan, User } from '@prisma/client';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import AppHead from '../../../components/common/AppHead';
 
 //*  needed to define possible ids that id parameter can accepts to create static pages for each id at build time
 // export const getStaticPaths: GetStaticPaths = async () => {
@@ -72,7 +57,6 @@ interface Props {
 }
 
 function OrphanDetails({ data }: Props) {
-	const title = usePageTitle();
 	console.log('🚀 ~ file: [id].tsx:30 ~ OrphanDetails ~ data:', data);
 	const { orphan, guardians } = data;
 	// const [orphan, SetOrphan] = useState<Orphan>(data);
@@ -82,7 +66,6 @@ function OrphanDetails({ data }: Props) {
 	// }
 	return (
 		<>
-			<AppHead title={title} />
 			<Card key={v4()} withBorder className=' mx-auto my-2 p-2  '>
 				<CardSection className='text-center'>
 					<Title>Orphan Info</Title>

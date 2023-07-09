@@ -5,13 +5,12 @@ import { record } from 'zod';
 import prisma from '../../../lib/prisma';
 import { Goal, ActivityInfo, User, ActivityGoal } from '@prisma/client';
 import { useState, useEffect } from 'react';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { IconEdit } from '@tabler/icons-react';
 import router from 'next/router';
 import DeleteModal from '../../../components/common/DeleteModal';
 import { Pages } from '../../../shared/links';
 import { _ActivityExecutionInfo } from '../../../types';
-import { CalculateAverage, CalculateTotalEvaluation } from '../../../utils/Calculation';
+import { CalculateTotalEvaluation } from '../../../utils/Calculation';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
@@ -94,8 +93,7 @@ function Info({ stringData }: Props) {
 					</SimpleGrid>
 					<Group position='right'>
 						<Button.Group>
-							<DeleteModal id={activity.id!} title={'activity'} url={'api/activity/'} updateCard={undefined} />
-
+							<DeleteModal id={activity.id!} title={'activity'} url={'api/activity/'} />
 							<Tooltip label={'Edit'}>
 								<Button
 									size='xs'

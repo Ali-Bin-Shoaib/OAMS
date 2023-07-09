@@ -8,9 +8,19 @@ export const usePageTitle = () => {
 	const router = useRouter();
 	useEffect(() => {
 		Paths.links.map((link) => {
-			if (link.link === router.asPath) setTitle(link.label);
+			if (link.relatedLinks)
+				link.relatedLinks.map((x) => {
+					if (router.asPath.includes(x.link.toLowerCase())) {
+						setTitle(x.label);
+						return title;
+					}
+				});
+			if (router.asPath.includes(link.label.toLowerCase())) {
+				setTitle(link.label);
+				return title;
+			}
 		});
-	}, [router.asPath]);
+	}, [router.asPath, title]);
 
 	return title;
 };

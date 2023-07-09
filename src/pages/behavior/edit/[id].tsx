@@ -2,10 +2,8 @@ import { GetServerSideProps, GetStaticProps } from 'next';
 import SuperJSON from 'superjson';
 import prisma from '../../../../lib/prisma';
 import { useState, useEffect } from 'react';
-import { usePageTitle } from '../../../../hooks/usePageTitle';
 import { Behavior, _Attendance, _Orphan, _OrphanAttendance } from '../../../../types';
 import { Loader } from '@mantine/core';
-import AppHead from '../../../../components/common/AppHead';
 import { Criteria, Orphan } from '@prisma/client';
 import BehaviorForm from '../../../../components/behavior/BehaviorForm';
 import { useDocumentTitle } from '@mantine/hooks';
@@ -33,7 +31,6 @@ function Edit({ stringData }: Props) {
 	const { behavior, orphans, criteria } = jsonData;
 
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
 	const test = useDocumentTitle(title);
 	console.log('🚀 ~ file: [id].tsx:38 ~ Edit ~ test:', test);
 	useEffect(() => {
@@ -44,7 +41,6 @@ function Edit({ stringData }: Props) {
 
 	return (
 		<>
-			<AppHead title={title} />
 			<BehaviorForm orphans={orphans} behavior={behavior} criteria={criteria} />
 		</>
 	);

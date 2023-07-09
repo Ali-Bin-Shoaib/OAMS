@@ -1,19 +1,15 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { UserType } from '@prisma/client';
-import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { _Guardian, _Orphan, _Sponsor, _User } from '../../../types';
 import MyModal from '../../../components/common/MyModal';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useDisclosure } from '@mantine/hooks';
 import UserForm from '../../../components/users/UserForm';
-import GuardianTable from '../../../components/guardians/GuardianTable';
 // import { generateDumpData } from '../../../data/functions';
 import SponsorTable from '../../../components/sponsors/SponsorTable';
-import { CreateSponsor } from '../../../utils/CreateEntries';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
@@ -37,7 +33,6 @@ export default function Index({ stringSponsor }: Props) {
 	const [sponsors, setSponsors] = useState<_Sponsor[]>(jsonSponsor);
 	const [cardInfo, setCardInfo] = useState<_Sponsor>(jsonSponsor[0]);
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
 	const [opened, { open, close }] = useDisclosure(false);
 
 	const updateCard = (sponsor: _Sponsor) => setCardInfo(sponsor);
@@ -50,7 +45,6 @@ export default function Index({ stringSponsor }: Props) {
 	return (
 		<>
 			{/* TODO pass a component with props to parent component */}
-			<AppHead title={title} />
 			<div className='text-center'>
 				<MyModal
 					ModelForm={<UserForm userType={UserType.SPONSOR} close={close} />}

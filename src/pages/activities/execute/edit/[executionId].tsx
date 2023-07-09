@@ -3,7 +3,6 @@ import {
 	Goal,
 	ActivityInfo,
 	User,
-	ActivityGoal,
 	ActivityExecutionInfo,
 	GoalEvaluation,
 	OrphanActivityExecution,
@@ -12,9 +11,6 @@ import {
 import { GetServerSideProps } from 'next';
 import { useState, useEffect } from 'react';
 import SuperJSON from 'superjson';
-import ActivityForm from '../../../../../components/activities/ActivityForm';
-import AppHead from '../../../../../components/common/AppHead';
-import { usePageTitle } from '../../../../../hooks/usePageTitle';
 import prisma from '../../../../../lib/prisma';
 import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../../types';
 import ExecutionForm from '../../../../../components/activityExecution/ExecutionForm';
@@ -53,7 +49,6 @@ interface Props {
 }
 function Edit({ stringData }: Props) {
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
 	const jsonData = SuperJSON.parse<{
 		activityExecution: ActivityExecutionInfo & {
 			Executer: User;
@@ -73,7 +68,6 @@ function Edit({ stringData }: Props) {
 
 	return (
 		<>
-			<AppHead title={title} />
 			<ExecutionForm orphans={orphans} activityExecutionInfo={activityExecution as unknown as _ActivityExecutionInfo} />
 		</>
 	);

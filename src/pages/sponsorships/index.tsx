@@ -1,14 +1,11 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { _Orphan, _Sponsor, _Sponsorship, _User } from '../../../types';
 import { Orphan, Sponsor, Sponsorship, User } from '@prisma/client';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import MyModal from '../../../components/common/MyModal';
-import { useDisclosure } from '@mantine/hooks';
 import SponsorshipTable from '../../../components/sponsorships/SponsorshipTable';
 import SponsorshipForm from '../../../components/sponsorships/SponsorshipForm';
 // ******************************** SPONSORSHIP PAGE ********************************
@@ -60,7 +57,6 @@ export default function Index({ stringData }: Props) {
 	const [cardInfo, setCardInfo] = useState<Sponsorship>(sponsorshipsList[0]);
 	const [hydration, setHydration] = useState(false);
 	// const [opened, { open, close }] = useDisclosure(false);
-	const title = usePageTitle();
 
 	const updateCard = (sponsorship: Sponsorship) => setCardInfo(sponsorship);
 	useEffect(() => {
@@ -71,7 +67,6 @@ export default function Index({ stringData }: Props) {
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<>
-			<AppHead title={title} />
 			<div className='text-center pb-4'>
 				<MyModal
 					modalTitle='Add Sponsorship'

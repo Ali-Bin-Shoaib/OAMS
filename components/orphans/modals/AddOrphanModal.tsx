@@ -3,11 +3,11 @@ import { Modal, Button, Group, Title } from '@mantine/core';
 import OrphanForm from '../OrphanForm';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';
-import { GuardianContext } from '../../../src/pages/orphans/contexts';
+import { GuardianContext } from '../../../shared/contexts';
 
 export default function AddOrphanModal() {
 	const [opened, { open, close }] = useDisclosure(false);
-	const guardians = useContext(GuardianContext)
+	const guardians = useContext(GuardianContext);
 	return (
 		<>
 			<Modal opened={opened} size={'auto'} onClose={close}>

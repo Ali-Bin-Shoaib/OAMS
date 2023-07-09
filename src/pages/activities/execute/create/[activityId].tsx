@@ -1,9 +1,7 @@
 import { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
 import prisma from '../../../../../lib/prisma';
-import AppHead from '../../../../../components/common/AppHead';
-import { usePageTitle } from '../../../../../hooks/usePageTitle';
-import { ActivityInfo, User, ActivityGoal, Goal, Orphan } from '@prisma/client';
+import { Orphan } from '@prisma/client';
 import ExecutionForm from '../../../../../components/activityExecution/ExecutionForm';
 import { _ActivityInfo } from '../../../../../types';
 
@@ -33,7 +31,6 @@ interface Props {
 	stringData: string;
 }
 function Create({ stringData }: Props) {
-	const title = usePageTitle();
 	const { activity, orphans } = SuperJSON.parse<{
 		activity: _ActivityInfo;
 		orphans: Orphan[];
@@ -47,8 +44,6 @@ function Create({ stringData }: Props) {
 
 	return (
 		<>
-			<AppHead title={title} />
-
 			<h1>Create ActivityExecutionInfo </h1>
 			<ExecutionForm activityInfo={activity} orphans={orphans} />
 		</>

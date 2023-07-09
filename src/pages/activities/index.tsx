@@ -1,18 +1,14 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Button, Group, Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { _ActivityInfo, _Orphan, _Sponsor, _Sponsorship, _User } from '../../../types';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
 import ActivityTable from '../../../components/activities/ActivityTable';
-import CardInfo from '../../../components/activities/ActivityCard';
-import axios from 'axios';
 
 // ******************************** ACTIVITYiNFO PAGE ********************************
 // * get activity from database and pass the result as props to Index page.
@@ -41,7 +37,6 @@ export default function Index({ stringData }: Props) {
 	const [cardInfo, setCardInfo] = useState<_ActivityInfo>(activitiesList[0]);
 	const [hydration, setHydration] = useState(false);
 	const [opened, { open, close }] = useDisclosure(false);
-	const title = usePageTitle();
 	const router = useRouter();
 	const updateCard = (activityInfo: _ActivityInfo) => {
 		activityInfo ? setCardInfo(activityInfo) : setCardInfo(activities[0]);
@@ -57,7 +52,6 @@ export default function Index({ stringData }: Props) {
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<>
-			<AppHead title={title} />
 			<div className='text-center pb-4'>
 				<Group position='center'>
 					<Button size='xl' m={15} onClick={() => router.push(serverLink + 'activities/create')}>

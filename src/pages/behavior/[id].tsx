@@ -1,31 +1,15 @@
-import {
-	Group,
-	Paper,
-	Grid,
-	Text,
-	Loader,
-	SimpleGrid,
-	Button,
-	Tooltip,
-	Title,
-	Container,
-	Rating,
-	Table,
-} from '@mantine/core';
+import { Group, Paper, Text, Loader, SimpleGrid, Button, Tooltip, Title, Rating, Table } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
 import prisma from '../../../lib/prisma';
 import { User, BehaviorInfo, BehaviorCriteria, Criteria, Orphan } from '@prisma/client';
 import { useState, useEffect } from 'react';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { IconEdit } from '@tabler/icons-react';
 import router from 'next/router';
 import DeleteModal from '../../../components/common/DeleteModal';
-import { Pages } from '../../../shared/links';
+import { Pages, serverLink } from '../../../shared/links';
 import { _ActivityExecutionInfo } from '../../../types';
 import { CalculateAverage } from '../../../utils/Calculation';
-import { Controller } from 'react-hook-form';
-import criteria from '../criteria';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
@@ -118,7 +102,7 @@ function Info({ stringData }: Props) {
 					</Table>
 					<Group position='right' p={10}>
 						<Button.Group>
-							<DeleteModal id={behavior.id!} title={'behavior'} url={'api/behavior/'} updateCard={undefined} />
+							<DeleteModal id={behavior.id!} title={'behavior'} url={'api/behavior/'} redirectUrl={`${serverLink}behavior`} />
 
 							<Tooltip label={'Edit'}>
 								<Button

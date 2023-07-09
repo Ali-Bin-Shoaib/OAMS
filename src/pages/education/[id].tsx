@@ -1,57 +1,110 @@
-import { GetServerSideProps, GetStaticProps } from 'next';
+import { Group, Paper, Text, Loader, SimpleGrid, Button, Tooltip, Title, Center } from '@mantine/core';
+import { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
-import AttendanceForm from '../../../components/attendance/AttendanceForm';
 import prisma from '../../../lib/prisma';
 import { useState, useEffect } from 'react';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { _Attendance, _Orphan, _OrphanAttendance } from '../../../types';
-import { Loader } from '@mantine/core';
-import AppHead from '../../../components/common/AppHead';
-import { Attendance, Orphan, OrphanAttendance, User } from '@prisma/client';
+import { IconEdit } from '@tabler/icons-react';
+import router from 'next/router';
+import DeleteModal from '../../../components/common/DeleteModal';
+import { Pages, serverLink } from '../../../shared/links';
+import { Education, _ActivityExecutionInfo } from '../../../types';
+import Image from 'next/image';
+import img from '../../img/3.jpg';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
-	const attendance = await prisma.attendance.findFirst({
+	if (!id) return { notFound: true };
+	const education = await prisma.educationInfo.findFirst({
 		where: { id: id },
-		include: { OrphanAttendance: { include: { Orphan: true }, orderBy: { isAttended: 'asc' } }, User: true },
+		include: {
+			User: true,
+			Orphan: true,
+		},
+		orderBy: { id: 'asc' },
 	});
-	const orphans = await prisma.orphan.findMany();
-	const stringData = SuperJSON.stringify({ orphans, attendance });
-	if (!attendance) {
+
+	if (!education) {
 		return { notFound: true };
 	}
+	const data = education;
+	const stringData = SuperJSON.stringify(data);
 	return { props: { stringData } };
 };
 
 interface Props {
 	stringData: string;
 }
-function Edit({ stringData }: Props) {
-	const jsonData: {
-		attendance:
-			| (Attendance & {
-					User: User;
-					OrphanAttendance: (OrphanAttendance & {
-						Orphan: Orphan;
-					})[];
-			  })
-			| null;
-		orphans: Orphan[];
-	} = SuperJSON.parse(stringData);
-	const { attendance, orphans } = jsonData;
-
+function Info({ stringData }: Props) {
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
+	const education: Education = SuperJSON.parse(stringData);
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
 
-	if (!hydration || !jsonData) return <Loader size={100} />;
-
+	if (!hydration || !education) return <Loader size={100} />;
 	return (
-		<>
-			<AppHead title={title} />
-			<AttendanceForm orphans={orphans as unknown as _Orphan[]} attendance={attendance as unknown as _Attendance} />
-		</>
+		<div style={{ margin: 'auto', maxWidth: 800 }}>
+			<Group position='center' style={{ margin: 20 }}>
+				<Title weight={700}>Education Info</Title>
+				{/* add other components as needed */}
+			</Group>
+			{education ? (
+				<Paper p={'xl'} shadow='sm' m={0} withBorder>
+					<SimpleGrid cols={2} p={10}>
+						<Text weight={700}>ID:</Text>
+						<Text>{education.id}</Text>
+						<Text weight={700}>Orphan Name:</Text>
+						<Text>{education.Orphan.name}</Text>
+						<Text weight={700}>Created by:</Text>
+						<Text>{education.User.name}</Text>
+						<Text weight={700}>Date:</Text>
+						<Text>{education.date.toDateString()}</Text>
+						<Text weight={700}>School Name:</Text>
+						<Text>{education.Orphan.schoolName}</Text>
+						<Text weight={700}>School Year:</Text>
+						<Text>{education.schoolYear}</Text>
+						<Text weight={700}>Degree:</Text>
+						<Text>{education.degree}</Text>
+						<Text weight={700}>Note:</Text>
+						<Text>{education.note}</Text>
+						<Text weight={700}>Score Sheet:</Text>
+					</SimpleGrid>
+					<Group position='right' p={10}>
+						<Button.Group>
+							<DeleteModal
+								id={education.id!}
+								title={'education'}
+								url={'api/education/'}
+								redirectUrl={`${serverLink}behavior`}
+							/>
+							<Tooltip label={'Edit'}>
+								<Button
+									size='xs'
+									onClick={() => {
+										router.push(`${Pages.EducationInfo.link}edit/${education.id}`);
+									}}
+									color='yellow'>
+									<IconEdit />
+								</Button>
+							</Tooltip>
+						</Button.Group>
+					</Group>
+					<Center>
+						<Image
+							src={education.scoreSheet ? URL.createObjectURL(education.scoreSheet) : img}
+							width={500}
+							height={300}
+							className='hover:shadow-xl'
+							alt={'ScoreSheet'}
+						/>
+					</Center>
+				</Paper>
+			) : (
+				<Text>
+					Loading...
+					<Loader />
+				</Text>
+			)}
+		</div>
 	);
 }
-export default Edit;
+export default Info;

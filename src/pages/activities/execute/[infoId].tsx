@@ -27,7 +27,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 		'🚀 ~ file: [infoId].tsx:27 ~ constgetServerSideProps:GetServerSideProps= ~ activityExecution:',
 		activityExecution
 	);
-
 	if (!activityExecution) {
 		return { notFound: true };
 	}
@@ -35,7 +34,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const stringData = SuperJSON.stringify(data);
 	return { props: { stringData } };
 };
-
 interface Props {
 	stringData: string;
 }
@@ -47,7 +45,6 @@ function Info({ stringData }: Props) {
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
-
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<div style={{ margin: 'auto', maxWidth: 800 }}>
@@ -96,13 +93,7 @@ function Info({ stringData }: Props) {
 					</SimpleGrid>
 					<Group position='right'>
 						<Button.Group>
-							<DeleteModal
-								id={activityExecution.id!}
-								title={'ActivityExecution'}
-								url={'api/execute/'}
-								updateCard={undefined}
-							/>
-
+							<DeleteModal id={activityExecution.id!} title={'ActivityExecution'} url={'api/execute/'} />
 							<Tooltip label={'Edit'}>
 								<Button
 									size='xs'

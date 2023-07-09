@@ -1,16 +1,13 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { _Orphan, _User } from '../../../types';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import MyModal from '../../../components/common/MyModal';
 import UserForm from '../../../components/users/UserForm';
 import { useDisclosure } from '@mantine/hooks';
 import UserTable from '../../../components/users/UserTable';
-import { CreateUser } from '../../../utils/CreateEntries';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
@@ -35,7 +32,6 @@ export default function Index({ stringUsers }: Props) {
 	const [hydration, setHydration] = useState(false);
 	const updateCard = (user: _User) => setCardInfo(user);
 	const [opened, { open, close }] = useDisclosure(false);
-	const title = usePageTitle();
 	useEffect(() => {
 		setUsers(SuperJSON.parse(stringUsers));
 		setHydration(true);
@@ -44,7 +40,6 @@ export default function Index({ stringUsers }: Props) {
 	if (!hydration || !jsonUsers) return <Loader size={100} />;
 	return (
 		<>
-			<AppHead title={title} />
 			<div className='text-center pb-4'>
 				<MyModal
 					modalTitle='Add User'

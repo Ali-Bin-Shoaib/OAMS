@@ -11,13 +11,12 @@ import { Url } from 'next/dist/shared/lib/router/router';
 import myNotification from '../MyNotification';
 interface Props {
 	id: number | -1;
-	updateCard?: (activityInfo: _ActivityInfo | undefined) => void;
 	tooltip?: string;
-
 	title: string;
 	url: Url;
+	redirectUrl?: Url;
 }
-export default function DeleteModal({ id, title, url, tooltip = 'Delete', updateCard }: Props) {
+export default function DeleteModal({ id, title, url, tooltip = 'Delete', redirectUrl }: Props) {
 	const router = useRouter();
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -38,37 +37,14 @@ export default function DeleteModal({ id, title, url, tooltip = 'Delete', update
 				try {
 					if (result.status === STATUS_CODE.OK) {
 						myNotification('Success', result.data.msg, 'green', <IconCheck />);
-						// notifications.show({
-						// 	title: `Success`,
-						// 	// message: `${result.data.data.id}: ${result.data.data.title} Was Deleted`,
-						// 	message: result.data.msg,
-
-						// 	color: 'green',
-						// 	icon: <IconCheck />,
-						// });
-						router.push(router.asPath);
+						router.push(redirectUrl ? redirectUrl : router.asPath);
 					} else {
 						myNotification('Error', result.data.msg, 'red', <IconX />);
-
-						// notifications.show({
-						// 	title: 'Error',
-						// 	message: result.data.msg,
-						// 	color: 'red',
-						// 	icon: <IconX />,
-						// });
 						router.push(router.asPath);
 					}
 				} catch (error) {
 					myNotification('Error', result, 'red', <IconX />);
-
-					// notifications.show({
-					// 	title: 'Error',
-					// 	message: error.msg,
-					// 	color: 'red',
-					// 	icon: <IconX />,
-					// });
 					router.push(router.asPath);
-
 					console.log('🚀 ~ file: DeleteModal.tsx:55 ~ onConfirm: ~ error:', error);
 				}
 			},
@@ -93,10 +69,4 @@ const deleteRecord = async (id: number, url: Url) => {
 		console.log('🚀 ~ file: DeleteModal.tsx:78 ~ deleteRecord ~ error:', error);
 		return error.response;
 	}
-	// .then(res => {
-	// 	if (res.status === STATUS_CODE.OK)
-	// 		return res.data
-	// }).catch((error) => {
-	// 	console.log("🚀 ~ file: DeleteModal.tsx:76 ~ res ~ error:", error)
-	// })
 };

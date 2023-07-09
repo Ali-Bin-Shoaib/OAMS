@@ -3,16 +3,13 @@ import prisma from '../../../lib/prisma';
 import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import OrphanCard from '../../../components/orphans/OrphanCard';
-import OrphansTable from '../../../components/orphans/OrphansTable';
 import { Flex, Loader, ScrollArea, Text } from '@mantine/core';
 import SuperJSON from 'superjson';
 import AddOrphanModal from '../../../components/orphans/modals/AddOrphanModal';
 import { _Guardian, _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../../types';
 import { Guardian, User } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
-import { GuardianContext } from './contexts';
-import { v4 } from 'uuid';
-import { TableOfContents } from '../../../components/common/TableOfContents';
+import { GuardianContext } from '../../../shared/contexts';
 import { initial } from '../../../utils/CreateEntries';
 
 // * get orphans from database and pass the result as props to Index page.

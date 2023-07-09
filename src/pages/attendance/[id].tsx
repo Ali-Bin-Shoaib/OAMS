@@ -3,10 +3,8 @@ import SuperJSON from 'superjson';
 import AttendanceForm from '../../../components/attendance/AttendanceForm';
 import prisma from '../../../lib/prisma';
 import { useState, useEffect } from 'react';
-import { usePageTitle } from '../../../hooks/usePageTitle';
 import { _Attendance, _Orphan, _OrphanAttendance } from '../../../types';
 import { Loader } from '@mantine/core';
-import AppHead from '../../../components/common/AppHead';
 import { Attendance, Orphan, OrphanAttendance, User } from '@prisma/client';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
@@ -40,7 +38,6 @@ function Edit({ stringData }: Props) {
 	const { attendance, orphans } = jsonData;
 
 	const [hydration, setHydration] = useState(false);
-	const title = usePageTitle();
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
@@ -49,7 +46,6 @@ function Edit({ stringData }: Props) {
 
 	return (
 		<>
-			<AppHead title={title} />
 			<AttendanceForm orphans={orphans as unknown as _Orphan[]} attendance={attendance as unknown as _Attendance} />
 		</>
 	);

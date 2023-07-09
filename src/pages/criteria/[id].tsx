@@ -1,7 +1,5 @@
 import { GetServerSideProps } from 'next';
 import prisma from '../../../lib/prisma';
-import { IconInfoCircle } from '@tabler/icons-react';
-import MyModal from '../../../components/common/MyModal';
 import GoalCard from '../../../components/goals/GoalCard';
 import { ActivityGoal, ActivityInfo, Goal, GoalEvaluation, User } from '@prisma/client';
 
