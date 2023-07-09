@@ -12,7 +12,7 @@ import MyCard from '../../components/common/MyCard';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { GetStaticProps } from 'next';
 import prisma from '../../lib/prisma';
-import { _Orphan } from '../../types/types';
+import { _Orphan } from '../../types';
 import { Pages, serverLink } from '../../shared/links';
 
 export const getStaticProps: GetStaticProps = async () => {

@@ -1,29 +1,22 @@
 import {
+	Orphan,
+	Prisma,
+	Guardian,
+	Sponsor,
+	Sponsorship,
+	User,
+	Grade,
+	Status,
+	UserType,
+	Gender,
+	PaymentMethod,
+	SponsorshipPeriod,
+	Quarter,
 	ActivityExecutionInfo,
 	ActivityGoal,
 	ActivityInfo,
-	Attendance,
-	Gender,
-	Goal,
 	GoalEvaluation,
-	Grade,
-	Guardian,
-	Orphan,
-	OrphanActivityExecution,
-	OrphanAttendance,
-	PaymentMethod,
-	Prisma,
-	Quarter,
-	Sponsor,
-	Sponsorship,
-	SponsorshipPeriod,
-	Status,
-	UnAchievedActivity,
-	User,
-	UserType,
 } from '@prisma/client';
-import prisma from '../lib/prisma';
-import * as z from 'zod';
 export enum REQUEST_METHODS {
 	GET = 'GET',
 	POST = 'POST',
@@ -89,7 +82,7 @@ export type orphanWithGuardianAndSponsorshipInfo = Orphan & {
 		};
 	})[];
 };
-export interface _Orphan {
+export type _Orphan = {
 	id?: number;
 	name: string | undefined;
 	image: File | null;
@@ -123,7 +116,7 @@ export interface _Orphan {
 	evaluation: number | '';
 	guardianId: number | '';
 	// guardian?: Guardian;
-}
+};
 
 export interface _UserWithGuardianAndSponsor {
 	id?: number;
@@ -278,8 +271,24 @@ export type _UnAchievedActivity = {
 	activityInfoId?: number | null;
 	userId?: number | null;
 };
-type test = {
-	ActivityExecutionInfo?: ActivityInfo;
-	Orphan?: Orphan;
+
+export type Behavior = {
+	id?: number;
+	note?: string | '';
+	date: Date;
+	userId?: number;
+	orphanId?: number;
 	User?: User;
+	// BehaviorCriteria?: { id?: number; evaluation: number; criteriaId: number; userId: number | ''; Criteria: Criteria }[];
+	BehaviorCriteria?: Prisma.BehaviorCriteriaUncheckedCreateWithoutBehaviorInfoInput[];
 };
+export type Education =
+	| (Prisma.EducationInfoCreateInput & {
+			User: User;
+			Orphan: Orphan;
+			date: Date;
+			schoolYear: number;
+			scoreSheet: File | null;
+	  }) &
+			Prisma.EducationInfoUncheckedUpdateInput;
+let test: Education;

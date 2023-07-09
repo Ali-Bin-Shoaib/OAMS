@@ -22,11 +22,12 @@ import { Orphan } from '@prisma/client';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { Pages } from '../../shared/links';
-import { _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../types/types';
+import { _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../types';
 interface Props {
 	orphan: orphanWithGuardianAndSponsorshipInfo;
 }
 function OrphanCard({ orphan }: Props) {
+	console.log('🚀 ~ file: OrphanCard.tsx:30 ~ OrphanCard ~ orphan:', orphan);
 	console.log('🚀 ~ file: ~ OrphanCard ~ OrphanCard');
 	const { Guardian, Sponsorship, ...onlyOrphanInfo } = orphan;
 	const router = useRouter();

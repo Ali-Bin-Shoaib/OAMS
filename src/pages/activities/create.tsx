@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
 import ActivityForm from '../../../components/activities/ActivityForm';
 import prisma from '../../../lib/prisma';
-import { _ActivityInfo } from '../../../types/types';
+import { _ActivityInfo } from '../../../types';
 import { Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { usePageTitle } from '../../../hooks/usePageTitle';

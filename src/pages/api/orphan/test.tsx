@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { STATUS_CODE } from '../../../../types/types';
+import { STATUS_CODE } from '../../../../types';
 import formidable from 'formidable';
 // export const config = { api: { bodyParser: false } };
 

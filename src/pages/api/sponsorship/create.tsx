@@ -1,7 +1,7 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import { STATUS_CODE, REQUEST_METHODS, _User, _Sponsorship } from '../../../../types/types';
+import { STATUS_CODE, REQUEST_METHODS, _User, _Sponsorship } from '../../../../types';
 import { User, Prisma, Guardian, Sponsor, Sponsorship } from '@prisma/client';
 // import formidable from 'formidable';
 // import nextConnect from 'next-connect';

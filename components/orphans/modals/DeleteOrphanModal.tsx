@@ -5,7 +5,7 @@ import { IconBasket, IconCheck, IconSettingsCancel, IconTrash, IconX } from '@ta
 import { serverLink } from '../../../shared/links';
 import { Orphan } from '@prisma/client';
 import { useRouter } from 'next/router';
-import { STATUS_CODE } from '../../../types/types';
+import { STATUS_CODE } from '../../../types';
 export default function DeleteOrphanModal({ id = -1 }) {
 	const router = useRouter();
 	const openDeleteModal = () =>
@@ -42,7 +42,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 						});
 					}
 				} catch (error) {
-					console.log("🚀 ~ file: DeleteOrphanModal.tsx:45 ~ onConfirm: ~ error:", error);
+					console.log('🚀 ~ file: DeleteOrphanModal.tsx:45 ~ onConfirm: ~ error:', error);
 				}
 			},
 		});

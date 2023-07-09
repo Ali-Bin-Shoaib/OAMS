@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { Orphan, PaymentMethod, Prisma, Sponsor, Sponsorship, SponsorshipPeriod } from '@prisma/client';
 import React from 'react';
 import { DatePickerInput } from '@mantine/dates';
-import { _SponsorshipWithSponsorAndOrphan, _Sponsorship, _SponsorshipFormData, _Sponsor } from '../../types/types';
+import { _SponsorshipWithSponsorAndOrphan, _Sponsorship, _SponsorshipFormData, _Sponsor } from '../../types';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { serverLink } from '../../shared/links';
 
@@ -84,7 +84,6 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 		<>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Card withBorder p={'xl'}>
-					{/* startDate,endDate,paymentMethod,period,isActive,sponsor,orphan */}
 					<Controller
 						name='orphanId'
 						control={control}

@@ -5,7 +5,7 @@ import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
-import { _Guardian, _Orphan, _Sponsor, _User } from '../../../types/types';
+import { _Guardian, _Orphan, _Sponsor, _User } from '../../../types';
 import MyModal from '../../../components/common/MyModal';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useDisclosure } from '@mantine/hooks';
@@ -13,14 +13,13 @@ import UserForm from '../../../components/users/UserForm';
 import GuardianTable from '../../../components/guardians/GuardianTable';
 // import { generateDumpData } from '../../../data/functions';
 import SponsorTable from '../../../components/sponsors/SponsorTable';
+import { CreateSponsor } from '../../../utils/CreateEntries';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
 	// const guardians = await prisma.user.findMany({ where: { type: { equals: 'GUARDIAN' } }, include: { Guardian: true } });
 	const sponsor = await prisma.sponsor.findMany({ include: { user: true } });
-
-	// generateDumpData(UserType.SPONSOR, 3);
-	if (sponsor.length > -1) {
+	if (sponsor.length > 0) {
 		sponsor.sort(function (a, b) {
 			return a.id > b.id ? 1 : -1;
 		});

@@ -16,7 +16,7 @@ import ActivityForm from '../../../../../components/activities/ActivityForm';
 import AppHead from '../../../../../components/common/AppHead';
 import { usePageTitle } from '../../../../../hooks/usePageTitle';
 import prisma from '../../../../../lib/prisma';
-import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../../types/types';
+import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../../types';
 import ExecutionForm from '../../../../../components/activityExecution/ExecutionForm';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {

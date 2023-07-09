@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types/types';
+import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
 import { ActivityGoal, ActivityInfo, Goal, Orphan, User } from '@prisma/client';
 // export const config = { api: { bodyParser: false } };

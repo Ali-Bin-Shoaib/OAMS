@@ -1,16 +1,13 @@
 import { Card, Image, Text, Badge, Button, Group, Divider, Loader, Title, Tooltip, Rating } from '@mantine/core';
-import { _ActivityExecutionInfo, _ActivityInfo } from '../../types/types';
+import { _ActivityExecutionInfo, _ActivityInfo } from '../../types';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../shared/links';
-import DeleteOrphanModal from '../orphans/modals/DeleteOrphanModal';
 import DeleteModal from '../common/DeleteModal';
-import EditModel from '../common/EditModel';
-import { IconCheckbox, IconEdit, IconInfoCircle, IconPlayCard, IconPlayerPlay, IconRun } from '@tabler/icons-react';
+import { IconEdit, IconInfoCircle, IconPlayCard, IconPlayerPlay } from '@tabler/icons-react';
 interface Props {
 	activityExecutionInfo: _ActivityExecutionInfo;
-	updateCard: (activityExecutionInfo: _ActivityExecutionInfo | undefined) => void;
 }
-export default function ActivityExecutionCard({ activityExecutionInfo, updateCard }: Props) {
+export default function ActivityExecutionCard({ activityExecutionInfo }: Props) {
 	const router = useRouter();
 	if (!activityExecutionInfo) return <Loader size={100} />;
 	return (
@@ -26,10 +23,7 @@ export default function ActivityExecutionCard({ activityExecutionInfo, updateCar
 					StartDate:{activityExecutionInfo?.startDate?.toDateString()}
 				</Title>
 			</Group>
-			{/* <Text size="xl" color="dimmed">
-                With Fjord Tours you can explore more of the magical fjord landscapes
-                with tours and activities on and around the fjords of Norway
-            </Text> */}
+
 			<Divider mt='md' mb='md' />
 			<Group position='apart' mt='md' mb='xs'>
 				<Text>
@@ -37,20 +31,8 @@ export default function ActivityExecutionCard({ activityExecutionInfo, updateCar
 					{activityExecutionInfo?.GoalEvaluation!.reduce((total, goal) => total + goal.evaluation!, 0) /
 						activityExecutionInfo?.GoalEvaluation!.length}
 				</Text>
-				{/* <Rating
-					readOnly
-					fractions={2}
-					value={
-						activityExecutionInfo?.GoalEvaluation!.reduce((total, goal) => total + goal.evaluation!, 0) /
-						activityExecutionInfo?.GoalEvaluation!.length
-					}
-				/> */}
 				<Text>Cost: {activityExecutionInfo.cost}</Text>
 			</Group>
-			{/* <Group position='apart' mt='md' mb='xs'>
-				<Text>Target: {activityExecutionInfo.target}</Text>
-				<Text>Quarter: {activityExecutionInfo.quarter}</Text>
-			</Group> */}
 			<Group position='right' mt='md'>
 				<Button.Group>
 					<DeleteModal
@@ -58,7 +40,7 @@ export default function ActivityExecutionCard({ activityExecutionInfo, updateCar
 						title={'activity'}
 						url={'api/activity/'}
 						// type='Delete'
-						updateCard={updateCard}
+						// updateCard={updateCard(undefined)}
 					/>
 
 					<Tooltip label={'Edit'}>
@@ -79,15 +61,6 @@ export default function ActivityExecutionCard({ activityExecutionInfo, updateCar
 							<IconInfoCircle />
 						</Button>
 					</Tooltip>
-					{/* <Tooltip label={'Execute'}>
-						<Button
-							onClick={() => {
-								router.push(`${router.asPath}/execute/${activityExecutionInfo.id}`);
-							}}
-							color='green'>
-							<IconCheckbox />
-						</Button>
-					</Tooltip> */}
 				</Button.Group>
 			</Group>
 		</Card>

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types/types';
+import { _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
 import { Orphan } from '@prisma/client';
 import SuperJSON from 'superjson';
@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				orphan.noOfFamilyMembers = orphan.males && orphan.females ? orphan.males + orphan.females : null;
 
 				const updatedOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: orphan });
-				console.log("🚀 ~ file: [id].tsx:32 ~ //form.parse ~ updatedOrphan:", updatedOrphan);
+				console.log('🚀 ~ file: [id].tsx:32 ~ //form.parse ~ updatedOrphan:', updatedOrphan);
 				return res.status(STATUS_CODE.OK).json({ data: orphan, msg: 'update success' });
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:26 ~ handler ~ error:', error);

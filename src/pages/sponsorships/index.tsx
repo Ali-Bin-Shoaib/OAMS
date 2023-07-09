@@ -4,7 +4,7 @@ import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
-import { _Orphan, _Sponsor, _Sponsorship, _User } from '../../../types/types';
+import { _Orphan, _Sponsor, _Sponsorship, _User } from '../../../types';
 import { Orphan, Sponsor, Sponsorship, User } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import MyModal from '../../../components/common/MyModal';

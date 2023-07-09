@@ -1,13 +1,7 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import {
-	STATUS_CODE,
-	REQUEST_METHODS,
-	_Attendance,
-	_ActivityInfo,
-	_ActivityExecutionInfo,
-} from '../../../../types/types';
+import { STATUS_CODE, REQUEST_METHODS, _Attendance, _ActivityInfo, _ActivityExecutionInfo } from '../../../../types';
 import { Goal, ActivityGoal, Prisma, User, ActivityExecutionInfo, ActivityInfo, GoalEvaluation } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

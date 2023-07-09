@@ -3,13 +3,13 @@ import { useDisclosure } from '@mantine/hooks';
 import { Guardian, User } from '@prisma/client';
 import { IconEdit } from '@tabler/icons-react';
 import { useContext } from 'react';
-import { _Orphan } from '../../types/types';
+import { _Orphan } from '../../types';
 import OrphanForm from '../orphans/OrphanForm';
 interface Props {
 	orphan: _Orphan;
 	guardians: (Guardian & {
 		user: User;
-	})[]
+	})[];
 }
 export default function EditModel({ orphan, guardians }: Props) {
 	const [opened, { open, close }] = useDisclosure(false);

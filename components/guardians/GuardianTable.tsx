@@ -2,7 +2,7 @@ import { Prisma, User } from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Container } from '@mantine/core';
-import { _Guardian } from '../../types/types';
+import { _Guardian } from '../../types';
 
 interface Props {
 	guardians: _Guardian[];

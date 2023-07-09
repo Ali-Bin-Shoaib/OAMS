@@ -1,7 +1,7 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import { STATUS_CODE, REQUEST_METHODS, _Orphan } from '../../../../types/types';
+import { STATUS_CODE, REQUEST_METHODS, _Orphan } from '../../../../types';
 import { Orphan, Prisma } from '@prisma/client';
 // import formidable from 'formidable';
 // import nextConnect from 'next-connect';

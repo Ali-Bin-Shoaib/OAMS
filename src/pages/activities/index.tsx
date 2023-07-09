@@ -4,7 +4,7 @@ import AppHead from '../../../components/common/AppHead';
 import { useEffect, useState } from 'react';
 import { Button, Group, Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
-import { _ActivityInfo, _Orphan, _Sponsor, _Sponsorship, _User } from '../../../types/types';
+import { _ActivityInfo, _Orphan, _Sponsor, _Sponsorship, _User } from '../../../types';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus } from '@tabler/icons-react';

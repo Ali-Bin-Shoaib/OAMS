@@ -3,13 +3,13 @@ import { Modal, Button, Group, Tooltip } from '@mantine/core';
 import OrphanForm from '../OrphanForm';
 import { Guardian, Orphan, User } from '@prisma/client';
 import { IconEdit } from '@tabler/icons-react';
-import { _Guardian, _Orphan } from '../../../types/types';
+import { _Guardian, _Orphan } from '../../../types';
 import { useContext } from 'react';
 interface Props {
 	orphan: _Orphan;
 	guardians: (Guardian & {
 		user: User;
-	})[]
+	})[];
 }
 export default function EditOrphanModal({ orphan, guardians }: Props) {
 	const [opened, { open, close }] = useDisclosure(false);

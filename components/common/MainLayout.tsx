@@ -7,7 +7,7 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 interface Props {
 	children: ReactNode;
 }
-function MainLayout({ children }: Props) {
+export default function MainLayout({ children }: Props) {
 	const title = usePageTitle();
 	return (
 		<>
@@ -16,9 +16,8 @@ function MainLayout({ children }: Props) {
 				<div className='h-full w-full'>
 					{/* Nav */}
 					<AppNavbar />
-					{children}
 					{/*content */}
-
+					{children}
 					{/* Footer */}
 					<AppFooter />
 				</div>
@@ -26,4 +25,3 @@ function MainLayout({ children }: Props) {
 		</>
 	);
 }
-export default MainLayout;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { _ActivityExecutionInfo, _ActivityInfo } from '../../types/types';
+import { _ActivityExecutionInfo, _ActivityInfo } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { serverLink } from '../../shared/links';

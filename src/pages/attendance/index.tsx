@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Button, Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import AddOrphanModal from '../../../components/orphans/modals/AddOrphanModal';
-import { _Attendance, _Orphan } from '../../../types/types';
+import { _Attendance, _Orphan } from '../../../types';
 import { Attendance, Orphan, Prisma } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import AttendanceTable from '../../../components/attendance/AttendanceTable';

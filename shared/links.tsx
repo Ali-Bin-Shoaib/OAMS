@@ -5,7 +5,7 @@ interface HeaderLinkProps {
 export const Paths: HeaderLinkProps = {
 	links: [
 		{
-			label: 'Manage Orphans',
+			label: 'Orphans',
 			link: '/orphans',
 			relatedLinks: [
 				// { label: 'Orphans', link: '/orphans' },
@@ -18,7 +18,7 @@ export const Paths: HeaderLinkProps = {
 			],
 		},
 		{
-			label: 'Manage Activities',
+			label: 'Activities',
 			link: '/activities',
 			relatedLinks: [
 				{ label: 'Goals', link: '/goals' },
@@ -63,11 +63,11 @@ export const Pages = {
 	Activities: { label: 'Activities', link: serverLink + 'activities/' },
 	ActivityExecution: { label: 'Activity Execution', link: serverLink + 'activities/execute/' },
 	Goals: { label: 'Goals', link: serverLink + 'goals/' },
-	HealthInfo: { label: 'Health Info', link: serverLink + 'healthInfo/' },
-	BehaviorInfo: { label: 'Behavior Info', link: serverLink + 'behaviorInfo/' },
-	CriteriaInfo: { label: 'Criteria Info', link: serverLink + 'criteriaInfo/' },
-	EmergenceContactInfo: { label: 'Emergence Contact Info', link: serverLink + 'emergenceContactInfo/' },
-	EducationInfo: { label: 'Education Info', link: serverLink + 'educationInfo/' },
+	HealthInfo: { label: 'Health Info', link: serverLink + 'health/' },
+	BehaviorInfo: { label: 'Behavior Info', link: serverLink + 'behavior/' },
+	CriteriaInfo: { label: 'Criteria Info', link: serverLink + 'criteria/' },
+	EmergenceContactInfo: { label: 'Emergence Contact Info', link: serverLink + 'emergenceContact/' },
+	EducationInfo: { label: 'Education Info', link: serverLink + 'education/' },
 	Rooms: { label: 'Rooms', link: serverLink + 'rooms/' },
 
 	// HealthInfo: { label: 'Health Info', link: '/healthInfo/' },

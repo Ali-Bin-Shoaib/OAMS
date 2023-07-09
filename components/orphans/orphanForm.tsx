@@ -17,7 +17,7 @@ import { Gender, Grade, Guardian, HomeType, Status, User } from '@prisma/client'
 import { v4 } from 'uuid';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
-import { _Orphan, _Guardian } from '../../types/types';
+import { _Orphan, _Guardian } from '../../types';
 import { useRouter } from 'next/router';
 import axios, { AxiosRequestConfig } from 'axios';
 import { serverLink } from '../../shared/links';
@@ -42,14 +42,14 @@ interface Props {
 	orphan?: _Orphan;
 	guardians: (Guardian & {
 		user: User;
-	})[]
+	})[];
 	close: () => void;
 }
 export default function OrphanForm({ orphan, close, guardians }: Props): JSX.Element {
 	// const [guardians, setGuardians] = useState(useContext(GuardianContext));
 	const router = useRouter();
 	const [hydrate, setHydrate] = useState(false);
-	console.log("🚀 ~ file: OrphanForm.tsx:36 ~ OrphanForm ~ guardians:", guardians);
+	console.log('🚀 ~ file: OrphanForm.tsx:36 ~ OrphanForm ~ guardians:', guardians);
 
 	const {
 		control,

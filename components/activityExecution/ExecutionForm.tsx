@@ -1,6 +1,6 @@
 import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
-import { _ActivityExecutionInfo, _ActivityInfo } from '../../types/types';
+import { _ActivityExecutionInfo, _ActivityInfo } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { Paths, serverLink } from '../../shared/links';
@@ -281,9 +281,9 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 													);
 												}}
 											/>
-											<Text color='red'>
-												{errors?.OrphanActivityExecution && errors.OrphanActivityExecution[index]?.evaluation.message}
-											</Text>
+											{errors?.OrphanActivityExecution && (
+												<Text color='red'>errors.OrphanActivityExecution[index]?.evaluation.message </Text>
+											)}
 										</td>
 									</tr>
 								))}

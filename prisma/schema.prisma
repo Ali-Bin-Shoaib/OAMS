@@ -139,9 +139,11 @@ model Orphan {
   BehaviorInfo            BehaviorInfo[]
   //* one Orphan has many EducationInfo
   EducationInfo           EducationInfo[]
+  //* one Orphan has one Room
   Room                    Room?                     @relation(fields: [roomId], references: [id])
   roomId                  Int?
   OrphanActivityExecution OrphanActivityExecution[]
+  //* one Orphan has one User
 
   User   User? @relation(fields: [userId], references: [id])
   userId Int?
@@ -149,13 +151,13 @@ model Orphan {
 
 model Guardian {
   id           Int      @id @default(autoincrement())
-  userId       Int      @unique
-  user         User     @relation(fields: [userId], references: [id])
   relationship String
   //* relations
+  //* one Guardian is a User
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int      @unique
   //* one Guardian has many Orphan
   orphan       Orphan[]
-  //* one Guardian is a User
 }
 
 model User {
@@ -204,7 +206,7 @@ model Sponsor {
   identityNumber String
   //* relations
   userId         Int           @unique
-  user           User          @relation(fields: [userId], references: [id])
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   //* one Sponsor has many Sponsorship
   Sponsorship    Sponsorship[]
 }
@@ -223,7 +225,7 @@ model Sponsorship {
   Sponsor           Sponsor?          @relation(fields: [sponsorId], references: [id])
   // * one sponsorship has one or more Orphan
   orphanId          Int?
-  Orphan            Orphan?           @relation(fields: [orphanId], references: [id], onDelete: Cascade)
+  Orphan            Orphan?           @relation(fields: [orphanId], references: [id])
   User              User?             @relation(fields: [userId], references: [id])
   userId            Int?
 }
@@ -337,30 +339,28 @@ model OrphanActivityExecution {
   userId                  Int?
 }
 
-//********************************** TO IMPLEMENT*********************************
-
 model BehaviorInfo {
-  id   Int      @id @default(autoincrement())
+  id   Int       @id @default(autoincrement())
   note String?
-  date DateTime
+  date DateTime? @default(now())
 
   //* relations
 
   BehaviorCriteria BehaviorCriteria[]
-  User             User?              @relation(fields: [userId], references: [id])
-  userId           Int?
-  Orphan           Orphan?            @relation(fields: [orphanId], references: [id])
-  orphanId         Int?
+  User             User               @relation(fields: [userId], references: [id])
+  userId           Int
+  Orphan           Orphan             @relation(fields: [orphanId], references: [id], onDelete: Cascade)
+  orphanId         Int
 }
 
 model Criteria {
-  id    Int     @id @default(autoincrement())
-  title String?
+  id    Int    @id @default(autoincrement())
+  title String
   //* relations
 
   BehaviorCriteria BehaviorCriteria[]
-  User             User?              @relation(fields: [userId], references: [id])
-  userId           Int?
+  User             User               @relation(fields: [userId], references: [id])
+  userId           Int
 }
 
 model BehaviorCriteria {
@@ -368,20 +368,23 @@ model BehaviorCriteria {
   evaluation Float
   //* relations
 
-  Criteria       Criteria?     @relation(fields: [criteriaId], references: [id])
-  criteriaId     Int?
-  BehaviorInfo   BehaviorInfo? @relation(fields: [behaviorInfoId], references: [id], onDelete: Cascade)
-  behaviorInfoId Int?
-  User           User?         @relation(fields: [userId], references: [id])
-  userId         Int?
+  Criteria       Criteria     @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
+  criteriaId     Int
+  BehaviorInfo   BehaviorInfo @relation(fields: [behaviorInfoId], references: [id], onDelete: Cascade)
+  behaviorInfoId Int
+  User           User         @relation(fields: [userId], references: [id])
+  userId         Int
 }
+
+//********************************** TO IMPLEMENT*********************************
 
 model EducationInfo {
   id         Int      @id @default(autoincrement())
   date       DateTime
   scoreSheet String?
   degree     Degree
-  schoolName String?
+  schoolYear Int?
+  note       String?
   //* relations
 
   //* one Orphan has many EducationInfo

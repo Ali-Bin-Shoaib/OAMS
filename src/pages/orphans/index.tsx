@@ -7,17 +7,21 @@ import OrphansTable from '../../../components/orphans/OrphansTable';
 import { Flex, Loader, ScrollArea, Text } from '@mantine/core';
 import SuperJSON from 'superjson';
 import AddOrphanModal from '../../../components/orphans/modals/AddOrphanModal';
-import { _Guardian, _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../../types/types';
-import { Guardian, Orphan, Sponsor, Sponsorship, User } from '@prisma/client';
+import { _Guardian, _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../../types';
+import { Guardian, User } from '@prisma/client';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { GuardianContext } from './contexts';
-import { initOrphans } from '../../../data/orphans';
 import { v4 } from 'uuid';
+import { TableOfContents } from '../../../components/common/TableOfContents';
+import { initial } from '../../../utils/CreateEntries';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
-	(await prisma.orphan.count()) === 0 && (await prisma.orphan.createMany({ data: initOrphans }));
-
+	try {
+		await initial();
+	} catch (error) {
+		console.log('🚀 ~ file: index.tsx:23 ~ constgetStaticProps:GetStaticProps= ~ error:', error);
+	}
 	const orphans = await prisma.orphan.findMany({
 		include: {
 			Guardian: { include: { user: true } },
@@ -54,9 +58,11 @@ export default function Index({ stringData }: Props) {
 			user: User;
 		})[];
 	}>(stringData);
-	const [guardiansList, setGuardiansList] = useState<(Guardian & {
-		user: User;
-	})[]>(guardians);
+	const [guardiansList, setGuardiansList] = useState<
+		(Guardian & {
+			user: User;
+		})[]
+	>(guardians);
 	const [orphanList, setOrphanList] = useState<orphanWithGuardianAndSponsorshipInfo[]>(orphans);
 	const [cardInfo, setCardInfo] = useState<orphanWithGuardianAndSponsorshipInfo>(orphans[0]);
 	const [hydration, setHydration] = useState(false);

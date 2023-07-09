@@ -5,7 +5,7 @@ import AppHead from '../../../../../components/common/AppHead';
 import { usePageTitle } from '../../../../../hooks/usePageTitle';
 import { ActivityInfo, User, ActivityGoal, Goal, Orphan } from '@prisma/client';
 import ExecutionForm from '../../../../../components/activityExecution/ExecutionForm';
-import { _ActivityInfo } from '../../../../../types/types';
+import { _ActivityInfo } from '../../../../../types';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	console.log('🚀 ~ file: [activityId].tsx:11 ~ constgetServerSideProps:GetServerSideProps= ~ params:', params);

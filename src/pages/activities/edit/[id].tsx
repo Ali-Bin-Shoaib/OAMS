@@ -3,7 +3,7 @@ import SuperJSON from 'superjson';
 import prisma from '../../../../lib/prisma';
 import { useState, useEffect } from 'react';
 import { usePageTitle } from '../../../../hooks/usePageTitle';
-import { _ActivityInfo, _Attendance, _OrphanAttendance } from '../../../../types/types';
+import { _ActivityInfo, _Attendance, _OrphanAttendance } from '../../../../types';
 import { Loader } from '@mantine/core';
 import AppHead from '../../../../components/common/AppHead';
 import ActivityForm from '../../../../components/activities/ActivityForm';

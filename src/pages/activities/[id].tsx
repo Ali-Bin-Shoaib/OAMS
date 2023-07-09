@@ -10,7 +10,8 @@ import { IconEdit } from '@tabler/icons-react';
 import router from 'next/router';
 import DeleteModal from '../../../components/common/DeleteModal';
 import { Pages } from '../../../shared/links';
-import { _ActivityExecutionInfo } from '../../../types/types';
+import { _ActivityExecutionInfo } from '../../../types';
+import { CalculateAverage, CalculateTotalEvaluation } from '../../../utils/Calculation';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
@@ -48,7 +49,7 @@ function Info({ stringData }: Props) {
 		};
 	} = SuperJSON.parse(stringData);
 	const { activity } = jsonData;
-	console.log('🚀 ~ file: [id].tsx:39 ~ Edit ~ activity:', activity);
+	// console.log('🚀 ~ file: [id].tsx:39 ~ Edit ~ activity:', activity);
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
@@ -85,9 +86,10 @@ function Info({ stringData }: Props) {
 						<Text>{activity.ActivityExecutionInfo.reduce((total, object) => total + 1, 0)}</Text>
 						<Text weight={700}>Total Evaluation:</Text>
 						<Text>
-							{activity.ActivityExecutionInfo.map((x) => {
-								return x.GoalEvaluation.reduce((total, object) => total + object.evaluation, 0) / x.GoalEvaluation.length;
-							}).reduce((total, object) => total + object, 0) / activity.ActivityExecutionInfo.length || 0}
+							{CalculateTotalEvaluation(
+								activity.ActivityExecutionInfo.map((x) => x.GoalEvaluation.map((x) => x.evaluation)),
+								activity.ActivityExecutionInfo.map((x) => x.OrphanActivityExecution.map((x) => x.evaluation))
+							).toFixed(2)}
 						</Text>
 					</SimpleGrid>
 					<Group position='right'>

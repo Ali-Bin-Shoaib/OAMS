@@ -11,11 +11,21 @@ import {
 	useMantineColorScheme,
 	Transition,
 	Paper,
+	Button,
+	Drawer,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconChevronDown, IconHome, IconMoonStars, IconSun } from '@tabler/icons-react';
+import {
+	IconBell,
+	IconBellMinus,
+	IconChevronDown,
+	IconHome,
+	IconMoonStars,
+	IconNotification,
+	IconPill,
+	IconSun,
+} from '@tabler/icons-react';
 import { Paths } from '../../shared/links';
-import MyLink from './MyLink';
 import Link from 'next/link';
 
 const useStyles = createStyles((theme) => ({
@@ -30,7 +40,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function AppNavbar() {
-	const [opened, { toggle }] = useDisclosure(false);
+	const [opened, { toggle, open, close }] = useDisclosure(false);
 	const { classes, theme } = useStyles();
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 	const items = Paths.links.map((link) => {
@@ -84,8 +94,8 @@ export default function AppNavbar() {
 	});
 
 	return (
-		<Header height={56} mb={20} bg={'blue'}>
-			<Container>
+		<Header height={56} mb={10} bg={'blue'}>
+			<Container fluid>
 				<div className={`flex items-center justify-between h-14`}>
 					<Link
 						href={'/'}
@@ -99,12 +109,20 @@ export default function AppNavbar() {
 						{items}
 					</Group>
 					<Group position='center' my='xl'>
-						<ActionIcon
-							onClick={() => toggleColorScheme()}
-							size='lg'
-							sx={(theme) => ({
-								color: theme.colorScheme === 'dark' ? theme.colors.yellow[0] : theme.colors.dark[9],
-							})}>
+						<Drawer
+							opened={opened}
+							position='right'
+							overlayProps={{ opacity: 0.5, blur: 4 }}
+							onClose={close}
+							title='Notification'>
+							{/* Drawer content */}
+						</Drawer>
+
+						<ActionIcon variant='light' onClick={open} size='lg'>
+							<IconBell />
+						</ActionIcon>
+
+						<ActionIcon variant='light' onClick={() => toggleColorScheme()} size='lg'>
 							{colorScheme === 'dark' ? (
 								<IconSun size='1.2rem' color={theme.colors.yellow[5]} />
 							) : (

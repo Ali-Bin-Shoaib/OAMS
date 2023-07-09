@@ -14,7 +14,7 @@ import {
 import { v4 } from 'uuid';
 import DeleteOrphanModal from '../../../components/orphans/modals/DeleteOrphanModal';
 import EditOrphanModal from '../../../components/orphans/modals/EditOrphanModal';
-import { _Orphan } from '../../../types/types';
+import { _Orphan } from '../../../types';
 import Image from 'next/image';
 import orphanImage from '../../img/simeLogo.png';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';

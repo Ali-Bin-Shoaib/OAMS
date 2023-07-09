@@ -2,7 +2,7 @@ import { Orphan, Prisma, Sponsor, Sponsorship, User } from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Container } from '@mantine/core';
-import { _Sponsor } from '../../types/types';
+import { _Sponsor } from '../../types';
 
 interface Props {
 	sponsorships: (Sponsorship & { Sponsor: Sponsor & { user: User }; Orphan: Orphan })[];

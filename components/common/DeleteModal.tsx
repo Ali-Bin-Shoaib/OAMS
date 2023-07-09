@@ -4,7 +4,7 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { Pages, serverLink } from '../../shared/links';
-import { STATUS_CODE, _ActivityInfo } from '../../types/types';
+import { STATUS_CODE, _ActivityInfo } from '../../types';
 import axios from 'axios';
 import { ActivityInfo } from '@prisma/client';
 import { Url } from 'next/dist/shared/lib/router/router';

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { REQUEST_METHODS, STATUS_CODE } from '../../../../types/types';
+import { REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
 
 export async function handler(req: NextApiRequest, res: NextApiResponse) {

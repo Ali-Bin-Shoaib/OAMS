@@ -2,7 +2,7 @@ import { Attendance, Orphan, OrphanAttendance, Prisma } from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Container } from '@mantine/core';
-import { _Attendance, _Orphan, _OrphanAttendance } from '../../types/types';
+import { _Attendance, _Orphan, _OrphanAttendance } from '../../types';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../shared/links';
 

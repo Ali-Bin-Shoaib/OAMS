@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import prisma from '../../../../lib/prisma';
-import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../types/types';
+import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../types';
 import ActivityExecutionTable from '../../../../components/activityExecution/ActivityExecutionTable';
 import { Button, Container, Group, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';

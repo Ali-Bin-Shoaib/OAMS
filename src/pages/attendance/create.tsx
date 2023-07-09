@@ -5,7 +5,7 @@ import prisma from '../../../lib/prisma';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { usePageTitle } from '../../../hooks/usePageTitle';
-import { _Attendance, _Orphan, _OrphanAttendance } from '../../../types/types';
+import { _Attendance, _Orphan, _OrphanAttendance } from '../../../types';
 import { Loader } from '@mantine/core';
 import AppHead from '../../../components/common/AppHead';
 export const getStaticProps: GetStaticProps = async () => {

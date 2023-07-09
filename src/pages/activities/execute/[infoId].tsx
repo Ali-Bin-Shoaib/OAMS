@@ -9,7 +9,7 @@ import router from 'next/router';
 import prisma from '../../../../lib/prisma';
 import DeleteModal from '../../../../components/common/DeleteModal';
 import { Pages } from '../../../../shared/links';
-import { _ActivityExecutionInfo } from '../../../../types/types';
+import { _ActivityExecutionInfo } from '../../../../types';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.infoId);

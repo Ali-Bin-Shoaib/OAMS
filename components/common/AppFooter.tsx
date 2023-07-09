@@ -1,18 +1,14 @@
-import { createStyles, Container, Group, Anchor, rem } from '@mantine/core';
-import { IconBrandMantine } from '@tabler/icons-react';
+import { createStyles, Container, Group, Anchor, rem, Text, Center } from '@mantine/core';
+import { IconHome } from '@tabler/icons-react';
 import { Paths } from '../../shared/links';
-import Image from 'next/image';
-import logo from '../../src/img/logo.png';
 import Link from 'next/link';
+
 const useStyles = createStyles((theme) => ({
 	footer: {
 		marginTop: rem(120),
-		borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
-		backgroundColor: theme.fn.variant({
-			variant: 'filled',
-			color: theme.colors.blue[1],
-		}).background,
-		borderBottom: 0,
+		borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0]}`,
+		background: theme.colors.blue[7],
+		color: 'white',
 	},
 
 	inner: {
@@ -28,40 +24,20 @@ const useStyles = createStyles((theme) => ({
 	},
 
 	links: {
-		[theme.fn.smallerThan('sm')]: {
-			display: 'none',
+		[theme.fn.smallerThan('xs')]: {
+			marginTop: theme.spacing.md,
 		},
-	},
-	link: {
-		display: 'block',
-		lineHeight: 1,
-		padding: `${rem(8)} ${rem(12)}`,
-		borderRadius: theme.radius.sm,
-		textDecoration: 'none',
-		color: theme.white,
-		fontSize: theme.fontSizes.sm,
-		fontWeight: 500,
-
-		'&:hover': {
-			backgroundColor: theme.fn.lighten(
-				theme.fn.variant({ variant: 'filled', color: theme.primaryColor }).background!,
-				0.1
-			),
-		},
-	},
-
-	linkLabel: {
-		marginRight: rem(5),
 	},
 }));
 
 interface FooterSimpleProps {
 	links: { link: string; label: string }[];
 }
+
 export default function AppFooter() {
 	const { classes } = useStyles();
 	const items = Paths.links.map((link) => (
-		<Link key={link.label} href={link.link} className={classes.link}>
+		<Link className='text-white no-underline hover:underline' key={link.label} href={link.link}>
 			{link.label}
 		</Link>
 	));
@@ -69,12 +45,12 @@ export default function AppFooter() {
 	return (
 		<div className={classes.footer}>
 			<Container className={classes.inner}>
-				<div>
-					<Image src={logo} width={150} className='rounded-full' alt={'logo'} />
-					OAMS
-				</div>
+				<IconHome size={28} />
 				<Group className={classes.links}>{items}</Group>
 			</Container>
+			<Center p={10} m={10}>
+				<Text size='sm'>© {new Date().getFullYear()} oams.com All rights reserved.</Text>
+			</Center>
 		</div>
 	);
 }

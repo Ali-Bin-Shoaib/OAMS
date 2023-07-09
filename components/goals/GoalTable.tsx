@@ -2,7 +2,7 @@ import { ActivityGoal, ActivityInfo, Attendance, Goal, Orphan, OrphanAttendance,
 import { useMemo, useState } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Box, Button, Container, Divider, Group, Modal, Rating, TextInput, Title, Tooltip } from '@mantine/core';
-import { _ActivityExecutionInfo, _ActivityInfo, _Attendance, _Orphan, _OrphanAttendance } from '../../types/types';
+import { _ActivityExecutionInfo, _ActivityInfo, _Attendance, _Orphan, _OrphanAttendance } from '../../types';
 import { useRouter } from 'next/router';
 import { Pages, serverLink } from '../../shared/links';
 import { IconCheckbox, IconEdit, IconInfoCircle, IconTrash } from '@tabler/icons-react';

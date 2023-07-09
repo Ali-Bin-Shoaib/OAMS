@@ -1,26 +1,12 @@
-import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
-import { _Attendance, _Orphan, _OrphanAttendance, _UserWithGuardianAndSponsor } from '../../types/types';
+import { _Attendance, _Orphan, _OrphanAttendance, _UserWithGuardianAndSponsor } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { serverLink } from '../../shared/links';
 import { DateInput, DatePickerInput } from '@mantine/dates';
 import React from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import {
-	Button,
-	Group,
-	Paper,
-	Container,
-	Stack,
-	Loader,
-	Divider,
-	Table,
-	Textarea,
-	TextInput,
-	Checkbox,
-} from '@mantine/core';
-// import { DevTool } from '@hookform/devtools';
+import { Button, Group, Container, Loader, Divider, Table, Textarea, TextInput, Checkbox } from '@mantine/core';
 
 interface Props {
 	attendance?: _Attendance;
@@ -72,10 +58,6 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 		control,
 		watch,
 		handleSubmit,
-		resetField,
-		setValue,
-
-		reset,
 		formState: { errors },
 	} = useForm<_Attendance>({
 		defaultValues: defaultValues,

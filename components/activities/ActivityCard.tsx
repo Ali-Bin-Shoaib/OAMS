@@ -1,5 +1,5 @@
 import { Card, Image, Text, Badge, Button, Group, Divider, Loader, Title, Tooltip } from '@mantine/core';
-import { _ActivityInfo } from '../../types/types';
+import { _ActivityInfo } from '../../types';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../shared/links';
 import DeleteOrphanModal from '../orphans/modals/DeleteOrphanModal';

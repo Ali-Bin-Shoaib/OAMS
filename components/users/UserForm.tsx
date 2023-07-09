@@ -3,7 +3,7 @@ import { $enum } from 'ts-enum-util';
 import { ReactNode, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { useForm, Controller } from 'react-hook-form';
-import { _UserWithGuardianAndSponsor } from '../../types/types';
+import { _UserWithGuardianAndSponsor } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { serverLink } from '../../shared/links';

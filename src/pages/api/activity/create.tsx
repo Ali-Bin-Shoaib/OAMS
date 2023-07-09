@@ -1,7 +1,7 @@
 // CONNECT  DELETE  GET HEAD  OPTIONS PATCH POST  PUT TRACE
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import { STATUS_CODE, REQUEST_METHODS, _Attendance, _ActivityInfo, } from '../../../../types/types';
+import { STATUS_CODE, REQUEST_METHODS, _Attendance, _ActivityInfo } from '../../../../types';
 import { ActivityGoal, Prisma, User, Goal } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -17,14 +17,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			} = req.body;
 			// const { ActivityGoal, date, User, budget, quarter, selectedGoals, target, title, type } = data;
 			const { ActivityGoal, User, ...activityInfo } = data;
-			console.log("🚀 ~ file: create.tsx:20 ~ handler ~ data:", data);
+			console.log('🚀 ~ file: create.tsx:20 ~ handler ~ data:', data);
 			const newActivity = await prisma.activityInfo.create({
 				data: {
 					// ...data,
 					...activityInfo,
 					// userId: user.id,
 					User: { connect: { id: user?.id } },
-					ActivityGoal: { create: ActivityGoal }
+					ActivityGoal: { create: ActivityGoal },
 				},
 			});
 			console.log('🚀 ~ file: create.tsx:17 ~ handler ~ newActivity:', newActivity);
