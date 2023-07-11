@@ -325,3 +325,23 @@ export type Education = {
 	orphanId?: number;
 	userId?: number;
 };
+export type Health = {
+	// test: Prisma.HealthInfoUncheckedCreateInput;
+	id?: number;
+	date: Date;
+	disease?: string;
+	description?: string;
+	User?: User;
+	Orphan?: Orphan;
+	orphanId: number;
+	userId?: number;
+};
+export type EmergencyContact = {
+	id?: number;
+	name: string;
+	phone: string;
+	Orphan: Prisma.OrphanCreateNestedOneWithoutEmergencyContactInfoInput;
+	User?: Prisma.UserCreateNestedOneWithoutEmergencyContactInfoInput;
+	orphanId: number;
+	userId?: number;
+};

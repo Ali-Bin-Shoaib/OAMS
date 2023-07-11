@@ -1,4 +1,4 @@
-import { Group, Paper, Grid, Text, Loader, SimpleGrid, Button, Tooltip, Title } from '@mantine/core';
+import { Group, Paper, Text, Loader, SimpleGrid, Button, Tooltip, Title, Badge, Container } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
 import { record } from 'zod';
@@ -80,7 +80,11 @@ function Info({ stringData }: Props) {
 						<Text weight={700}>Quarter:</Text>
 						<Text>{activity.quarter}</Text>
 						<Text weight={700}>Goals:</Text>
-						<Text>{activity.ActivityGoal.map((x) => x.Goal.title).join(',')}</Text>
+						<Container p={0} m={0}>
+							{activity.ActivityGoal.map((x) => (
+								<Badge key={x.id}>{x.Goal.title}</Badge>
+							))}
+						</Container>
 						<Text weight={700}>No Of Execution:</Text>
 						<Text>{activity.ActivityExecutionInfo.reduce((total, object) => total + 1, 0)}</Text>
 						<Text weight={700}>Total Evaluation:</Text>
@@ -88,12 +92,17 @@ function Info({ stringData }: Props) {
 							{CalculateTotalEvaluation(
 								activity.ActivityExecutionInfo.map((x) => x.GoalEvaluation.map((x) => x.evaluation)),
 								activity.ActivityExecutionInfo.map((x) => x.OrphanActivityExecution.map((x) => x.evaluation))
-							).toFixed(2)}
+							).toFixed(2) === 'NaN'
+								? 0
+								: CalculateTotalEvaluation(
+										activity.ActivityExecutionInfo.map((x) => x.GoalEvaluation.map((x) => x.evaluation)),
+										activity.ActivityExecutionInfo.map((x) => x.OrphanActivityExecution.map((x) => x.evaluation))
+								  ).toFixed(2)}
 						</Text>
 					</SimpleGrid>
 					<Group position='right'>
 						<Button.Group>
-							<DeleteModal id={activity.id!} title={'activity'} url={'api/activity/'} />
+							<DeleteModal id={activity.id!} title={'activity'} url={'api/activity/'} redirectUrl={Pages.Activities.link} />
 							<Tooltip label={'Edit'}>
 								<Button
 									size='xs'

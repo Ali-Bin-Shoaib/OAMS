@@ -8,6 +8,8 @@ import orphanImage from '../../img/simeLogo.png';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { Guardian, Orphan, User } from '@prisma/client';
+import DeleteModal from '../../../components/common/DeleteModal';
+import { Pages, serverLink } from '../../../shared/links';
 
 //*  needed to define possible ids that id parameter can accepts to create static pages for each id at build time
 // export const getStaticPaths: GetStaticPaths = async () => {
@@ -175,7 +177,8 @@ function OrphanDetails({ data }: Props) {
 					<Group position='right'>
 						<Button.Group>
 							<EditOrphanModal orphan={orphan as unknown as _Orphan} guardians={guardians} />
-							<DeleteOrphanModal id={orphan.id} />
+							{/* <DeleteOrphanModal id={orphan.id} /> */}
+							<DeleteModal id={orphan.id} title={'Orphan'} url={`${Pages.Orphans.link}`} />
 						</Button.Group>
 					</Group>
 				</Container>

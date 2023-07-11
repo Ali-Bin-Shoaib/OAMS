@@ -93,7 +93,12 @@ function Info({ stringData }: Props) {
 					</SimpleGrid>
 					<Group position='right'>
 						<Button.Group>
-							<DeleteModal id={activityExecution.id!} title={'ActivityExecution'} url={'api/execute/'} />
+							<DeleteModal
+								id={activityExecution.id!}
+								title={'ActivityExecution'}
+								url={'api/execute/'}
+								redirectUrl={Pages.ActivityExecution.link}
+							/>
 							<Tooltip label={'Edit'}>
 								<Button
 									size='xs'

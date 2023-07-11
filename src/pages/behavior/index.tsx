@@ -77,7 +77,6 @@ export default function Index({ orphans }: Props) {
 					data={orphans?.map((x) => ({ value: x.id.toString(), label: x.name }))}
 				/>
 			</Container>
-			{/* {orphanBehavior != undefined && <BehaviorTable behavior={orphanBehavior} />} */}
 			<BehaviorTable behavior={orphanBehavior ? orphanBehavior : []} />
 		</>
 	);

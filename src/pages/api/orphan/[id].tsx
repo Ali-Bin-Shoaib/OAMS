@@ -42,10 +42,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			try {
 				const orphan = await prisma.orphan.delete({ where: { id: orphanId } });
 				if (orphan) return res.status(STATUS_CODE.OK).json({ orphan: orphan, msg: 'Deleted Successfully' });
-				return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete orphan with id :' + orphanId);
+				return res.status(STATUS_CODE.BAD_REQUEST).json(`orphan with id : ${orphanId} dose not exist.`);
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:30 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json('Some thing went wrong :' + error);
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Some thing went wrong.', error: error });
 			}
 		}
 		//* ************************GET************************

@@ -9,6 +9,10 @@ interface Props {
 }
 
 function OrphanAttendanceTable({ orphanAttendance }: Props) {
+	console.log(
+		'🚀 ~ file: OrphanAttendanceTable.tsx:12 ~ OrphanAttendanceTable ~ orphanAttendance:',
+		orphanAttendance[0]
+	);
 	const columns = useMemo<MRT_ColumnDef<_OrphanAttendance>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
@@ -54,7 +58,7 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.returnDay,
+				accessorFn: (row) => row.returnDay.toDateString(),
 				id: 'returnDay',
 				header: 'returnDay',
 				maxSize: 300,

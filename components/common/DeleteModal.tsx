@@ -1,4 +1,4 @@
-import { Button, Text, Tooltip } from '@mantine/core';
+import { Button, MantineSize, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react';
@@ -12,11 +12,12 @@ import myNotification from '../MyNotification';
 interface Props {
 	id: number | -1;
 	tooltip?: string;
+	size?: MantineSize;
 	title: string;
 	url: Url;
 	redirectUrl?: Url;
 }
-export default function DeleteModal({ id, title, url, tooltip = 'Delete', redirectUrl }: Props) {
+export default function DeleteModal({ id, title, url, tooltip = 'Delete', redirectUrl, size = 'xs' }: Props) {
 	const router = useRouter();
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -39,11 +40,11 @@ export default function DeleteModal({ id, title, url, tooltip = 'Delete', redire
 						myNotification('Success', result.data.msg, 'green', <IconCheck />);
 						router.push(redirectUrl ? redirectUrl : router.asPath);
 					} else {
-						myNotification('Error', result.data.msg, 'red', <IconX />);
+						myNotification('Error', result.data.error.meta.cause || result.data.msg, 'red', <IconX />);
 						router.push(router.asPath);
 					}
 				} catch (error) {
-					myNotification('Error', result, 'red', <IconX />);
+					myNotification('Error', error.response.data, 'red', <IconX />);
 					router.push(router.asPath);
 					console.log('🚀 ~ file: DeleteModal.tsx:55 ~ onConfirm: ~ error:', error);
 				}
@@ -51,7 +52,7 @@ export default function DeleteModal({ id, title, url, tooltip = 'Delete', redire
 		});
 	return (
 		<Tooltip label={tooltip}>
-			<Button size='xs' onClick={openDeleteModal} color='red'>
+			<Button size={size} onClick={openDeleteModal} color='red'>
 				<IconTrash />
 			</Button>
 		</Tooltip>
@@ -62,7 +63,7 @@ const deleteRecord = async (id: number, url: Url) => {
 	console.log('🚀 ~ file: DeleteModal.tsx:8 ~ deleteOrphan ~ id:', id);
 
 	try {
-		const res = await axios.delete<{ msg: string; data: any }>(serverLink + url + id);
+		const res = await axios.delete<{ msg: string; data: any }>(`${serverLink}${url}${id}`);
 		console.log('🚀 ~ file: DeleteModal.tsx:77 ~ deleteRecord ~ res:', res.data.msg);
 		return res;
 	} catch (error) {

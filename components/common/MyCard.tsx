@@ -15,7 +15,6 @@ interface Props {
 }
 
 export default function MyCard({ title, count, color, icon, className, path }: Props) {
-	console.log('🚀 ~ file: MyCard.tsx:18 ~ MyCard ~ path:', path);
 	return (
 		<Link href={path} className='no-underline'>
 			<Card

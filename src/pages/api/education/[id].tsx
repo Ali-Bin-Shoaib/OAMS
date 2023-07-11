@@ -13,13 +13,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		case REQUEST_METHODS.PUT: {
 			try {
 				const data: Education = req.body;
+				console.log('🚀 ~ file: [id].tsx:16 ~ handler ~ data:', data);
 
 				const { id, Orphan, User, orphanId, userId, ...rest } = data;
 				const updateEducation: Prisma.EducationInfoUpdateArgs = {
 					data: {
 						...rest,
 						scoreSheet: null,
-						Orphan: { connect: { id: orphanId } },
+						Orphan: { update: { schoolName: Orphan.schoolName }, connect: { id: orphanId } },
 						User: { connect: { id: admin.id } },
 					},
 					where: { id: id },

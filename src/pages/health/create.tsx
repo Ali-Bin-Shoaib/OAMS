@@ -6,11 +6,12 @@ import { _Attendance, _Orphan, _OrphanAttendance } from '../../../types';
 import { Loader } from '@mantine/core';
 import { Orphan } from '@prisma/client';
 import EducationForm from '../../../components/education/EducationForm';
+import HealthForm from '../../../components/health/HealthForm';
 export const getStaticProps: GetStaticProps = async () => {
-	const orphans = await prisma.orphan.findMany({ orderBy: { id: 'asc' } });
-	// orphans.sort(function (a, b) {
-	// 	return a.id > b.id ? 1 : -1;
-	// });
+	const orphans = await prisma.orphan.findMany();
+	orphans.sort(function (a, b) {
+		return a.id > b.id ? 1 : -1;
+	});
 	const stringData = SuperJSON.stringify(orphans);
 	return { props: { stringData } };
 };
@@ -32,7 +33,7 @@ function Create({ stringData }: Props) {
 
 	return (
 		<>
-			<EducationForm orphans={orphans} />
+			<HealthForm orphans={orphans} />
 		</>
 	);
 }

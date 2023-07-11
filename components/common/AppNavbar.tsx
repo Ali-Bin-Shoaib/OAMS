@@ -48,6 +48,7 @@ export default function AppNavbar() {
 			<Menu.Item key={item.link} className={`${classes.link}`}>
 				<Link
 					href={item.link}
+					aria-label={item.label}
 					className={`block leading-none px-2 py-3 rounded-sm no-underline font-semibold -m-2 ${classes.link}`}
 					style={{
 						color: theme.colors.gray[0],
@@ -64,6 +65,7 @@ export default function AppNavbar() {
 					<Menu.Target>
 						<Link
 							href={link.link}
+							aria-label={link.label}
 							className={`text-lg block leading-none px-2 py-3 rounded-sm no-underline font-semibold ${classes.link}`}
 							style={{
 								color: theme.colors.gray[0],
@@ -84,6 +86,7 @@ export default function AppNavbar() {
 			<Link
 				key={link.label}
 				href={link.link}
+				aria-label={link.label}
 				className={`text-lg block leading-none px-2 py-3 rounded-sm no-underline font-semibold ${classes.link}`}
 				style={{
 					color: theme.colors.gray[0],
@@ -100,6 +103,7 @@ export default function AppNavbar() {
 					<Link
 						href={'/'}
 						className='no-underline '
+						aria-label='Home Page'
 						style={{
 							color: theme.colors.gray[0],
 						}}>

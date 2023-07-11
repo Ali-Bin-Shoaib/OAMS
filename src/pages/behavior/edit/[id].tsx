@@ -6,7 +6,6 @@ import { Behavior, _Attendance, _Orphan, _OrphanAttendance } from '../../../../t
 import { Loader } from '@mantine/core';
 import { Criteria, Orphan } from '@prisma/client';
 import BehaviorForm from '../../../../components/behavior/BehaviorForm';
-import { useDocumentTitle } from '@mantine/hooks';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const behaviorId = Number(params?.id);
 	const behavior = await prisma.behaviorInfo.findFirst({
@@ -31,8 +30,6 @@ function Edit({ stringData }: Props) {
 	const { behavior, orphans, criteria } = jsonData;
 
 	const [hydration, setHydration] = useState(false);
-	const test = useDocumentTitle(title);
-	console.log('🚀 ~ file: [id].tsx:38 ~ Edit ~ test:', test);
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);

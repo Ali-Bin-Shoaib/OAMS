@@ -1,20 +1,17 @@
 import { useState } from 'react';
 import { List, Text, Card, Button } from '@mantine/core';
 
-const items = [
-	{ id: 1, title: 'Item 1', description: 'Description of item 1' },
-	{ id: 2, title: 'Item 2', description: 'Description of item 2' },
-	{ id: 3, title: 'Item 3', description: 'Description of item 3' },
-];
-
-function Test() {
+interface Props {
+	data: { id: number; name: string; image?: unknown; info?: string[] }[];
+}
+function MyList({ data }: Props) {
 	const [selectedItemId, setSelectedItemId] = useState(null);
 
 	const handleItemClick = (itemId) => {
 		setSelectedItemId(itemId);
 	};
 
-	const selectedItem = items.find((x) => x.id === selectedItemId);
+	const selectedItem = data.find((x) => x.id === selectedItemId);
 
 	return (
 		<div className='flex h-screen p-6'>
@@ -26,14 +23,14 @@ function Test() {
 					boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
 					width: '1/3',
 				}}>
-				{items.map((item) => (
+				{data.map((item) => (
 					<List.Item
 						key={item.id}
 						onClick={() => handleItemClick(item.id)}
 						className={`p-4 cursor-pointer transition-colors duration-200 ${
 							item.id === selectedItemId ? 'bg-gray-300' : ''
 						}`}>
-						{item.title}
+						{item.name}
 					</List.Item>
 				))}
 			</List>
@@ -42,11 +39,11 @@ function Test() {
 					<Card shadow='sm' radius='md' className='bg-white rounded-lg shadow-lg p-6 flex flex-col'>
 						<div className='mb-4'>
 							<Text weight={600} size='lg'>
-								{selectedItem.title}
+								{selectedItem.name}
 							</Text>
 						</div>
 						<div className='mb-8'>
-							<Text size='sm'>{selectedItem.description}</Text>
+							<Text size='sm'>{selectedItem?.info[0]}</Text>
 						</div>
 						<div className='flex justify-end'>
 							<Button
@@ -65,4 +62,4 @@ function Test() {
 	);
 }
 
-export default Test;
+export default MyList;

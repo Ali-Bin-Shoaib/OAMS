@@ -9,23 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const data: _ActivityExecutionInfo = req.body;
-			// const data: {
-			// 	id?: number;
-			// 	cost?: number | '';
-			// 	description?: string;
-			// 	startDate?: Date;
-			// 	note?: string;
-			// 	userId: number;
-			// 	Executor?: User | undefined;
-			// 	activityInfoId: number;
-			// 	ActivityInfo?: ActivityInfo | undefined;
-			// 	GoalEvaluation?: (Prisma.GoalEvaluationCreateInput & { Goal?: Goal })[];
-			// 	OrphanActivityExecution?: Prisma.OrphanActivityExecutionCreateInput[];
-			// } = req.body;
 			console.log('🚀 ~ file: create.tsx:12 ~ handler ~ data:', data);
-			// const { ActivityGoal, date, User, budget, quarter, selectedGoals, target, title, type } = data;
-			// const { ActivityGoal, User, ...activityInfo } = data;
-			// console.log("🚀 ~ file: create.tsx:20 ~ handler ~ data:", data);
 			const { GoalEvaluation, activityInfoId, id, userId, cost, description, note, startDate, OrphanActivityExecution } =
 				data;
 			const newActivityExecution = await prisma.activityExecutionInfo.create({

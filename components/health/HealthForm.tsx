@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
 	Education,
+	Health,
 	STATUS_CODE,
 	_Attendance,
 	_Orphan,
@@ -32,56 +33,52 @@ import myNotification from '../MyNotification';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
 interface Props {
-	education?: Education;
+	health?: Health;
 	orphans: Orphan[];
 }
-export default function EducationForm({ orphans, education }: Props): JSX.Element {
-	console.log('🚀 ~ file: EducationForm.tsx:39 ~ EducationForm ~ education:', education);
+export default function HealthForm({ orphans, health }: Props): JSX.Element {
+	console.log('🚀 ~ file: HealthForm.tsx:40 ~ HealthForm ~ health:', health);
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
 		setValue,
-	} = useForm<Education>({
-		defaultValues: education,
+	} = useForm<Health>({
+		defaultValues: health,
 	});
-	const dates: number[] = [];
-	let i: number = new Date().getFullYear() - 10;
-	while (dates.length < 11) {
-		dates.push(new Date(i, 1, 1).getFullYear());
-		i++;
-	}
+
 	const router = useRouter();
-	const onSubmit = async (data: Education) => {
-		console.log('🚀 ~ file: EducationForm.tsx:31 ~ onSubmit ~ data:', data);
-		if (!education) {
-			console.log('Education not exist.');
-			const url = `${serverLink}api/education/create`;
+	const onSubmit = async (data: Health) => {
+		console.log('🚀 ~ file: HealthForm.tsx:53 ~ onSubmit ~ data:', data);
+		if (!health) {
+			console.log('Health not exist.');
+			const url = `${serverLink}api/health/create`;
 			await axios
 				.post(url, data)
 				.then((data) => {
-					console.log('🚀 ~ file: EducationForm.tsx:49 ~ await axios.post ~ data:', data);
+					console.log('🚀 ~ file: HealthForm.tsx:60 ~ .then ~ data:', data);
 					data.status === STATUS_CODE.OK
-						? (myNotification('Create', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'education'))
+						? (myNotification('Create', data.data.msg, 'green', <IconCheck />), router.push(`${serverLink}health`))
 						: myNotification('Create', data.data.msg, 'red', <IconX />);
 				})
 				.catch((err) => {
-					console.log('error at creating new education--', err);
-					myNotification('Create', err.response.data.msg, 'red', <IconX />);
+					console.log('🚀 ~ file: HealthForm.tsx:66 ~ onSubmit ~ err:', err);
+					myNotification('Error', err.msg, 'red', <IconX />);
 				});
 		} else {
-			console.log('Education exist.', education.id);
-			const url = `${serverLink}/api/education/${education.id}`;
+			console.log('Health exist.', health.id);
+			const url = `${serverLink}/api/health/${health.id}`;
 			await axios
 				.put(url, data)
 				.then((data) => {
 					data.status === STATUS_CODE.OK
-						? (myNotification('Update', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'education'))
+						? (myNotification('Update', data.data.msg, 'green', <IconCheck />), router.push(`${serverLink}health`))
 						: myNotification('Update', data.data.msg, 'red', <IconX />);
 				})
-				.catch((e) => {
-					console.log('🚀 ~ file: EducationForm.tsx:78 ~ await axios.put ~ e:', e);
+				.catch((err) => {
+					console.log('🚀 ~ file: HealthForm.tsx:66 ~ onSubmit ~ err:', err);
+					myNotification('Error', err.msg, 'red', <IconX />);
 				});
 		}
 		// close();
@@ -95,7 +92,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 	if (!hydrate) return <Loader size={100} />;
 	return (
 		<>
-			<Center p={10}>{education ? <Title>Edit Education Info</Title> : <Title>Education Info</Title>}</Center>
+			<Center p={10}>{health ? <Title>Edit Health Info</Title> : <Title>Health Info</Title>}</Center>
 			<Paper shadow='sm' withBorder p={10} mx={100}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Center pb={20}>
@@ -109,7 +106,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 								return (
 									<Select
 										onChange={(id) => {
-											setValue('orphanId', Number(id || education?.orphanId.toString()));
+											setValue('orphanId', Number(id || health?.orphanId.toString()));
 											setValue(
 												'Orphan',
 												orphans.find((x) => x.id === Number(id))
@@ -118,16 +115,14 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										label='Orphans'
 										placeholder='choose orphan'
 										// description='select an orphan '
-										required
-										defaultValue={education?.orphanId.toString()}
+
+										defaultValue={health?.orphanId.toString()}
 										searchable
-										selectOnBlur
 										w={'45%'}
 										withAsterisk
 										error={errors.orphanId && errors.orphanId.message}
 										nothingFound='Not Found'
 										data={orphans.map((x) => ({ value: x.id.toString(), label: x.name }))}
-										hoverOnSearchChange
 									/>
 								);
 							}}
@@ -140,7 +135,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 							name='date'
 							rules={{ required: 'Date is required' }}
 							control={control}
-							defaultValue={education ? education.date : new Date()}
+							defaultValue={health ? health.date : new Date()}
 							render={({ field }) => {
 								return (
 									<DatePickerInput
@@ -167,76 +162,17 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										disabled
 										name='User.name'
 										label='User name'
-										defaultValue={education?.User?.name}
+										defaultValue={health?.User?.name}
 										w={'45%'}
 									/>
 								);
 							}}
 						/>
-						<Controller
-							name='scoreSheet'
-							control={control}
-							rules={{ required: 'Score Sheet is required' }}
-							render={({ field }) => {
-								return (
-									<FileInput
-										{...field}
-										error={errors.scoreSheet && errors.scoreSheet.message}
-										label='Score Sheet'
-										accept='image/*'
-										w={'45%'}
-										placeholder='upload Score Sheet'
-										withAsterisk
-									/>
-								);
-							}}
-						/>
-						<Controller
-							name='schoolYear'
-							control={control}
-							rules={{ required: 'School Year  is required' }}
-							render={({ field: { onChange } }) => {
-								return (
-									<Select
-										// {...field}
-										onChange={(value) => {
-											setValue('schoolYear', Number(value));
-										}}
-										data={dates.map((x) => x.toString())}
-										defaultValue={education?.schoolYear?.toString()}
-										w={'45%'}
-										multiple={true}
-										label='School Year'
-										withAsterisk
-										error={errors.schoolYear?.message && errors.schoolYear.message}
-									/>
-								);
-							}}
-						/>
-						<Controller
-							name='degree'
-							control={control}
-							rules={{ required: 'degree  is required' }}
-							render={({ field }) => {
-								return (
-									<Select
-										{...field}
-										data={$enum(Degree).map((x) => x.toString())}
-										w={'45%'}
-										multiple={true}
-										label='Degree'
-										withAsterisk
-										error={errors.schoolYear?.message && errors.schoolYear.message}
-									/>
-								);
-							}}
-						/>
-						{/* @ts-ignore */}
 
 						<Controller
-							name='Orphan.schoolName'
+							name='description'
 							control={control}
-							rules={{ required: 'School Name  is required' }}
+							rules={{ required: 'Description  is required' }}
 							render={({ field }) => {
 								return (
 									// @ts-ignore
@@ -244,20 +180,27 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										{...field}
 										w={'45%'}
 										multiple={true}
-										label='School Name'
+										label='Description'
 										withAsterisk
-										error={errors.Orphan?.schoolName?.message && errors.Orphan.schoolName.message}
+										error={errors.description && errors.description.message}
 									/>
 								);
 							}}
 						/>
 						<Controller
-							name='note'
+							name='disease'
 							control={control}
 							render={({ field }) => {
 								return (
 									// @ts-ignore
-									<Textarea {...field} name='note' label='Note' autosize minRows={3} maxRows={5} w={'80%'} />
+									<TextInput
+										{...field}
+										w={'45%'}
+										multiple={true}
+										label='Disease'
+										withAsterisk
+										error={errors.disease && errors.disease.message}
+									/>
 								);
 							}}
 						/>

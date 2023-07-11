@@ -16,21 +16,21 @@ export default function BehaviorTable({ behavior }: Props) {
 	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<Behavior>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
+			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
 			{
 				accessorFn: (row) => row.date.toDateString(),
 				id: 'date',
 				header: 'date',
-				maxSize: 300,
-				size: 200,
+				maxSize: 100,
+				size: 90,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User.name',
 				header: 'taken by',
-				maxSize: 300,
-				size: 150,
+				maxSize: 150,
+				size: 140,
 				enableResizing: true,
 			},
 			{
@@ -38,8 +38,8 @@ export default function BehaviorTable({ behavior }: Props) {
 					(row.BehaviorCriteria.reduce((total, x) => total + x.evaluation, 0) / row.BehaviorCriteria.length).toFixed(2),
 				id: 'behavior.length',
 				header: 'evaluation',
-				maxSize: 300,
-				size: 120,
+				maxSize: 100,
+				size: 90,
 				enableResizing: true,
 			},
 		],
@@ -55,7 +55,6 @@ export default function BehaviorTable({ behavior }: Props) {
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'Behavior'} url={'api/behavior/'} />
-
 						<Tooltip label={'Edit'}>
 							<Button
 								size='xs'
@@ -80,9 +79,10 @@ export default function BehaviorTable({ behavior }: Props) {
 				)}
 				positionActionsColumn='last'
 				enableRowActions
+				enableColumnActions
 				// mantineTableBodyRowProps={(row) => ({
 				// 	onClick: () => {
-				// 		// on row click change the card to the clicked attendance and then user can edit or delete.
+				// on row click change the card to the clicked attendance and then user can edit or delete.
 				// 		router.push(serverLink + 'behavior/' + row.row.original.id);
 				// 	},
 				// })}

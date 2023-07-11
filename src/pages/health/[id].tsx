@@ -7,13 +7,13 @@ import { IconEdit } from '@tabler/icons-react';
 import router from 'next/router';
 import DeleteModal from '../../../components/common/DeleteModal';
 import { Pages, serverLink } from '../../../shared/links';
-import { Education, _ActivityExecutionInfo } from '../../../types';
+import { Education, Health, _ActivityExecutionInfo } from '../../../types';
 import Image from 'next/image';
 import img from '../../img/3.jpg';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
 	if (!id) return { notFound: true };
-	const education = await prisma.educationInfo.findFirst({
+	const health = await prisma.healthInfo.findFirst({
 		where: { id: id },
 		include: {
 			User: true,
@@ -22,10 +22,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 		orderBy: { id: 'asc' },
 	});
 
-	if (!education) {
+	if (!health) {
 		return { notFound: true };
 	}
-	const data = education;
+	const data = health;
 	const stringData = SuperJSON.stringify(data);
 	return { props: { stringData } };
 };
@@ -35,52 +35,42 @@ interface Props {
 }
 function Info({ stringData }: Props) {
 	const [hydration, setHydration] = useState(false);
-	const education: Education = SuperJSON.parse(stringData);
+	const health: Health = SuperJSON.parse(stringData);
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
 
-	if (!hydration || !education) return <Loader size={100} />;
+	if (!hydration || !health) return <Loader size={100} />;
 	return (
 		<div style={{ margin: 'auto', maxWidth: 800 }}>
 			<Group position='center' style={{ margin: 20 }}>
-				<Title weight={700}>Education Info</Title>
+				<Title weight={700}>Health Info</Title>
 				{/* add other components as needed */}
 			</Group>
-			{education ? (
+			{health ? (
 				<Paper p={'xl'} shadow='sm' m={0} withBorder>
 					<SimpleGrid cols={2} p={10}>
 						<Text weight={700}>ID:</Text>
-						<Text>{education.id}</Text>
+						<Text>{health.id}</Text>
 						<Text weight={700}>Orphan Name:</Text>
-						<Text>{education.Orphan?.name}</Text>
+						<Text>{health.Orphan?.name}</Text>
 						<Text weight={700}>Created by:</Text>
-						<Text>{education.User.name}</Text>
+						<Text>{health.User.name}</Text>
 						<Text weight={700}>Date:</Text>
-						<Text>{education.date.toDateString()}</Text>
-						<Text weight={700}>School Name:</Text>
-						<Text>{education.Orphan?.schoolName}</Text>
-						<Text weight={700}>School Year:</Text>
-						<Text>{education.schoolYear}</Text>
-						<Text weight={700}>Degree:</Text>
-						<Text>{education.degree}</Text>
-						<Text weight={700}>Note:</Text>
-						<Text className='text-ellipsis overflow-hidden'>{education.note}</Text>
-						<Text weight={700}>Score Sheet:</Text>
+						<Text>{health.date.toDateString()}</Text>
+						<Text weight={700}>Disease:</Text>
+						<Text>{health.disease}</Text>
+						<Text weight={700}>Description:</Text>
+						<Text>{health.description}</Text>
 					</SimpleGrid>
 					<Group position='right' p={10}>
 						<Button.Group>
-							<DeleteModal
-								id={education.id!}
-								title={'education'}
-								url={'api/education/'}
-								redirectUrl={Pages.EducationInfo.link}
-							/>
+							<DeleteModal id={health.id!} title={'health'} url={'api/health/'} redirectUrl={Pages.HealthInfo.link} />
 							<Tooltip label={'Edit'}>
 								<Button
 									size='xs'
 									onClick={() => {
-										router.push(`${Pages.EducationInfo.link}edit/${education.id}`);
+										router.push(`${Pages.HealthInfo.link}edit/${health.id}`);
 									}}
 									color='yellow'>
 									<IconEdit />
@@ -88,15 +78,6 @@ function Info({ stringData }: Props) {
 							</Tooltip>
 						</Button.Group>
 					</Group>
-					<Center>
-						<Image
-							src={education.scoreSheet ? URL.createObjectURL(education.scoreSheet) : img}
-							width={500}
-							height={300}
-							className='hover:shadow-xl'
-							alt={'ScoreSheet'}
-						/>
-					</Center>
 				</Paper>
 			) : (
 				<Text>

@@ -13,7 +13,7 @@ interface Props {
 	orphans: _Orphan[];
 }
 export default function AttendanceForm({ orphans, attendance }: Props): JSX.Element {
-	// console.log('🚀 ~ file: AttendanceForm.tsx:19 ~ AttendanceForm ~ attendance:', attendance);
+	console.log('🚀 ~ file: AttendanceForm.tsx:19 ~ AttendanceForm ~ attendance:', attendance);
 	let defaultValues: _Attendance;
 	if (attendance) {
 		orphans.map((orphan) => {

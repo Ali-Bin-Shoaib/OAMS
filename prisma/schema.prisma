@@ -240,12 +240,12 @@ model Attendance {
 }
 
 model OrphanAttendance {
-  id            Int     @id @default(autoincrement())
-  isAttended    Boolean @default(true)
+  id            Int       @id @default(autoincrement())
+  isAttended    Boolean   @default(true)
   // wing          String?
   absentReason  String?
   notes         String?
-  returnDay     String?
+  returnDay     DateTime?
   justification String?
 
   //* relations
@@ -288,7 +288,7 @@ model ActivityGoal {
   //* relations
   ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id], onDelete: Cascade)
   activityInfoId Int?
-  Goal           Goal?         @relation(fields: [goalId], references: [id])
+  Goal           Goal?         @relation(fields: [goalId], references: [id], onDelete: Cascade)
   goalId         Int?
   // ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
   // activityExecutionInfoId Int?
@@ -304,7 +304,7 @@ model GoalEvaluation {
   date                    DateTime              @default(now())
   ActivityExecutionInfo   ActivityExecutionInfo @relation(fields: [activityExecutionInfoId], references: [id], onDelete: Cascade)
   activityExecutionInfoId Int
-  Goal                    Goal                  @relation(fields: [goalId], references: [id])
+  Goal                    Goal                  @relation(fields: [goalId], references: [id], onDelete: Cascade)
   goalId                  Int
 
   @@unique([goalId, activityExecutionInfoId])
@@ -319,8 +319,8 @@ model ActivityExecutionInfo {
   // * Relations
   Executor                User                      @relation(fields: [executorId], references: [id])
   executorId              Int
-  ActivityInfo            ActivityInfo?             @relation(fields: [activityInfoId], references: [id])
-  activityInfoId          Int?
+  ActivityInfo            ActivityInfo              @relation(fields: [activityInfoId], references: [id], onDelete: Cascade)
+  activityInfoId          Int
   GoalEvaluation          GoalEvaluation[]
   OrphanActivityExecution OrphanActivityExecution[]
 }
@@ -333,7 +333,7 @@ model OrphanActivityExecution {
 
   ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id], onDelete: Cascade)
   activityExecutionInfoId Int?
-  Orphan                  Orphan?                @relation(fields: [orphanId], references: [id])
+  Orphan                  Orphan?                @relation(fields: [orphanId], references: [id], onDelete: Cascade)
   orphanId                Int?
   User                    User?                  @relation(fields: [userId], references: [id])
   userId                  Int?
@@ -376,11 +376,9 @@ model BehaviorCriteria {
   userId         Int
 }
 
-//********************************** TO IMPLEMENT*********************************
-
 model EducationInfo {
   id         Int      @id @default(autoincrement())
-  date       DateTime
+  date       DateTime @default(now())
   scoreSheet String?
   degree     Degree
   schoolYear Int?
@@ -388,11 +386,26 @@ model EducationInfo {
   //* relations
 
   //* one Orphan has many EducationInfo
-  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
-  orphanId Int?
-  User     User?   @relation(fields: [userId], references: [id])
+  Orphan   Orphan @relation(fields: [orphanId], references: [id], onDelete: Cascade)
+  orphanId Int
+  User     User?  @relation(fields: [userId], references: [id])
   userId   Int?
 }
+
+model HealthInfo {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  disease     String?
+  description String?
+  //* relations
+
+  Orphan   Orphan @relation(fields: [orphanId], references: [id], onDelete: Cascade)
+  orphanId Int
+  User     User?  @relation(fields: [userId], references: [id])
+  userId   Int?
+}
+
+//********************************** TO IMPLEMENT*********************************
 
 model EmergencyContactInfo {
   id    Int    @id @default(autoincrement())
@@ -401,40 +414,16 @@ model EmergencyContactInfo {
 
   //* relations
   //* one orphan has many contact
-  Orphan   Orphan @relation(fields: [orphanId], references: [id])
+  Orphan   Orphan @relation(fields: [orphanId], references: [id], onDelete: Cascade)
   orphanId Int
   User     User?  @relation(fields: [userId], references: [id])
-  userId   Int?
-}
-
-model UnAchievedActivity {
-  id   Int     @id @default(autoincrement())
-  note String?
-  //* relations
-
-  ActivityInfo   ActivityInfo? @relation(fields: [activityInfoId], references: [id])
-  activityInfoId Int?
-  User           User?         @relation(fields: [userId], references: [id])
-  userId         Int?
-}
-
-model HealthInfo {
-  id          Int      @id @default(autoincrement())
-  date        DateTime
-  disease     String?
-  description String?
-  //* relations
-
-  Orphan   Orphan? @relation(fields: [orphanId], references: [id])
-  orphanId Int?
-  User     User?   @relation(fields: [userId], references: [id])
   userId   Int?
 }
 
 model Room {
   id       Int     @id @default(autoincrement())
   wing     String?
-  capacity Int?
+  capacity Int
   //* relations
 
   Orphan Orphan[]
@@ -442,12 +431,23 @@ model Room {
   userId Int?
 }
 
+model UnAchievedActivity {
+  id   Int     @id @default(autoincrement())
+  note String?
+  //* relations
+
+  ActivityInfo   ActivityInfo @relation(fields: [activityInfoId], references: [id])
+  activityInfoId Int
+  User           User?        @relation(fields: [userId], references: [id])
+  userId         Int?
+}
+
 model Notification {
   id   Int               @id @default(autoincrement())
-  date DateTime?
+  date DateTime?         @default(now())
   type NotificationType?
   //* relations
 
-  User   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  User   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
 }

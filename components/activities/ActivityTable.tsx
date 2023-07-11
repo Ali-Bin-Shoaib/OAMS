@@ -106,13 +106,7 @@ function ActivityTable({ activities, updateCard }: Props) {
 				positionActionsColumn='last'
 				renderRowActions={({ row }) => (
 					<Button.Group>
-						<DeleteModal
-							id={row.original.id!}
-							title={'activity'}
-							url={'api/activity/'}
-							// type='Delete'
-							updateCard={updateCard}
-						/>
+						<DeleteModal id={row.original.id!} title={'activity'} url={'api/activity/'} />
 
 						<Tooltip label={'Edit'}>
 							<Button

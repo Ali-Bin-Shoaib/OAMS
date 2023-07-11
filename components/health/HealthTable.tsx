@@ -5,14 +5,14 @@ import { User, EducationInfo, Orphan } from '@prisma/client';
 import { IconEdit, IconInfoCircle } from '@tabler/icons-react';
 import router from 'next/router';
 import DeleteModal from '../common/DeleteModal';
-import { Education } from '../../types';
+import { Education, Health } from '../../types';
 // type Education = EducationInfo & { User: User; Orphan: Orphan };
 interface Props {
-	education: Education[];
+	health: Health[];
 }
-function EducationTable({ education }: Props) {
-	console.log('🚀 ~ file: ~ EducationTable');
-	const columns = useMemo<MRT_ColumnDef<Education>[]>(
+function HealthTable({ health }: Props) {
+	console.log('🚀 ~ file: ~ HealthTable');
+	const columns = useMemo<MRT_ColumnDef<Health>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
 			{
@@ -32,9 +32,17 @@ function EducationTable({ education }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.Orphan?.name,
-				id: 'Orphan.name',
-				header: 'Orphan Name',
+				accessorFn: (row) => row.disease,
+				id: 'disease',
+				header: 'Disease',
+				maxSize: 200,
+				size: 120,
+				enableResizing: true,
+			},
+			{
+				accessorFn: (row) => row.description,
+				id: 'description',
+				header: 'Description',
 				maxSize: 200,
 				size: 120,
 				enableResizing: true,
@@ -47,7 +55,7 @@ function EducationTable({ education }: Props) {
 		<Container fluid>
 			<MantineReactTable
 				columns={columns}
-				data={education}
+				data={health}
 				initialState={{ density: 'xs' }}
 				// mantineTableBodyRowProps={(row) => ({
 				// 	onClick: () => {
@@ -62,7 +70,7 @@ function EducationTable({ education }: Props) {
 				columnResizeMode='onEnd'
 				renderRowActions={({ row }) => (
 					<Button.Group>
-						<DeleteModal id={row.original.id!} title={'Education'} url={'api/education/'} />
+						<DeleteModal id={row.original.id!} title={'Health'} url={'api/health/'} />
 
 						<Tooltip label={'Edit'}>
 							<Button
@@ -92,4 +100,4 @@ function EducationTable({ education }: Props) {
 		</Container>
 	);
 }
-export default EducationTable;
+export default HealthTable;
