@@ -36,7 +36,7 @@ function OrphanCard({ orphan }: Props) {
 		<>
 			<div>
 				<div className='text-center'>
-					<Image src={img1} alt={orphan.name!} width={250} height={250} />
+					<Image src={img1} alt={orphan.name!} width={256} height={183} />
 				</div>
 				<Divider />
 			</div>
