@@ -44,6 +44,7 @@ export default function Index({ orphans }: Props) {
 					: myNotification('Get Info', data.data.msg, 'red', <IconX />);
 			})
 			.catch((e) => {
+				console.log('🚀 ~ file: index.tsx:47 ~ fetchOrphanBehavior ~ e:', e);
 				myNotification('Not Found', e.response.data, 'red', <IconX />);
 			});
 	};

@@ -1,31 +1,54 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
+import { Contact, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { ActivityGoal, ActivityInfo, Criteria, Goal, Orphan, User } from '@prisma/client';
+import { EmergencyContactInfo, Prisma } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const user = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
-
+	const admin = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
+	let isCreate = false;
+	let contact: EmergencyContactInfo;
 	const ID = Number(req.query.id);
-	const criterion = await prisma.criteria.findUnique({ where: { id: ID } });
-	if (!(ID || criterion)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'criterion dose not exist.' });
+	console.log('🚀 ~ file: [id].tsx:11 ~ handler ~ ID:', ID);
+	if (isNaN(ID)) isCreate = true;
+	else contact = await prisma.emergencyContactInfo.findUnique({ where: { id: ID } });
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ isCreate:', isCreate);
+	if (!(ID || contact || isCreate)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'Contact dose not exist.' });
+	const data: Contact = req.body;
+	console.log('🚀 ~ file: [id].tsx:15 ~ handler ~ data:', data);
+	const { Orphan, User, ...rest } = data;
 	switch (req.method) {
+		case REQUEST_METHODS.POST: {
+			if (req.body === '') return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
+			rest.userId = admin.id;
+			try {
+				const createContact: Prisma.EmergencyContactInfoCreateArgs = {
+					data: { ...rest },
+				};
+				const newContact = await prisma.emergencyContactInfo.create(createContact);
+				console.log('🚀 ~ file: [id].tsx:24 ~ handler ~ newContact:', newContact);
+				return res.end(res.status(STATUS_CODE.OK).json({ data: newContact, msg: 'new Contact was created successfully' }));
+			} catch (error) {
+				console.log('🚀 ~ file: create.tsx:16 ~ handler ~ error:', error);
+				return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'error at creating new Contact', error: error });
+			}
+		}
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
+			if (req.body === '') return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
+			rest.userId = admin.id;
+
 			try {
-				const data: Criteria & { User: User } = req.body;
-				const { User, ...criterion } = data;
-				console.log('🚀 ~ file: [id].tsx:18 ~ handler ~ criterion:', criterion);
-
-				const updatedCriterion = await prisma.criteria.update({
-					where: { id: ID },
-					data: { ...criterion, userId: user.id },
-				});
-				console.log('🚀 ~ file: [id].tsx:21 ~ handler ~ updatedCriterion:', updatedCriterion);
-
+				const updateContact: Prisma.EmergencyContactInfoUpdateArgs = {
+					data: { ...rest },
+					where: {
+						id: ID,
+					},
+				};
+				const updatedContact = await prisma.emergencyContactInfo.update(updateContact);
+				console.log('🚀 ~ file: [id].tsx:41 ~ handler ~ updatedContact:', updatedContact);
 				return res
 					.status(STATUS_CODE.OK)
-					.json({ data: updatedCriterion, msg: `Criterion with id:${updatedCriterion.id} was updated successfully` });
+					.json({ data: updateContact, msg: `Contact with id:${updatedContact.id} was updated successfully` });
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:24 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, msg: 'Something went wrong.' });
@@ -35,43 +58,73 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		case REQUEST_METHODS.DELETE: {
 			try {
-				const deletedCriterion = await prisma.criteria.delete({ where: { id: ID } });
-				console.log('🚀 ~ file: [id].tsx:36 ~ handler ~ deletedCriterion:', deletedCriterion);
-				if (deletedCriterion) {
+				const deletedContact = await prisma.emergencyContactInfo.delete({ where: { id: ID } });
+				console.log('🚀 ~ file: [id].tsx:55 ~ handler ~ deletedContact:', deletedContact);
+				if (deletedContact) {
 					return res.status(STATUS_CODE.OK).json({
-						data: deletedCriterion,
-						msg: `Criterion with id: ${deletedCriterion.id} and Title: ${deletedCriterion.title} was deleted successfully.`,
+						data: deletedContact,
+						msg: `Contact with id: ${deletedContact.id} was deleted successfully.`,
 					});
 				} else {
-					return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete criterion with id :' + ID);
+					return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete Contact with id :' + ID);
 				}
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:49 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'criterion dose not exist :', error: error });
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Contact dose not exist :', data: error });
 			}
 		}
 		//* ************************GET************************
 		case REQUEST_METHODS.GET: {
-			console.log('getting criterion info');
+			console.log('getting Contact info');
+			const id: string = req.query.id.toString();
+			let orphanId: number;
+			if (id.includes('orphanId')) {
+				orphanId = Number(id.match(/\d+/)[0]);
+				console.log('🚀 ~ file: [id].tsx:83 ~ handler ~ orphanId:', orphanId);
+				try {
+					const OrphanContacts = await prisma.emergencyContactInfo.findMany({
+						where: {
+							orphanId: orphanId,
+						},
+						select: {
+							id: true,
+							name: true,
+							phone: true,
+							Orphan: { select: { id: true, name: true } },
+							User: { select: { id: true, name: true } },
+						},
+					});
+					if (OrphanContacts.length != 0)
+						return res.end(res.status(STATUS_CODE.OK).json({ data: OrphanContacts, msg: 'Orphan Contacts are founded' }));
 
+					return res
+						.status(STATUS_CODE.BAD_REQUEST)
+						.json({ msg: `Orphan with id: ${orphanId} has no related contact info.` });
+				} catch (error) {
+					console.log('🚀 ~ file: [id].tsx:101 ~ handler ~ error:', error);
+					return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Some thing went wrong :', data: error });
+				}
+			}
 			try {
-				const requiredCriterion = await prisma.criteria.findUnique({
+				const requiredContact = await prisma.emergencyContactInfo.findFirst({
 					where: {
-						id: ID,
+						id: orphanId || ID,
 					},
-					include: {
-						BehaviorCriteria: { include: { BehaviorInfo: true } },
-
-						User: true,
-						_count: true,
+					select: {
+						id: true,
+						name: true,
+						phone: true,
+						Orphan: { select: { id: true, name: true } },
+						User: { select: { id: true, name: true } },
 					},
 				});
-				if (requiredCriterion)
-					return res.end(res.status(STATUS_CODE.OK).json({ data: requiredCriterion, msg: 'Criterion is founded' }));
+				if (requiredContact)
+					return res.end(res.status(STATUS_CODE.OK).json({ data: requiredContact, msg: 'Contact is founded' }));
 
-				return res.status(STATUS_CODE.BAD_REQUEST).json(`required Criterion with id: ${ID} was not found.`);
+				return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: `required Contact with id: ${ID} was not found.` });
 			} catch (error) {
-				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json('Some thing went wrong :' + error);
+				console.log('🚀 ~ file: [id].tsx:101 ~ handler ~ error:', error);
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Some thing went wrong :', data: error });
 			}
 		}
 	}

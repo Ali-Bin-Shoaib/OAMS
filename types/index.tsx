@@ -18,6 +18,7 @@ import {
 	GoalEvaluation,
 	Degree,
 } from '@prisma/client';
+import { AxiosResponse } from 'axios';
 export enum REQUEST_METHODS {
 	GET = 'GET',
 	POST = 'POST',
@@ -71,6 +72,8 @@ export enum STATUS_CODE {
 	GATEWAY_TIMEOUT = 504, // The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server
 	HTTP_VERSION_NOT_SUPPORTED = 505, // The server does not support the HTTP protocol version that was used in the request
 }
+export type ResponseType = { data: any; msg: string };
+
 export type orphanWithGuardianAndSponsorshipInfo = Orphan & {
 	Guardian?:
 		| (Guardian & {
@@ -336,12 +339,12 @@ export type Health = {
 	orphanId: number;
 	userId?: number;
 };
-export type EmergencyContact = {
+export type Contact = {
 	id?: number;
 	name: string;
 	phone: string;
-	Orphan: Prisma.OrphanCreateNestedOneWithoutEmergencyContactInfoInput;
-	User?: Prisma.UserCreateNestedOneWithoutEmergencyContactInfoInput;
+	Orphan?: { id: number; name: string };
+	User?: { id: number; name: string };
 	orphanId: number;
 	userId?: number;
 };
