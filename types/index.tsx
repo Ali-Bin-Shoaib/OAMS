@@ -345,6 +345,6 @@ export type Contact = {
 	phone: string;
 	Orphan?: { id: number; name: string };
 	User?: { id: number; name: string };
-	orphanId: number;
-	userId?: number;
+	// orphanId: number;
+	// userId?: number;
 };

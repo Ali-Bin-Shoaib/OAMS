@@ -15,14 +15,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	if (!(ID || contact || isCreate)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'Contact dose not exist.' });
 	const data: Contact = req.body;
 	console.log('🚀 ~ file: [id].tsx:15 ~ handler ~ data:', data);
-	const { Orphan, User, ...rest } = data;
+	const { id, Orphan, User, ...rest } = data;
 	switch (req.method) {
 		case REQUEST_METHODS.POST: {
 			if (req.body === '') return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
-			rest.userId = admin.id;
 			try {
 				const createContact: Prisma.EmergencyContactInfoCreateArgs = {
-					data: { ...rest },
+					data: { Orphan: { connect: { id: Orphan.id } }, User: { connect: { id: admin.id } }, ...rest },
 				};
 				const newContact = await prisma.emergencyContactInfo.create(createContact);
 				console.log('🚀 ~ file: [id].tsx:24 ~ handler ~ newContact:', newContact);
@@ -35,13 +34,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
 			if (req.body === '') return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
-			rest.userId = admin.id;
 
 			try {
 				const updateContact: Prisma.EmergencyContactInfoUpdateArgs = {
-					data: { ...rest },
+					data: {
+						User: { connect: { id: User.id || admin.id } },
+						Orphan: { connect: { id: Orphan.id } },
+						...rest,
+					},
 					where: {
-						id: ID,
+						id: id || ID,
 					},
 				};
 				const updatedContact = await prisma.emergencyContactInfo.update(updateContact);

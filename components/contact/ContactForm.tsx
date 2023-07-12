@@ -59,14 +59,14 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 			<Card withBorder p={'xl'}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Controller
-						name='orphanId'
+						name='Orphan.id'
 						control={control}
 						rules={{ required: 'Name field is required' }}
 						render={({ field: { onChange } }) => {
 							return (
 								<Select
 									onChange={(id) => {
-										setValue('orphanId', Number(id));
+										// setValue('Orphan.id', Number(id));
 										setValue(
 											'Orphan',
 											orphans.find((x) => x.id === Number(id))
@@ -80,7 +80,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 									error={errors.Orphan && errors.Orphan.name.message}
 									// description='select an orphan '
 									required
-									defaultValue={contact?.orphanId.toString()}
+									defaultValue={contact?.Orphan.id.toString()}
 									searchable
 									selectOnBlur
 									// w={'45%'}

@@ -7,10 +7,8 @@ import ContactForm from '../../../components/contact/ContactForm';
 import { OrphanContext } from '../../../shared/contexts';
 import { useEffect, useState } from 'react';
 import { Center, Container, Group, Select } from '@mantine/core';
-import { errors } from 'formidable';
 import axios from 'axios';
 import { serverLink } from '../../../shared/links';
-import SuperJSON from 'superjson';
 import myNotification from '../../../components/MyNotification';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
@@ -35,22 +33,27 @@ interface Props {
 }
 function Index({ orphans }: Props) {
 	const [orphansList, setOrphansList] = useState(orphans);
-	const [orphanContact, setOrphanContact] = useState<Contact[]>([]);
+	const [orphanContact, setOrphanContact] = useState<Contact[]>(undefined);
+	console.log('🚀 ~ file: index.tsx:39 ~ Index ~ orphanContact:', orphanContact);
 	const [id, setId] = useState<number>(undefined);
+	console.log('🚀 ~ file: index.tsx:39 ~ Index ~ id:', id);
 	const fetchOrphanContact = async (id: number) => {
-		await axios
-			.get<ResponseType>(`${serverLink}api/contact/${Number(id)}orphanId`)
-			.then((data) => {
-				console.log('🚀 ~ file: index.tsx:40 ~ .then ~ data:', data);
-				data.status === STATUS_CODE.OK
-					? (setOrphanContact(data.data.data as Contact[]),
-					  myNotification('Get Info', data.data.msg, 'green', <IconCheck />))
-					: (setOrphanContact([]), myNotification('Get Info', data.data.msg, 'red', <IconX />));
-			})
-			.catch((e) => {
-				console.log('🚀 ~ file: index.tsx:50 ~ fetchOrphanContact ~ e:', e);
-				myNotification('Not Found', e.response.data.msg, 'red', <IconX />);
-			});
+		try {
+			const res = await axios.get<ResponseType>(`${serverLink}api/contact/${Number(id)}orphanId`);
+			console.log('🚀 ~ file: index.tsx:44 ~ fetchOrphanContact ~ res:', res);
+			if (res.status === STATUS_CODE.OK) {
+				setOrphanContact(res.data.data as Contact[]);
+				myNotification('Get Info', res.data.msg, 'green', <IconCheck />);
+			} else {
+				setOrphanContact(undefined);
+				myNotification('Get Info', res.data.msg, 'red', <IconX />);
+			}
+		} catch (error) {
+			console.log('🚀 ~ file: index.tsx:49 ~ fetchOrphanContact ~ error:', error);
+			setOrphanContact(undefined);
+
+			myNotification('Not Found', error.response.data.msg, 'red', <IconX />);
+		}
 	};
 	useEffect(() => {
 		setOrphansList(orphans);
