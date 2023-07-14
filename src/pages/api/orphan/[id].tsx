@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { Orphan } from '@prisma/client';
-import SuperJSON from 'superjson';
-import formidable from 'formidable';
+import { Guardian, Orphan, User } from '@prisma/client';
 // export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -13,36 +11,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	switch (req.method) {
 		//* ************************UPDATE************************
+
 		case REQUEST_METHODS.PUT: {
 			try {
-				// const form = formidable({ multiples: true });
-				// form.parse(req, async (err, fields, files) => {
-				// console.log('🚀 ~ file: [id].tsx:21 ~ form.parse ~ req:', req);
-				// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ files:', files);
-				// console.log('🚀 ~ file: create.tsx:18 ~ form.parse ~ fields:', fields);
-				// if (err) res.json(err);
-				// const data: _Orphan = fields as unknown as _Orphan;
-				// const orphan: Orphan = data as unknown as Orphan;
 				const data = req.body;
-				const orphan: Orphan = data;
+				console.log('🚀 ~ file: [id].tsx:20 ~ handler ~ data:', data);
+
+				const orphan: Orphan & { Guardian: Guardian & { User: User } } = data;
 				orphan.image = null;
 				orphan.noOfFamilyMembers = orphan.males && orphan.females ? orphan.males + orphan.females : null;
-
-				const updatedOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: orphan });
-				console.log('🚀 ~ file: [id].tsx:32 ~ //form.parse ~ updatedOrphan:', updatedOrphan);
+				const { Guardian, id, ...rest } = orphan;
+				const updatedOrphan = await prisma.orphan.update({ where: { id: orphanId }, data: rest });
+				console.log('🚀 ~ file: [id].tsx:35 ~ //form.parse ~ updatedOrphan:', updatedOrphan);
 				return res.status(STATUS_CODE.OK).json({ data: orphan, msg: 'update success' });
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:26 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, msg: 'Something went wrong.' });
 			}
 		}
+
 		//* ************************DELETE************************
 
 		case REQUEST_METHODS.DELETE: {
 			try {
 				const orphan = await prisma.orphan.delete({ where: { id: orphanId } });
-				if (orphan) return res.status(STATUS_CODE.OK).json({ orphan: orphan, msg: 'Deleted Successfully' });
-				return res.status(STATUS_CODE.BAD_REQUEST).json(`orphan with id : ${orphanId} dose not exist.`);
+				if (orphan) return res.status(STATUS_CODE.OK).json({ data: orphan, msg: 'Deleted Successfully' });
+				return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: `orphan with id : ${orphanId} dose not exist.` });
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:30 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Some thing went wrong.', error: error });

@@ -7,13 +7,12 @@ import { GuardianContext } from '../../../shared/contexts';
 
 export default function AddOrphanModal() {
 	const [opened, { open, close }] = useDisclosure(false);
-	const guardians = useContext(GuardianContext);
 	return (
 		<>
 			<Modal opened={opened} size={'auto'} onClose={close}>
 				{/* Modal content */}
 				<Title align='center'>Add Orphan</Title>
-				<OrphanForm close={close} guardians={guardians} />
+				<OrphanForm close={close} />
 				{/* <FormTest /> */}
 			</Modal>
 			<Group position='center'>

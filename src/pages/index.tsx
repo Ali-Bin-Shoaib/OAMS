@@ -7,13 +7,11 @@ import {
 	IconUserShield,
 	IconUserStar,
 } from '@tabler/icons-react';
-import AppHead from '../../components/common/AppHead';
 import MyCard from '../../components/common/MyCard';
-import { usePageTitle } from '../../hooks/usePageTitle';
 import { GetStaticProps } from 'next';
 import prisma from '../../lib/prisma';
 import { _Orphan } from '../../types';
-import { Pages, serverLink } from '../../shared/links';
+import { Pages } from '../../shared/links';
 
 export const getStaticProps: GetStaticProps = async () => {
 	const orphans = await prisma.orphan.count();
@@ -36,10 +34,8 @@ interface Props {
 	activityExecution: number;
 }
 export default function Home({ orphans, sponsors, guardians, sponsorships, activityExecution, activities }: Props) {
-	const title = usePageTitle();
 	return (
 		<div>
-			<AppHead title={title} />
 			<div className='flex flex-wrap mx-auto justify-evenly'>
 				<MyCard
 					title={'Orphans'}
@@ -51,36 +47,36 @@ export default function Home({ orphans, sponsors, guardians, sponsorships, activ
 				<MyCard
 					title={'Sponsors'}
 					count={sponsors}
-					color={'blue'}
+					color={'red'}
 					icon={<IconUserPlus size={100} />}
 					path={Pages.Sponsors.link}
 				/>
 				<MyCard
 					title={'Sponsorships'}
 					count={sponsorships}
-					color={'blue'}
+					color={'cyan'}
 					icon={<IconReceipt size={100} />}
 					path={Pages.Sponsorships.link}
 				/>
 				<MyCard
 					title={'Guardians'}
 					count={guardians}
-					color={'blue'}
+					color={'teal'}
 					icon={<IconUserShield size={100} />}
 					path={Pages.Guardians.link}
 				/>
 				<MyCard
 					title={'Activities'}
 					count={activities}
-					color={'blue'}
+					color={'yellow'}
 					icon={<IconActivity size={100} />}
 					path={Pages.Activities.link}
 				/>
 				<MyCard
-					title={'Activities Execution Info'}
+					title={'Activities Execution'}
 					count={activityExecution}
-					color={'blue'}
-					icon={<IconActivityHeartbeat size={80} />}
+					color={'indigo'}
+					icon={<IconActivityHeartbeat size={100} />}
 					path={Pages.ActivityExecution.link}
 				/>
 			</div>

@@ -63,7 +63,7 @@ const deleteRecord = async (id: number, url: Url) => {
 	console.log('🚀 ~ file: DeleteModal.tsx:8 ~ deleteOrphan ~ id:', id);
 
 	try {
-		const res = await axios.delete<{ msg: string; data: any }>(`${serverLink}${url}${id}`);
+		const res = await axios.delete<{ msg: string; data: any }>(`${serverLink}/api/${url}/${id}`);
 		console.log('🚀 ~ file: DeleteModal.tsx:77 ~ deleteRecord ~ res:', res.data.msg);
 		return res;
 	} catch (error) {

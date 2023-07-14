@@ -12,7 +12,7 @@ import { IconPlus } from '@tabler/icons-react';
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
 	const attendance = await prisma.attendance.findMany({
-		include: { User: true, OrphanAttendance: true },
+		select: { id: true, date: true, User: { select: { id: true, name: true } }, OrphanAttendance: true },
 		orderBy: { id: 'asc' },
 	});
 	const stringJson = SuperJSON.stringify(attendance);

@@ -4,18 +4,18 @@ import prisma from '../lib/prisma';
 
 export async function initial() {
 	(await prisma.user.count({ where: { type: UserType.ADMIN } })) < 1 && (await createAdmin());
-	(await prisma.user.count()) <= 20 && (await createUser(faker.number.int({ max: 20 })));
-	(await prisma.guardian.count()) <= 20 && (await createGuardian(faker.number.int({ max: 20 })));
-	(await prisma.sponsor.count()) <= 20 && (await createSponsor(faker.number.int({ max: 20 })));
-	(await prisma.orphan.count()) <= 20 && (await createOrphan(faker.number.int({ max: 20 })));
-	(await prisma.sponsorship.count()) <= 20 && (await createSponsorship(faker.number.int({ max: 20 })));
+	(await prisma.user.count()) <= 50 && (await createUser(faker.number.int({ max: 50 })));
+	(await prisma.guardian.count()) <= 50 && (await createGuardian(faker.number.int({ max: 50 })));
+	(await prisma.sponsor.count()) <= 50 && (await createSponsor(faker.number.int({ max: 50 })));
+	(await prisma.orphan.count()) <= 50 && (await createOrphan(faker.number.int({ max: 50 })));
+	(await prisma.sponsorship.count()) <= 50 && (await createSponsorship(faker.number.int({ max: 50 })));
 	(await prisma.criteria.count()) <= 20 && (await createCriteria(faker.number.int({ max: 20 })));
 	(await prisma.goal.count()) <= 20 && (await createGoal(faker.number.int({ max: 20 })));
-	(await prisma.behaviorInfo.count()) <= 20 && (await createBehavior(faker.number.int({ max: 20 })));
-	(await prisma.activityInfo.count()) <= 20 && (await createActivity(faker.number.int({ max: 20 })));
-	(await prisma.activityExecutionInfo.count()) <= 20 && (await createExecution(faker.number.int({ max: 20 })));
-	(await prisma.attendance.count()) <= 20 && (await createAttendance(faker.number.int({ max: 20 })));
-	(await prisma.educationInfo.count()) <= 20 && (await createEducation(faker.number.int({ max: 20 })));
+	(await prisma.behaviorInfo.count()) <= 50 && (await createBehavior(faker.number.int({ max: 50 })));
+	(await prisma.activityInfo.count()) <= 50 && (await createActivity(faker.number.int({ max: 50 })));
+	(await prisma.activityExecutionInfo.count()) <= 50 && (await createExecution(faker.number.int({ max: 50 })));
+	(await prisma.attendance.count()) <= 50 && (await createAttendance(faker.number.int({ max: 50 })));
+	(await prisma.educationInfo.count()) <= 50 && (await createEducation(faker.number.int({ max: 50 })));
 	console.log(
 		`🚀 ~ file: functions.tsx:12 ~ initial ~ :admin:${await prisma.user.count({
 			where: { type: UserType.ADMIN },

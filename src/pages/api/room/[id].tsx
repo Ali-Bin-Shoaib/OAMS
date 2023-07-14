@@ -1,34 +1,39 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Contact, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
+import { Contact, REQUEST_METHODS, ROOM, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { EmergencyContactInfo, Prisma } from '@prisma/client';
+import { EmergencyContactInfo, Prisma, Room } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const admin = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
 	let isCreate = false;
-	let contact: EmergencyContactInfo;
+	let room: Room;
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:11 ~ handler ~ ID:', ID);
-	if (isNaN(ID)) isCreate = true;
-	else contact = await prisma.emergencyContactInfo.findUnique({ where: { id: ID } });
+	if (isNaN(ID)) {
+		if (req.query.id === 'create') isCreate = true;
+	} else room = await prisma.room.findUnique({ where: { id: ID } });
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ isCreate:', isCreate);
-	if (!(ID || contact || isCreate)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'Contact dose not exist.' });
-	const data: Contact = req.body;
-	console.log('🚀 ~ file: [id].tsx:15 ~ handler ~ data:', data);
+	if (!(ID || room || isCreate)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'Room dose not exist.' });
+	const data: ROOM = req.body;
+	console.log('🚀 ~ file: [id].tsx:17 ~ handler ~ data:', data);
 	const { id, Orphan, User, ...rest } = data;
 	switch (req.method) {
 		case REQUEST_METHODS.POST: {
 			if (req.body === '') return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
 			try {
-				const createContact: Prisma.EmergencyContactInfoCreateArgs = {
-					data: { Orphan: { connect: { id: Orphan.id } }, User: { connect: { id: admin.id } }, ...rest },
+				const createRoom: Prisma.RoomCreateArgs = {
+					data: {
+						Orphan: { connect: Orphan ? Orphan.map((x) => ({ id: x.id })) : undefined },
+						User: { connect: { id: admin.id } },
+						...rest,
+					},
 				};
-				const newContact = await prisma.emergencyContactInfo.create(createContact);
-				console.log('🚀 ~ file: [id].tsx:24 ~ handler ~ newContact:', newContact);
-				return res.end(res.status(STATUS_CODE.OK).json({ data: newContact, msg: 'new Contact was created successfully' }));
+				const newRoom = await prisma.room.create(createRoom);
+				console.log('🚀 ~ file: [id].tsx:31 ~ handler ~ newRoom:', newRoom);
+				return res.end(res.status(STATUS_CODE.OK).json({ data: newRoom, msg: 'new Room was created successfully' }));
 			} catch (error) {
-				console.log('🚀 ~ file: create.tsx:16 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'error at creating new Contact', error: error });
+				console.log('🚀 ~ file: [id].tsx:34 ~ handler ~ error:', error);
+				return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'error at creating new Room', error: error });
 			}
 		}
 		//* ************************UPDATE************************
@@ -36,21 +41,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			if (req.body === '') return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
 
 			try {
-				const updateContact: Prisma.EmergencyContactInfoUpdateArgs = {
+				const updateRoom: Prisma.RoomUpdateArgs = {
 					data: {
 						User: { connect: { id: User.id || admin.id } },
-						Orphan: { connect: { id: Orphan.id } },
+						Orphan: { connect: Orphan.map((x) => ({ id: x.id })) },
 						...rest,
 					},
 					where: {
 						id: id || ID,
 					},
 				};
-				const updatedContact = await prisma.emergencyContactInfo.update(updateContact);
-				console.log('🚀 ~ file: [id].tsx:41 ~ handler ~ updatedContact:', updatedContact);
+				const updatedRoom = await prisma.room.update(updateRoom);
+				console.log('🚀 ~ file: [id].tsx:41 ~ handler ~ updatedContact:', updatedRoom);
 				return res
 					.status(STATUS_CODE.OK)
-					.json({ data: updateContact, msg: `Contact with id:${updatedContact.id} was updated successfully` });
+					.json({ data: updateRoom, msg: `Room with id:${updatedRoom.id} was updated successfully` });
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:24 ~ handler ~ error:', error);
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ data: error, msg: 'Something went wrong.' });
@@ -60,24 +65,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		case REQUEST_METHODS.DELETE: {
 			try {
-				const deletedContact = await prisma.emergencyContactInfo.delete({ where: { id: ID } });
-				console.log('🚀 ~ file: [id].tsx:55 ~ handler ~ deletedContact:', deletedContact);
-				if (deletedContact) {
+				const deletedRoom = await prisma.room.delete({ where: { id: ID } });
+				console.log('🚀 ~ file: [id].tsx:68 ~ handler ~ deletedRoom:', deletedRoom);
+				if (deletedRoom)
 					return res.status(STATUS_CODE.OK).json({
-						data: deletedContact,
-						msg: `Contact with id: ${deletedContact.id} was deleted successfully.`,
+						data: deletedRoom,
+						msg: `Room with id: ${deletedRoom.id} was deleted successfully.`,
 					});
-				} else {
-					return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete Contact with id :' + ID);
-				}
+				else return res.status(STATUS_CODE.BAD_REQUEST).json('failed to delete Room with id :' + ID);
 			} catch (error) {
 				console.log('🚀 ~ file: [id].tsx:49 ~ handler ~ error:', error);
-				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Contact dose not exist :', data: error });
+				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Room dose not exist :', data: error });
 			}
 		}
 		//* ************************GET************************
 		case REQUEST_METHODS.GET: {
-			console.log('getting Contact info');
+			console.log('getting Room info');
 			const id: string = req.query.id.toString();
 			let orphanId: number;
 			if (id.includes('orphanId')) {

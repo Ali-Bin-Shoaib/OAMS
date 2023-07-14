@@ -1,9 +1,8 @@
-import { Card, MantineColor } from '@mantine/core';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { serverLink } from '../../shared/links';
+import { Card, Center, Container, MantineColor, Paper, Text, useMantineTheme } from '@mantine/core';
+import React, { useContext } from 'react';
 import { Url } from 'next/dist/shared/lib/router/router';
 import Link from 'next/link';
+import { ColorSchemeContext } from '../../shared/contexts';
 
 interface Props {
 	title: string | 'title';
@@ -15,28 +14,29 @@ interface Props {
 }
 
 export default function MyCard({ title, count, color, icon, className, path }: Props) {
+	const scheme = useContext(ColorSchemeContext);
+	const theme = useMantineTheme();
+
 	return (
-		<Link href={path} className='no-underline'>
-			<Card
-				className='hover:-translate-y-1 hover:shadow-md hover:cursor-pointer'
-				m={25}
-				shadow='md'
-				radius='lg'
-				w={350}
-				h={250}
-				bg={color}
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					transform: 'translateY(0)',
-					transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-				}}>
-				{React.cloneElement(icon, { className })}
-				<div>
-					<div className='text-white font-semibold text-3xl mx-5'>{title}</div>
-					<div className='text-white font-bold text-4xl mx-5'>{count}</div>
+		<Card
+			className='shadow-md hover:shadow-lg hover:cursor-pointer hover:shadow-slate-500 m-4  rounded-3xl w-60 max-w-xs transition-all 
+			duration-300'
+			withBorder
+			radius='md'>
+			<Link href={path} className={`no-underline flex flex-wrap  h-full w-full`}>
+				{/* <div className=''> */}
+				<Center sx={{ color: theme.colors[color][7] }} className='px-3 mx-auto '>
+					{icon}
+				</Center>
+
+				<div className='p-3 w-full flex flex-col justify-between '>
+					<h1 className={`${scheme === 'dark' ? 'text-gray-200' : 'text-gray-500'} font-bold text-3xl  my-1`}>{title}</h1>
+					<h2 className={`${scheme === 'dark' ? 'text-gray-300' : 'text-gray-400'} font-semibold text-4xl  my-3`}>
+						{count}
+					</h2>
 				</div>
-			</Card>
-		</Link>
+				{/* </div> */}
+			</Link>
+		</Card>
 	);
 }

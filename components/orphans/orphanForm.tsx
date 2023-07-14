@@ -21,35 +21,20 @@ import { _Orphan, _Guardian } from '../../types';
 import { useRouter } from 'next/router';
 import axios, { AxiosRequestConfig } from 'axios';
 import { serverLink } from '../../shared/links';
-import SuperJSON from 'superjson';
 import { GuardianContext } from '../../shared/contexts';
-import { GetServerSideProps, GetStaticProps } from 'next';
-import prisma from '../../lib/prisma';
-// export const getStaticProps: GetStaticProps = async () => {
-// 	// export const getStaticProps: GetStaticProps = async ({ params }) => {
-// 	try {
-// 		const guardians = prisma.guardian.findMany();
-
-// 		if (!guardians) return { notFound: true };
-// 		return {
-// 			props: { guardians },
-// 		};
-// 	} catch (error) {
-// 		return { notFound: true }
-// 	}
-// };
 interface Props {
 	orphan?: _Orphan;
-	guardians: (Guardian & {
+	guardians?: (Guardian & {
 		user: User;
 	})[];
 	close: () => void;
 }
 export default function OrphanForm({ orphan, close, guardians }: Props): JSX.Element {
-	// const [guardians, setGuardians] = useState(useContext(GuardianContext));
 	const router = useRouter();
 	const [hydrate, setHydrate] = useState(false);
-	console.log('🚀 ~ file: OrphanForm.tsx:36 ~ OrphanForm ~ guardians:', guardians);
+	const guardiansContexts = useContext(GuardianContext);
+	console.log('🚀 ~ file: OrphanForm.tsx:37 ~ OrphanForm ~ guardiansContexts:', guardiansContexts);
+	console.log('🚀 ~ file: OrphanForm.tsx:37 ~ OrphanForm ~ guardians:', guardians);
 
 	const {
 		control,
@@ -108,18 +93,14 @@ export default function OrphanForm({ orphan, close, guardians }: Props): JSX.Ele
 							control={control}
 							rules={{ required: "select orphan's guardian" }}
 							render={({ field }) => {
-								// const { ref, onChange, onBlur, value } = field;
-								// const stringValue = value ? value + '' : '';
-
 								return (
 									<Select
 										{...field}
 										data={guardians.map((guardian) => ({
-											value: guardian.userId!.toString(),
+											value: guardian.user.id!.toString(),
 											label: guardian.user.name,
 										}))}
 										label="Select Orphan's Guardian"
-										name='guardianId'
 										value={orphan?.guardianId.toString()}
 										withAsterisk
 										error={errors.guardianId && errors.guardianId.message}

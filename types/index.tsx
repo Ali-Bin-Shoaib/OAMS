@@ -17,8 +17,12 @@ import {
 	ActivityInfo,
 	GoalEvaluation,
 	Degree,
+	Room,
+	Wings,
 } from '@prisma/client';
 import { AxiosResponse } from 'axios';
+import prisma from '../lib/prisma';
+import { DefaultUser, Session } from 'next-auth';
 export enum REQUEST_METHODS {
 	GET = 'GET',
 	POST = 'POST',
@@ -347,4 +351,12 @@ export type Contact = {
 	User?: { id: number; name: string };
 	// orphanId: number;
 	// userId?: number;
+};
+export type ROOM = {
+	id?: number;
+	wing?: Wings;
+	capacity: number;
+	number: number;
+	Orphan: { id: number; name: string }[];
+	User?: { id: number; name: string };
 };

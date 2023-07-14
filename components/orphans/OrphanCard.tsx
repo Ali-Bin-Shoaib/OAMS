@@ -1,24 +1,8 @@
-import {
-	Card,
-	Title,
-	CardSection,
-	List,
-	Button,
-	Group,
-	Box,
-	Rating,
-	Tooltip,
-	Text,
-	Grid,
-	Badge,
-	Divider,
-} from '@mantine/core';
+import { Card, Button, Group, Tooltip, Text, Divider } from '@mantine/core';
 import { v4 } from 'uuid';
-import DeleteOrphanModal from './modals/DeleteOrphanModal';
 import EditOrphanModal from './modals/EditOrphanModal';
 import Image from 'next/image';
 import img1 from '../../src/img/simeLogo.png';
-import { Orphan } from '@prisma/client';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { Pages } from '../../shared/links';
@@ -34,36 +18,36 @@ function OrphanCard({ orphan }: Props) {
 	const router = useRouter();
 	return (
 		<>
-			<div>
-				<div className='text-center'>
-					<Image src={img1} alt={orphan.name!} width={256} height={183} />
+			<>
+				<div>
+					<div className='text-center'>
+						<Image src={img1} alt={orphan.name!} width={256} height={183} />
+					</div>
+					<Divider />
 				</div>
-				<Divider />
-			</div>
-			<Title order={2} className='text-center'>
-				{orphan.name}
-			</Title>
-			<div className='p-2 m-2'>
-				<Text size='xl'>Gender: {orphan.gender}</Text>
-				<Text size='xl'>Age: {orphan.age}</Text>
-				<Text size='xl'>School Name: {orphan.schoolName}</Text>
-				<Text size='xl'>Grade Level: {orphan.gradeLevel}</Text>
-				<Text size='xl'>Evaluation: {orphan.evaluation}</Text>
-				<Text size='xl'>Guardian: {orphan?.Guardian?.user?.name}</Text>
-				<Text size='xl'>Sponsor: {orphan?.Sponsorship?.find((x) => x.isActive === true)?.Sponsor?.user?.name}</Text>
-			</div>
+				<h2 className='font-bold text-center text-ellipsis overflow-hidden whitespace-nowrap '>{orphan.name}</h2>
+				<div className='p-2 m-2'>
+					<Text size='xl'>Gender: {orphan.gender}</Text>
+					<Text size='xl'>Age: {orphan.age}</Text>
+					<Text size='xl'>School Name: {orphan.schoolName}</Text>
+					<Text size='xl'>Grade Level: {orphan.gradeLevel}</Text>
+					<Text size='xl'>Evaluation: {orphan.evaluation}</Text>
+					<Text size='xl'>Guardian: {orphan?.Guardian?.user?.name}</Text>
+					<Text size='xl'>Sponsor: {orphan?.Sponsorship?.find((x) => x.isActive === true)?.Sponsor?.user?.name}</Text>
+				</div>
+			</>
 			<Divider />
-			<Group position='right'>
+			<Group position='right' p={5}>
 				<Button.Group>
-					<Tooltip label='Evaluate orphan'>
-						<Button>Evaluate</Button>
-					</Tooltip>
+					{/* <Tooltip label='Evaluate orphan'>
+							<Button>Evaluate</Button>
+						</Tooltip> */}
 					<Tooltip label='Orphan Info'>
 						<Button color='gray' onClick={() => router.push(Pages?.Orphans.link + orphan?.id)}>
 							<IconInfoCircle />
 						</Button>
 					</Tooltip>
-					<EditOrphanModal orphan={onlyOrphanInfo as unknown as _Orphan} guardians={[]} />
+					<EditOrphanModal orphan={onlyOrphanInfo as unknown as _Orphan} guardians={[]} size='sm' />
 					<DeleteModal id={orphan.id} title={'Orphan'} url='api/orphan/' size='sm' />
 				</Button.Group>
 			</Group>

@@ -1,14 +1,22 @@
-#### Prisma update command
+## Prisma update command
 
-````bash
+```bash
 npm i --save-dev prisma@latest
 npm i @prisma/client@latest
+```
+
+## Reset Database command
+
 ```bash
-````
-
-#### Reset Database command
-
-````bash
 npx prisma migrate reset
-```bash
-````
+```
+
+## Configuration for handling images.
+
+```tsx
+export const config = {
+	api: {
+		bodyParser: false,
+	},
+};
+```

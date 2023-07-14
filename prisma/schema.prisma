@@ -82,6 +82,13 @@ enum Quarter {
   Fourth
 }
 
+enum Wings {
+  A
+  B
+  C
+  D
+}
+
 //********************************** Models *********************************
 
 model Orphan {
@@ -158,45 +165,6 @@ model Guardian {
   userId       Int      @unique
   //* one Guardian has many Orphan
   orphan       Orphan[]
-}
-
-model User {
-  id       Int      @id @default(autoincrement())
-  name     String
-  gender   Gender
-  userName String
-  password String
-  email    String?
-  address  String
-  phone    String
-  type     UserType
-  //* relations
-
-  Guardian              Guardian?
-  Sponsor               Sponsor?
-  Orphan                Orphan[]
-  Attendance            Attendance[]
-  HealthInfo            HealthInfo[]
-  EducationInfo         EducationInfo[]
-  ActivityExecutionInfo ActivityExecutionInfo[]
-  EmergencyContactInfo  EmergencyContactInfo[]
-
-  Sponsorship      Sponsorship[]
-  OrphanAttendance OrphanAttendance[]
-
-  BehaviorInfo       BehaviorInfo[]
-  Criteria           Criteria[]
-  BehaviorCriteria   BehaviorCriteria[]
-  Room               Room[]
-  Notification       Notification[]
-  ActivityInfo       ActivityInfo[]
-  UnAchievedActivity UnAchievedActivity[]
-  ActivityGoal       ActivityGoal[]
-  // GoalTitle          GoalTitle[]
-  // GoalInfo           GoalInfo[]
-
-  OrphanActivityExecution OrphanActivityExecution[]
-  Goal                    Goal[]
 }
 
 model Sponsor {
@@ -405,8 +373,6 @@ model HealthInfo {
   userId   Int?
 }
 
-//********************************** TO IMPLEMENT*********************************
-
 model EmergencyContactInfo {
   id    Int    @id @default(autoincrement())
   name  String
@@ -421,8 +387,9 @@ model EmergencyContactInfo {
 }
 
 model Room {
-  id       Int     @id @default(autoincrement())
-  wing     String?
+  id       Int    @id @default(autoincrement())
+  number   Int
+  wing     Wings?
   capacity Int
   //* relations
 
@@ -430,6 +397,47 @@ model Room {
   User   User?    @relation(fields: [userId], references: [id])
   userId Int?
 }
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String
+  gender   Gender
+  username String
+  password String
+  email    String?  @unique
+  address  String
+  phone    String   @unique
+  type     UserType
+  //* relations
+
+  Guardian              Guardian?
+  Sponsor               Sponsor?
+  Orphan                Orphan[]
+  Attendance            Attendance[]
+  HealthInfo            HealthInfo[]
+  EducationInfo         EducationInfo[]
+  ActivityExecutionInfo ActivityExecutionInfo[]
+  EmergencyContactInfo  EmergencyContactInfo[]
+
+  Sponsorship      Sponsorship[]
+  OrphanAttendance OrphanAttendance[]
+
+  BehaviorInfo       BehaviorInfo[]
+  Criteria           Criteria[]
+  BehaviorCriteria   BehaviorCriteria[]
+  Room               Room[]
+  Notification       Notification[]
+  ActivityInfo       ActivityInfo[]
+  UnAchievedActivity UnAchievedActivity[]
+  ActivityGoal       ActivityGoal[]
+  // GoalTitle          GoalTitle[]
+  // GoalInfo           GoalInfo[]
+
+  OrphanActivityExecution OrphanActivityExecution[]
+  Goal                    Goal[]
+}
+
+//********************************** TO IMPLEMENT*********************************
 
 model UnAchievedActivity {
   id   Int     @id @default(autoincrement())
