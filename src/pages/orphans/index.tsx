@@ -31,6 +31,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		await initial();
 	} catch (error) {
 		console.log('🚀 ~ file: index.tsx:23 ~ constgetStaticProps:GetStaticProps= ~ error:', error);
+		throw new Error(`getStaticProps catch${error}`);
 	}
 	const orphans = await prisma.orphan.findMany({
 		include: {
@@ -46,8 +47,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		select: { user: { select: { id: true, name: true } } },
 		orderBy: { id: 'asc' },
 	});
-	console.log('🚀 ~ file: index.tsx:48 ~ constgetStaticProps:GetStaticProps= ~ guardians:', guardians);
-	guardians[0].user;
+	console.log('🚀 ~ file: index.tsx:49 ~ constgetStaticProps:GetStaticProps= ~ guardians:', guardians);
 	const stringData = SuperJSON.stringify({ orphans, guardians });
 	return { props: { stringData } };
 };
@@ -117,7 +117,7 @@ export default function Index({ stringData }: Props) {
 								))}
 						</ScrollArea>
 					</ListComponent>
-					<Card key={v4()} withBorder shadow='xs' radius='md' className=' mx-auto my-2  w-2/3 min-w-min '>
+					<Card key={v4()} withBorder shadow='xs' radius='md' className=' mx-auto my-2  w-1/2 min-w-min '>
 						<OrphanCard orphan={cardInfo} />
 					</Card>
 				</Flex>

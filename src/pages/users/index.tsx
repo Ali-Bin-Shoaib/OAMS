@@ -11,10 +11,9 @@ import UserTable from '../../../components/users/UserTable';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
-	const users = await prisma.user.findMany({ where: { type: { notIn: ['SPONSOR', 'GUARDIAN'] } } });
-
-	users.sort(function (a, b) {
-		return a.id > b.id ? 1 : -1;
+	const users = await prisma.user.findMany({
+		where: { type: { notIn: ['SPONSOR', 'GUARDIAN'] } },
+		orderBy: { id: 'asc' },
 	});
 
 	const stringUsers = SuperJSON.stringify(users);

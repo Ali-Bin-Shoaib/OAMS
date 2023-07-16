@@ -399,40 +399,34 @@ model Room {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  name     String
-  gender   Gender
-  username String
-  password String
-  email    String?  @unique
-  address  String
-  phone    String   @unique
-  type     UserType
+  id                      Int                       @id @default(autoincrement())
+  name                    String
+  gender                  Gender
+  username                String
+  password                String
+  email                   String?                   @unique
+  address                 String
+  phone                   String                    @unique
+  type                    UserType
   //* relations
-
-  Guardian              Guardian?
-  Sponsor               Sponsor?
-  Orphan                Orphan[]
-  Attendance            Attendance[]
-  HealthInfo            HealthInfo[]
-  EducationInfo         EducationInfo[]
-  ActivityExecutionInfo ActivityExecutionInfo[]
-  EmergencyContactInfo  EmergencyContactInfo[]
-
-  Sponsorship      Sponsorship[]
-  OrphanAttendance OrphanAttendance[]
-
-  BehaviorInfo       BehaviorInfo[]
-  Criteria           Criteria[]
-  BehaviorCriteria   BehaviorCriteria[]
-  Room               Room[]
-  Notification       Notification[]
-  ActivityInfo       ActivityInfo[]
-  UnAchievedActivity UnAchievedActivity[]
-  ActivityGoal       ActivityGoal[]
-  // GoalTitle          GoalTitle[]
-  // GoalInfo           GoalInfo[]
-
+  Guardian                Guardian?
+  Sponsor                 Sponsor?
+  Orphan                  Orphan[]
+  Attendance              Attendance[]
+  HealthInfo              HealthInfo[]
+  EducationInfo           EducationInfo[]
+  ActivityExecutionInfo   ActivityExecutionInfo[]
+  EmergencyContactInfo    EmergencyContactInfo[]
+  Sponsorship             Sponsorship[]
+  OrphanAttendance        OrphanAttendance[]
+  BehaviorInfo            BehaviorInfo[]
+  Criteria                Criteria[]
+  BehaviorCriteria        BehaviorCriteria[]
+  Room                    Room[]
+  Notification            Notification[]
+  ActivityInfo            ActivityInfo[]
+  UnAchievedActivity      UnAchievedActivity[]
+  ActivityGoal            ActivityGoal[]
   OrphanActivityExecution OrphanActivityExecution[]
   Goal                    Goal[]
 }

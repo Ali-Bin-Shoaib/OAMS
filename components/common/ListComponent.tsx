@@ -12,7 +12,7 @@ export default function ListComponent({ children, className = '' }: Props) {
 	return (
 		<>
 			<List
-				className={`w-1/5 max-w-xs min-w-fit border-solid border-gray-400 border-spacing-3 rounded-md pl-1.5 my-2 ${
+				className={`w-1/3 max-w-md min-w-min border-solid border-gray-400 border-spacing-3 rounded-md pl-1.5 my-2 mx-4 ${
 					colorScheme === 'dark' ? 'shadow-gray-800' : 'shadow-gray-200'
 				}  shadow-xl m-0.5 ${className}`}>
 				{children}
@@ -58,7 +58,7 @@ export function ListItemComponent({
 						</Avatar>
 					)
 				}>
-				<div className='flex flex-wrap'>
+				<div className='flex  flex-row content-between w-full'>
 					<div>
 						<h3 className='text-ellipsis overflow-hidden m-0 max-w-xs w-52 whitespace-nowrap'>{title}</h3>
 						<Group position='apart' noWrap>
@@ -66,7 +66,7 @@ export function ListItemComponent({
 								{leftData.label}: {leftData.data}
 							</Text>
 
-							<Text className='text-ellipsis overflow-hidden'>{middleData.data}</Text>
+							<Text className='text-ellipsis overflow-hidden mx-5'>{middleData.data}</Text>
 							<Rating readOnly value={rightData.data as number} />
 						</Group>
 					</div>

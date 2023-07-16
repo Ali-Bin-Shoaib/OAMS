@@ -32,7 +32,7 @@ function UserTable({ users, updateCard }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.userName,
+				accessorFn: (row) => row.username,
 				id: 'userName',
 				header: 'userName',
 				maxSize: 300,

@@ -18,22 +18,6 @@ export function LogIn(props: PaperProps) {
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
 	};
-	const { data: session } = useSession();
-	// if (session) {
-	// 	return (
-	// 		<>
-	// 			Signed in as {session.user.email} <br />
-	// 			<button onClick={() => signOut()}>Sign out</button>
-	// 		</>
-	// 	);
-	// }
-	// return (
-	// 	<>
-	// 		Not signed in <br />
-	// 		<button onClick={() => signIn()}>Sign in</button>
-	// 	</>
-	// );
-
 	return (
 		<Container radius='md' p='xl' withBorder {...props}>
 			<Title order={3} className='text-center'>

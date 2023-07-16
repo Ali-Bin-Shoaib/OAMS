@@ -56,7 +56,7 @@ export const createUser = async (number: number) => {
 		const user: Prisma.UserCreateManyInput = {
 			name: faker.person.fullName(),
 			gender: faker.helpers.enumValue(Gender),
-			userName: faker.internet.userName(),
+			username: faker.internet.userName(),
 			password: faker.internet.password(),
 			email: faker.internet.email(),
 			address: faker.location.city(),
@@ -72,7 +72,7 @@ export const createAdmin = async () => {
 	const admin: Prisma.UserCreateInput = {
 		name: faker.person.fullName(),
 		gender: faker.helpers.enumValue(Gender),
-		userName: faker.internet.userName(),
+		username: faker.internet.userName(),
 		password: faker.internet.password(),
 		email: faker.internet.email(),
 		address: faker.location.city(),
@@ -89,7 +89,7 @@ export const createGuardian = async (number: number) => {
 		const guardian: Prisma.UserCreateInput = {
 			name: faker.person.fullName(),
 			gender: faker.helpers.enumValue(Gender),
-			userName: faker.internet.userName(),
+			username: faker.internet.userName(),
 			password: faker.internet.password(),
 			email: faker.internet.email(),
 			address: faker.location.city(),
@@ -110,7 +110,7 @@ export const createSponsor = async (number: number) => {
 		const sponsor: Prisma.UserCreateInput = {
 			name: faker.person.fullName(),
 			gender: faker.helpers.enumValue(Gender),
-			userName: faker.internet.userName(),
+			username: faker.internet.userName(),
 			password: faker.internet.password(),
 			email: faker.internet.email(),
 			address: faker.location.city(),

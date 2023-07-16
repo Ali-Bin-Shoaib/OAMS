@@ -130,7 +130,7 @@ export interface _UserWithGuardianAndSponsor {
 	id?: number;
 	name: string | number | readonly string[] | undefined;
 	gender: Gender;
-	userName: string | number | readonly string[] | undefined;
+	username: string | number | readonly string[] | undefined;
 	password: string | number | readonly string[] | undefined;
 	email?: string | number | readonly string[] | undefined;
 	address: string | number | readonly string[] | undefined;
@@ -164,7 +164,7 @@ export type _User = {
 	id?: number;
 	name: string;
 	gender: Gender;
-	userName: string;
+	username: string;
 	password: string;
 	email?: string | null;
 	address: string;

@@ -92,17 +92,17 @@ export default function UserForm({ bigUser, userType, close }: Props): JSX.Eleme
 							}}
 						/>
 						<Controller
-							name='userName'
+							name='username'
 							control={control}
-							rules={{ required: 'userName is required' }}
+							rules={{ required: 'username is required' }}
 							render={({ field }) => {
 								return (
 									<TextInput
 										{...field}
-										label='userName'
-										placeholder='userName'
+										label='username'
+										placeholder='username'
 										withAsterisk
-										error={errors.userName && errors.userName.message}
+										error={errors.username && errors.username.message}
 									/>
 								);
 							}}

@@ -29,6 +29,7 @@ import Link from 'next/link';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export default function AppNavbar() {
 	const [opened, { toggle, open, close }] = useDisclosure(false);
@@ -37,6 +38,7 @@ export default function AppNavbar() {
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 	const currentPage = usePageTitle();
 	const { data: session } = useSession();
+	const { asPath } = useRouter();
 	console.log('🚀 ~ file: AppNavbar.tsx:40 ~ AppNavbar ~ session:', session);
 	const items = Paths.links.map((link) => {
 		const menuItems = link.relatedLinks?.map((item) => {
@@ -125,14 +127,14 @@ export default function AppNavbar() {
 						</Drawer>
 						{session?.user && <span className='text-white'>{session.user.name}</span>}
 						{session?.user ? (
-							<Tooltip label={'Sign Out'}>
+							<Tooltip label={'Logout'}>
 								<ActionIcon variant='default' size='lg' onClick={() => signOut()}>
 									<IconLogout />
 								</ActionIcon>
 							</Tooltip>
 						) : (
-							<Tooltip label={'Sign In'}>
-								<ActionIcon variant='default' size='lg' onClick={() => signIn()}>
+							<Tooltip label={'Login'}>
+								<ActionIcon variant='default' size='lg' onClick={() => signIn('credentials', { redirect: false })}>
 									<IconLogin />
 								</ActionIcon>
 							</Tooltip>
