@@ -3,8 +3,17 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE, REQUEST_METHODS, _Orphan, _Attendance } from '../../../../types';
 import { Attendance, Orphan, Prisma, User } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type != ('ORPHANAGE_SUPERVISOR' || 'ADMIN')) {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
+
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const attendance: {
@@ -15,8 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				OrphanAttendance: Prisma.OrphanAttendanceCreateManyAttendanceInput[];
 			} = req.body;
 			// const attendance:Attendance=req.body;
-			const user = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
-			attendance.User = user!;
 
 			const { User, date, OrphanAttendance, userId } = attendance;
 			console.log('🚀 ~ file: create.tsx:25 ~ handler ~ attendance:', attendance);
@@ -24,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			const newAttendance = await prisma.attendance.create({
 				data: {
 					date: date,
-					User: { connect: { id: User.id } },
+					User: { connect: { id: userId } },
 					OrphanAttendance: { createMany: { data: OrphanAttendance.filter((x) => !x.isAttended) } },
 				},
 			});

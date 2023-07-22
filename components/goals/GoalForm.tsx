@@ -10,11 +10,13 @@ import { Goal, User } from '@prisma/client';
 import myNotification from '../MyNotification';
 import MyModal from '../common/MyModal';
 import { IconCheck } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
 interface Props {
 	goal?: Goal & { User?: User };
 	close?: () => void;
 }
 export default function GoalForm({ goal, close }: Props): JSX.Element {
+	const { data: session } = useSession();
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
@@ -25,6 +27,7 @@ export default function GoalForm({ goal, close }: Props): JSX.Element {
 	});
 	const router = useRouter();
 	const onSubmit = async (data: Goal) => {
+		if (session?.user) data.userId = session.user.id;
 		console.log('🚀 ~ file: GoalForm.tsx:29 ~ onSubmit ~ data:', data);
 		if (!goal) {
 			console.log('goal dose not exist.');
@@ -43,7 +46,7 @@ export default function GoalForm({ goal, close }: Props): JSX.Element {
 			console.log('🚀 ~ file: GoalForm.tsx:71 ~ onSubmit ~ res:', res);
 			myNotification('Update', res.data.msg, 'green', <IconCheck />);
 		}
-		close();
+		close?.();
 		router.push(serverLink + 'goals/');
 	};
 	useEffect(() => {

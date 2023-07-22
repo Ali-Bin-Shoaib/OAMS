@@ -12,7 +12,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	console.log('🚀 ~ file: [id].tsx:14 ~ constgetServerSideProps:GetServerSideProps= ~ id:', id);
 	const activity = await prisma.activityInfo.findFirst({
 		where: { id: id },
-		include: { User: true, ActivityGoal: { include: { Goal: true }, orderBy: { id: 'asc' } } },
+		include: {
+			User: { select: { id: true, name: true, type: true } },
+			ActivityGoal: { include: { Goal: true }, orderBy: { id: 'asc' } },
+		},
 	});
 	const goalInfo = await prisma.goal.findMany();
 

@@ -24,6 +24,7 @@ import {
 	ActionIcon,
 } from '@mantine/core';
 import { Criteria, Orphan, Prisma } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 interface Props {
 	behavior?: Behavior;
 	orphans: Orphan[];
@@ -31,6 +32,7 @@ interface Props {
 }
 export default function BehaviorForm({ orphans, behavior, criteria }: Props): JSX.Element {
 	console.log('🚀 ~ file: BehaviorForm.tsx:33 ~ BehaviorForm ~ behavior:', behavior);
+	const { data: session } = useSession();
 	let defaultValue: Behavior = behavior
 		? behavior
 		: { date: new Date(), BehaviorCriteria: criteria.map((x) => ({ criteriaId: x.id, evaluation: 5, userId: 1 })) };
@@ -45,7 +47,8 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 	const { fields, update } = useFieldArray({ control, name: 'BehaviorCriteria' });
 	console.log('🚀 ~ file: BehaviorForm.tsx:46 ~ BehaviorForm ~ fields:', fields);
 	const router = useRouter();
-	const onSubmit = async (data: Behavior & { OrphanID: string }) => {
+	const onSubmit = async (data: Behavior & { OrphanID?: string }) => {
+		if (session?.user) data.userId = session.user.id;
 		console.log('🚀 ~ file: BehaviorForm.tsx:34 ~ onSubmit ~ data:', data);
 		Number(data.OrphanID) && (data.orphanId = Number(data.OrphanID));
 		delete data.OrphanID;
@@ -94,9 +97,7 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 							control={control}
 							// rules={{ required: 'User' }}
 							render={({ field }) => {
-								return (
-									<TextInput {...field} disabled name='User.name' label='User name' defaultValue={behavior?.userId} w={'45%'} />
-								);
+								return <TextInput {...field} disabled label='User' value={behavior?.User?.name} w={'45%'} />;
 							}}
 						/>
 						<Controller

@@ -51,7 +51,7 @@ export default function MyModal({
 				<Title align='center'>{modalTitle}</Title>
 				<Divider m={10} p={10} />
 				{/* {ModelForm} */}
-				{React.cloneElement(ModelForm, { close: close })}
+				{React.cloneElement(ModelForm!, { close: close })}
 			</Modal>
 			<Group position={position}>
 				<Tooltip label={tooltip} hidden={!tooltip ? true : false}>

@@ -1,14 +1,19 @@
+import { Url } from 'next/dist/shared/lib/router/router';
+
 export const serverLink = 'http://localhost:3000/';
-interface HeaderLinkProps {
-	links: { link: string; label: string; relatedLinks?: { link: string; label: string }[] }[];
+export interface HeaderLinkProps {
+	links: { link: Url; label: string; relatedLinks?: { link: Url; label: string }[] }[];
 }
 export const Paths: HeaderLinkProps = {
 	links: [
+		{ label: 'Dashboard', link: serverLink + 'dashboard' },
 		{
 			label: 'Orphans',
-			link: serverLink + 'orphans',
+			// link: serverLink + 'orphans',
+			link: '',
+
 			relatedLinks: [
-				// { label: 'Orphans', link: '/orphans' },
+				{ label: 'Manage Orphans', link: '/orphans' },
 				{ label: 'Attendance', link: serverLink + 'attendance' },
 				{ label: 'Education Info', link: serverLink + 'education' },
 				{ label: 'Health Info', link: serverLink + 'health' },
@@ -19,8 +24,11 @@ export const Paths: HeaderLinkProps = {
 		},
 		{
 			label: 'Activities',
-			link: serverLink + 'activities',
+			// link: serverLink + 'activities',
+			link: '',
+
 			relatedLinks: [
+				{ label: 'Mange Activities', link: serverLink + 'activities' },
 				{ label: 'Goals', link: serverLink + 'goals' },
 				{ label: 'Activity Execution', link: serverLink + 'activities/execute' },
 			],
@@ -32,26 +40,7 @@ export const Paths: HeaderLinkProps = {
 		{ label: 'Rooms', link: serverLink + 'rooms' },
 	],
 };
-// export const Paths = {
-// 	links: [
-// 		{ label: 'Home', link: '/' },
-// 		{ label: 'Users', link: '/users' },
-// 		{ label: 'Guardians', link: '/guardians' },
-// 		{ label: 'Sponsors', link: '/sponsors' },
-// 		{ label: 'Sponsorships', link: '/sponsorships' },
-// 		{ label: 'Rooms Info', link: '/rooms' },
-// 		{ label: 'Activities', link: '/activities' },
-// 		{ label: 'Goals', link: '/goals' },
-// 		{ label: 'Activity Execution', link: '/activities/execute' },
-// 		{ label: 'Orphans', link: '/orphans' },
-// 		{ label: 'Health Info', link: '/healthInfo' },
-// 		{ label: 'Behavior Info', link: '/behaviorInfo' },
-// 		{ label: 'Criteria Info', link: '/criteriaInfo' },
-// 		{ label: 'Emergence Contact Info', link: '/emergenceContactInfo' },
-// 		{ label: 'Education Info', link: '/educationInfo' },
-// 		{ label: 'Attendance', link: '/attendance' },
-// 	],
-// };
+
 export const Pages = {
 	Home: { label: 'Home', link: serverLink },
 	Orphans: { label: 'Orphans', link: serverLink + 'orphans/' },
@@ -73,3 +62,38 @@ export const Pages = {
 	// HealthInfo: { label: 'Health Info', link: '/healthInfo/' },
 	// BehaviorInfo: { label: 'Behavior Info', link: '/behaviorInfo/' },
 };
+export const ProtectedRoutes = [
+	'/activities/:path*',
+	'/attendance/:path*',
+	'/behavior/:path*',
+	'/contact/:path*',
+	'/criteria/:path*',
+	'/education/:path*',
+	'/goals/:path*',
+	'/guardians/:path*',
+	'/health/:path*',
+	'/rooms/:path*',
+	'/sponsors/:path*',
+	'/sponsorships/:path*',
+	'/users/:path*',
+	'/auth',
+	'/api/',
+];
+export const PagesUrl = [
+	'/dashboard',
+	'/activities',
+	'/attendance',
+	'/behavior',
+	'/contact',
+	'/criteria',
+	'/education',
+	'/goals',
+	'/guardians',
+	'/health',
+	'/rooms',
+	'/sponsors',
+	'/sponsorships',
+	'/users',
+	'/auth',
+	'/api',
+];

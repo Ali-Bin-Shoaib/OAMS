@@ -35,6 +35,7 @@ export default function BehaviorTable({ behavior }: Props) {
 			},
 			{
 				accessorFn: (row) =>
+					row.BehaviorCriteria &&
 					(row.BehaviorCriteria.reduce((total, x) => total + x.evaluation, 0) / row.BehaviorCriteria.length).toFixed(2),
 				id: 'behavior.length',
 				header: 'evaluation',

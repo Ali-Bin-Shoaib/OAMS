@@ -79,7 +79,7 @@ function ContactTable({ contact }: Props) {
 							modalSize={'md'}
 							m={0}
 						/>
-						<ContactInfo id={row.original.id} />
+						<ContactInfo id={row.original.id!} />
 					</Button.Group>
 				)}
 			/>
@@ -92,7 +92,7 @@ interface CardProps {
 }
 export function ContactInfo({ id }: CardProps) {
 	const [opened, { open, close }] = useDisclosure(false);
-	const [contact, setContact] = useState<Contact>(undefined);
+	const [contact, setContact] = useState<Contact>();
 	return (
 		<>
 			<Modal opened={opened} size={'lg'} onClose={close}>

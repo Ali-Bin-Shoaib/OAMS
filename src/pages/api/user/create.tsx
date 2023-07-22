@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE, REQUEST_METHODS, _User, _UserWithGuardianAndSponsor, _Sponsor } from '../../../../types';
 import { Prisma, User } from '@prisma/client';
-
+import * as argon from 'argon2';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === REQUEST_METHODS.POST) {

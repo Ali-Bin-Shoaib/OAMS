@@ -58,11 +58,11 @@ function Info({ stringData }: Props) {
 						<Text weight={700}>ID:</Text>
 						<Text>{activityExecution.id}</Text>
 						<Text weight={700}>Activity Title:</Text>
-						<Text>{activityExecution.ActivityInfo.title}</Text>
+						<Text>{activityExecution?.ActivityInfo?.title}</Text>
 						<Text weight={700}>Executer:</Text>
-						<Text>{activityExecution.Executor.name}</Text>
+						<Text>{activityExecution?.Executor?.name}</Text>
 						<Text weight={700}>Start Date:</Text>
-						<Text>{activityExecution.startDate.toDateString()}</Text>
+						<Text>{activityExecution?.startDate?.toDateString()}</Text>
 						<Text weight={700}>Cost:</Text>
 						<Text>{activityExecution.cost}</Text>
 						<Text weight={700}>Description:</Text>
@@ -72,23 +72,27 @@ function Info({ stringData }: Props) {
 						<Text weight={700}>Goals:</Text>
 						{/* <Text>{activityExecution.GoalEvaluation.map((x) => x.Goal.title).join(',')}</Text> */}
 						<Group>
-							{activityExecution.GoalEvaluation.map((x) => {
+							{activityExecution?.GoalEvaluation?.map((x) => {
 								return (
 									<Text key={x.id}>
-										{x.Goal.title} : {x.evaluation}
+										{x?.Goal?.title} : {x.evaluation}
 									</Text>
 								);
 							})}
 						</Group>
 						<Text weight={700}>Evaluation:</Text>
 						<Text>
-							{(
-								(activityExecution.GoalEvaluation.reduce((total, object) => total + object.evaluation, 0) /
-									activityExecution.GoalEvaluation.length +
-									activityExecution.OrphanActivityExecution.reduce((total, object) => total + object.evaluation, 0) /
-										activityExecution.OrphanActivityExecution.length) /
-								2
-							).toFixed(2)}
+							{activityExecution?.GoalEvaluation
+								? activityExecution.OrphanActivityExecution
+									? (
+											(activityExecution?.GoalEvaluation?.reduce((total, object) => total + object?.evaluation!, 0) /
+												activityExecution?.GoalEvaluation?.length +
+												activityExecution?.OrphanActivityExecution?.reduce((total, object) => total + object?.evaluation!, 0) /
+													activityExecution?.OrphanActivityExecution?.length) /
+											2
+									  ).toFixed(2)
+									: 0
+								: 0}
 						</Text>
 					</SimpleGrid>
 					<Group position='right'>

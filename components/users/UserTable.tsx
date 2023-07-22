@@ -1,18 +1,18 @@
-import { User } from '@prisma/client';
-import { useMemo } from 'react';
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Container } from '@mantine/core';
+import { useMemo, useRef } from 'react';
+import { MRT_ColumnDef, MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import { _Guardian, _Orphan, _User } from '../../types';
+import PrintButton from 'components/common/PrintButton';
 
 interface Props {
 	users: _User[];
 	updateCard(user: _User): void;
 }
 
-function UserTable({ users, updateCard }: Props) {
-	const columns = useMemo<MRT_ColumnDef<(typeof users)[0]>[]>(
+function UserTable({ users: data, updateCard }: Props) {
+	console.log('🚀 ~ file: UserTable.tsx');
+	const columns = useMemo<MRT_ColumnDef<_User>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'id', maxSize: 300, minSize: 80, size: 80, enableResizing: true },
+			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, minSize: 80, size: 80, enableResizing: true },
 			{
 				accessorFn: (row) => row.name,
 				id: 'name',
@@ -88,33 +88,70 @@ function UserTable({ users, updateCard }: Props) {
 		],
 		[]
 	);
+	const table = useMantineReactTable<_User>({
+		columns,
+		data,
+		enableColumnFilterModes: true,
+		enableColumnOrdering: true,
+		enableFacetedValues: true,
+		enableGrouping: true,
+		enablePinning: true,
+		initialState: { density: 'xs' },
+		// paginationDisplayMode: 'pages',
+		enableClickToCopy: true,
+		enableBottomToolbar: true,
+		positionToolbarAlertBanner: 'top',
+		mantineTableBodyRowProps: ({ row }) => ({
+			onClick: (event) => {
+				updateCard(row.original);
+			},
+			sx: { cursor: 'pointer' },
+		}),
+		renderTopToolbarCustomActions: ({ table }) => {
+			return <PrintButton printRef={table.refs.tableContainerRef} />;
+		},
+		mantineTableBodyCellProps: { sx: { border: '2px solid #dee2e6' } },
+		mantineTableHeadCellProps: { sx: { border: '2px solid #dee2e6' } },
+		mantineTableProps: { striped: true, sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' } },
+		enableColumnResizing: true,
+		columnResizeMode: 'onEnd', //instead of the default "onChange" mode
+		// renderTopToolbarCustomActions:
+	});
+	return <MantineReactTable table={table} />;
+	// return (
+	// <MantineReactTable
+	// 	columns={columns}
+	// 	data={users}
+	// 	enableTopToolbar
+	// renderTopToolbarCustomActions={({ table }) => {
+	// 	const handleClick = () => {
+	// 		console.info('table', table);
+	// 	};
+	// 	return (
 
-	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={users}
-				initialState={{ density: 'xs' }}
-				mantineTableBodyRowProps={({ row }) => ({
-					onClick: () => {
-						updateCard(row.original);
-					},
-					sx: { border: '2px solid #dee2e6' },
-				})}
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				mantineTableHeadCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				mantineTableProps={{
-					striped: true,
-					sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' },
-				}}
-				enableColumnResizing
-				columnResizeMode='onEnd' //instead of the default "onChange" mode
-			/>
-		</Container>
-	);
+	// 	);
+	// }}
+	// 	initialState={{ density: 'xs' }}
+	// 	// action
+	// 	mantineTableBodyRowProps={({ row }) => ({
+	// 		onClick: () => {
+	// 			updateCard(row.original);
+	// 		},
+	// 		sx: { border: '2px solid #dee2e6' },
+	// 	})}
+	// 	mantineTableBodyCellProps={{
+	// 		sx: { border: '2px solid #dee2e6' },
+	// 	}}
+	// 	mantineTableHeadCellProps={{
+	// 		sx: { border: '2px solid #dee2e6' },
+	// 	}}
+	// 	mantineTableProps={{
+	// 		striped: true,
+	// 		sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' },
+	// 	}}
+	// 	enableColumnResizing
+	// 	columnResizeMode='onEnd' //instead of the default "onChange" mode
+	// />
+	// );
 }
 export default UserTable;

@@ -32,8 +32,8 @@ export default function Index({ orphans }: Props) {
 	console.log('Behavior Index');
 	const [hydration, setHydration] = useState(false);
 	const router = useRouter();
-	const [id, setId] = useState<number>(undefined);
-	const [orphanBehavior, setOrphanBehavior] = useState<Behavior[]>(undefined);
+	const [id, setId] = useState<number>();
+	const [orphanBehavior, setOrphanBehavior] = useState<Behavior[]>();
 	const fetchOrphanBehavior = async (id: number) => {
 		await axios
 			.get(`${serverLink}api/behavior/getOrphanBehaviors/${Number(id)}`)

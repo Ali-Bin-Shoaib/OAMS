@@ -40,7 +40,7 @@ export default function ActivityCard({ activityInfo, updateCard }: Props) {
 						title={'activity'}
 						url={'api/activity/'}
 						// type='Delete'
-						updateCard={updateCard}
+						// updateCard={updateCard}
 					/>
 
 					<Tooltip label={'Edit'}>

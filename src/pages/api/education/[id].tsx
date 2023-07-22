@@ -2,9 +2,21 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { _ActivityInfo, _Orphan, Behavior, Education, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
 import { Prisma, UserType } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const admin = await prisma.user.findFirst({ where: { type: UserType.ADMIN } });
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (session) {
+		console.log('+++++++++++++++', session.user.type !== 'ADMIN' && session.user.type !== 'EDUCATION_SUPERVISOR');
+
+		if (session.user.type !== 'ADMIN' && session.user.type !== 'EDUCATION_SUPERVISOR') {
+			return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+		}
+	}
+
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ ID:', ID);
 	if (!ID) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'Education info dose not exist.' });
@@ -20,8 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					data: {
 						...rest,
 						scoreSheet: null,
-						Orphan: { update: { schoolName: Orphan.schoolName }, connect: { id: orphanId } },
-						User: { connect: { id: admin.id } },
+						Orphan: { update: { schoolName: Orphan?.schoolName }, connect: { id: orphanId } },
+						User: { connect: { id: userId } },
 					},
 					where: { id: id },
 				};

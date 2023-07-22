@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		if (req.method === REQUEST_METHODS.POST) {
 			const { Orphan, User, orphanId, userId, id, ...rest } = data;
 			const createHealth: Prisma.HealthInfoCreateArgs = {
-				data: { ...rest, User: { connect: { id: userId || admin.id } }, Orphan: { connect: { id: orphanId } } },
+				data: { ...rest, User: { connect: { id: userId || admin?.id } }, Orphan: { connect: { id: orphanId } } },
 			};
 			const newHealth = await prisma.healthInfo.create(createHealth);
 			console.log('🚀 ~ file: create.tsx:21 ~ handler ~ newHealth:', newHealth);

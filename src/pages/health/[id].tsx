@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	});
 
 	if (!health) {
-		return { notFound: true };
+		return { props: {} };
 	}
 	const data = health;
 	const stringData = SuperJSON.stringify(data);
@@ -40,7 +40,7 @@ function Info({ stringData }: Props) {
 		setHydration(true);
 	}, [hydration, stringData]);
 
-	if (!hydration || !health) return <Loader size={100} />;
+	if (!hydration) return <Loader size={100} />;
 	return (
 		<div style={{ margin: 'auto', maxWidth: 800 }}>
 			<Group position='center' style={{ margin: 20 }}>
@@ -55,7 +55,7 @@ function Info({ stringData }: Props) {
 						<Text weight={700}>Orphan Name:</Text>
 						<Text>{health.Orphan?.name}</Text>
 						<Text weight={700}>Created by:</Text>
-						<Text>{health.User.name}</Text>
+						<Text>{health.User?.name}</Text>
 						<Text weight={700}>Date:</Text>
 						<Text>{health.date.toDateString()}</Text>
 						<Text weight={700}>Disease:</Text>
@@ -81,7 +81,7 @@ function Info({ stringData }: Props) {
 				</Paper>
 			) : (
 				<Text>
-					Loading...
+					No data...
 					<Loader />
 				</Text>
 			)}

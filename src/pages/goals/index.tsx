@@ -25,7 +25,6 @@ interface Props {
 	goals: (Goal & { User: User })[];
 }
 function Index({ goals }: Props) {
-	console.log('🚀 ~ file: index.tsx:25 ~ Index ~ goals:', goals);
 	// const jsonData = SuperJSON.parse(props.stringData);
 	return (
 		<>

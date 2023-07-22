@@ -18,16 +18,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const activity = await prisma.activityInfo.findFirst({
 		where: { id: id },
 		include: {
-			User: true,
-			ActivityExecutionInfo: { include: { GoalEvaluation: true, OrphanActivityExecution: true } },
-			ActivityGoal: { include: { Goal: true }, orderBy: { id: 'asc' } },
+			User: { select: { id: true, name: true } },
+			ActivityExecutionInfo: { select: { GoalEvaluation: true, OrphanActivityExecution: true } },
+			ActivityGoal: { select: { Goal: { select: { title: true } } }, orderBy: { id: 'asc' } },
 		},
 	});
 
 	if (!activity) {
-		return { notFound: true };
+		return { props: {} };
 	}
-	console.log('🚀 ~ file: [id].tsx:16 ~ constgetServerSideProps:GetServerSideProps= ~ activity:', activity);
 	const data = { activity };
 	const stringData = SuperJSON.stringify(data);
 	return { props: { stringData } };
@@ -56,12 +55,10 @@ function Info({ stringData }: Props) {
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<div style={{ margin: 'auto', maxWidth: 800 }}>
-			<Group position='center' style={{ margin: 20 }}>
-				<Title weight={700}>Activity Info</Title>
-				{/* add other components as needed */}
-			</Group>
+			<h1 className='text-center shadow p-2 '>Activity Info</h1>
+			{/* add other components as needed */}
 			{activity ? (
-				<Paper p={'xl'} shadow='sm' m={40}>
+				<Paper p={'xl'} withBorder className='hover:shadow-md' m={40}>
 					<SimpleGrid cols={2}>
 						<Text weight={700}>ID:</Text>
 						<Text>{activity.id}</Text>
@@ -89,15 +86,16 @@ function Info({ stringData }: Props) {
 						<Text>{activity.ActivityExecutionInfo.reduce((total, object) => total + 1, 0)}</Text>
 						<Text weight={700}>Total Evaluation:</Text>
 						<Text>
-							{CalculateTotalEvaluation(
-								activity.ActivityExecutionInfo.map((x) => x.GoalEvaluation.map((x) => x.evaluation)),
-								activity.ActivityExecutionInfo.map((x) => x.OrphanActivityExecution.map((x) => x.evaluation))
-							).toFixed(2) === 'NaN'
+							{activity.ActivityExecutionInfo.map((x) => x) &&
+							CalculateTotalEvaluation(
+								activity.ActivityExecutionInfo.map((x) => x.GoalEvaluation!.map((x) => x.evaluation!)),
+								activity.ActivityExecutionInfo.map((x) => x.OrphanActivityExecution!.map((x) => x.evaluation!))
+							)?.toFixed(2) === 'NaN'
 								? 0
 								: CalculateTotalEvaluation(
-										activity.ActivityExecutionInfo.map((x) => x.GoalEvaluation.map((x) => x.evaluation)),
-										activity.ActivityExecutionInfo.map((x) => x.OrphanActivityExecution.map((x) => x.evaluation))
-								  ).toFixed(2)}
+										activity.ActivityExecutionInfo.map((x) => x.GoalEvaluation!.map((x) => x.evaluation!)),
+										activity.ActivityExecutionInfo.map((x) => x.OrphanActivityExecution!.map((x) => x.evaluation!))
+								  )?.toFixed(2)}
 						</Text>
 					</SimpleGrid>
 					<Group position='right'>

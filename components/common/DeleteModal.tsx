@@ -1,14 +1,15 @@
 import { Button, MantineSize, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconTrash, IconX } from '@tabler/icons-react';
+import { IconCheck, IconInfoCircle, IconTrash, IconX, TablerIconsProps } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { Pages, serverLink } from '../../shared/links';
-import { STATUS_CODE, _ActivityInfo } from '../../types';
-import axios from 'axios';
+import { ResponseType, STATUS_CODE, _ActivityInfo } from '../../types';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ActivityInfo } from '@prisma/client';
 import { Url } from 'next/dist/shared/lib/router/router';
 import myNotification from '../MyNotification';
+import React from 'react';
 interface Props {
 	id: number | -1;
 	tooltip?: string;
@@ -16,8 +17,17 @@ interface Props {
 	title: string;
 	url: Url;
 	redirectUrl?: Url;
+	buttonOrIcon?: (props: TablerIconsProps) => JSX.Element;
 }
-export default function DeleteModal({ id, title, url, tooltip = 'Delete', redirectUrl, size = 'xs' }: Props) {
+export default function DeleteModal({
+	id,
+	title,
+	url,
+	tooltip = 'Delete',
+	redirectUrl,
+	size = 'xs',
+	buttonOrIcon,
+}: Props) {
 	const router = useRouter();
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -29,23 +39,22 @@ export default function DeleteModal({ id, title, url, tooltip = 'Delete', redire
 			onCancel: () =>
 				notifications.show({
 					title: 'Cancel',
-					message: `cancel Delete`,
+					message: `Cancel Delete`,
 					color: 'gray',
+					icon: <IconInfoCircle />,
 				}),
 			onConfirm: async () => {
-				const result = await deleteRecord(id, url);
-				console.log('🚀 ~ file: DeleteModal.tsx:32 ~ onConfirm: ~ result:', result);
 				try {
-					if (result.status === STATUS_CODE.OK) {
-						myNotification('Success', result.data.msg, 'green', <IconCheck />);
-						router.push(redirectUrl ? redirectUrl : router.asPath);
+					const res: AxiosResponse<ResponseType> = await axios.delete<ResponseType>(`${serverLink}/${url}/${id}`);
+					if (res.status === STATUS_CODE.OK) {
+						myNotification('Success', res.data.msg, 'green', <IconCheck />);
+						redirectUrl ? router.push(redirectUrl) : router.push(router.asPath);
 					} else {
-						myNotification('Error', result.data.error.meta.cause || result.data.msg, 'red', <IconX />);
-						router.push(router.asPath);
+						myNotification('Error', res.data.msg || 'Record to be deleted was not found.', 'red', <IconX />);
 					}
 				} catch (error) {
-					myNotification('Error', error.response.data, 'red', <IconX />);
-					router.push(router.asPath);
+					if (axios.isAxiosError(error)) myNotification('Error', 'Something went wrong.', 'red', <IconX />);
+					redirectUrl ? router.push(redirectUrl) : router.push(router.asPath);
 					console.log('🚀 ~ file: DeleteModal.tsx:55 ~ onConfirm: ~ error:', error);
 				}
 			},
@@ -53,21 +62,8 @@ export default function DeleteModal({ id, title, url, tooltip = 'Delete', redire
 	return (
 		<Tooltip label={tooltip}>
 			<Button size={size} onClick={openDeleteModal} color='red'>
-				<IconTrash />
+				{<IconTrash />}
 			</Button>
 		</Tooltip>
 	);
 }
-
-const deleteRecord = async (id: number, url: Url) => {
-	console.log('🚀 ~ file: DeleteModal.tsx:8 ~ deleteOrphan ~ id:', id);
-
-	try {
-		const res = await axios.delete<{ msg: string; data: any }>(`${serverLink}/api/${url}/${id}`);
-		console.log('🚀 ~ file: DeleteModal.tsx:77 ~ deleteRecord ~ res:', res.data.msg);
-		return res;
-	} catch (error) {
-		console.log('🚀 ~ file: DeleteModal.tsx:78 ~ deleteRecord ~ error:', error);
-		return error.response;
-	}
-};

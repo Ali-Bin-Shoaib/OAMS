@@ -4,6 +4,8 @@ import { Criteria, User } from '@prisma/client';
 import MyModal from '../../../components/common/MyModal';
 import CriteriaTable from '../../../components/criteria/CriteriaTable';
 import CriteriaForm from '../../../components/criteria/CriteriaForm';
+import { useEffect, useState } from 'react';
+import { Loader } from '@mantine/core';
 
 // ******************************** CRITERIA PAGE ********************************
 // * get Goal from database and pass the result as props to Index page.
@@ -13,7 +15,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 		orderBy: { id: 'asc' },
 	});
-	if (!criteria) return { notFound: true };
+	if (!criteria) return { props: {} };
 	criteria.sort(function (a, b) {
 		return a.id > b.id ? 1 : -1;
 	});
@@ -23,7 +25,12 @@ interface Props {
 	criteria: (Criteria & { User: User })[];
 }
 function Index({ criteria }: Props) {
-	console.log('🚀 ~ file: index.tsx:25 ~ Index ~ criteria:', criteria);
+	const [hydration, setHydration] = useState(false);
+
+	useEffect(() => {
+		setHydration(true);
+	}, []);
+	if (!hydration) return <Loader />;
 	return (
 		<>
 			<div>Index</div>

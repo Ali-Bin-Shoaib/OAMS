@@ -2,21 +2,28 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE, REQUEST_METHODS, Behavior } from '../../../../types';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, User, UserType } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== (UserType.BEHAVIOR_SUPERVISOR || UserType.ADMIN)) {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
+
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const behavior: Behavior = req.body;
-			const user = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
-			behavior.User = user;
 			const { id, userId, orphanId, BehaviorCriteria, date, User, note } = behavior;
 			const newBehavior = await prisma.behaviorInfo.create({
 				data: {
 					date: date,
 					note: note,
 					Orphan: { connect: { id: orphanId } },
-					User: { connect: { id: user.id } },
+					User: { connect: { id: userId } },
 					BehaviorCriteria: { create: BehaviorCriteria },
 				},
 			});

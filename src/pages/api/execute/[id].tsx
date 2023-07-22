@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				} = req.body;
 				console.log('🚀 ~ file: [id].tsx:45 ~ handler ~ activityExecution:', activityExecution);
 				const { OrphanActivityExecution, GoalEvaluation, ActivityInfo, Executor, ...a } = activityExecution;
-
+if(!OrphanActivityExecution||!GoalEvaluation)return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'activity dose not exist.' });
 				const updatedExecution = await prisma.activityExecutionInfo.update({
 					where: { id: ID },
 					data: {
@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						GoalEvaluation: {
 							update: GoalEvaluation.map((x) => ({
 								where: {
-									goalId_activityExecutionInfoId: { goalId: x.Goal.id, activityExecutionInfoId: x.activityExecutionInfoId },
+									goalId_activityExecutionInfoId: { goalId: x?.Goal?.id!, activityExecutionInfoId: x.activityExecutionInfoId },
 								},
 								data: { evaluation: x.evaluation },
 							})),

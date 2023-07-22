@@ -96,7 +96,7 @@ function RoomTable({ rooms }: Props) {
 							modalSize={'md'}
 							m={0}
 						/>
-						<RoomInfo id={row.original.id} />
+						<RoomInfo id={row.original.id!} />
 					</Button.Group>
 				)}
 			/>
@@ -109,7 +109,7 @@ interface CardProps {
 }
 export function RoomInfo({ id }: CardProps) {
 	const [opened, { open, close }] = useDisclosure(false);
-	const [room, setRoom] = useState<ROOM>(undefined);
+	const [room, setRoom] = useState<ROOM>();
 	return (
 		<>
 			<Modal opened={opened} size={'lg'} onClose={close}>

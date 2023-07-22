@@ -70,7 +70,7 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 			// 	enableResizing: true,
 			// },
 			{
-				accessorFn: (row) => row.OrphanActivityExecution.filter((x) => x.isAttended).length,
+				accessorFn: (row) => row?.OrphanActivityExecution?.filter((x) => x.isAttended).length,
 				id: 'Attended Orphans',
 				header: 'Attended Orphans',
 				maxSize: 70,
@@ -97,10 +97,10 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 					// 		fractions={2}
 					// 	/>
 					// );
-					return row.GoalEvaluation
+					return row.GoalEvaluation && row.OrphanActivityExecution
 						? (
 								(row.GoalEvaluation.reduce((total, goal) => total + goal.evaluation!, 0) / row.GoalEvaluation.length +
-									row.OrphanActivityExecution.reduce((total, orphan) => total + orphan.evaluation, 0) /
+									row.OrphanActivityExecution.reduce((total, orphan) => total + orphan?.evaluation!, 0) /
 										row.OrphanActivityExecution.length) /
 								2
 						  ).toFixed(2)
@@ -177,7 +177,7 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 								onClick={() => {
 									router.push(`${router.asPath}/${row.original.id}`);
 								}}
-								color='blue'>
+								color='gray'>
 								<IconInfoCircle />
 							</Button>
 						</Tooltip>

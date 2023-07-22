@@ -1,6 +1,6 @@
 import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
-import { _ActivityInfo } from '../../types';
+import { ResponseType, STATUS_CODE, _ActivityInfo } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { Paths, serverLink } from '../../shared/links';
@@ -18,65 +18,61 @@ import {
 	NumberInput,
 	Title,
 	MultiSelect,
+	Modal,
 } from '@mantine/core';
-import { Goal, Prisma, Quarter, ActivityInfo } from '@prisma/client';
+import { Goal, Prisma, Quarter, ActivityInfo, User } from '@prisma/client';
+import myNotification from 'components/MyNotification';
+import { IconCheck } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
 //* type user is not allowed in creating or editing activityInfo TYpe remove it and fix the forms.
 interface Props {
 	activityInfo?: _ActivityInfo;
-	// activityInfo?: ActivityAndGoals;
-
 	goalInfo: Goal[];
 }
 
 export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Element {
-	const defaultValues: _ActivityInfo = activityInfo
-		? activityInfo
-		: {
-				// ActivityGoal:{}
-				date: new Date(),
-				title: undefined,
-				budget: undefined,
-				target: undefined,
-				type: undefined,
-				quarter: null,
-				// selectedGoals: activityInfo ? activityInfo.ActivityGoal.map((x) => x?.goalId?.toString()) : [''],
-				// userId: undefined,
-				User: undefined,
-		  };
-	activityInfo ? (defaultValues.selectedGoals = activityInfo.ActivityGoal.map((x) => x?.goalId?.toString())) : '';
 	const [hydrate, setHydrate] = useState(false);
-
 	const {
 		control,
-		watch,
 		handleSubmit,
-		formState: { errors },
+		setValue,
+		setError,
+		formState: { errors, isValid },
 	} = useForm<_ActivityInfo>({
 		defaultValues: activityInfo,
 	});
-	{
-	}
 	const router = useRouter();
+	const { data: session, status } = useSession({ required: true });
+	console.log('🚀 ~ file: ActivityForm.tsx:48 ~ ActivityForm ~ status:', status);
+	console.log('🚀 ~ file: ActivityForm.tsx:48 ~ ActivityForm ~ session:', session);
 	const onSubmit = async (data: _ActivityInfo) => {
-		data.ActivityGoal = data.selectedGoals.map((x) => ({ goalId: Number(x) }));
+		if (session?.user) data.userId = session?.user?.id;
 
-		delete data.selectedGoals;
 		console.log('🚀 ~ file: ActivityForm.tsx:57 ~ onSubmit ~ data:', data);
 		if (!activityInfo) {
 			console.log('activityInfo not exist.');
 			const url = serverLink + 'api/activity/create';
-			const res = await axios.post(url, data).catch((err) => console.log('error at creating new activityInfo--', err));
+			// const res = await axios.post(url, data).catch((err) => console.log('error at creating new activityInfo--', err));
+			const res = await axios.post<ResponseType>(url, data);
+			console.log('🚀 ~ file: ActivityForm.tsx:55 ~ onSubmit ~ res:', res);
+
+			if (res.status === STATUS_CODE.OK) {
+				myNotification('Success', res.data.msg, 'green', <IconCheck />);
+			}
 		} else {
 			console.log('activityInfo exist.', activityInfo.id);
 
 			const url = serverLink + 'api/activity/' + activityInfo.id;
 			// delete data.User
 			console.log('🚀 ~ file: ActivityForm.tsx:86 ~ onSubmit ~ data:', data);
-			const res = await axios.put(url, data);
+			const res = await axios.put<ResponseType>(url, data);
+			if (res.status === STATUS_CODE.OK) {
+				myNotification('Success', res.data.msg, 'green', <IconCheck />);
+			}
 			router.push(serverLink + 'activities/');
 		}
-		close();
-		router.push(serverLink + 'activities/');
+		// close();
+		// router.push(serverLink + 'activities/');
 	};
 
 	useEffect(() => {
@@ -195,24 +191,25 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 						}}
 					/>
 					<Controller
-						name='selectedGoals'
+						name='ActivityGoal'
 						control={control}
-						// defaultValue={ }
 						rules={{ required: 'select at lest one goal' }}
-						// render={({ field :{onChange,value}}) => {
-						render={({ field }) => {
+						render={({ field: { onChange } }) => {
 							return (
 								<MultiSelect
+									// {...field}
+									defaultValue={activityInfo?.ActivityGoal?.map((x) => x?.goalId!.toString())}
 									data={goalInfo.map((goal) => ({
 										value: goal.id.toString(),
 										label: goal.title,
 									}))}
-									{...field}
-									// onChange={(e)=>{
-									// 	onChange(e){goalInfo.map(x=>value=x)}
-									// }}
-									// value={value}
-
+									onChange={(value) => {
+										console.log('🚀 ~ file: ActivityForm.tsx:214 ~ value:', value);
+										setValue(
+											'ActivityGoal',
+											value.map((x) => ({ goalId: Number(x) }))
+										);
+									}}
 									clearable
 									size={'md'}
 									label='Select activity goals'

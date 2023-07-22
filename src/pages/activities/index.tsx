@@ -8,13 +8,16 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconPlus } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
-import ActivityTable from '../../../components/activities/ActivityTable';
+import dynamic from 'next/dynamic';
 
 // ******************************** ACTIVITYiNFO PAGE ********************************
 // * get activity from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
 	const activities = await prisma.activityInfo.findMany({
-		include: { User: true, ActivityGoal: { include: { Goal: true } } },
+		include: {
+			User: { select: { id: true, name: true } },
+			ActivityGoal: { select: { Goal: { select: { id: true, title: true } } } },
+		},
 		orderBy: { id: 'asc' },
 	});
 	if (!activities) return { props: { undefined } };
@@ -31,12 +34,14 @@ interface Props {
 }
 export default function Index({ stringData }: Props) {
 	console.log('ActivityList Index');
+	const ActivityTable = dynamic(() => import('../../../components/activities/ActivityTable'));
+
 	const jsonData: { activities: _ActivityInfo[] } = SuperJSON.parse(stringData);
 	const { activities } = jsonData;
 	const [activitiesList, setActivitiesList] = useState<_ActivityInfo[]>(activities);
 	const [cardInfo, setCardInfo] = useState<_ActivityInfo>(activitiesList[0]);
 	const [hydration, setHydration] = useState(false);
-	const [opened, { open, close }] = useDisclosure(false);
+	// const [opened, { open, close }] = useDisclosure(false);
 	const router = useRouter();
 	const updateCard = (activityInfo: _ActivityInfo) => {
 		activityInfo ? setCardInfo(activityInfo) : setCardInfo(activities[0]);

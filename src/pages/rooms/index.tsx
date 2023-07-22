@@ -39,10 +39,9 @@ interface Props {
 export default function Index({ stringJson }: Props) {
 	console.log('Rooms Index');
 	const { rooms, orphans } = SuperJSON.parse<{ rooms: ROOM[]; orphans: Pick<Orphan, 'id' | 'name'>[] }>(stringJson);
-	console.log('🚀 ~ file: index.tsx:39 ~ rooms:', rooms);
 
-	const [orphanRoom, setOrphanRoom] = useState<ROOM[]>(undefined);
-	const [id, setId] = useState<number>(undefined);
+	const [orphanRoom, setOrphanRoom] = useState<ROOM[]>();
+	const [id, setId] = useState<number>();
 	const [hydration, setHydration] = useState(false);
 	const router = useRouter();
 	const fetchOrphanRoom = async (id: number) => {

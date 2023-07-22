@@ -1,11 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { ActivityGoal, ActivityInfo, Goal, Orphan, User } from '@prisma/client';
+import { ActivityGoal, ActivityInfo, Goal, Orphan, User, UserType } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
+import user from '../user';
 // export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const user = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== (UserType.ACTIVITY_SUPERVISOR || UserType.ADMIN)) {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
 
 	const ID = Number(req.query.id);
 	const goal = await prisma.goal.findUnique({ where: { id: ID } });
@@ -18,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				const { User, ...goal } = data;
 				console.log('🚀 ~ file: [id].tsx:16 ~ handler ~ goal:', goal);
 
-				const updatedGoal = await prisma.goal.update({ where: { id: ID }, data: { ...goal, userId: user.id } });
+				const updatedGoal = await prisma.goal.update({ where: { id: ID }, data: { ...goal } });
 				console.log('🚀 ~ file: [id].tsx:19 ~ handler ~ updatedGoal:', updatedGoal);
 
 				return res

@@ -30,20 +30,17 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-interface FooterSimpleProps {
-	links: { link: string; label: string }[];
-}
 
 export default function AppFooter() {
 	const { classes } = useStyles();
 	const items = Paths.links.map((link) => (
-		<Link className='text-white no-underline hover:underline' key={link.label} href={link.link}>
+		<Link className='text-white no-underline hover:shadow' key={link.label} href={link.link}>
 			{link.label}
 		</Link>
 	));
 
 	return (
-		<div className={classes.footer}>
+		<div className={classes.footer+ ' align-baseline'}>
 			<Container className={classes.inner}>
 				<IconHome size={28} />
 				<Group className={classes.links}>{items}</Group>

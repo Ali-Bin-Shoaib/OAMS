@@ -13,7 +13,7 @@ function RoomCard({ room }: Props) {
 					<Text weight={700}>ID: </Text>
 					<Text>{room.id}</Text>
 					<Text weight={700}>Created By: </Text>
-					<Text> {room.User.name}</Text>
+					<Text> {room?.User?.name}</Text>
 					<Text weight={700}>Person Name: </Text>
 					<Text> {room.wing}</Text>
 					<Text weight={700}>Phone Number: </Text>

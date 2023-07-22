@@ -31,6 +31,7 @@ import { Degree, Orphan } from '@prisma/client';
 import { $enum } from 'ts-enum-util';
 import myNotification from '../MyNotification';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
 
 interface Props {
 	health?: Health;
@@ -38,6 +39,8 @@ interface Props {
 }
 export default function HealthForm({ orphans, health }: Props): JSX.Element {
 	console.log('🚀 ~ file: HealthForm.tsx:40 ~ HealthForm ~ health:', health);
+	const { data: session } = useSession();
+
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
@@ -50,6 +53,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 
 	const router = useRouter();
 	const onSubmit = async (data: Health) => {
+		data.userId = session?.user.id;
 		console.log('🚀 ~ file: HealthForm.tsx:53 ~ onSubmit ~ data:', data);
 		if (!health) {
 			console.log('Health not exist.');
@@ -160,9 +164,8 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 									<TextInput
 										{...field}
 										disabled
-										name='User.name'
-										label='User name'
-										defaultValue={health?.User?.name}
+										label='Created by'
+										defaultValue={health?.User?.name || session?.user.name}
 										w={'45%'}
 									/>
 								);

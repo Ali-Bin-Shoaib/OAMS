@@ -1,10 +1,12 @@
 import { Attendance, Orphan, OrphanAttendance, Prisma } from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Container } from '@mantine/core';
+import { Button, Container, Tooltip } from '@mantine/core';
 import { _Attendance, _Orphan, _OrphanAttendance } from '../../types';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../shared/links';
+import { IconEdit, IconInfoCircle, IconCheckbox } from '@tabler/icons-react';
+import DeleteModal from 'components/common/DeleteModal';
 
 interface Props {
 	attendance: _Attendance[];
@@ -50,12 +52,40 @@ function AttendanceTable({ attendance }: Props) {
 				columns={columns}
 				data={attendance}
 				initialState={{ density: 'xs' }}
-				mantineTableBodyRowProps={(row) => ({
-					onClick: () => {
-						// on row click change the card to the clicked attendance and then user can edit or delete.
-						router.push(serverLink + 'attendance/' + row.row.original.id);
-					},
-				})}
+				enableRowActions
+				enableToolbarInternalActions
+				positionActionsColumn='last'
+				renderRowActions={({ row }) => (
+					<Button.Group>
+						<DeleteModal id={row.original.id!} title={'Attendance'} url={'api/attendance/'} />
+						<Tooltip label={'Edit'}>
+							<Button
+								size='xs'
+								onClick={() => {
+									router.push(serverLink + 'attendance/' + row.original.id);
+								}}
+								color='yellow'>
+								<IconEdit />
+							</Button>
+						</Tooltip>
+						<Tooltip label={'Info'}>
+							<Button
+								size='xs'
+								onClick={() => {
+									router.push(`${router.asPath}/${row.original.id}`);
+								}}
+								color='gray'>
+								<IconInfoCircle />
+							</Button>
+						</Tooltip>
+					</Button.Group>
+				)}
+				// mantineTableBodyRowProps={(row) => ({
+				// 	onClick: () => {
+				// 		// on row click change the card to the clicked attendance and then user can edit or delete.
+				// 		router.push(serverLink + 'attendance/' + row.row.original.id);
+				// 	},
+				// })}
 				mantineTableBodyCellProps={{
 					sx: { border: '2px solid #dee2e6' },
 				}}

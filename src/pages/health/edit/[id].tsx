@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const data = { orphans, health };
 	const stringData = SuperJSON.stringify(data);
 	if (!health) {
-		return { notFound: true };
+		return { props: {} };
 	}
 	return { props: { stringData } };
 };

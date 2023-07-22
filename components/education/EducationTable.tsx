@@ -45,16 +45,11 @@ function EducationTable({ education }: Props) {
 
 	return (
 		<Container fluid>
+			{/* @ts-ignore */}
 			<MantineReactTable
 				columns={columns}
 				data={education}
 				initialState={{ density: 'xs' }}
-				// mantineTableBodyRowProps={(row) => ({
-				// 	onClick: () => {
-				// 		// on row click change the card to the clicked attendance and then user can edit or delete.
-				// 		router.push(serverLink + 'attendance/' + row.row.original.id);
-				// 	},
-				// })}
 				mantineTableBodyCellProps={{
 					sx: { border: '2px solid #dee2e6' },
 				}}
@@ -63,7 +58,6 @@ function EducationTable({ education }: Props) {
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'Education'} url={'api/education/'} />
-
 						<Tooltip label={'Edit'}>
 							<Button
 								size='xs'

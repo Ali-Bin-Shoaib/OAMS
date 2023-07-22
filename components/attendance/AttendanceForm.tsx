@@ -1,19 +1,29 @@
 import { useEffect, useState } from 'react';
-import { _Attendance, _Orphan, _OrphanAttendance, _UserWithGuardianAndSponsor } from '../../types';
+import {
+	ResponseType,
+	STATUS_CODE,
+	_Attendance,
+	_Orphan,
+	_OrphanAttendance,
+	_UserWithGuardianAndSponsor,
+} from '../../types';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { serverLink } from '../../shared/links';
 import { DateInput, DatePickerInput } from '@mantine/dates';
 import React from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Button, Group, Container, Loader, Divider, Table, Textarea, TextInput, Checkbox } from '@mantine/core';
+import { useSession } from 'next-auth/react';
+import myNotification from 'components/MyNotification';
+import { IconCheck, IconX } from '@tabler/icons-react';
 
 interface Props {
 	attendance?: _Attendance;
 	orphans: _Orphan[];
 }
 export default function AttendanceForm({ orphans, attendance }: Props): JSX.Element {
-	console.log('🚀 ~ file: AttendanceForm.tsx:19 ~ AttendanceForm ~ attendance:', attendance);
+	const { data: session } = useSession();
 	let defaultValues: _Attendance;
 	if (attendance) {
 		orphans.map((orphan) => {
@@ -22,7 +32,6 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 					Orphan: orphan,
 					orphanId: orphan.id as number,
 					absentReason: null as unknown as undefined,
-
 					// attendanceId: attendance.id as number,
 					userId: attendance.userId,
 					id: undefined,
@@ -66,22 +75,34 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 	const { fields, update } = useFieldArray({ control, name: 'OrphanAttendance' });
 	const router = useRouter();
 	const onSubmit = async (data: _Attendance) => {
+		if (session?.user) data.userId = session.user.id;
 		// data.OrphanAttendance = data.OrphanAttendance.filter((x) => x.isAttended == false);
 		data.OrphanAttendance.map((oa) => delete oa.Orphan);
 		console.log('🚀 ~ file: AttendanceForm.tsx:49 ~ onSubmit ~ data:', data);
 		// const config: AxiosRequestConfig = {
 		// 	headers: { 'content-type': 'multipart/form-data' },
 		// };
-		if (!attendance) {
-			console.log('attendance not exist.');
-			const url = serverLink + 'api/attendance/create';
-			const res = await axios.post(url, data).catch((err) => console.log('error at creating new attendance--', err));
-			console.log('🚀 ~ file: AttendanceForm.tsx:40 ~ onSubmit ~ res:', res);
-		} else {
-			console.log('attendance exist.', attendance.id);
-			const url = serverLink + '/api/attendance/' + attendance.id;
-			const res = await axios.put(url, data);
-			console.log('🚀 ~ file: AttendanceForm.tsx:45 ~ onSubmit ~ res:', res);
+		try {
+			if (!attendance) {
+				console.log('attendance not exist.');
+				const url = serverLink + 'api/attendance/create';
+				const res = await axios.post<ResponseType>(url, data);
+				if (res.status === STATUS_CODE.OK) {
+					console.log('🚀 ~ file: AttendanceForm.tsx:84 ~ onSubmit ~ res:', res);
+					myNotification('Success', res.data.msg, 'green', <IconCheck />);
+				} else myNotification('Error', res.data.msg, 'red', <IconX />);
+			} else {
+				console.log('attendance exist.', attendance.id);
+				const url = serverLink + '/api/attendance/' + attendance.id;
+				const res = await axios.put<ResponseType>(url, data);
+				if (res.status === STATUS_CODE.OK) {
+					console.log('🚀 ~ file: AttendanceForm.tsx:92 ~ onSubmit ~ res:', res);
+					myNotification('Success', res.data.msg, 'green', <IconX />);
+				} else myNotification('Error', res.data.msg, 'red', <IconX />);
+			}
+		} catch (error) {
+			if (axios.isAxiosError(error)) console.log('🚀 ~ file: AttendanceForm.tsx:93 ~ onSubmit ~ error:', error);
+			myNotification('Error', error.response.data.msg, 'red', <IconX />);
 		}
 		// close();
 		// router.push(router.asPath);
@@ -125,8 +146,8 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 									<TextInput
 										{...field}
 										disabled
-										name='User.name'
-										label='User name'
+										variant='filled'
+										label='Created by'
 										defaultValue={attendance?.User?.name}
 										w={'45%'}
 									/>

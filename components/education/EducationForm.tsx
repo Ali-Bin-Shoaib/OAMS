@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
 	Education,
+	ResponseType,
 	STATUS_CODE,
 	_Attendance,
 	_Orphan,
@@ -8,7 +9,7 @@ import {
 	_UserWithGuardianAndSponsor,
 } from '../../types';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { serverLink } from '../../shared/links';
 import { DatePickerInput } from '@mantine/dates';
 import React from 'react';
@@ -30,6 +31,7 @@ import { Degree, Orphan } from '@prisma/client';
 import { $enum } from 'ts-enum-util';
 import myNotification from '../MyNotification';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
 
 interface Props {
 	education?: Education;
@@ -37,6 +39,7 @@ interface Props {
 }
 export default function EducationForm({ orphans, education }: Props): JSX.Element {
 	console.log('🚀 ~ file: EducationForm.tsx:39 ~ EducationForm ~ education:', education);
+	const { data: session } = useSession();
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
@@ -55,36 +58,37 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 	const router = useRouter();
 	const onSubmit = async (data: Education) => {
 		console.log('🚀 ~ file: EducationForm.tsx:31 ~ onSubmit ~ data:', data);
+		data.userId = session?.user.id;
 		if (!education) {
 			console.log('Education not exist.');
 			const url = `${serverLink}api/education/create`;
 			await axios
-				.post(url, data)
+				.post<ResponseType>(url, data)
 				.then((data) => {
 					console.log('🚀 ~ file: EducationForm.tsx:49 ~ await axios.post ~ data:', data);
 					data.status === STATUS_CODE.OK
 						? (myNotification('Create', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'education'))
-						: myNotification('Create', data.data.msg, 'red', <IconX />);
+						: myNotification('Error', data.data.msg, 'red', <IconX />);
 				})
 				.catch((err) => {
 					console.log('error at creating new education--', err);
-					myNotification('Create', err.response.data.msg, 'red', <IconX />);
+					myNotification('Error', 'Something went wrong', 'red', <IconX />);
 				});
 		} else {
 			console.log('Education exist.', education.id);
 			const url = `${serverLink}/api/education/${education.id}`;
 			await axios
-				.put(url, data)
+				.put<ResponseType>(url, data)
 				.then((data) => {
 					data.status === STATUS_CODE.OK
 						? (myNotification('Update', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'education'))
-						: myNotification('Update', data.data.msg, 'red', <IconX />);
+						: myNotification('Error', data.data.msg, 'red', <IconX />);
 				})
 				.catch((e) => {
 					console.log('🚀 ~ file: EducationForm.tsx:78 ~ await axios.put ~ e:', e);
+					myNotification('Error', 'Something went wrong', 'red', <IconX />);
 				});
 		}
-		// close();
 		// router.push(router.asPath);
 	};
 
@@ -109,7 +113,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 								return (
 									<Select
 										onChange={(id) => {
-											setValue('orphanId', Number(id || education?.orphanId.toString()));
+											setValue('orphanId', Number(id || education?.orphanId?.toString()));
 											setValue(
 												'Orphan',
 												orphans.find((x) => x.id === Number(id))
@@ -119,7 +123,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										placeholder='choose orphan'
 										// description='select an orphan '
 										required
-										defaultValue={education?.orphanId.toString()}
+										defaultValue={education?.orphanId?.toString()}
 										searchable
 										selectOnBlur
 										w={'45%'}
@@ -167,7 +171,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										disabled
 										name='User.name'
 										label='User name'
-										defaultValue={education?.User?.name}
+										defaultValue={education?.User?.name || session?.user.name}
 										w={'45%'}
 									/>
 								);
@@ -244,6 +248,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										{...field}
 										w={'45%'}
 										multiple={true}
+										disabled
 										label='School Name'
 										withAsterisk
 										error={errors.Orphan?.schoolName?.message && errors.Orphan.schoolName.message}

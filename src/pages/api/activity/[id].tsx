@@ -1,15 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { ActivityGoal, ActivityInfo, Goal, Orphan, User } from '@prisma/client';
+import { ActivityGoal, ActivityInfo, Goal, Orphan, Prisma, User } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 // export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	if (session) {
+		if (session.user.type !== 'ADMIN' && session.user.type !== 'ACTIVITY_SUPERVISOR')
+			return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ ID:', ID);
 	const activity = await prisma.activityInfo.findUnique({ where: { id: ID } });
 	console.log('🚀 ~ file: [id].tsx:11 ~ handler ~ activity:', activity);
-	if (!(ID || activity)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'activity dose not exist.' });
+	if (!ID || !activity) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'activity dose not exist.' });
 	switch (req.method) {
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
@@ -20,27 +27,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				} = req.body;
 
 				console.log('🚀 ~ file: [id].tsx:19 ~ handler ~ activity:', activity);
-				const { User, ActivityGoal, id, userId, ...activityInfo } = activity;
+				const { User, ActivityGoal, id, ...activityInfo } = activity;
 				console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ activityInfo:', activityInfo);
 				console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ ActivityGoal:', ActivityGoal);
-				console.log('🚀 ~ file: [id].tsx:27 ~ handler ~ User:', User);
 
 				const updatedActivity = await prisma.activityInfo.update({
 					where: { id: id },
 					data: {
 						...activityInfo,
 						ActivityGoal: {
-							deleteMany: { goalId: { notIn: ActivityGoal.map((x) => x.goalId) } },
+							deleteMany: { goalId: { notIn: ActivityGoal.map((x) => x.goalId as number) } },
 							upsert: ActivityGoal.map((x) => ({
 								where: {
 									// goalId_activityInfoId: { goalId: x.goalId, activityInfoId: activityInfo.id }
-									goalId_activityInfoId: { goalId: x.goalId, activityInfoId: id },
+									goalId_activityInfoId: { goalId: x.goalId as number, activityInfoId: id },
 								},
 								create: {
-									Goal: { connect: { id: x.goalId } },
+									Goal: { connect: { id: x.goalId as number } },
 								},
 								update: {
-									Goal: { connect: { id: x.goalId } },
+									Goal: { connect: { id: x.goalId as number } },
 								},
 							})),
 						},
@@ -59,6 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		case REQUEST_METHODS.DELETE: {
 			try {
+				console.log('🚀 ~ file: [id].tsx:66 ~ handler ~ ID:', ID);
 				const deletedActivity = await prisma.activityInfo.delete({ where: { id: ID } });
 				console.log('🚀 ~ file: [id].tsx:31 ~ handler ~ deletedActivity:', deletedActivity);
 				if (deletedActivity) {

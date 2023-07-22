@@ -33,9 +33,9 @@ export default function Index({ stringJson }: Props) {
 	console.log('Health Index');
 	const { health, orphans } = SuperJSON.parse<{ health: Health[]; orphans: Orphan[] }>(stringJson);
 
-	const [orphanHealth, setOrphanHealth] = useState<Health[]>(undefined);
+	const [orphanHealth, setOrphanHealth] = useState<Health[]>();
 	console.log('🚀 ~ file: index.tsx:37 ~ orphanHealth:', orphanHealth);
-	const [id, setId] = useState<number>(undefined);
+	const [id, setId] = useState<number>();
 	const [hydration, setHydration] = useState(false);
 	const router = useRouter();
 	const fetchOrphanHealth = async (id: number) => {

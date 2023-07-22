@@ -55,7 +55,7 @@ function Info({ stringData }: Props) {
 						<Text weight={700}>Orphan Name:</Text>
 						<Text>{education.Orphan?.name}</Text>
 						<Text weight={700}>Created by:</Text>
-						<Text>{education.User.name}</Text>
+						<Text>{education?.User?.name}</Text>
 						<Text weight={700}>Date:</Text>
 						<Text>{education.date.toDateString()}</Text>
 						<Text weight={700}>School Name:</Text>

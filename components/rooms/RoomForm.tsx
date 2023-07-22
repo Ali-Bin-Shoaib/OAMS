@@ -34,24 +34,28 @@ import { Degree, Orphan, Wings } from '@prisma/client';
 import { $enum } from 'ts-enum-util';
 import myNotification from '../MyNotification';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
 
 interface Props {
 	room?: ROOM;
 	// orphans: Pick<Orphan, 'id' | 'name'>[];
 }
 export default function RoomForm({ room }: Props): JSX.Element {
+	const { data: session } = useSession();
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
-		setValue,
 	} = useForm<ROOM>({
 		defaultValues: room,
 	});
 
 	const router = useRouter();
 	const onSubmit = async (data: ROOM) => {
+		if (session?.user)
+			if (data.User) data.User.id = session?.user.id;
+			else data = { ...data, User: { id: session.user.id, name: session.user.name } };
 		console.log('🚀 ~ file: RoomForm.tsx:57 ~ onSubmit ~ data:', data);
 		if (!room) {
 			console.log('Room not exist.');
@@ -61,7 +65,7 @@ export default function RoomForm({ room }: Props): JSX.Element {
 				.then((data) => {
 					console.log('🚀 ~ file: RoomForm.tsx:64 ~ .then ~ data:', data);
 					data.status === STATUS_CODE.OK
-						? (myNotification('Create', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'room'))
+						? (myNotification('Create', data.data.msg, 'green', <IconCheck />), router.push(router.asPath))
 						: myNotification('Create', data.data.msg, 'red', <IconX />);
 				})
 				.catch((err) => {
@@ -75,7 +79,7 @@ export default function RoomForm({ room }: Props): JSX.Element {
 				.put(url, data)
 				.then((data) => {
 					data.status === STATUS_CODE.OK
-						? (myNotification('Update', data.data.msg, 'green', <IconCheck />), router.push(serverLink + 'room'))
+						? (myNotification('Update', data.data.msg, 'green', <IconCheck />), router.push(router.asPath))
 						: myNotification('Update', data.data.msg, 'red', <IconX />);
 				})
 				.catch((err) => {
@@ -83,8 +87,6 @@ export default function RoomForm({ room }: Props): JSX.Element {
 					myNotification('Create', err.response.data.msg, 'red', <IconX />);
 				});
 		}
-		// close();
-		// router.push(router.asPath);
 	};
 
 	useEffect(() => {

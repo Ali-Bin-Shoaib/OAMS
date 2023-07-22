@@ -25,7 +25,6 @@ interface Props {
 export default function Index({ stringJson }: Props) {
 	console.log('Attendance Index');
 	const attendance = SuperJSON.parse<_Attendance[]>(stringJson);
-	console.log('🚀 ~ file: index.tsx:32 ~ Index ~ attendance:', attendance);
 	const [hydration, setHydration] = useState(false);
 	const router = useRouter();
 	useEffect(() => {

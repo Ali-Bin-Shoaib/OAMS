@@ -8,9 +8,9 @@ import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons-react';
 import EducationTable from '../../../components/education/EducationTable';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import myNotification from '../../../components/MyNotification';
-import { STATUS_CODE, Behavior, Education } from '../../../types';
+import { STATUS_CODE, Behavior, Education, ResponseType } from '../../../types';
 import orphans from '../orphans';
 
 // * get orphans from database and pass the result as props to Index page.
@@ -32,24 +32,26 @@ export default function Index({ stringJson }: Props) {
 	console.log('Education Index');
 	const { education, orphans } = SuperJSON.parse<{ education: Education[]; orphans: Orphan[] }>(stringJson);
 
-	const [orphanEducation, setOrphanEducation] = useState<Education[]>(undefined);
-	const [id, setId] = useState<number>(undefined);
+	const [orphanEducation, setOrphanEducation] = useState<Education[]>();
+	const [id, setId] = useState<number>();
 	const [hydration, setHydration] = useState(false);
 	const router = useRouter();
 	const fetchOrphanEducation = async (id: number) => {
 		console.log('🚀 ~ file: index.tsx:40 ~ fetchOrphanEducation ~ id:', id);
-		await axios
-			.get(`${serverLink}api/education/getOrphanEducation/${Number(id)}`)
-			.then((data) => {
-				console.log('🚀 ~ file: index.tsx:46 ~ .then ~ data:', data);
-				data.status === STATUS_CODE.OK
-					? (setOrphanEducation(SuperJSON.parse(data.data.data) as Education[]),
-					  myNotification('Get Info', data.data.msg, 'green', <IconCheck />))
-					: myNotification('Get Info', data.data.msg, 'red', <IconX />);
-			})
-			.catch((e) => {
-				myNotification('Not Found', e.response.data, 'red', <IconX />);
-			});
+		try {
+			const res = await axios.get<ResponseType>(`${serverLink}api/education/getOrphanEducation/${Number(id)}`);
+			if (res.status === STATUS_CODE.OK) {
+				console.log('🚀 ~ file: index.tsx:46 ~ .then ~ data:', res.data);
+				setOrphanEducation(SuperJSON.parse(res.data.data) as Education[]);
+				myNotification('Get Info', res.data.msg, 'green', <IconCheck />);
+			} else {
+				myNotification('Get Info', res.data.msg, 'red', <IconX />);
+			}
+		} catch (error) {
+			console.log('🚀 ~ file: index.tsx:53 ~ fetchOrphanEducation ~ error:', error);
+			setOrphanEducation([]);
+			myNotification('Get Info', error.response.data, 'red', <IconX />);
+		}
 	};
 	useEffect(() => {
 		setHydration(true);

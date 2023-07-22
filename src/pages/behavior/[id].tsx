@@ -63,7 +63,7 @@ function Info({ stringData }: Props) {
 						<Text weight={700}>Created by:</Text>
 						<Text>{behavior.User.name}</Text>
 						<Text weight={700}>Date:</Text>
-						<Text>{behavior.date.toDateString()}</Text>
+						<Text>{behavior?.date?.toDateString()}</Text>
 						<Text weight={700}>Note:</Text>
 						<Text>{behavior.note}</Text>
 						<Text weight={700}>Total Evaluation:</Text>

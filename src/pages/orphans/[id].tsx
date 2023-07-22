@@ -1,11 +1,10 @@
-import { Card, CardSection, Title, Text, Rating, Group, Button, SimpleGrid, Container, Center } from '@mantine/core';
+import { Title, Text, Rating, Group, Button, SimpleGrid, Container, Center, Tooltip } from '@mantine/core';
 import { v4 } from 'uuid';
-import DeleteOrphanModal from '../../../components/orphans/modals/DeleteOrphanModal';
 import EditOrphanModal from '../../../components/orphans/modals/EditOrphanModal';
 import { _Orphan } from '../../../types';
 import Image from 'next/image';
 import orphanImage from '../../img/simeLogo.png';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, GetStaticPaths, GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { Guardian, Orphan, User } from '@prisma/client';
 import DeleteModal from '../../../components/common/DeleteModal';
@@ -24,23 +23,20 @@ import { Pages, serverLink } from '../../../shared/links';
 // 		fallback: false,
 // 	};
 // };
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-	if (!params) return { notFound: true };
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+	console.log('🚀 ~ file: [id].tsx:28 ~ constgetServerSideProps:GetServerSideProps= ~ context:', context.params?.id);
+	if (!context.params) return { notFound: true };
 	try {
 		const orphan = await prisma.orphan.findUnique({
 			where: {
-				id: Number(params?.id),
+				id: Number(context.params?.id),
 			},
-			include: { Guardian: { include: { user: true } } },
+			include: { Guardian: { select: { user: { select: { id: true, name: true } } } } },
 		});
-		const guardians = await prisma.guardian.findMany({ include: { user: true } });
-		if (!orphan || !guardians) return { notFound: true };
-
-		const data = { orphan, guardians };
-		return {
-			props: { data },
-		};
+		const data = { orphan };
+		return orphan ? { props: { data } } : { notFound: true };
 	} catch (error) {
+		console.log('🚀 ~ file: [id].tsx:44 ~ constgetServerSideProps:GetServerSideProps= ~ error:', error);
 		return { notFound: true };
 	}
 };
@@ -48,18 +44,15 @@ interface Props {
 	data: {
 		orphan: Orphan & {
 			Guardian: Guardian & {
-				user: User;
+				user: Pick<User, 'id' | 'name'>;
 			};
 		};
-		guardians: (Guardian & {
-			user: User;
-		})[];
 	};
 }
 
 function OrphanDetails({ data }: Props) {
 	console.log('🚀 ~ file: [id].tsx:30 ~ OrphanDetails ~ data:', data);
-	const { orphan, guardians } = data;
+	const { orphan } = data;
 	// const [orphan, SetOrphan] = useState<Orphan>(data);
 
 	// if (!orphan) {
@@ -67,119 +60,116 @@ function OrphanDetails({ data }: Props) {
 	// }
 	return (
 		<>
-			<Container p={10}>
+			<div className='container mx-auto border border-sky-100 shadow px-4 p-2 my-4'>
 				<Title className='text-center'>Orphan Info</Title>
-				<Center>
-					<Image src={orphanImage} width={250} alt='asd' className='rounded-3xl  my-2 ' />
-				</Center>
+				<div className='container text-center'>
+					<Image src={orphanImage} width={250} alt='asd' className='rounded-3xl  my-2 ' />{' '}
+					<Tooltip label='Evaluation' className='mx-auto py-3 my-3'>
+						<Rating value={orphan.evaluation || undefined} fractions={1} readOnly size='lg' />
+					</Tooltip>
+				</div>
 				{/* <Box className='flex flex-wrap'> */}
-				<SimpleGrid cols={5}>
+				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-3'>
 					<Text>
-						<Text weight={'bold'}>id:</Text>
+						<Text weight={'bold'}>ID:</Text>
 						{orphan.id}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>name:</Text> {orphan.name || '---'}
+						<Text weight={'bold'}>Name:</Text> {orphan.name || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>birthdate:</Text> {orphan.birthdate?.toUTCString() || '---'}
+						<Text weight={'bold'}>Birthdate:</Text> {orphan.birthdate?.toUTCString() || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>gender:</Text> {orphan.gender || '---'}
+						<Text weight={'bold'}>Gender:</Text> {orphan.gender || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>gradeLevel:</Text> {orphan.gradeLevel || '---'}
+						<Text weight={'bold'}>Grade Level:</Text> {orphan.gradeLevel || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>schoolName:</Text> {orphan.schoolName || '---'}
+						<Text weight={'bold'}>School Name:</Text> {orphan.schoolName || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>motherName:</Text> {orphan.motherName || '---'}
+						<Text weight={'bold'}>Mother Name:</Text> {orphan.motherName || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>birthplace:</Text> {orphan.birthplace}
+						<Text weight={'bold'}>Birthplace:</Text> {orphan.birthplace}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>joinDate:</Text> {orphan.joinDate?.toUTCString()}
+						<Text weight={'bold'}>Join Date:</Text> {orphan.joinDate?.toDateString()}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>lastYearPercentage:</Text> {orphan.lastYearPercentage}
+						<Text weight={'bold'}>Last Year Percentage:</Text> {orphan.lastYearPercentage}
 					</Text>
 					<Text>
-						fatherDeathDate:
+						Father Death Date:
 						{orphan.fatherDeathDate?.toUTCString()}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>fatherWork:</Text> {orphan.fatherWork}
+						<Text weight={'bold'}>Father Work:</Text> {orphan.fatherWork}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>fatherDeathCos:</Text> {orphan.fatherDeathCos}
+						<Text weight={'bold'}>FatherDeathCos:</Text> {orphan.fatherDeathCos}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>noOfFamilyMembers:</Text> {orphan.noOfFamilyMembers}
+						<Text weight={'bold'}>No Of Family Members:</Text> {orphan.noOfFamilyMembers}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>males:</Text> {orphan.males}
+						<Text weight={'bold'}>Males:</Text> {orphan.males}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>females:</Text> {orphan.females}
+						<Text weight={'bold'}>Females:</Text> {orphan.females}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>motherName:</Text> {orphan.motherName}
+						<Text weight={'bold'}>Mother Name:</Text> {orphan.motherName}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>motherStatus:</Text> {orphan.motherStatus}
+						<Text weight={'bold'}>Mother Status:</Text> {orphan.motherStatus}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>isMotherWorks:</Text> {orphan.isMotherWorks ? 'yes' : 'no'}
+						<Text weight={'bold'}>Is Mother Works:</Text> {orphan.isMotherWorks ? 'yes' : 'no'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>motherJob:</Text> {orphan.motherJob || 'none'}
+						<Text weight={'bold'}>Mother Job:</Text> {orphan.motherJob || 'none'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>motherJobPhone:</Text> {orphan.motherJobPhone || '---'}
+						<Text weight={'bold'}>Mother Job Phone:</Text> {orphan.motherJobPhone || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>monthlyIncome:</Text> {orphan.monthlyIncome || '---'}
+						<Text weight={'bold'}>Monthly Income:</Text> {orphan.monthlyIncome || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>liveWith:</Text> {orphan.liveWith || '---'}
+						<Text weight={'bold'}>Live With:</Text> {orphan.liveWith || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>homeType:</Text> {orphan.homeType || '---'}
+						<Text weight={'bold'}>Home Type:</Text> {orphan.homeType || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>homePhone:</Text> {orphan.homePhone || '---'}
+						<Text weight={'bold'}>Home Phone:</Text> {orphan.homePhone || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>currentAddress:</Text> {orphan.currentAddress || '---'}
+						<Text weight={'bold'}>Current Address:</Text> {orphan.currentAddress || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>isSponsored:</Text> {orphan.isSponsored || '---'}
+						<Text weight={'bold'}>Is Sponsored:</Text> {orphan.isSponsored || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>foundationName:</Text> {orphan.foundationName || '---'}
+						<Text weight={'bold'}>Foundation Name:</Text> {orphan.foundationName || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>foundationAmount:</Text> {orphan.foundationAmount || '---'}
+						<Text weight={'bold'}>Foundation Amount:</Text> {orphan.foundationAmount || '---'}
 					</Text>
-					<Text>
-						<Text weight={'bold'}>evaluation:</Text> {orphan.evaluation || '---'}
-					</Text>
-				</SimpleGrid>
-				<Group position='center' pt={10}>
-					<Rating value={5} fractions={1} readOnly size='lg' />
-				</Group>
+				</div>
 				{/* </Box> */}
 
 				<Group position='right'>
 					<Button.Group>
-						<EditOrphanModal orphan={orphan as unknown as _Orphan} guardians={guardians} />
+						<EditOrphanModal orphan={orphan as unknown as _Orphan} />
 						{/* <DeleteOrphanModal id={orphan.id} /> */}
 						<DeleteModal id={orphan.id} title={'Orphan'} url={`orphan`} redirectUrl={`${Pages.Orphans.link}`} />
 					</Button.Group>
 				</Group>
-			</Container>
+			</div>
 		</>
 	);
 }

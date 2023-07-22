@@ -1,17 +1,27 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Contact, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { EmergencyContactInfo, Prisma } from '@prisma/client';
+import { EmergencyContactInfo, Prisma, UserType } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== UserType.ADMIN) {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
+
 	const admin = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
 	let isCreate = false;
-	let contact: EmergencyContactInfo;
+	let contact: EmergencyContactInfo | null = null;
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:11 ~ handler ~ ID:', ID);
 	if (isNaN(ID)) isCreate = true;
 	else contact = await prisma.emergencyContactInfo.findUnique({ where: { id: ID } });
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ isCreate:', isCreate);
+
 	if (!(ID || contact || isCreate)) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'Contact dose not exist.' });
 	const data: Contact = req.body;
 	console.log('🚀 ~ file: [id].tsx:15 ~ handler ~ data:', data);
@@ -21,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			if (req.body === '') return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
 			try {
 				const createContact: Prisma.EmergencyContactInfoCreateArgs = {
-					data: { Orphan: { connect: { id: Orphan.id } }, User: { connect: { id: admin.id } }, ...rest },
+					data: { Orphan: { connect: { id: Orphan?.id } }, User: { connect: { id: admin?.id } }, ...rest },
 				};
 				const newContact = await prisma.emergencyContactInfo.create(createContact);
 				console.log('🚀 ~ file: [id].tsx:24 ~ handler ~ newContact:', newContact);
@@ -38,8 +48,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			try {
 				const updateContact: Prisma.EmergencyContactInfoUpdateArgs = {
 					data: {
-						User: { connect: { id: User.id || admin.id } },
-						Orphan: { connect: { id: Orphan.id } },
+						User: { connect: { id: User?.id || admin?.id } },
+						Orphan: { connect: { id: Orphan?.id } },
 						...rest,
 					},
 					where: {
@@ -78,10 +88,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		//* ************************GET************************
 		case REQUEST_METHODS.GET: {
 			console.log('getting Contact info');
+			if (!req.query.id) return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Contact dose not exist.' });
+
 			const id: string = req.query.id.toString();
 			let orphanId: number;
 			if (id.includes('orphanId')) {
-				orphanId = Number(id.match(/\d+/)[0]);
+				orphanId = Number(id && id.match(/\d+/)?.[0]);
 				console.log('🚀 ~ file: [id].tsx:83 ~ handler ~ orphanId:', orphanId);
 				try {
 					const OrphanContacts = await prisma.emergencyContactInfo.findMany({
@@ -108,10 +120,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ msg: 'Some thing went wrong :', data: error });
 				}
 			}
+
 			try {
 				const requiredContact = await prisma.emergencyContactInfo.findFirst({
 					where: {
-						id: orphanId || ID,
+						id: ID,
 					},
 					select: {
 						id: true,

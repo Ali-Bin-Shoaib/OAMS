@@ -7,19 +7,19 @@ import { _Guardian, _Orphan } from '../../../types';
 import { useContext } from 'react';
 interface Props {
 	orphan: _Orphan;
-	guardians: (Guardian & {
-		user: User;
-	})[];
+	// guardians: (Guardian & {
+	// 	user: User;
+	// })[];
 	size?: MantineSize;
 }
-export default function EditOrphanModal({ orphan, guardians, size = 'xs' }: Props) {
+export default function EditOrphanModal({ orphan, size = 'xs' }: Props) {
 	const [opened, { open, close }] = useDisclosure(false);
 	return (
 		<>
 			<Modal opened={opened} size={'auto'} onClose={close} title='Edit Orphan'>
 				{/* Modal content */}
 				<h1>{orphan.id}</h1>
-				<OrphanForm orphan={orphan} close={close} guardians={guardians} />
+				<OrphanForm orphan={orphan} close={close} />
 			</Modal>
 			<Tooltip label='Edit'>
 				<Button onClick={open} color='yellow' size={size}>

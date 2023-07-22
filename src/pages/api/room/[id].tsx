@@ -4,9 +4,8 @@ import prisma from '../../../../lib/prisma';
 import { EmergencyContactInfo, Prisma, Room } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const admin = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
 	let isCreate = false;
-	let room: Room;
+	let room: Room | null = null;
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:11 ~ handler ~ ID:', ID);
 	if (isNaN(ID)) {
@@ -24,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				const createRoom: Prisma.RoomCreateArgs = {
 					data: {
 						Orphan: { connect: Orphan ? Orphan.map((x) => ({ id: x.id })) : undefined },
-						User: { connect: { id: admin.id } },
+						User: { connect: { id: User?.id } },
 						...rest,
 					},
 				};
@@ -43,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			try {
 				const updateRoom: Prisma.RoomUpdateArgs = {
 					data: {
-						User: { connect: { id: User.id || admin.id } },
+						User: { connect: { id: User?.id } },
 						Orphan: { connect: Orphan.map((x) => ({ id: x.id })) },
 						...rest,
 					},
@@ -81,10 +80,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		//* ************************GET************************
 		case REQUEST_METHODS.GET: {
 			console.log('getting Room info');
+			if (!req.query.id) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'request to server has no data.' });
 			const id: string = req.query.id.toString();
 			let orphanId: number;
 			if (id.includes('orphanId')) {
-				orphanId = Number(id.match(/\d+/)[0]);
+				orphanId = Number(id.match(/\d+/)?.[0]);
 				console.log('🚀 ~ file: [id].tsx:83 ~ handler ~ orphanId:', orphanId);
 				try {
 					const OrphanContacts = await prisma.emergencyContactInfo.findMany({
@@ -114,7 +114,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			try {
 				const requiredContact = await prisma.emergencyContactInfo.findFirst({
 					where: {
-						id: orphanId || ID,
+						id: ID,
 					},
 					select: {
 						id: true,

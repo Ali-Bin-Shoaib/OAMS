@@ -14,13 +14,13 @@ function ContactCard({ contact }: Props) {
 					<Text weight={700}>ID: </Text>
 					<Text>{contact.id}</Text>
 					<Text weight={700}>Created By: </Text>
-					<Text> {contact.User.name}</Text>
+					<Text> {contact?.User?.name}</Text>
 					<Text weight={700}>Person Name: </Text>
 					<Text> {contact.name}</Text>
 					<Text weight={700}>Phone Number: </Text>
 					<Text> {contact.phone}</Text>
 					<Text weight={700}>Orphan Name: </Text>
-					<Text> {contact.Orphan.name}</Text>
+					<Text> {contact?.Orphan?.name}</Text>
 				</SimpleGrid>
 			</Card>
 		</>

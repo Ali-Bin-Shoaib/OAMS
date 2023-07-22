@@ -1,4 +1,3 @@
-import { ActivityGoal, ActivityInfo, Attendance, Orphan, OrphanAttendance, Prisma, User } from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Button, Container, Tooltip } from '@mantine/core';
@@ -43,22 +42,6 @@ function ActivityTable({ activities, updateCard }: Props) {
 				size: 50,
 				enableResizing: true,
 			},
-			// {
-			// 	accessorFn: (row) => row.target,
-			// 	id: 'target',
-			// 	header: 'target',
-			// 	maxSize: 300,
-			// 	size: 120,
-			// 	enableResizing: true,
-			// },
-			// {
-			// 	accessorFn: (row) => row.type,
-			// 	id: 'type',
-			// 	header: 'type',
-			// 	maxSize: 300,
-			// 	size: 120,
-			// 	enableResizing: true,
-			// },
 			{
 				accessorFn: (row) => row.quarter,
 				id: 'quarter',
@@ -75,24 +58,6 @@ function ActivityTable({ activities, updateCard }: Props) {
 				size: 70,
 				enableResizing: true,
 			},
-			// {
-			// 	accessorFn: (row) => {
-			// 		return row.ActivityGoal ? row.ActivityGoal.map((x) => x.Goal?.title).join(' , ') : '';
-			// 	},
-			// 	id: 'GoalTitle',
-			// 	header: 'Goals',
-			// 	maxSize: 300,
-			// 	size: 120,
-			// 	enableResizing: true,
-			// },
-			// {
-			// 	accessorFn: (row) => row.ActivityGoal.map((x) => x.GoalInfo.length),
-			// 	id: 'GoalTitle',
-			// 	header: 'Execution',
-			// 	maxSize: 300,
-			// 	size: 120,
-			// 	enableResizing: true,
-			// },
 		],
 		[]
 	);
@@ -124,7 +89,7 @@ function ActivityTable({ activities, updateCard }: Props) {
 								onClick={() => {
 									router.push(`${router.asPath}/${row.original.id}`);
 								}}
-								color='blue'>
+								color='gray'>
 								<IconInfoCircle />
 							</Button>
 						</Tooltip>
@@ -146,7 +111,7 @@ function ActivityTable({ activities, updateCard }: Props) {
 					onClick: () => {
 						// on row click change the card to the clicked activities and then user can edit or delete.
 						// router.push(serverLink + 'activities/' + row.row.original.id);
-						updateCard(row.row.original);
+						// updateCard(row.row.original);
 					},
 				})}
 				mantineTableBodyCellProps={{

@@ -54,7 +54,7 @@ export function ListItemComponent({
 				icon={
 					img && (
 						<Avatar>
-							<Image src={img} alt={title} width={50} height={50} />
+							<Image src={img} alt={title!} width={50} height={50} />
 						</Avatar>
 					)
 				}>
@@ -63,11 +63,11 @@ export function ListItemComponent({
 						<h3 className='text-ellipsis overflow-hidden m-0 max-w-xs w-52 whitespace-nowrap'>{title}</h3>
 						<Group position='apart' noWrap>
 							<Text className='text-ellipsis overflow-hidden'>
-								{leftData.label}: {leftData.data}
+								{leftData?.label}: {leftData?.data}
 							</Text>
 
-							<Text className='text-ellipsis overflow-hidden mx-5'>{middleData.data}</Text>
-							<Rating readOnly value={rightData.data as number} />
+							<Text className='text-ellipsis overflow-hidden mx-5'>{middleData?.data}</Text>
+							<Rating readOnly value={rightData?.data as number} />
 						</Group>
 					</div>
 				</div>

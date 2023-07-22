@@ -9,11 +9,13 @@ import { Criteria, User } from '@prisma/client';
 import myNotification from '../MyNotification';
 import MyModal from '../common/MyModal';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
 interface Props {
 	criteria?: Criteria & { User?: User };
 	close?: () => void;
 }
 export default function CriteriaForm({ criteria, close }: Props): JSX.Element {
+	const { data: session } = useSession();
 	const [hydrate, setHydrate] = useState(false);
 	const {
 		control,
@@ -24,6 +26,7 @@ export default function CriteriaForm({ criteria, close }: Props): JSX.Element {
 	});
 	const router = useRouter();
 	const onSubmit = async (data: Criteria) => {
+		if (session?.user) data.userId = session?.user.id;
 		console.log('🚀 ~ file: CriteriaForm.tsx:28 ~ onSubmit ~ data:', data);
 		if (!criteria) {
 			console.log('criteria dose not exist.');
@@ -47,7 +50,7 @@ export default function CriteriaForm({ criteria, close }: Props): JSX.Element {
 				? myNotification('Update', res.data.msg, 'green', <IconCheck />)
 				: myNotification('Update', res.data.msg, 'red', <IconX />);
 		}
-		close();
+		close?.();
 		router.push(serverLink + 'criteria/');
 	};
 	useEffect(() => {

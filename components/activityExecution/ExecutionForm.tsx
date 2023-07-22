@@ -1,10 +1,9 @@
-import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
 import { _ActivityExecutionInfo, _ActivityInfo } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { Paths, serverLink } from '../../shared/links';
-import { DatePickerInput, DateInput } from '@mantine/dates';
+import { serverLink } from '../../shared/links';
+import { DatePickerInput } from '@mantine/dates';
 import React from 'react';
 import { Controller, FormProvider, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import {
@@ -14,24 +13,18 @@ import {
 	Container,
 	Loader,
 	Card,
-	Select,
 	TextInput,
 	NumberInput,
 	Title,
-	MultiSelect,
 	Rating,
 	Divider,
-	Flex,
-	Box,
 	SimpleGrid,
-	Modal,
 	Checkbox,
 	Table,
 } from '@mantine/core';
-import { Goal, Prisma, Quarter, ActivityInfo, ActivityExecutionInfo, Orphan } from '@prisma/client';
+import { Orphan } from '@prisma/client';
 import { v4 } from 'uuid';
 import myNotification from '../MyNotification';
-import MyModal from '../common/MyModal';
 import { IconCheck } from '@tabler/icons-react';
 //* type user is not allowed in creating or editing activityInfo TYpe remove it and fix the forms.
 interface Props {
@@ -48,23 +41,23 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 	if (activityExecutionInfo && activityExecutionInfo.GoalEvaluation) {
 		orphans.map((orphan) => {
 			// activityExecutionInfo.OrphanActivityExecution.filter((x) => x.id != orphan.id);
-			if (activityExecutionInfo.OrphanActivityExecution.filter((x) => x.id != orphan.id).length === 0) {
-				// activityExecutionInfo.OrphanActivityExecution.push({
-				// 	Orphan: orphan,
-				// 	orphanId: orphan.id,
-				// 	isAttended: false as unknown as string,
-				// 	// evaluation: 5,
-				// });
+			if (activityExecutionInfo?.OrphanActivityExecution?.filter((x) => x.id != orphan.id).length === 0) {
+				activityExecutionInfo.OrphanActivityExecution.push({
+					Orphan: orphan,
+					orphanId: orphan.id,
+					isAttended: false as unknown as string,
+					evaluation: 5,
+				});
 				console.log('true in orphans.map');
 			}
 		});
 		defaultValues = activityExecutionInfo;
 	} else {
 		defaultValues = {
-			activityInfoId: activityInfo?.id,
-			userId: activityInfo?.userId,
+			activityInfoId: activityInfo?.id!,
+			userId: activityInfo?.userId!,
 			GoalEvaluation: activityInfo?.ActivityGoal?.map((x) => {
-				return { Goal: x.Goal, goalId: x.goalId };
+				return { Goal: x.Goal, goalId: x.goalId! };
 			}),
 			OrphanActivityExecution: orphans.map((orphan) => ({
 				Orphan: orphan,
@@ -85,6 +78,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 		control,
 		watch,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<_ActivityExecutionInfo>({
 		defaultValues: defaultValues,
@@ -124,7 +118,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 	const methods = useForm<_ActivityExecutionInfo>();
 	if (!hydrate) return <Loader size={100} />;
 
-	watch(`OrphanActivityExecution`).map((x) => ((x.isAttended as unknown as boolean) ? '' : (x.evaluation = null)));
+	watch(`OrphanActivityExecution`)?.map((x) => ((x.isAttended as unknown as boolean) ? '' : (x.evaluation = null)));
 	return (
 		<Container fluid>
 			<Card withBorder p={'xl'}>
@@ -263,7 +257,6 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 												}}
 											/>
 										</td>
-
 										<td>
 											<Controller
 												name={`OrphanActivityExecution.${index}.evaluation`}
@@ -271,18 +264,25 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 												// rules={
 												// 	watch(`OrphanActivityExecution`)[index].isAttended && { required: 'please evaluate attended orphans' }
 												// }
-												render={({ field }) => {
+												render={({ field: { onChange } }) => {
 													return (
 														<Rating
-															{...field}
-															readOnly={watch(`OrphanActivityExecution`)[index].isAttended ? false : true}
-															display={watch(`OrphanActivityExecution`)[index].isAttended ? '' : 'none'}
+															// {...field}
+															onChange={(value) => {
+																console.log('🚀 ~ file: ExecutionForm.tsx:273 ~ ExecutionForm ~ value:', value);
+
+																setValue(`OrphanActivityExecution.${index}.evaluation`, value);
+															}}
+															defaultValue={item.evaluation ? item.evaluation : 5}
+															// value={item.evaluation}
+															readOnly={watch(`OrphanActivityExecution`)![index].isAttended ? false : true}
+															display={watch(`OrphanActivityExecution`)![index].isAttended ? '' : 'none'}
 														/>
 													);
 												}}
 											/>
 											{errors?.OrphanActivityExecution && (
-												<Text color='red'>errors.OrphanActivityExecution[index]?.evaluation.message </Text>
+												<Text color='red'>{errors?.OrphanActivityExecution[index]?.evaluation?.message} </Text>
 											)}
 										</td>
 									</tr>

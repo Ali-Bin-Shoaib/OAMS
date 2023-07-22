@@ -1,10 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { ActivityGoal, ActivityInfo, Criteria, Goal, Orphan, User } from '@prisma/client';
+import { ActivityGoal, ActivityInfo, Criteria, Goal, Orphan, User, UserType } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
+import user from '../user';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const user = await prisma.user.findFirst({ where: { type: 'ADMIN' } });
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== (UserType.BEHAVIOR_SUPERVISOR || UserType.ADMIN)) {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
 
 	const ID = Number(req.query.id);
 	const criterion = await prisma.criteria.findUnique({ where: { id: ID } });
@@ -19,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 				const updatedCriterion = await prisma.criteria.update({
 					where: { id: ID },
-					data: { ...criterion, userId: user.id },
+					data: { ...criterion },
 				});
 				console.log('🚀 ~ file: [id].tsx:21 ~ handler ~ updatedCriterion:', updatedCriterion);
 

@@ -58,7 +58,7 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.returnDay.toDateString(),
+				accessorFn: (row) => row.returnDay?.toDateString(),
 				id: 'returnDay',
 				header: 'returnDay',
 				maxSize: 300,

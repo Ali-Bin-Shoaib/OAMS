@@ -1,0 +1,56 @@
+// applies next auth to all pages by export the default from next-auth/middleware
+// export { default } from 'next-auth/middleware';
+import { url } from 'inspector';
+import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
+import { NextResponse } from 'next/server';
+import { isActionAuthorized, isUserAuthorized } from 'utils/CheckAuth';
+
+export default withAuth(
+	// `withAuth` augments your `Request` with the user's token.
+	async function middleware(req: NextRequestWithAuth) {
+		const userType = req.nextauth.token?.type;
+		console.log('🚀 ~  userType:', userType);
+		console.log("🚀 ~  startsWith('/api'):", req.nextUrl.pathname.startsWith('/api'));
+		console.log('🚀 isUserAuthorized', isUserAuthorized(userType!, req.nextUrl.pathname));
+		if (userType) {
+			if (!isUserAuthorized(userType, req.nextUrl.pathname)) {
+				return NextResponse.rewrite(new URL('/auth/accessDenied', req.url));
+			}
+			// if (req.nextUrl.pathname.startsWith('/api'))
+			// 	if (!isActionAuthorized(userType, req.nextUrl.pathname, req.method)) {
+			// 		console.log('❌❌action not allowed', req.url);
+			// 		// return NextResponse.rewrite(new URL('/auth/accessDenied', req.url));
+			// 	}
+		}
+		// return NextResponse.next();
+	},
+	{
+		callbacks: {
+			authorized: ({ token }) => {
+				return !!token;
+			},
+		},
+	}
+);
+
+export const config = {
+	matcher: [
+		'/dashboard',
+		'/activities/:path*',
+		'/orphans/:path*',
+		'/attendance/:path*',
+		'/behavior/:path*',
+		'/contact/:path*',
+		'/criteria/:path*',
+		'/education/:path*',
+		'/goals/:path*',
+		'/guardians/:path*',
+		'/health/:path*',
+		'/rooms/:path*',
+		'/sponsors/:path*',
+		'/sponsorships/:path*',
+		'/users/:path*',
+		'/auth',
+		'/api/:path*',
+	],
+};

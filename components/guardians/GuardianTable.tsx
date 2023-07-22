@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Container } from '@mantine/core';
 import { _Guardian } from '../../types';
+import { useRouter } from 'next/router';
 
 interface Props {
 	guardians: _Guardian[];
@@ -40,7 +41,7 @@ function GuardianTable({ guardians, updateCard }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.user.userName,
+				accessorFn: (row) => row.user.username,
 				id: 'userName',
 				header: 'userName',
 				maxSize: 300,
@@ -105,7 +106,7 @@ function GuardianTable({ guardians, updateCard }: Props) {
 		],
 		[]
 	);
-
+	const router = useRouter();
 	return (
 		<Container fluid>
 			<MantineReactTable
@@ -116,6 +117,7 @@ function GuardianTable({ guardians, updateCard }: Props) {
 				mantineTableBodyRowProps={({ row }) => ({
 					onClick: () => {
 						updateCard(row.original);
+						router.push(`${router.asPath}/action/${row.original.userId}`);
 					},
 					sx: { border: '2px solid #dee2e6' },
 				})}

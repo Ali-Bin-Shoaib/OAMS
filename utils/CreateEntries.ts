@@ -16,30 +16,37 @@ export async function initial() {
 	(await prisma.activityExecutionInfo.count()) <= 50 && (await createExecution(faker.number.int({ max: 50 })));
 	(await prisma.attendance.count()) <= 50 && (await createAttendance(faker.number.int({ max: 50 })));
 	(await prisma.educationInfo.count()) <= 50 && (await createEducation(faker.number.int({ max: 50 })));
-	console.log(
-		`🚀 ~ file: functions.tsx:12 ~ initial ~ :admin:${await prisma.user.count({
-			where: { type: UserType.ADMIN },
-		})} 
-			users:${await prisma.user.count()} 
-			guardians:${await prisma.guardian.count()} 
-			sponsors:${await prisma.sponsor.count()} 
-			orphans:${await prisma.orphan.count()} 
-			sponsorships:${await prisma.sponsorship.count()} 
-			goal:${await prisma.goal.count()} 
-			criteria:${await prisma.criteria.count()} 
-			activityInfo:${await prisma.activityInfo.count()} 
+	if ((await prisma.user.count()) === 0) {
+		console.log(
+			`🚀 ~ file: functions.tsx:12 ~ initial ~ :admin:${await prisma.user.count({
+				where: { type: UserType.ADMIN },
+			})} 
+				users:${await prisma.user.count()} 
+				guardians:${await prisma.guardian.count()} 
+				sponsors:${await prisma.sponsor.count()} 
+				orphans:${await prisma.orphan.count()} 
+				sponsorships:${await prisma.sponsorship.count()} 
+				goal:${await prisma.goal.count()} 
+				criteria:${await prisma.criteria.count()} 
+				activityInfo:${await prisma.activityInfo.count()} 
 			ExecutionInfo:${await prisma.activityExecutionInfo.count()} 
 			attendance:${await prisma.attendance.count()} 
 			educationInfo:${await prisma.educationInfo.count()} 
 			behaviors:${await prisma.behaviorInfo.count()} `
-	);
+		);
+	}
 }
-export async function findAdmin(id?: number): Promise<User> {
-	if (id) return await prisma.user.findUnique({ where: { id: id } });
-	return await prisma.user.findFirst({ where: { type: UserType.ADMIN } });
+export async function findAdmin(): Promise<User> {
+	const admin = await prisma.user.findFirst({ where: { type: UserType.ADMIN } });
+	return admin!;
 }
-export async function findOrphan(id?: number): Promise<Orphan | Orphan[]> {
-	if (id) return await prisma.orphan.findUnique({ where: { id: id } });
+export async function findOrphan(id?: number): Promise<Orphan | Orphan[] | null> {
+	if (!id) {
+		const orphans = await prisma.orphan.findMany();
+		return orphans;
+	}
+	const orphan = await prisma.orphan.findUnique({ where: { id: id } });
+	return orphan;
 }
 export async function findAllOrphans(): Promise<Orphan[]> {
 	return await prisma.orphan.findMany();
@@ -182,7 +189,7 @@ export const createSponsorship = async (number: number) => {
 			isActive: faker.helpers.arrayElement([true, false]),
 			Orphan: { connect: { id: faker.helpers.arrayElement(orphans).id } },
 			Sponsor: { connect: { id: faker.helpers.arrayElement(sponsors).id } },
-			User: { connect: { id: admin.id } },
+			User: { connect: { id: admin?.id } },
 		};
 		sponsorships.push(sponsorship);
 	}
@@ -226,7 +233,7 @@ export const createCriteria = async (number: number) => {
 	console.log('🚀 ~ file: CreateEntries.tsx:212 ~ createCriteria ~ criteria:');
 };
 export const createGoal = async (number: number) => {
-	let admin = await prisma.user.findFirst({ where: { type: UserType.ADMIN } });
+	let admin = await findAdmin();
 	let goals: Prisma.GoalCreateManyInput[] = [];
 	for (let i = 0; i < number; i++) {
 		const goal: Prisma.GoalCreateManyInput = {
@@ -268,14 +275,15 @@ export const createExecution = async (number: number) => {
 			ActivityInfo: { connect: { id: activities[activityId].id } },
 			Executor: { connect: { id: admin.id } },
 			cost: Number(faker.number.int({ min: 1000, max: 100000 })),
-			description: faker.word.words({ count: { min: 5, max: 500 } }),
-			note: faker.word.words({ count: { min: 5, max: 500 } }),
+			description: faker.word.words({ count: { min: 5, max: 20 } }),
+			note: faker.word.words({ count: { min: 5, max: 20 } }),
 			startDate: faker.date.anytime(),
 			GoalEvaluation: {
 				create: activities[activityId].ActivityGoal.map((x) => ({
 					date: faker.date.anytime(),
 					evaluation: faker.number.int(5),
-					goalId: x.goalId,
+					Goal: { connect: { id: x.goalId === null ? undefined : x.goalId } },
+					// goalId: x.goalId,
 				})),
 			},
 			OrphanActivityExecution: {

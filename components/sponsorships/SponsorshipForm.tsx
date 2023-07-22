@@ -26,7 +26,7 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 	function handleClose() {
 		console.log('close');
 
-		close();
+		close?.();
 	}
 	const [hydrate, setHydrate] = useState(false);
 	const {

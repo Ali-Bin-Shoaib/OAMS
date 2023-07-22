@@ -5,7 +5,7 @@ import { JWT, DefaultJWT } from 'next-auth/jwt';
  * For extend default nextAuth User and Session Types with existing User type
  */
 declare module 'next-auth' {
-	// export interface DefaultSession {
+	//* interface DefaultSession {
 	// 	user?: {
 	// 		name?: string | null;
 	// 		email?: string | null;
@@ -13,34 +13,38 @@ declare module 'next-auth' {
 	// 	};
 	// 	expires: ISODateString;
 	// }
-	//   export interface DefaultUser {
+	//*  interface DefaultUser {
 	// 			id: string;
 	// 			name?: string | null;
 	// 			email?: string | null;
 	// 			image?: string | null;
 	// 		}
 
-	interface Session {
-		user: User & DefaultSession;
-	}
 	interface User extends DefaultUser {
 		id: number;
+		name: string;
 		username: string;
 		password: string;
 		type: UserType;
 	}
+	interface Session extends DefaultSession {
+		user: User;
+	}
 }
-/**export interface DefaultJWT extends Record<string, unknown> {
-  name?: string | null
-  email?: string | null
-  picture?: string | null
-  sub?: string
-} */
+
+//  * export interface DefaultJWT extends Record<string, unknown> {
+//   name?: string | null
+//   email?: string | null
+//   picture?: string | null
+//   sub?: string
+// }
 
 declare module 'next-auth/jwt' {
 	interface JWT extends DefaultJWT {
 		id: number;
+		name: string;
+		username: string;
+		// password: string;
 		type: UserType;
-		password: string;
 	}
 }

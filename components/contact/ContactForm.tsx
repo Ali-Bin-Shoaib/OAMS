@@ -47,7 +47,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 				? myNotification('Update', res.data.data.msg, 'green', <IconCheck />)
 				: myNotification('Update', res.data.data.msg, 'red', <IconX />);
 		}
-		close();
+		close!();
 		router.push(serverLink + 'contact/');
 	};
 	useEffect(() => {
@@ -77,10 +77,10 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 									label='Name'
 									placeholder='name'
 									withAsterisk
-									error={errors.Orphan && errors.Orphan.name.message}
+									error={errors.Orphan && errors?.Orphan?.name?.message}
 									// description='select an orphan '
 									required
-									defaultValue={contact?.Orphan.id.toString()}
+									defaultValue={contact?.Orphan?.id.toString()}
 									searchable
 									selectOnBlur
 									// w={'45%'}

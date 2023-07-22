@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					data: {
 						...rest,
 						Orphan: { connect: { id: orphanId } },
-						User: { connect: { id: userId || admin.id } },
+						User: { connect: { id: userId || admin?.id } },
 					},
 					where: { id: id },
 				};

@@ -40,7 +40,7 @@ function SponsorTable({ sponsors, updateCard }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.user.userName,
+				accessorFn: (row) => row.user.username,
 				id: 'userName',
 				header: 'userName',
 				maxSize: 300,

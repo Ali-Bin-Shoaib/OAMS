@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { _Orphan, _User } from '../../../types';
@@ -8,6 +8,10 @@ import MyModal from '../../../components/common/MyModal';
 import UserForm from '../../../components/users/UserForm';
 import { useDisclosure } from '@mantine/hooks';
 import UserTable from '../../../components/users/UserTable';
+import myNotification from 'components/MyNotification';
+import { IconCheck } from '@tabler/icons-react';
+import { useReactToPrint } from 'react-to-print';
+import PrintButton from 'components/common/PrintButton';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
@@ -35,10 +39,11 @@ export default function Index({ stringUsers }: Props) {
 		setUsers(SuperJSON.parse(stringUsers));
 		setHydration(true);
 	}, [hydration, stringUsers]);
+	const printRef = useRef<typeof UserTable>(null);
 
 	if (!hydration || !jsonUsers) return <Loader size={100} />;
 	return (
-		<>
+		<div>
 			<div className='text-center pb-4'>
 				<MyModal
 					modalTitle='Add User'
@@ -50,6 +55,6 @@ export default function Index({ stringUsers }: Props) {
 				/>
 			</div>
 			<UserTable users={users} updateCard={updateCard} />
-		</>
+		</div>
 	);
 }

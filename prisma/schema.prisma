@@ -402,13 +402,12 @@ model User {
   id                      Int                       @id @default(autoincrement())
   name                    String
   gender                  Gender
-  username                String
+  username                String                    @unique
   password                String
   email                   String?                   @unique
   address                 String
   phone                   String                    @unique
   type                    UserType
-  //* relations
   Guardian                Guardian?
   Sponsor                 Sponsor?
   Orphan                  Orphan[]

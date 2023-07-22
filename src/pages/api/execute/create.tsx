@@ -23,12 +23,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					GoalEvaluation: {
 						create: GoalEvaluation?.map((x) => ({
 							evaluation: x.evaluation,
-							Goal: { connect: { id: x.Goal.id } },
+							Goal: { connect: { id: x.Goal?.id } },
 						})),
 					},
 					OrphanActivityExecution: {
 						create: OrphanActivityExecution?.map((x) => ({
-							orphanId: x.Orphan.id,
+							orphanId: x?.Orphan?.id,
 							isAttended: x.isAttended as unknown as boolean,
 							userId: userId,
 							activityInfoId: x.activityExecutionInfoId,
