@@ -254,14 +254,14 @@ export type _Attendance = {
 
 export interface _OrphanAttendance {
 	id?: number;
-	isAttended: string | number | readonly string[] | undefined;
-	absentReason: string | number | readonly string[] | undefined;
-	notes: string | number | readonly string[] | undefined;
-	returnDay: Date | null;
-	justification: string | number | readonly string[] | undefined;
-	attendanceId?: number;
-	orphanId?: number;
-	userId?: number;
+	isAttended: boolean | undefined;
+	absentReason?: string;
+	notes?: string;
+	returnDay?: Date | null;
+	justification?: string;
+	attendanceId: number;
+	orphanId: number;
+	userId: number;
 }
 export type _ActivityInfo = {
 	// test: Prisma.ActivityInfoUncheckedCreateInput;

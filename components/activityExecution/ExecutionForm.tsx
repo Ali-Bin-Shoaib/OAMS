@@ -223,7 +223,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 											control={control}
 											rules={{ required: 'Goals evaluation is required' }}
 											render={({ field }) => {
-												return <Rating {...field} defaultValue={item.evaluation} fractions={2} />;
+												return <Rating {...field} defaultValue={item.evaluation} />;
 											}}
 										/>
 										{errors.GoalEvaluation && <Text color='red'>{errors.GoalEvaluation[index]?.evaluation?.message}</Text>}

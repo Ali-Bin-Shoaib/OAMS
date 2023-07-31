@@ -17,29 +17,29 @@ function AttendanceTable({ attendance }: Props) {
 	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<_Attendance>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
+			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 100, size: 90 },
 			{
 				accessorFn: (row) => row.date.toDateString(),
 				id: 'date',
 				header: 'date',
-				maxSize: 300,
-				size: 200,
+				maxSize: 110,
+				size: 100,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User.name',
 				header: 'taken by',
-				maxSize: 300,
-				size: 150,
+				maxSize: 120,
+				size: 100,
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.OrphanAttendance.length,
+				accessorFn: (row) => row.OrphanAttendance.filter((x) => x.isAttended === false).length,
 				id: 'OrphanAttendance.length',
 				header: 'Absent orphans',
-				maxSize: 300,
-				size: 120,
+				maxSize: 110,
+				size: 100,
 				enableResizing: true,
 			},
 		],
@@ -54,7 +54,7 @@ function AttendanceTable({ attendance }: Props) {
 				initialState={{ density: 'xs' }}
 				enableRowActions
 				enableToolbarInternalActions
-				positionActionsColumn='last'
+				// positionActionsColumn='last'
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'Attendance'} url={'api/attendance/'} />

@@ -17,7 +17,7 @@ import { IconPlus } from '@tabler/icons-react';
 import React, { ReactNode } from 'react';
 interface Props {
 	ModelForm?: JSX.Element;
-	modalTitle: string;
+	modalTitle?: string;
 	buttonText?: string;
 	buttonColor?: DefaultMantineColor | undefined;
 	position?: GroupPosition;
@@ -27,6 +27,7 @@ interface Props {
 	m?: SystemProp<SpacingValue>;
 	tooltip?: string;
 	isOpen?: boolean;
+	disabled?: boolean;
 }
 
 // export default function MyModal({ ModelForm, modalTitle, buttonText, buttonColor, opened, open, close }: Props) {
@@ -41,12 +42,13 @@ export default function MyModal({
 	icon = <IconPlus />,
 	size = 'xl',
 	isOpen,
+	disabled,
 	m = 15,
 }: Props) {
 	const [opened, { open, close }] = useDisclosure(isOpen || false);
 	return (
 		<>
-			<Modal opened={opened} size={modalSize} onClose={close} closeOnClickOutside={false}>
+			<Modal opened={opened} size={modalSize} padding={0} onClose={close} closeOnClickOutside={false}>
 				{/* Modal content */}
 				<Title align='center'>{modalTitle}</Title>
 				<Divider m={10} p={10} />
@@ -55,7 +57,7 @@ export default function MyModal({
 			</Modal>
 			<Group position={position}>
 				<Tooltip label={tooltip} hidden={!tooltip ? true : false}>
-					<Button color={buttonColor} size={size} m={m} onClick={open}>
+					<Button color={buttonColor} size={size} m={m} onClick={open} disabled={disabled}>
 						{icon} {buttonText}
 					</Button>
 				</Tooltip>

@@ -53,9 +53,10 @@ export default function DeleteModal({
 						myNotification('Error', res.data.msg || 'Record to be deleted was not found.', 'red', <IconX />);
 					}
 				} catch (error) {
-					if (axios.isAxiosError(error)) myNotification('Error', 'Something went wrong.', 'red', <IconX />);
-					redirectUrl ? router.push(redirectUrl) : router.push(router.asPath);
 					console.log('🚀 ~ file: DeleteModal.tsx:55 ~ onConfirm: ~ error:', error);
+					if (axios.isAxiosError(error))
+						myNotification('Error', error.response?.data.msg || 'Something went wrong.', 'red', <IconX />);
+					redirectUrl ? router.push(redirectUrl) : router.push(router.asPath);
 				}
 			},
 		});

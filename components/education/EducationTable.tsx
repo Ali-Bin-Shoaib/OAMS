@@ -74,13 +74,13 @@ function EducationTable({ education }: Props) {
 								onClick={() => {
 									router.push(`${router.asPath}/${row.original.id}`);
 								}}
-								color='blue'>
+								color='gray'>
 								<IconInfoCircle />
 							</Button>
 						</Tooltip>
 					</Button.Group>
 				)}
-				positionActionsColumn='last'
+				// positionActionsColumn='last'
 				enableRowActions
 			/>
 		</Container>

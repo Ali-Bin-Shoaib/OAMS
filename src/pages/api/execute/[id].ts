@@ -10,6 +10,7 @@ import {
 	Orphan,
 	OrphanActivityExecution,
 	User,
+	UserType,
 } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/next-auth-options';
@@ -19,9 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const session = await getServerSession(req, res, authOptions);
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
 	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
-	if (!session || session.user.type !== ('ADMIN' && 'ACTIVITY_SUPERVISOR')) {
-		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
-	}
+	if (session && (session.user.type === UserType.ADMIN || session.user.type === UserType.ACTIVITY_SUPERVISOR)) {
+	} else return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ ID:', ID);

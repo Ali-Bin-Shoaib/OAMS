@@ -9,6 +9,8 @@ import prisma from '../../../lib/prisma';
 import { Guardian, Orphan, User } from '@prisma/client';
 import DeleteModal from '../../../components/common/DeleteModal';
 import { Pages, serverLink } from '../../../shared/links';
+import { IconEdit } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
 
 //*  needed to define possible ids that id parameter can accepts to create static pages for each id at build time
 // export const getStaticPaths: GetStaticPaths = async () => {
@@ -53,6 +55,7 @@ interface Props {
 function OrphanDetails({ data }: Props) {
 	console.log('🚀 ~ file: [id].tsx:30 ~ OrphanDetails ~ data:', data);
 	const { orphan } = data;
+	const router = useRouter();
 	// const [orphan, SetOrphan] = useState<Orphan>(data);
 
 	// if (!orphan) {
@@ -164,9 +167,14 @@ function OrphanDetails({ data }: Props) {
 
 				<Group position='right'>
 					<Button.Group>
-						<EditOrphanModal orphan={orphan as unknown as _Orphan} />
+						{/* <EditOrphanModal orphan={orphan as unknown as _Orphan} /> */}
+						<Tooltip label='Edit'>
+							<Button color='yellow' size='xs' onClick={() => router.push(`${serverLink}orphans/action/${orphan.id}`)}>
+								<IconEdit />
+							</Button>
+						</Tooltip>
 						{/* <DeleteOrphanModal id={orphan.id} /> */}
-						<DeleteModal id={orphan.id} title={'Orphan'} url={`orphan`} redirectUrl={`${Pages.Orphans.link}`} />
+						<DeleteModal id={orphan.id} title={'Orphan'} url={`api/orphan`} redirectUrl={`${Pages.Orphans.link}`} />
 					</Button.Group>
 				</Group>
 			</div>

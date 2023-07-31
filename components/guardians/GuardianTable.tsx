@@ -1,32 +1,27 @@
-import { Prisma, User } from '@prisma/client';
-import { useMemo } from 'react';
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Container } from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { MRT_ColumnDef } from 'mantine-react-table';
 import { _Guardian } from '../../types';
 import { useRouter } from 'next/router';
+import TableComponent from 'components/common/TableComponent';
 
 interface Props {
 	guardians: _Guardian[];
-	updateCard(guardian: _Guardian): void;
 }
-
-function GuardianTable({ guardians, updateCard }: Props) {
+function GuardianTable({ guardians: data }: Props) {
 	const columns = useMemo<MRT_ColumnDef<_Guardian>[]>(
 		() => [
 			{
 				accessorFn: (row) => row.userId,
 				id: 'id',
-				header: 'id',
-				maxSize: 300,
+				header: 'ID',
 				minSize: 80,
-				size: 80,
+				size: 100,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.user.name,
 				id: 'name',
-				header: 'name',
-				maxSize: 300,
+				header: 'Name',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -34,17 +29,15 @@ function GuardianTable({ guardians, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.user.gender,
 				id: 'gender',
-				header: 'gender',
-				maxSize: 300,
+				header: 'Gender',
 				minSize: 80,
-				size: 150,
+				size: 110,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.user.username,
-				id: 'userName',
-				header: 'userName',
-				maxSize: 300,
+				id: 'username',
+				header: 'Username',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -52,8 +45,7 @@ function GuardianTable({ guardians, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.user.password,
 				id: 'password',
-				header: 'password',
-				maxSize: 300,
+				header: 'Password',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -61,8 +53,7 @@ function GuardianTable({ guardians, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.user.email,
 				id: 'email',
-				header: 'email',
-				maxSize: 300,
+				header: 'Email',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -70,35 +61,23 @@ function GuardianTable({ guardians, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.user.address,
 				id: 'address',
-				header: 'address',
-				maxSize: 300,
+				header: 'Address',
 				minSize: 80,
-				size: 150,
+				size: 120,
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.user.phone,
 				id: 'phone',
-				header: 'phone',
-				maxSize: 300,
+				header: 'Phone',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
 			},
-			// {
-			// 	accessorFn: (row) => row.type,
-			// 	id: 'type',
-			// 	header: 'type',
-			// 	maxSize: 300,
-			// 	minSize: 80,
-			// 	size: 150,
-			// 	enableResizing: true,
-			// },
 			{
 				accessorFn: (row) => row.relationship,
 				id: 'relationship',
-				header: 'relationship',
-				maxSize: 300,
+				header: 'Relationship',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -106,33 +85,16 @@ function GuardianTable({ guardians, updateCard }: Props) {
 		],
 		[]
 	);
-	const router = useRouter();
+
 	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={guardians}
-				initialState={{ density: 'xs' }}
-				enableColumnResizing
-				mantineTableBodyRowProps={({ row }) => ({
-					onClick: () => {
-						updateCard(row.original);
-						router.push(`${router.asPath}/action/${row.original.userId}`);
-					},
-					sx: { border: '2px solid #dee2e6' },
-				})}
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				mantineTableHeadCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				mantineTableProps={{
-					striped: true,
-					sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' },
-				}}
-			/>
-		</Container>
+		<TableComponent
+			data={data}
+			columns={columns}
+			deleteUrl={'api/user/'}
+			editUrl={'guardians/action/'}
+			deleteTitle={'Guardian'}
+			infoUrl={'guardians/action/'}
+		/>
 	);
 }
 export default GuardianTable;

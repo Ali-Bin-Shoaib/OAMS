@@ -11,7 +11,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
 	const attendance = await prisma.attendance.findFirst({
 		where: { id: id },
-		include: { OrphanAttendance: { include: { Orphan: true }, orderBy: { isAttended: 'asc' } }, User: true },
+		include: {
+			OrphanAttendance: { include: { Orphan: { select: { id: true, name: true } } }, orderBy: { isAttended: 'asc' } },
+			User: { select: { id: true, name: true } },
+		},
 	});
 	const orphans = await prisma.orphan.findMany();
 	const stringData = SuperJSON.stringify({ orphans, attendance });

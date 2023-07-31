@@ -94,7 +94,7 @@ function HealthTable({ health }: Props) {
 						</Tooltip>
 					</Button.Group>
 				)}
-				positionActionsColumn='last'
+				// positionActionsColumn='last'
 				enableRowActions
 			/>
 		</Container>

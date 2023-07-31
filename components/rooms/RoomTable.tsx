@@ -82,7 +82,7 @@ function RoomTable({ rooms }: Props) {
 				}}
 				enableRowActions
 				enableToolbarInternalActions
-				positionActionsColumn='last'
+				// positionActionsColumn='last'
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'Room'} url={'api/room/'} />

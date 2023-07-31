@@ -176,19 +176,27 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						}}
 					/>
 					<Controller
-						name='age'
+						name='birthdate'
 						control={control}
-						rules={{
-							required: 'age is required',
-							min: { value: 6, message: 'Age must be 6 or higher' },
-							max: { value: 15, message: 'Age must be 15 or less' },
-						}}
+						rules={{ required: 'birthdate is required' }}
 						render={({ field }) => {
 							return (
-								<NumberInput {...field} label='Age' placeholder='age' withAsterisk error={errors.age && errors.age.message} />
+								<DatePickerInput
+									{...field}
+									valueFormat='YYYY MM D'
+									minDate={new Date(2008, 1, 1)}
+									maxDate={new Date(2017, 1, 1)}
+									date={new Date(new Date().getFullYear() - 10, 5, 20)}
+									label='Birthdate'
+									placeholder='birthdate'
+									// w={100}
+									withAsterisk
+									error={errors.birthdate && errors.birthdate.message}
+								/>
 							);
 						}}
 					/>
+
 					<Controller
 						name='birthplace'
 						control={control}
@@ -206,34 +214,33 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						}}
 					/>
 					<Controller
-						name='birthdate'
+						name='age'
 						control={control}
-						rules={{ required: 'birthdate is required' }}
+						rules={{
+							required: 'age is required',
+							min: { value: 6, message: 'Age must be 6 or higher' },
+							max: { value: 15, message: 'Age must be 15 or less' },
+						}}
 						render={({ field }) => {
 							return (
-								<DatePickerInput
-									{...field}
-									valueFormat='YYYY MM D'
-									label='Birthdate'
-									placeholder='birthdate'
-									// w={100}
-									withAsterisk
-									error={errors.birthdate && errors.birthdate.message}
-								/>
+								<NumberInput {...field} label='Age' placeholder='age' withAsterisk error={errors.age && errors.age.message} />
 							);
 						}}
 					/>
+
 					<Controller
 						name='joinDate'
 						control={control}
-						rules={{ required: 'joinDate is required' }}
+						// rules={{ required: 'joinDate is required' }}
 						render={({ field }) => {
 							return (
 								<DatePickerInput
 									{...field}
 									valueFormat='D M YYYY'
 									label='Join Date'
-									placeholder='joinDate'
+									date={new Date()}
+									defaultValue={new Date()}
+									placeholder={new Date().toDateString()}
 									// w={100}
 									error={errors.joinDate && errors.joinDate.message}
 								/>

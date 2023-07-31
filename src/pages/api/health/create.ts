@@ -10,9 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const session = await getServerSession(req, res, authOptions);
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
 	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
-	if (!session || session.user.type !== ('ADMIN' && 'HEALTH_SUPERVISOR')) {
-		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
-	}
+	if (session && (session.user.type === UserType.ADMIN || session.user.type === UserType.HEALTH_SUPERVISOR)) {
+	} else return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 
 	const data: Health = req.body;
 	console.log('🚀 ~ file: create.tsx:10 ~ handler ~ data:', data);

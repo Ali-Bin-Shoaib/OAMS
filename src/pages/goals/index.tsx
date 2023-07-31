@@ -28,7 +28,7 @@ function Index({ goals }: Props) {
 	// const jsonData = SuperJSON.parse(props.stringData);
 	return (
 		<>
-			<div>Index</div>
+			{/* <div>Index</div> */}
 			<MyModal ModelForm={<GoalForm />} modalTitle={'Add Goal'} buttonText={'Add Goal'} modalSize={'md'} />
 			<GoalTable goals={goals} />
 		</>

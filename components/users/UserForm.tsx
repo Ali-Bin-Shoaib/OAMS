@@ -42,22 +42,25 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 				console.log('🚀 ~ file: UserForm.tsx:42 ~ onSubmit ~ res:', res);
 				if (res.status === STATUS_CODE.OK) {
 					myNotification('Success', res.data.msg, 'green', <IconCheck />);
-					router.push(serverLink + 'guardians/');
+					if (router.asPath.includes('guardians')) router.push(serverLink + 'guardians/');
+					else if (router.asPath.includes('sponsors')) router.push(serverLink + 'sponsors/');
+					else router.push(serverLink + 'users/');
 				} else myNotification('Error', res.data.msg, 'red', <IconX />);
 			} else {
 				console.log('user exist.', bigUser.id);
 				const url = serverLink + '/api/user/' + bigUser.id;
 				const res = await axios.put(url, data);
-
-				if (res.data.status === STATUS_CODE.OK) {
+				console.log('🚀 ~ file: UserForm.tsx:53 ~ onSubmit ~ res:', res);
+				if (res.status === STATUS_CODE.OK) {
 					myNotification('Success', res.data.msg, 'green', <IconCheck />);
-					router.push(serverLink + 'guardians/');
+					if (router.asPath.includes('guardians')) router.push(serverLink + 'guardians/');
+					else if (router.asPath.includes('sponsors')) router.push(serverLink + 'sponsors/');
+					else router.push(serverLink + 'users/');
 				} else myNotification('Error', res.data.msg, 'red', <IconX />);
 			}
 		} catch (error) {
-			axios.isAxiosError(error);
-			console.log('🚀 ~ file: UserForm.tsx:50 ~ onSubmit ~ error:', error);
-			myNotification('Error', error.response.data.msg, 'red', <IconX />);
+			console.log('🚀 ~ file: UserForm.tsx:50 ~ onSubmit ~ error:', error.response?.data.msg);
+			myNotification('Error', error.response.data.msg || 'Something was wrong', 'red', <IconX />);
 		}
 		setIsLoading(false);
 
@@ -213,7 +216,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 								name='type'
 								control={control}
 								rules={{
-									required: 'type is required',
+									required: 'User type is required',
 								}}
 								render={({ field }) => {
 									return (
@@ -221,6 +224,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 											{...field}
 											data={$enum(UserType).map((t) => t)}
 											error={errors.type && errors.type.message}
+											defaultValue={bigUser?.type}
 											label='userType'
 											name='type'
 											// dropdownPosition='bottom'

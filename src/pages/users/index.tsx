@@ -1,17 +1,13 @@
 import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { useEffect, useRef, useState } from 'react';
-import { Loader } from '@mantine/core';
+import { Button, Loader } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { _Orphan, _User } from '../../../types';
-import MyModal from '../../../components/common/MyModal';
-import UserForm from '../../../components/users/UserForm';
-import { useDisclosure } from '@mantine/hooks';
 import UserTable from '../../../components/users/UserTable';
-import myNotification from 'components/MyNotification';
-import { IconCheck } from '@tabler/icons-react';
-import { useReactToPrint } from 'react-to-print';
-import PrintButton from 'components/common/PrintButton';
+import { IconPlus } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
+import { serverLink } from 'shared/links';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
@@ -34,7 +30,7 @@ export default function Index({ stringUsers }: Props) {
 	const [cardInfo, setCardInfo] = useState<_User>(jsonUsers[0]);
 	const [hydration, setHydration] = useState(false);
 	const updateCard = (user: _User) => setCardInfo(user);
-	const [opened, { open, close }] = useDisclosure(false);
+	const router = useRouter();
 	useEffect(() => {
 		setUsers(SuperJSON.parse(stringUsers));
 		setHydration(true);
@@ -45,14 +41,10 @@ export default function Index({ stringUsers }: Props) {
 	return (
 		<div>
 			<div className='text-center pb-4'>
-				<MyModal
-					modalTitle='Add User'
-					buttonText='Add New User'
-					// close={close}
-					// open={open}
-					// opened={opened}
-					ModelForm={<UserForm close={close} />}
-				/>
+				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}users/action/create`)}>
+					<IconPlus />
+					Add User
+				</Button>
 			</div>
 			<UserTable users={users} updateCard={updateCard} />
 		</div>

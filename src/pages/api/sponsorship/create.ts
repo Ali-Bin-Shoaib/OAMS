@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	if (!session || session.user.type !== 'ADMIN') {
 		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 	}
-
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const sponsorship: Sponsorship = req.body;

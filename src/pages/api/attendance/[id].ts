@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE, REQUEST_METHODS, _Orphan, _Attendance } from '../../../../types';
-import { Attendance, Orphan, OrphanAttendance, Prisma, User } from '@prisma/client';
+import { Prisma, UserType } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/next-auth-options';
 
@@ -10,9 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const session = await getServerSession(req, res, authOptions);
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
 	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
-	if (!session || (session.user.type != 'ORPHANAGE_SUPERVISOR' && session.user.type != 'ADMIN')) {
-		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
-	}
+	if (session && (session.user.type === UserType.ADMIN || session.user.type === UserType.ORPHANAGE_SUPERVISOR)) {
+	} else return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 	const attendanceId = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ req.method:', req.method);
 	console.log('🚀 ~ file: [id].tsx:8 ~ handler ~ id:', attendanceId);
@@ -27,54 +26,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		//* ************************UPDATE************************
 		case REQUEST_METHODS.PUT: {
 			try {
-				const reqData: Attendance & {
-					OrphanAttendance: (OrphanAttendance & {
-						// Orphan?: Orphan;
-					})[];
-					User: User;
-				} = req.body;
-				const { OrphanAttendance, User, id: attendanceId, date, userId } = reqData;
-				OrphanAttendance.map(async (x) => {
-					if (x.id) {
-						if (x.isAttended) {
-							const attendAbsentOrphan = await prisma.orphanAttendance.delete({ where: { id: x.id } });
-							console.log('🚀 ~ file: [id].tsx:35 ~ OrphanAttendance.map ~ attendAbsentOrphan:', attendAbsentOrphan);
-						}
-					}
-				});
-				const updatedAttendance = await prisma.attendance.update({
-					where: { id: attendanceId },
+				const reqData: _Attendance = req.body;
+				const { OrphanAttendance, User, id, date, userId } = reqData;
+				const updateAttendance: Prisma.AttendanceUpdateArgs = {
 					data: {
-						date: date,
-						User: { connect: { id: userId } },
+						date,
+						userId,
+						id,
 						OrphanAttendance: {
-							upsert: OrphanAttendance.filter((x) => !x.isAttended).map((x) => ({
-								where: { id: x.id ? x.id : -1 },
-								create: {
-									absentReason: x.absentReason,
-									isAttended: x.isAttended,
-									justification: x.justification,
-									notes: x.notes,
-									User: { connect: { id: userId } },
-									returnDay: x.returnDay,
-									Orphan: { connect: { id: x.orphanId as number } },
-								},
-								update: {
+							update: OrphanAttendance.map((x) => ({
+								data: {
 									absentReason: x.absentReason,
 									justification: x.justification,
 									isAttended: x.isAttended,
 									returnDay: x.returnDay,
 									notes: x.notes,
-									User: { connect: { id: userId } },
-									Orphan: { connect: { id: x.orphanId as number } },
 								},
+								where: { id: x.id },
 							})),
-							deleteMany: { isAttended: true },
-							// updateMany: { where: { attendanceId: attendanceId }, data: test }
 						},
 					},
-				});
-
+					where: { id },
+				};
+				const updatedAttendance = await prisma.attendance.update(updateAttendance);
 				console.log('🚀 ~ file: [id].tsx:31 ~ handler ~ updatedAttendance:', updatedAttendance);
 				return res.end(res.status(STATUS_CODE.OK).json({ data: updatedAttendance, msg: 'update success' }));
 			} catch (error) {
@@ -122,4 +96,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		}
 	}
 }
-// export const config = { api: { bodyParser: false } };

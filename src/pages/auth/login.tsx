@@ -4,7 +4,7 @@ import logo from '../../img/logo.png';
 export default function LoginPage() {
 	return (
 		<div className='max-w-fit max-h-fit mx-auto items-center justify-center'>
-			<Image src={logo} width={500} height={400} priority alt='logo' className='img' />
+			<Image src={logo} width={500} height={400} priority alt='logo' />
 			<div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
 				<div className='flex flex-col space-y-2 text-center'>
 					<h1 className='text-2xl font-semibold tracking-tight'> Welcome to Orphan and Activity Management System</h1>

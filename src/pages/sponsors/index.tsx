@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next';
 import prisma from '../../../lib/prisma';
 import { UserType } from '@prisma/client';
 import { useEffect, useState } from 'react';
-import { Loader } from '@mantine/core';
+import { Button, Loader, Tooltip } from '@mantine/core';
 import SuperJSON from 'superjson';
 import { _Guardian, _Orphan, _Sponsor, _User } from '../../../types';
 import MyModal from '../../../components/common/MyModal';
@@ -10,6 +10,9 @@ import { useDisclosure } from '@mantine/hooks';
 import UserForm from '../../../components/users/UserForm';
 // import { generateDumpData } from '../../../data/functions';
 import SponsorTable from '../../../components/sponsors/SponsorTable';
+import { IconPlus } from '@tabler/icons-react';
+import router from 'next/router';
+import { serverLink } from 'shared/links';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
@@ -46,17 +49,12 @@ export default function Index({ stringSponsor }: Props) {
 		<>
 			{/* TODO pass a component with props to parent component */}
 			<div className='text-center'>
-				<MyModal
-					ModelForm={<UserForm userType={UserType.SPONSOR} close={close} />}
-					modalTitle={'Add Sponsor info'}
-					buttonText={'Add New Sponsor'}
-					// open={open}
-					// close={close}
-					// opened={opened}
-				/>
+				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}sponsors/action/create`)}>
+					<IconPlus />
+					Add Sponsor
+				</Button>
 			</div>
-			{/* <OrphanCard orphan={cardInfo as unknown as Orphan} /> */}
-			<SponsorTable sponsors={sponsors} updateCard={updateCard} />
+			<SponsorTable sponsors={sponsors} />
 		</>
 	);
 }

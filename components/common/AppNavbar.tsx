@@ -37,9 +37,7 @@ export default function AppNavbar() {
 	const currentPage = usePageTitle();
 	const { data: session, status, update } = useSession();
 	const isActive = ' shadow-md border-b-2 border-x-0 border-t-0 border-white border-solid border';
-	useEffect(() => {
-		console.log('🚀 ~ file: AppNavbar.tsx:43 ~ AppNavbar ~ session:', session);
-	}, [currentPage, session, status]);
+	useEffect(() => {}, [currentPage, session, status]);
 	const items = Paths.links.map((link) => {
 		const menuItems = link.relatedLinks?.map((item) => {
 			return (
@@ -110,7 +108,7 @@ export default function AppNavbar() {
 	});
 
 	return (
-		<Header height={56} mb={10} sx={{ backgroundColor: '#0077b6' }}>
+		<Header height={60} sx={{ backgroundColor: '#0077b6' }}>
 			<Container fluid>
 				<div className={`flex flex-row  items-center justify-between h-14`}>
 					<Link
@@ -123,7 +121,7 @@ export default function AppNavbar() {
 						<IconHome size={28} />
 					</Link>
 					<Group spacing={5} className={'max-[1120px]:hidden'}>
-						{items}
+						{session?.user && items}
 					</Group>
 
 					<Group position='right' className='sm:flex md:items-center min-w-fit '>
@@ -132,9 +130,7 @@ export default function AppNavbar() {
 							position='right'
 							overlayProps={{ opacity: 0.5, blur: 4 }}
 							onClose={() => setIsOpen(!isOpen)}
-							title='Notification'>
-							{/* Drawer content */}
-						</Drawer>
+							title='Notification'></Drawer>
 						{session?.user ? (
 							<div className='flex flex-row items-center'>
 								<div className='flex flex-col items-center'>
@@ -157,11 +153,11 @@ export default function AppNavbar() {
 							</div>
 						) : (
 							<>
-								<span
+								{/* <span
 									className='hidden sm:block text-white text-ellipsis overflow-hidden font-semibold text-base text-end 
 									sx:flex items-center w-52 h-11 md:w-auto md:h-auto md:mr-6'>
-									not logged in
-								</span>
+									Logged out
+								</span> */}
 
 								<Tooltip label={'Login'}>
 									<ActionIcon variant='default' size='lg' onClick={() => signIn()}>
@@ -174,13 +170,13 @@ export default function AppNavbar() {
 							<IconBell />
 						</ActionIcon>
 
-						<ActionIcon variant='light' onClick={() => toggleColorScheme()} size='lg'>
+						{/* <ActionIcon variant='light' onClick={() => toggleColorScheme()} size='lg'>
 							{colorScheme === 'dark' ? (
 								<IconSun size='1.2rem' color={theme.colors.yellow[5]} />
 							) : (
 								<IconMoonStars size='1.2rem' />
 							)}
-						</ActionIcon>
+						</ActionIcon> */}
 					</Group>
 
 					<Burger opened={opened} onClick={toggle} className={`min-[1121px]:hidden`} size='md' />

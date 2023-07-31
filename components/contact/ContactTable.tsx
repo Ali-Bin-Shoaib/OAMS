@@ -57,6 +57,8 @@ function ContactTable({ contact }: Props) {
 			<MantineReactTable
 				columns={columns}
 				data={contact}
+				// positionActionsColumn='last'
+				displayColumnDefOptions={{ 'mrt-row-actions': { size: 0 } }}
 				initialState={{ density: 'xs' }}
 				enableColumnResizing
 				columnResizeMode='onEnd'
@@ -65,7 +67,6 @@ function ContactTable({ contact }: Props) {
 				}}
 				enableRowActions
 				enableToolbarInternalActions
-				positionActionsColumn='last'
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'Contact'} url={'api/contact/'} />
@@ -108,6 +109,7 @@ export function ContactInfo({ id }: CardProps) {
 			<Group>
 				<Tooltip label={'Info'}>
 					<Button
+						color='gray'
 						size={'xs'}
 						onClick={async () => {
 							try {

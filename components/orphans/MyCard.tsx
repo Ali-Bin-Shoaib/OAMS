@@ -23,7 +23,7 @@ function MyCard({ orphan }: Props) {
 		<div className='all'>
 			<div className='card'>
 				<div className='card-header'>
-					<h2>Orphan Identification Card</h2>
+					<h2>Orphan Information</h2>
 				</div>
 				<div className='card-body'>
 					<div className='card-image'>
@@ -36,8 +36,8 @@ function MyCard({ orphan }: Props) {
 									{/* <Button w={50} color='gray' onClick={() => router.push(Pages?.Orphans.link + orphan?.id)}> */}
 									<IconInfoCircle
 										color={theme.colors.gray[9]}
-										className='bg-gray-50 rounded-xl mx-3'
-										size={50}
+										className='bg-gray-50 rounded-xl mx-3 hover:cursor-pointer'
+										size={40}
 										onClick={() => router.push(Pages?.Orphans.link + orphan?.id)}
 									/>
 									{/* </Button> */}
@@ -46,8 +46,8 @@ function MyCard({ orphan }: Props) {
 									{/* <Button w={50} color='yellow' onClick={() => router.push(`${serverLink}orphans/action/${orphan?.id}`)}> */}
 									<IconEdit
 										color={theme.colors.yellow[9]}
-										className='bg-yellow-50 rounded-xl mx-2'
-										size={50}
+										className='bg-yellow-50 rounded-xl mx-2 hover:cursor-pointer'
+										size={40}
 										onClick={() => router.push(`${serverLink}orphans/action/${orphan?.id}`)}
 									/>
 									{/* </Button> */}
@@ -55,8 +55,8 @@ function MyCard({ orphan }: Props) {
 								<Tooltip label='Delete'>
 									<IconTrash
 										color='red'
-										className='bg-red-100 rounded-xl'
-										size={50}
+										className='bg-red-100 rounded-xl hover:cursor-pointer'
+										size={40}
 										onClick={() => {
 											modals.openConfirmModal({
 												title: `Delete ${orphan.name} Info.`,
@@ -98,31 +98,31 @@ function MyCard({ orphan }: Props) {
 					)}
 					<div className='card-details'>
 						<ul>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Name:</strong> {orphan.name}
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Evaluation:</strong>
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Age:</strong> {orphan.age}
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Sex:</strong> {orphan.gender}
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Location:</strong> {orphan.currentAddress}
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Birthdate:</strong> {orphan.birthdate.toDateString()}
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>School:</strong> {orphan.schoolName}
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Level:</strong> {orphan.gradeLevel}
 							</li>
-							<li className='text-ellipsis overflow-hidden'>
+							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Guardian:</strong> {orphan.Guardian?.user?.name}
 							</li>
 						</ul>

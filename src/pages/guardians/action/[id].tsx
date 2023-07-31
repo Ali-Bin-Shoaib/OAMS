@@ -9,9 +9,8 @@ import UserForm from 'components/users/UserForm';
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
 	console.log('🚀 ~ file: [id].tsx:8 ~ constgetServerSideProps:GetServerSideProps= ~ context:', context.params);
 	if (!context.params) return { notFound: true };
-	if (isNaN(Number(context.params.id))) {
-		return { props: {} };
-	}
+	if (context.params.id === 'create') return { props: {} };
+
 	if (!isNaN(Number(context.params.id)))
 		try {
 			const guardian = await prisma.user.findUnique({
@@ -20,6 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 				},
 				include: { Guardian: true },
 			});
+			console.log('🚀 ~ file: [id].tsx:22 ~ constgetServerSideProps:GetServerSideProps= ~ guardian:', guardian);
 			const data = { guardian };
 			return guardian ? { props: data } : { notFound: true };
 		} catch (error) {
@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 };
 
 interface Props {
-	guardian: Guardian & { User: User };
+	guardian: User & { Guardian: Guardian };
 }
 
 function Action({ guardian }: Props) {

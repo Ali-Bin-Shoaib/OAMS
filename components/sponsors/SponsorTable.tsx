@@ -1,15 +1,18 @@
 import { Prisma, User } from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Container } from '@mantine/core';
+import { Button, Container, Tooltip } from '@mantine/core';
 import { _Sponsor } from '../../types';
+import { IconEdit } from '@tabler/icons-react';
+import DeleteModal from 'components/common/DeleteModal';
+import router from 'next/router';
+import { serverLink } from 'shared/links';
 
 interface Props {
 	sponsors: _Sponsor[];
-	updateCard(guardian: _Sponsor): void;
 }
 
-function SponsorTable({ sponsors, updateCard }: Props) {
+function SponsorTable({ sponsors }: Props) {
 	const columns = useMemo<MRT_ColumnDef<_Sponsor>[]>(
 		() => [
 			{
@@ -111,14 +114,27 @@ function SponsorTable({ sponsors, updateCard }: Props) {
 			<MantineReactTable
 				columns={columns}
 				data={sponsors}
+				enableRowActions
+				displayColumnDefOptions={{ 'mrt-row-actions': { size: 130 } }}
+				renderRowActions={({ row }) => {
+					return (
+						<Button.Group>
+							<DeleteModal id={row.original.userId!} title={'Sponsor'} url={'api/user/'} />
+							<Tooltip label={'Edit'}>
+								<Button
+									size='xs'
+									onClick={() => {
+										router.push(serverLink + 'sponsors/action/' + row.original.userId);
+									}}
+									color='yellow'>
+									<IconEdit />
+								</Button>
+							</Tooltip>
+						</Button.Group>
+					);
+				}}
 				initialState={{ density: 'xs' }}
 				enableColumnResizing
-				mantineTableBodyRowProps={({ row }) => ({
-					onClick: () => {
-						updateCard(row.original);
-					},
-					sx: { border: '2px solid #dee2e6' },
-				})}
 				mantineTableBodyCellProps={{
 					sx: { border: '2px solid #dee2e6' },
 				}}

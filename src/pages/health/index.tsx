@@ -10,7 +10,7 @@ import { IconCheck, IconPlus, IconX } from '@tabler/icons-react';
 import EducationTable from '../../../components/education/EducationTable';
 import axios from 'axios';
 import myNotification from '../../../components/MyNotification';
-import { STATUS_CODE, Behavior, Education, Health } from '../../../types';
+import { STATUS_CODE, Behavior, Education, Health, ResponseType } from '../../../types';
 import orphans from '../orphans';
 import HealthTable from '../../../components/health/HealthTable';
 
@@ -40,19 +40,36 @@ export default function Index({ stringJson }: Props) {
 	const router = useRouter();
 	const fetchOrphanHealth = async (id: number) => {
 		console.log('🚀 ~ file: index.tsx:40 ~ fetchOrphanHealth ~ id:', id);
-		await axios
-			.get(`${serverLink}api/health/${Number(id)}`)
-			.then((data) => {
-				console.log('🚀 ~ file: index.tsx:46 ~ .then ~ data:', data);
-				data.status === STATUS_CODE.OK
-					? (setOrphanHealth(SuperJSON.parse(data.data.data) as Health[]),
-					  myNotification('Get Info', data.data.msg, 'green', <IconCheck />))
-					: myNotification('Get Info', data.data.msg, 'red', <IconX />);
-			})
-			.catch((err) => {
-				console.log('🚀 ~ file: index.tsx:52 ~ fetchOrphanHealth ~ e:', err);
-				myNotification('Not Found', 'orphan has no related health info', 'red', <IconX />);
-			});
+		try {
+			const res = await axios.get<ResponseType>(`${serverLink}api/health/${Number(id)}`);
+			console.log('🚀 ~ file: index.tsx:45 ~ fetchOrphanHealth ~ res:', res);
+			if (res.status === STATUS_CODE.OK) {
+				setOrphanHealth(SuperJSON.parse(res.data.data) as Health[]);
+				myNotification('Get Info', res.data.msg, 'green', <IconCheck />);
+			} else {
+				setOrphanHealth([]);
+
+				myNotification('Get Info', res.data.msg, 'red', <IconX />);
+			}
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.log('🚀 ~ file: index.tsx:54 ~ fetchOrphanHealth ~ error:', error);
+				setOrphanHealth([]);
+
+				myNotification('Error', error.response?.data.msg || 'Something went wrong.', 'red', <IconX />);
+			}
+		}
+		// .then((data) => {
+		// 	console.log('🚀 ~ file: index.tsx:46 ~ .then ~ data:', data);
+		// 	data.status === STATUS_CODE.OK
+		// 		? (setOrphanHealth(SuperJSON.parse(data.data.data) as Health[]),
+		// 		  myNotification('Get Info', data.data.msg, 'green', <IconCheck />))
+		// 		: myNotification('Get Info', data.data.msg, 'red', <IconX />);
+		// })
+		// .catch((err) => {
+		// 	console.log('🚀 ~ file: index.tsx:52 ~ fetchOrphanHealth ~ e:', err);
+		// 	myNotification('Not Found', 'orphan has no related health info', 'red', <IconX />);
+		// });
 	};
 	useEffect(() => {
 		setHydration(true);

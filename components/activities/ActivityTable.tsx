@@ -68,7 +68,8 @@ function ActivityTable({ activities, updateCard }: Props) {
 				columns={columns}
 				enableRowActions
 				enableToolbarInternalActions
-				positionActionsColumn='last'
+				// displayColumnDefOptions={{ 'mrt-row-actions': { size: 130 } }}
+				// positionActionsColumn='last'
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'activity'} url={'api/activity/'} />

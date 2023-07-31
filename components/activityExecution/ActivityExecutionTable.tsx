@@ -137,7 +137,8 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 				}}
 				enableRowActions
 				enableToolbarInternalActions
-				positionActionsColumn='last'
+				// positionActionsColumn='last'
+				displayColumnDefOptions={{ 'mrt-row-actions': { size: 50 } }}
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						{/* <Tooltip label={'Delete'}>

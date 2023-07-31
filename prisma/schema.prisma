@@ -210,7 +210,6 @@ model Attendance {
 model OrphanAttendance {
   id            Int       @id @default(autoincrement())
   isAttended    Boolean   @default(true)
-  // wing          String?
   absentReason  String?
   notes         String?
   returnDay     DateTime?
@@ -258,8 +257,6 @@ model ActivityGoal {
   activityInfoId Int?
   Goal           Goal?         @relation(fields: [goalId], references: [id], onDelete: Cascade)
   goalId         Int?
-  // ActivityExecutionInfo   ActivityExecutionInfo? @relation(fields: [activityExecutionInfoId], references: [id])
-  // activityExecutionInfoId Int?
   User           User?         @relation(fields: [userId], references: [id])
   userId         Int?
 

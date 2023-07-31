@@ -12,10 +12,6 @@ import ListComponent, { ListItemComponent } from '../../../components/common/Lis
 import { IconSearch, IconUserPlus } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { serverLink } from 'shared/links';
-import { useSession } from 'next-auth/react';
-import { Orphan, User } from '@prisma/client';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async (context: GetStaticPropsContext) => {
@@ -34,6 +30,7 @@ export const getStaticProps: GetStaticProps = async (context: GetStaticPropsCont
 		},
 		orderBy: { id: 'asc' },
 	});
+
 	const stringData = SuperJSON.stringify({ orphans });
 	return { props: { stringData } };
 };
@@ -51,7 +48,7 @@ export default function Index({ stringData }: Props) {
 	const [cardInfo, setCardInfo] = useState<orphanWithGuardianAndSponsorshipInfo>(orphans[0]);
 	const [search, setSearch] = useState<string>('');
 	const router = useRouter();
-	//! to show image  const src = URL.createObjectURL(image);
+	//// to show image  const src = URL.createObjectURL(image);
 	const [hydration, setHydration] = useState(false);
 	const updateCard = (orphan: orphanWithGuardianAndSponsorshipInfo) => setCardInfo(orphan);
 	useEffect(() => {
@@ -75,22 +72,22 @@ export default function Index({ stringData }: Props) {
 						}}
 					/>
 					<Divider p={2} />
-					<ScrollArea h={480} p={5}>
-						{orphans
-							.filter((x) => x.name.toLowerCase().includes(search))
-							.map((orphan) => (
-								<ListItemComponent
-									key={orphan.id}
-									id={orphan.id}
-									img={orphan.image || img}
-									title={orphan.name}
-									leftData={{ label: 'age', data: orphan.age }}
-									middleData={{ label: 'gender', data: orphan.gender }}
-									rightData={{ label: 'rating', data: orphan.evaluation || 3 }}
-									onClick={() => updateCard(orphan)}
-								/>
-							))}
-					</ScrollArea>
+					{/* <ScrollArea h={480} p={5}> */}
+					{orphans
+						.filter((x) => x.name.toLowerCase().includes(search))
+						.map((orphan) => (
+							<ListItemComponent
+								key={orphan.id}
+								id={orphan.id}
+								img={orphan.image || img}
+								title={orphan.name}
+								leftData={{ label: 'age', data: orphan.age }}
+								middleData={{ label: 'gender', data: orphan.gender }}
+								rightData={{ label: 'rating', data: orphan.evaluation || 3 }}
+								onClick={() => updateCard(orphan)}
+							/>
+						))}
+					{/* </ScrollArea> */}
 				</ListComponent>
 				{/* {<OrphanCard orphan={cardInfo} />} */}
 				{<MyCard orphan={cardInfo} />}

@@ -32,6 +32,7 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 	const {
 		control,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<_Sponsorship>({ defaultValues: { ...sponsorship, isActive: false as unknown as string } });
 	const onSubmit = async (data: _Sponsorship) => {

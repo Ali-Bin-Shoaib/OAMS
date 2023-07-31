@@ -4,6 +4,7 @@ import AppNavbar from './AppNavbar';
 import Providers from './Providers';
 import AppHead from './AppHead';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { useSession } from 'next-auth/react';
 interface Props {
 	children: ReactNode;
 }

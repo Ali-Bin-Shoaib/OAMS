@@ -54,7 +54,7 @@ function Index({ activitiesExecutions }: Props) {
 	return (
 		<>
 			<Container fluid px={10}>
-				<h1>activityExecution Index</h1>
+				{/* <h1>activityExecution Index</h1> */}
 				<Group position='center'>
 					<Button size='xl' m={15} onClick={() => router.push(Pages.Activities.link)}>
 						<IconPlus />

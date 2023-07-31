@@ -20,6 +20,21 @@ function Providers({ children }: Props) {
 				<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
 					<MantineProvider
 						theme={{
+							colors: {
+								blueEch: [
+									'#daf8ff',
+									'#ade6ff',
+									'#7ed3ff',
+									'#4dc1ff',
+									'#23b0fe',
+									'#1096e5',
+									'#0075b3',
+									'#005381',
+									'#003250',
+									'#001220',
+								],
+							},
+							primaryColor: 'blueEch',
 							colorScheme,
 						}}
 						withGlobalStyles

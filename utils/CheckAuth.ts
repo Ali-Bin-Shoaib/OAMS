@@ -3,8 +3,6 @@ import { config } from 'src/middleware';
 import { REQUEST_METHODS } from 'types';
 
 export function isUserAuthorized(userType: UserType, path: string): boolean {
-	console.log('🚀 ~ file: checkAuth.ts:5 ~ isAuthorized ~ userType:', userType);
-	console.log('🚀 ~ file: checkAuth.ts:5 ~ isAuthorized ~ path:', path);
 	switch (userType) {
 		case UserType.ADMIN: {
 			return true;
@@ -56,18 +54,18 @@ export function isUserAuthorized(userType: UserType, path: string): boolean {
 				path.startsWith('/behavior') ||
 				path.startsWith('/education') ||
 				path.startsWith('/health')
-			)
+			) {
+				console.log('````````````````ACCESS DENIED!!````````````````');
 				return true;
-			console.log('````````````````ACCESS DENIED!!````````````````');
-
+			}
 			return false;
 		}
 	}
 }
 export function isActionAuthorized(userType: UserType, path: string, method: string): boolean {
-	console.log('🚀 ~ file: checkAuth.ts:69 ~ isActionAuthorized ~ path:', path);
-	console.log('🚀 ~ file: checkAuth.ts:69 ~ isActionAuthorized ~ method:', method);
-	console.log('🚀 ~ file: checkAuth.ts:69 ~ isActionAuthorized ~ userType:', userType);
+	// console.log('🚀 ~ file: checkAuth.ts:69 ~ isActionAuthorized ~ path:', path);
+	// console.log('🚀 ~ file: checkAuth.ts:69 ~ isActionAuthorized ~ method:', method);
+	// console.log('🚀 ~ file: checkAuth.ts:69 ~ isActionAuthorized ~ userType:', userType);
 	switch (userType) {
 		case UserType.ADMIN: {
 			return true;

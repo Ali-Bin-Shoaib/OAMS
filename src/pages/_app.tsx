@@ -1,7 +1,7 @@
 import './../styles/globals.css';
 import type { AppProps } from 'next/app';
 import MainLayout from '../../components/common/MainLayout';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 const queryClient = new QueryClient();

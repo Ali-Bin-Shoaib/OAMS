@@ -11,9 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const session = await getServerSession(req, res, authOptions);
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
 	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
-	if (!session || session.user.type !== (UserType.ACTIVITY_SUPERVISOR && UserType.ADMIN)) {
-		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
-	}
+	if (session && (session.user.type === UserType.ADMIN || session.user.type === UserType.ACTIVITY_SUPERVISOR)) {
+	} else return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 
 	const ID = Number(req.query.id);
 	const goal = await prisma.goal.findUnique({ where: { id: ID } });

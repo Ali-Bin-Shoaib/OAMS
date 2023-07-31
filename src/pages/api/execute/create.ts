@@ -2,7 +2,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE, REQUEST_METHODS, _Attendance, _ActivityInfo, _ActivityExecutionInfo } from '../../../../types';
-import { Goal, ActivityGoal, Prisma, User, ActivityExecutionInfo, ActivityInfo, GoalEvaluation } from '@prisma/client';
+import {
+	Goal,
+	ActivityGoal,
+	Prisma,
+	User,
+	ActivityExecutionInfo,
+	ActivityInfo,
+	GoalEvaluation,
+	UserType,
+} from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/next-auth-options';
 
@@ -10,9 +19,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const session = await getServerSession(req, res, authOptions);
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
 	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
-	if (!session || session.user.type !== ('ACTIVITY_SUPERVISOR' && 'ADMIN')) {
-		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
-	}
+	if (session && (session.user.type === UserType.ADMIN || session.user.type === UserType.ACTIVITY_SUPERVISOR)) {
+	} else return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const data: _ActivityExecutionInfo = req.body;

@@ -1,17 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { _ActivityInfo, _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
-import { ActivityGoal, ActivityInfo, Goal, Orphan, Prisma, User } from '@prisma/client';
+import { ActivityGoal, ActivityInfo, Goal, Orphan, Prisma, User, UserType } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/next-auth-options';
 // export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);
-	if (session) {
-		if (session.user.type !== 'ADMIN' && session.user.type !== 'ACTIVITY_SUPERVISOR')
-			return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
-	}
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (session && (session.user.type === UserType.ADMIN || session.user.type === UserType.ACTIVITY_SUPERVISOR)) {
+	} else return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ ID:', ID);
 	const activity = await prisma.activityInfo.findUnique({ where: { id: ID } });

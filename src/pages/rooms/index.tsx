@@ -7,7 +7,7 @@ import { Orphan } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
 import { IconCheck, IconX } from '@tabler/icons-react';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import myNotification from '../../../components/MyNotification';
 import { STATUS_CODE, ROOM, ResponseType } from '../../../types';
 import RoomTable from '../../../components/rooms/RoomTable';
@@ -56,8 +56,10 @@ export default function Index({ stringJson }: Props) {
 					: myNotification('Get Info', data.data.msg, 'red', <IconX />);
 			})
 			.catch((e) => {
-				console.log('🚀 ~ file: index.tsx:57 ~ fetchOrphanRoom ~ e:', e);
-				myNotification('Not Found', e.response.data, 'red', <IconX />);
+				if (isAxiosError(e)) {
+					console.log('🚀 ~ file: index.tsx:57 ~ fetchOrphanRoom ~ e:', e);
+					myNotification('Not Found', e.response?.data.msg, 'red', <IconX />);
+				}
 			});
 	};
 	useEffect(() => {

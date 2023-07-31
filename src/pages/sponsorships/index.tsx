@@ -67,17 +67,18 @@ export default function Index({ stringData }: Props) {
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<>
-			<div className='text-center pb-4'>
+			<div className='text-center p-5'>
 				<MyModal
 					modalTitle='Add Sponsorship'
 					buttonText='Add New Sponsorship'
+					modalSize='calc(100vw - 3rem)'
 					// close={close}
 					// open={open}
 					// opened={opened}
 					ModelForm={<SponsorshipForm close={close} orphans={orphans} sponsors={sponsors as _Sponsor[]} />}
 				/>
 			</div>
-			<SponsorshipTable sponsorships={sponsorships} updateCard={updateCard} />
+			<SponsorshipTable sponsorships={sponsorships} orphans={orphans} sponsors={sponsors} />
 		</>
 	);
 }

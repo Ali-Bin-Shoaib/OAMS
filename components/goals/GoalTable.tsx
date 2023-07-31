@@ -61,7 +61,8 @@ function GoalTable({ goals, updateCard }: Props) {
 				}}
 				enableRowActions
 				enableToolbarInternalActions
-				positionActionsColumn='last'
+				// positionActionsColumn='last'
+				displayColumnDefOptions={{ 'mrt-row-actions': { size: 0 } }}
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'Goal'} url={'api/goal/'} />

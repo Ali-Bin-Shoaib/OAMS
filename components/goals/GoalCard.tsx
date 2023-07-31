@@ -18,18 +18,29 @@ function GoalCard({ goal }: Props) {
 		<>
 			<Card shadow='sm' padding='lg' radius='md' withBorder>
 				<SimpleGrid cols={1} spacing={'xl'} verticalSpacing={'md'}>
-					<Text>ID: {goal?.id}</Text>
-					<Text>Title: {goal?.title}</Text>
-					<Text>Created By: {goal?.User?.name}</Text>
 					<Text>
-						Total Evaluation in all Activity Executions:{' '}
+						<span className='font-bold'>ID</span>: {goal?.id}
+					</Text>
+					<Text>
+						<span className='font-bold'>Title:</span> {goal?.title}
+					</Text>
+					<Text>
+						<span className='font-bold'>Created By:</span> {goal?.User?.name}
+					</Text>
+					<Text>
+						<span className='font-bold'>Total Evaluation in all Activity Executions:</span>{' '}
 						{(goal?.GoalEvaluation &&
 							(
 								goal.GoalEvaluation.reduce((total, object) => total + object?.evaluation!, 0) / goal?.GoalEvaluation?.length
 							).toFixed(2)) != 'NaN' || '0'}
 					</Text>
-					<Text>NO of Activities assign to : {goal?.ActivityGoal.length}</Text>
-					<Text>Activities titles assign this goal: {goal?.ActivityGoal.map((x) => x.ActivityInfo.title).join(', ')}</Text>
+					<Text>
+						<span className='font-bold'>NO of Activities assign to :</span> {goal?.ActivityGoal.length}
+					</Text>
+					<Text>
+						<span className='font-bold'>Activities titles assign this goal:</span>{' '}
+						{goal?.ActivityGoal.map((x) => x.ActivityInfo.title).join(', ')}
+					</Text>
 					{/* <Text>Activities titles assign this goal: </Text>
 					{goal.ActivityGoal.map((x) => (
 						<Text key={x.id}>{x.ActivityInfo.title}</Text>

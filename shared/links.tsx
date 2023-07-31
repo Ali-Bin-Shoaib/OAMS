@@ -37,7 +37,7 @@ export const Paths: HeaderLinkProps = {
 		{ label: 'Guardians', link: serverLink + 'guardians' },
 		{ label: 'Sponsors', link: serverLink + 'sponsors' },
 		{ label: 'Sponsorships', link: serverLink + 'sponsorships' },
-		{ label: 'Rooms', link: serverLink + 'rooms' },
+		// { label: 'Rooms', link: serverLink + 'rooms' },
 	],
 };
 
@@ -57,7 +57,7 @@ export const Pages = {
 	CriteriaInfo: { label: 'Criteria', link: serverLink + 'criteria/' },
 	EmergenceContactInfo: { label: 'Emergence Contact Info', link: serverLink + 'contact/' },
 	EducationInfo: { label: 'Education Info', link: serverLink + 'education/' },
-	Rooms: { label: 'Rooms', link: serverLink + 'room/' },
+	// Rooms: { label: 'Rooms', link: serverLink + 'room/' },
 
 	// HealthInfo: { label: 'Health Info', link: '/healthInfo/' },
 	// BehaviorInfo: { label: 'Behavior Info', link: '/behaviorInfo/' },

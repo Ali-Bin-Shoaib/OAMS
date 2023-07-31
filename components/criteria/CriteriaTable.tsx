@@ -12,10 +12,9 @@ import CriteriaForm from './CriteriaForm';
 import CriteriaCard from './CriteriaCard';
 interface Props {
 	criteria: (Criteria & { User: User })[];
-	updateCard?: (goal?: Goal | undefined) => void;
 }
 
-function CriteriaTable({ criteria, updateCard }: Props) {
+function CriteriaTable({ criteria }: Props) {
 	console.log('🚀 ~ file: ~ CriteriaTable');
 	const router = useRouter();
 	const [opened, { open, close }] = useDisclosure(false);
@@ -56,7 +55,8 @@ function CriteriaTable({ criteria, updateCard }: Props) {
 				}}
 				enableRowActions
 				enableToolbarInternalActions
-				positionActionsColumn='last'
+				displayColumnDefOptions={{ 'mrt-row-actions': { size: 1 } }}
+				// positionActionsColumn='last'
 				renderRowActions={({ row }) => (
 					<Button.Group>
 						<DeleteModal id={row.original.id!} title={'Criteria'} url={'api/criteria/'} />

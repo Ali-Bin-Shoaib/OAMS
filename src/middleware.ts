@@ -9,21 +9,15 @@ export default withAuth(
 	// `withAuth` augments your `Request` with the user's token.
 	async function middleware(req: NextRequestWithAuth) {
 		const userType = req.nextauth.token?.type;
-		console.log('🚀 ~  userType:', userType);
-		console.log("🚀 ~  startsWith('/api'):", req.nextUrl.pathname.startsWith('/api'));
+		// console.log('🚀 ~  userType:', userType);
+		// console.log("🚀 ~  startsWith('/api'):", req.nextUrl.pathname.startsWith('/api'));
 		console.log('🚀 isUserAuthorized', isUserAuthorized(userType!, req.nextUrl.pathname));
 		if (userType) {
 			if (!req.nextUrl.pathname.startsWith('/api'))
 				if (!isUserAuthorized(userType, req.nextUrl.pathname)) {
 					return NextResponse.rewrite(new URL('/auth/accessDenied', req.url));
 				}
-			// if (req.nextUrl.pathname.startsWith('/api'))
-			// 	if (!isActionAuthorized(userType, req.nextUrl.pathname, req.method)) {
-			// 		console.log('❌❌action not allowed', req.url);
-			// 		// return NextResponse.rewrite(new URL('/auth/accessDenied', req.url));
-			// 	}
 		}
-		// return NextResponse.next();
 	},
 	{
 		callbacks: {

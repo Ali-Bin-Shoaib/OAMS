@@ -1,16 +1,17 @@
 import { Degree, Gender, Grade, HomeType, Orphan, Prisma, Quarter, Status, User, UserType } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import prisma from '../lib/prisma';
+import { $enum } from 'ts-enum-util';
 
 export async function initial() {
 	(await prisma.user.count({ where: { type: UserType.ADMIN } })) < 1 && (await createAdmin());
-	(await prisma.user.count()) <= 50 && (await createUser(faker.number.int({ max: 50 })));
-	(await prisma.guardian.count()) <= 50 && (await createGuardian(faker.number.int({ max: 50 })));
-	(await prisma.sponsor.count()) <= 50 && (await createSponsor(faker.number.int({ max: 50 })));
-	(await prisma.orphan.count()) <= 50 && (await createOrphan(faker.number.int({ max: 50 })));
+	(await prisma.user.count()) <= 10 && (await createUser(faker.number.int({ max: 10 })));
+	(await prisma.guardian.count()) <= 40 && (await createGuardian(faker.number.int({ max: 10 })));
+	(await prisma.sponsor.count()) <= 50 && (await createSponsor(faker.number.int({ max: 10 })));
+	(await prisma.orphan.count()) <= 63 && (await createOrphan(faker.number.int({ max: 10 })));
 	(await prisma.sponsorship.count()) <= 50 && (await createSponsorship(faker.number.int({ max: 50 })));
-	(await prisma.criteria.count()) <= 20 && (await createCriteria(faker.number.int({ max: 20 })));
-	(await prisma.goal.count()) <= 20 && (await createGoal(faker.number.int({ max: 20 })));
+	(await prisma.criteria.count()) <= 10 && (await createCriteria(faker.number.int({ max: 10 })));
+	(await prisma.goal.count()) <= 10 && (await createGoal(faker.number.int({ max: 10 })));
 	(await prisma.behaviorInfo.count()) <= 50 && (await createBehavior(faker.number.int({ max: 50 })));
 	(await prisma.activityInfo.count()) <= 50 && (await createActivity(faker.number.int({ max: 50 })));
 	(await prisma.activityExecutionInfo.count()) <= 50 && (await createExecution(faker.number.int({ max: 50 })));
@@ -40,11 +41,7 @@ export async function findAdmin(): Promise<User> {
 	const admin = await prisma.user.findFirst({ where: { type: UserType.ADMIN } });
 	return admin!;
 }
-export async function findOrphan(id?: number): Promise<Orphan | Orphan[] | null> {
-	if (!id) {
-		const orphans = await prisma.orphan.findMany();
-		return orphans;
-	}
+export async function findOrphan(id: number): Promise<Orphan | Orphan[] | null> {
 	const orphan = await prisma.orphan.findUnique({ where: { id: id } });
 	return orphan;
 }
@@ -60,14 +57,15 @@ export const createUser = async (number: number) => {
 			userType = faker.helpers.enumValue(UserType);
 			if (userType != UserType.SPONSOR && userType != UserType.GUARDIAN && userType != UserType.ADMIN) break;
 		}
+		const gender = faker.person.sex() as 'female' | 'male';
 		const user: Prisma.UserCreateManyInput = {
-			name: faker.person.fullName(),
+			name: faker.person.fullName({ sex: gender }),
 			gender: faker.helpers.enumValue(Gender),
 			username: faker.internet.userName(),
 			password: faker.internet.password(),
 			email: faker.internet.email(),
 			address: faker.location.city(),
-			phone: faker.phone.number('7##-###-###'),
+			phone: faker.phone.number('7########'),
 			type: userType,
 		};
 		users.push(user);
@@ -76,14 +74,16 @@ export const createUser = async (number: number) => {
 	console.log('🚀 ~ file: functions.tsx:44 ~ createUser ~ newUsers:');
 };
 export const createAdmin = async () => {
+	const gender = faker.person.sex() as 'female' | 'male';
+
 	const admin: Prisma.UserCreateInput = {
-		name: faker.person.fullName(),
+		name: faker.person.fullName({ sex: gender }),
 		gender: faker.helpers.enumValue(Gender),
 		username: faker.internet.userName(),
 		password: faker.internet.password(),
 		email: faker.internet.email(),
 		address: faker.location.city(),
-		phone: faker.phone.number('7##-###-###'),
+		phone: faker.phone.number('7########'),
 		type: UserType.ADMIN,
 	};
 
@@ -121,7 +121,7 @@ export const createSponsor = async (number: number) => {
 			password: faker.internet.password(),
 			email: faker.internet.email(),
 			address: faker.location.city(),
-			phone: faker.phone.number('7##-###-###'),
+			phone: faker.phone.number('7########'),
 			type: UserType.SPONSOR,
 			Sponsor: {
 				create: {
@@ -151,7 +151,7 @@ export const createOrphan = async (number: number) => {
 			gender: sex,
 			age: faker.number.int({ min: 6, max: 13 }),
 			birthplace: faker.location.city(),
-			birthdate: faker.date.between({ from: '2010-01-01T00:00:00.000Z', to: '2017-01-01T00:00:00.000Z' }),
+			birthdate: faker.date.between({ from: '2008-01-01T00:00:00.000Z', to: '2017-01-01T00:00:00.000Z' }),
 			schoolName: faker.word.words({ count: { min: 2, max: 4 } }),
 			gradeLevel: faker.helpers.enumValue(Grade),
 			lastYearPercentage: faker.number.float({ min: 50, max: 100, precision: 0.01 }),
@@ -205,13 +205,13 @@ export const createBehavior = async (number: number) => {
 	for (let i = 0; i < number; i++) {
 		const behavior: Prisma.BehaviorInfoCreateInput = {
 			date: faker.date.anytime(),
-			note: faker.hacker.phrase(),
+			note: faker.word.words(10),
 			BehaviorCriteria: {
 				createMany: {
 					data: criteria.map((x) => ({ criteriaId: x.id, evaluation: faker.number.int(5), userId: admin.id })),
 				},
 			},
-			Orphan: { connect: { id: orphans[faker.number.int(orphans.length)].id } },
+			Orphan: { connect: { id: faker.helpers.arrayElement(orphans).id } },
 			User: { connect: { id: admin.id } },
 		};
 		behaviors.push(behavior);
@@ -254,7 +254,7 @@ export const createActivity = async (number: number) => {
 			ActivityGoal: { create: goals.map((x) => ({ goalId: x.id, userId: admin.id })) },
 			budget: Number(faker.number.int({ min: 1000, max: 100000 })),
 			quarter: faker.helpers.enumValue(Quarter),
-			target: faker.word.noun(),
+			target: faker.helpers.arrayElement($enum(Grade).map((x) => x)),
 			title: faker.word.noun(),
 			type: faker.word.noun(),
 			User: { connect: { id: admin.id } },
@@ -270,7 +270,7 @@ export const createExecution = async (number: number) => {
 	const admin = await findAdmin();
 	let executions: Prisma.ActivityExecutionInfoCreateInput[] = [];
 	for (let i = 0; i < number; i++) {
-		let activityId = faker.number.int({ min: 0, max: activities.length });
+		let activityId = faker.helpers.arrayElement(activities).id;
 		let createExecute: Prisma.ActivityExecutionInfoCreateInput = {
 			ActivityInfo: { connect: { id: activities[activityId].id } },
 			Executor: { connect: { id: admin.id } },
@@ -316,7 +316,7 @@ export const createAttendance = async (number: number) => {
 	for (let i = 0; i < number; i++) {
 		const attendance: Prisma.AttendanceCreateInput = {
 			User: { connect: { id: admin.id } },
-			date: faker.date.anytime(),
+			date: faker.date.recent(),
 			OrphanAttendance: { create: orphanAttendance },
 		};
 		attendances.push(attendance);
