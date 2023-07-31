@@ -21,8 +21,9 @@ import { IconCheck, IconX } from '@tabler/icons-react';
 interface Props {
 	attendance?: _Attendance;
 	orphans: _Orphan[];
+	disabled?: boolean;
 }
-export default function AttendanceForm({ orphans, attendance }: Props): JSX.Element {
+export default function AttendanceForm({ orphans, attendance, disabled }: Props): JSX.Element {
 	const { data: session } = useSession();
 	let defaultValues: _Attendance;
 	if (attendance) {
@@ -116,9 +117,9 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 	if (!hydrate) return <Loader size={100} />;
 	return (
 		<>
-			<Container fluid>
+			<Container fluid className='bg-white'>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<Container className='flex flex-wrap' p={15}>
+					<Container className='flex flex-wrap ' p={15}>
 						<Controller
 							name='date'
 							rules={{ required: 'Attendance day is required' }}
@@ -127,6 +128,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 								return (
 									<DateInput
 										{...field}
+										disabled={disabled}
 										label='Attendance data'
 										w={'45%'}
 										defaultDate={attendance?.date}
@@ -142,16 +144,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 							control={control}
 							// rules={{ required: 'User' }}
 							render={({ field }) => {
-								return (
-									<TextInput
-										{...field}
-										disabled
-										variant='filled'
-										label='Created by'
-										defaultValue={attendance?.User?.name}
-										w={'45%'}
-									/>
-								);
+								return <TextInput {...field} disabled label='Created by' defaultValue={attendance?.User?.name} w={'45%'} />;
 							}}
 						/>
 					</Container>
@@ -167,10 +160,10 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 										.map((x) => x.isAttended)
 										.includes(false as unknown as string) ? (
 										<>
-											<th>Absent Reason</th>
-											<th>Justification</th>
-											<th>Notes</th>
-											<th>Return Day</th>
+											<th className='text-white'>Absent Reason</th>
+											<th className='text-white'>Justification</th>
+											<th className='text-white'>Notes</th>
+											<th className='text-white'>Return Day</th>
 										</>
 									) : (
 										''
@@ -187,7 +180,13 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 												name={`OrphanAttendance.${index}.isAttended`}
 												control={control}
 												render={({ field }) => {
-													return <Checkbox defaultChecked={(item.isAttended as unknown as boolean) || false} {...field} />;
+													return (
+														<Checkbox
+															defaultChecked={(item.isAttended as unknown as boolean) || false}
+															{...field}
+															disabled={disabled}
+														/>
+													);
 												}}
 											/>
 										</td>
@@ -202,7 +201,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 														render={({ field }) => {
 															return (
 																<Textarea
-																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	disabled={disabled || watch(`OrphanAttendance`)[index].isAttended ? true : false}
 																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
 																	{...field}
 																/>
@@ -217,7 +216,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 														render={({ field }) => {
 															return (
 																<Textarea
-																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	disabled={disabled || watch(`OrphanAttendance`)[index].isAttended ? true : false}
 																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
 																	{...field}
 																/>
@@ -232,7 +231,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 														render={({ field }) => {
 															return (
 																<Textarea
-																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	disabled={disabled || watch(`OrphanAttendance`)[index].isAttended ? true : false}
 																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
 																	{...field}
 																/>
@@ -247,7 +246,7 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 														render={({ field }) => {
 															return (
 																<DatePickerInput
-																	disabled={watch(`OrphanAttendance`)[index].isAttended ? true : false}
+																	disabled={disabled || watch(`OrphanAttendance`)[index].isAttended ? true : false}
 																	error={errors?.OrphanAttendance && errors.OrphanAttendance.message}
 																	{...field}
 																/>
@@ -262,8 +261,8 @@ export default function AttendanceForm({ orphans, attendance }: Props): JSX.Elem
 							</tbody>
 						</Table>
 					</Container>
-					<Group position='center' pt={50}>
-						<Button type='submit'>Submit</Button>
+					<Group position='center' py={50}>
+						{disabled || <Button type='submit'>Submit</Button>}
 					</Group>
 				</form>
 			</Container>

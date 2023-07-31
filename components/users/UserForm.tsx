@@ -38,21 +38,21 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 			if (!bigUser) {
 				console.log('user not exist.');
 				const url = serverLink + 'api/user/create/';
-				const res = await axios.post<AxiosResponse<ResponseType>>(url, data);
+				const res = await axios.post<ResponseType>(url, data);
 				console.log('🚀 ~ file: UserForm.tsx:42 ~ onSubmit ~ res:', res);
-				if (res.data.status === STATUS_CODE.OK) {
-					myNotification('Success', res.data.data.msg, 'green', <IconCheck />);
+				if (res.status === STATUS_CODE.OK) {
+					myNotification('Success', res.data.msg, 'green', <IconCheck />);
 					router.push(serverLink + 'guardians/');
-				} else myNotification('Error', res.data.data.msg, 'red', <IconX />);
+				} else myNotification('Error', res.data.msg, 'red', <IconX />);
 			} else {
 				console.log('user exist.', bigUser.id);
 				const url = serverLink + '/api/user/' + bigUser.id;
 				const res = await axios.put(url, data);
 
 				if (res.data.status === STATUS_CODE.OK) {
-					myNotification('Success', res.data.data.msg, 'green', <IconCheck />);
+					myNotification('Success', res.data.msg, 'green', <IconCheck />);
 					router.push(serverLink + 'guardians/');
-				} else myNotification('Error', res.data.data.msg, 'red', <IconX />);
+				} else myNotification('Error', res.data.msg, 'red', <IconX />);
 			}
 		} catch (error) {
 			axios.isAxiosError(error);

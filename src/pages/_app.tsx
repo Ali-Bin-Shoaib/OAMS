@@ -9,13 +9,13 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
 		<>
-			<QueryClientProvider client={queryClient}>
-				<SessionProvider session={session}>
-					<MainLayout>
-						<Component {...pageProps} />
-					</MainLayout>
-				</SessionProvider>
-			</QueryClientProvider>
+			{/* <QueryClientProvider client={queryClient}> */}
+			<SessionProvider session={session}>
+				<MainLayout>
+					<Component {...pageProps} />
+				</MainLayout>
+			</SessionProvider>
+			{/* </QueryClientProvider> */}
 		</>
 	);
 }

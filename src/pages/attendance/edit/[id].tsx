@@ -1,12 +1,11 @@
 import { GetServerSideProps, GetStaticProps } from 'next';
 import SuperJSON from 'superjson';
-import AttendanceForm from '../../../components/attendance/AttendanceForm';
-import prisma from '../../../lib/prisma';
+import AttendanceForm from '../../../../components/attendance/AttendanceForm';
+import prisma from '../../../../lib/prisma';
 import { useState, useEffect } from 'react';
-import { _Attendance, _Orphan, _OrphanAttendance } from '../../../types';
+import { _Attendance, _Orphan, _OrphanAttendance } from '../../../../types';
 import { Loader } from '@mantine/core';
 import { Attendance, Orphan, OrphanAttendance, User } from '@prisma/client';
-import React from 'react';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	console.log('🚀 ~ file: [id].tsx:10 ~ constgetServerSideProps:GetServerSideProps= ~ params:', params);
 	const id = Number(params?.id);
@@ -25,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 interface Props {
 	stringData: string;
 }
-function Info({ stringData }: Props) {
+function Edit({ stringData }: Props) {
 	const jsonData: {
 		attendance:
 			| (Attendance & {
@@ -48,12 +47,8 @@ function Info({ stringData }: Props) {
 
 	return (
 		<>
-			<AttendanceForm
-				orphans={orphans as unknown as _Orphan[]}
-				attendance={attendance as unknown as _Attendance}
-				disabled={true}
-			/>
+			<AttendanceForm orphans={orphans as unknown as _Orphan[]} attendance={attendance as unknown as _Attendance} />
 		</>
 	);
 }
-export default Info;
+export default Edit;

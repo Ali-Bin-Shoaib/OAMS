@@ -2,8 +2,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Contact, REQUEST_METHODS, ROOM, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
 import { EmergencyContactInfo, Prisma, Room } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== 'ADMIN') {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
+
 	let isCreate = false;
 	let room: Room | null = null;
 	const ID = Number(req.query.id);

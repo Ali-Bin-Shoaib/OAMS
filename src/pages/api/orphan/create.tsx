@@ -13,12 +13,14 @@ import { authOptions } from '../auth/next-auth-options';
 
 // export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	console.log('🚀 ~ file: create.tsx:14 ~ handler ~ req:', req.method);
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== 'ADMIN') {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
 	// const form = formidable();
 	try {
-		const session = await getServerSession(req, res, authOptions);
-		if (!session) res.status(STATUS_CODE.UNAUTHORIZED).json({ msg: 'you must log in' });
-		console.log('🚀 ~ file: create.tsx:19 ~ handler ~ session:', session);
 		if (req.method === REQUEST_METHODS.POST) {
 			const orphan: Orphan = req.body;
 			orphan.image = null;

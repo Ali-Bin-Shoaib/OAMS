@@ -5,7 +5,7 @@ import { Contact, ResponseType, STATUS_CODE } from '../../../types';
 import ContactTable from '../../../components/contact/ContactTable';
 import ContactForm from '../../../components/contact/ContactForm';
 import { OrphanContext } from '../../../shared/contexts';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Center, Container, Group, Loader, Select, Skeleton } from '@mantine/core';
 import axios from 'axios';
 import { serverLink } from '../../../shared/links';
@@ -24,6 +24,7 @@ interface Props {
 	orphans: { id: number; name: string }[] | undefined;
 }
 function Index({ orphans }: Props) {
+	console.log('🚀 ~ file: index.tsx:27 ~ Index ~ orphans:', orphans);
 	const [orphansList, setOrphansList] = useState(orphans);
 	const [orphanContact, setOrphanContact] = useState<Contact[]>();
 	console.log('🚀 ~ file: index.tsx:39 ~ Index ~ orphanContact:', orphanContact);
@@ -60,39 +61,39 @@ function Index({ orphans }: Props) {
 	if (!orphans) return <h1>No Orphans Registered</h1>;
 	return (
 		<>
-			{/* <OrphanContext.Provider value={orphansList || []}> */}
-			<Group px={'xl'} py={'xs'} position='apart'>
-				<Select
-					onChange={(id) => {
-						console.log('🚀 ~ file: index.tsx:61 ~ Index ~ id:', id);
-						setId(Number(id));
-						// setValue('orphanId', Number(id));
-						// setValue(
-						// 	'Orphan',
-						// 	orphans.find((x) => x.id === Number(id))
-						// );
-					}}
-					data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
-					size='md'
-					label='Orphan name'
-					placeholder='Orphan name'
-					withAsterisk
-					// error={errors.Orphan && errors.Orphan.name.message}
-					description='select an orphan to show related emergency contact info'
-					required
-					// defaultValue={contact?.orphanId.toString()}
-					searchable
-					selectOnBlur
-					w={'45%'}
-					nothingFound='Not Found'
-					hoverOnSearchChange
-				/>
-				<MyModal ModelForm={<ContactForm />} modalTitle={'Add Contact'} buttonText={'Add Contact'} modalSize={'md'} />
-			</Group>
-			<Skeleton visible={isLoading}>
-				<ContactTable contact={orphanContact || []} />
-			</Skeleton>
-			{/* </OrphanContext.Provider> */}
+			<OrphanContext.Provider value={orphansList || []}>
+				<Group px={'xl'} py={'xs'} position='apart'>
+					<Select
+						onChange={(id) => {
+							console.log('🚀 ~ file: index.tsx:61 ~ Index ~ id:', id);
+							setId(Number(id));
+							// setValue('orphanId', Number(id));
+							// setValue(
+							// 	'Orphan',
+							// 	orphans.find((x) => x.id === Number(id))
+							// );
+						}}
+						data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
+						size='md'
+						label='Orphan name'
+						placeholder='Orphan name'
+						withAsterisk
+						// error={errors.Orphan && errors.Orphan.name.message}
+						description={<h4 className='text-orange-300 p-0 m-0'>select an orphan to show related emergency contact info</h4>}
+						required
+						// defaultValue={contact?.orphanId.toString()}
+						searchable
+						selectOnBlur
+						w={'45%'}
+						nothingFound='Not Found'
+						hoverOnSearchChange
+					/>
+					<MyModal ModelForm={<ContactForm />} modalTitle={'Add Contact'} buttonText={'Add Contact'} modalSize={'md'} />
+				</Group>
+				<Skeleton visible={isLoading}>
+					<ContactTable contact={orphanContact || []} />
+				</Skeleton>
+			</OrphanContext.Provider>
 		</>
 	);
 }

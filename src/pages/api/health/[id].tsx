@@ -3,9 +3,16 @@ import { _ActivityInfo, _Orphan, Behavior, Education, Health, REQUEST_METHODS, S
 import prisma from '../../../../lib/prisma';
 import { Prisma, UserType } from '@prisma/client';
 import SuperJSON from 'superjson';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const admin = await prisma.user.findFirst({ where: { type: UserType.ADMIN } });
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== ('ADMIN' && 'HEALTH_SUPERVISOR')) {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
 	const ID = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:9 ~ handler ~ ID:', ID);
 	if (!ID) return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: 'Health info dose not exist.' });
@@ -20,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					data: {
 						...rest,
 						Orphan: { connect: { id: orphanId } },
-						User: { connect: { id: userId || admin?.id } },
+						User: { connect: { id: userId } },
 					},
 					where: { id: id },
 				};

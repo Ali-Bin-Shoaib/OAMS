@@ -3,11 +3,20 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { STATUS_CODE, REQUEST_METHODS, _User, _Sponsorship } from '../../../../types';
 import { User, Prisma, Guardian, Sponsor, Sponsorship } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 // import formidable from 'formidable';
 // import nextConnect from 'next-connect';
 // export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== 'ADMIN') {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
+
 	try {
 		if (req.method === REQUEST_METHODS.POST) {
 			const sponsorship: Sponsorship = req.body;

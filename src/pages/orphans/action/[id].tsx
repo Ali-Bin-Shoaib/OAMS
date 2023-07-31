@@ -8,6 +8,7 @@ import { Guardian, Orphan, User } from '@prisma/client';
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
 	console.log('🚀 ~ file: [id].tsx:8 ~ constgetServerSideProps:GetServerSideProps= ~ context:', context.params);
 	const guardians = await prisma.guardian.findMany({ select: { user: { select: { id: true, name: true } } } });
+	console.log('🚀 ~ file: [id].tsx:11 ~ constgetServerSideProps:GetServerSideProps= ~ guardians:', guardians.length);
 	if (!context.params) return { notFound: true };
 	if (isNaN(Number(context.params.id))) {
 		const data = { guardians };

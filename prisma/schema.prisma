@@ -230,7 +230,7 @@ model ActivityInfo {
   date                  DateTime
   title                 String?
   budget                Float?
-  target                String?
+  target                Grade?
   type                  String?
   quarter               Quarter?
   //* relations

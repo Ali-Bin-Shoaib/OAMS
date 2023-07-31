@@ -20,6 +20,8 @@ body {
 	background-image: url(../../public/orf.svg);
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
 }
 .all {
 	max-width: 600px;

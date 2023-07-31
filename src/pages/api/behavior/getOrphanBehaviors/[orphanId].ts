@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					const data = SuperJSON.stringify(requiredBehavior);
 					return res.status(STATUS_CODE.OK).json({ data: data, msg: `Behaviors of orphan with id:${ID} was Founded` });
 				}
-				return res.status(STATUS_CODE.BAD_REQUEST).json(`Orphan Behaviors with id:${ID} was not founded `);
+				return res.status(STATUS_CODE.NOT_FOUND).json(`Orphan Behaviors with id:${ID} was not founded `);
 			} catch (error) {
 				return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json('Some thing went wrong :' + error);
 			}

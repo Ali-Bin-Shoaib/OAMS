@@ -13,31 +13,31 @@ export function isUserAuthorized(userType: UserType, path: string): boolean {
 			if (path.startsWith('/activities') || path.startsWith('/goals') || path.startsWith('/dashboard')) return true;
 			console.log('````````````````ACCESS DENIED!!````````````````');
 
-			break;
+			return false;
 		}
 		case UserType.BEHAVIOR_SUPERVISOR: {
 			if (path.startsWith('/behavior') || path.startsWith('/criteria') || path.startsWith('/dashboard')) return true;
 			console.log('````````````````ACCESS DENIED!!````````````````');
 
-			break;
+			return false;
 		}
 		case UserType.EDUCATION_SUPERVISOR: {
 			if (path.startsWith('/education') || path.startsWith('/dashboard')) return true;
 			console.log('````````````````ACCESS DENIED!!````````````````');
 
-			break;
+			return false;
 		}
 		case UserType.GUARDIAN: {
 			if (path.startsWith('/orphans') || path.startsWith('/activities')) return true;
 			console.log('````````````````ACCESS DENIED!!````````````````');
 
-			break;
+			return false;
 		}
 		case UserType.HEALTH_SUPERVISOR: {
 			if (path.startsWith('/health') || path.startsWith('/dashboard')) return true;
 			console.log('````````````````ACCESS DENIED!!````````````````');
 
-			break;
+			return false;
 		}
 		case UserType.ORPHANAGE_SUPERVISOR: {
 			if (path.startsWith('/attendance') || path.startsWith('/dashboard')) {
@@ -46,7 +46,7 @@ export function isUserAuthorized(userType: UserType, path: string): boolean {
 
 			console.log('````````````````ACCESS DENIED!!````````````````');
 
-			break;
+			return false;
 		}
 		case UserType.SPONSOR: {
 			if (
@@ -60,10 +60,9 @@ export function isUserAuthorized(userType: UserType, path: string): boolean {
 				return true;
 			console.log('````````````````ACCESS DENIED!!````````````````');
 
-			break;
+			return false;
 		}
 	}
-	return false;
 }
 export function isActionAuthorized(userType: UserType, path: string, method: string): boolean {
 	console.log('🚀 ~ file: checkAuth.ts:69 ~ isActionAuthorized ~ path:', path);

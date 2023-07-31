@@ -20,7 +20,7 @@ import {
 	MultiSelect,
 	Modal,
 } from '@mantine/core';
-import { Goal, Prisma, Quarter, ActivityInfo, User } from '@prisma/client';
+import { Goal, Prisma, Quarter, ActivityInfo, User, Grade } from '@prisma/client';
 import myNotification from 'components/MyNotification';
 import { IconCheck } from '@tabler/icons-react';
 import { useSession } from 'next-auth/react';
@@ -58,6 +58,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 
 			if (res.status === STATUS_CODE.OK) {
 				myNotification('Success', res.data.msg, 'green', <IconCheck />);
+				router.push(serverLink + 'activities/');
 			}
 		} else {
 			console.log('activityInfo exist.', activityInfo.id);
@@ -68,8 +69,8 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 			const res = await axios.put<ResponseType>(url, data);
 			if (res.status === STATUS_CODE.OK) {
 				myNotification('Success', res.data.msg, 'green', <IconCheck />);
+				router.push(serverLink + 'activities/');
 			}
-			router.push(serverLink + 'activities/');
 		}
 		// close();
 		// router.push(serverLink + 'activities/');
@@ -144,11 +145,12 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 						rules={{ required: 'target is required' }}
 						render={({ field }) => {
 							return (
-								<TextInput
+								<Select
 									{...field}
 									size={'md'}
 									label='target'
 									placeholder='target'
+									data={$enum(Grade).map((x) => x)}
 									withAsterisk
 									error={errors.target && errors.target.message}
 								/>

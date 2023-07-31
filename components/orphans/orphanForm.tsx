@@ -37,6 +37,7 @@ interface Props {
 	close?: () => void;
 }
 export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
+	console.log('🚀 ~ file: OrphanForm.tsx:40 ~ OrphanForm ~ guardians:', guardians);
 	const homePhoneRegex = /^(?:(?:\+|00)9677|0?7)[01378]\d{7}|(?:(?:\+|00)967|0)[1-7]\d{6}$/;
 	// console.log('+++++++++++++++++++', homePhoneRegex.test('05515235'));
 
@@ -108,6 +109,9 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									value: guardian.user.id!.toString(),
 									label: guardian.user.name,
 								}))}
+								searchable
+								clearable
+								allowDeselect
 								onChange={(id) => setValue('guardianId', Number(id))}
 								className=' mx-auto py-2 mb-2'
 								label="Select Orphan's Guardian"
@@ -177,7 +181,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						rules={{
 							required: 'age is required',
 							min: { value: 6, message: 'Age must be 6 or higher' },
-							max: { value: 14, message: 'Age must be 14 or less' },
+							max: { value: 15, message: 'Age must be 15 or less' },
 						}}
 						render={({ field }) => {
 							return (

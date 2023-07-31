@@ -2,9 +2,18 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { _Orphan, REQUEST_METHODS, STATUS_CODE } from '../../../../types';
 import prisma from '../../../../lib/prisma';
 import { Guardian, Orphan, User } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/next-auth-options';
 // export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
+	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
+	if (!session || session.user.type !== 'ADMIN') {
+		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
+	}
+
 	const orphanId = Number(req.query.id);
 	console.log('🚀 ~ file: [id].tsx:8 ~ handler ~ orphanId:', orphanId);
 	if (orphanId < 0) return res.status(STATUS_CODE.BAD_REQUEST).json('orphan dose not exist.');

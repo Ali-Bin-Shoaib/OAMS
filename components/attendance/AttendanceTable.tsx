@@ -62,7 +62,7 @@ function AttendanceTable({ attendance }: Props) {
 							<Button
 								size='xs'
 								onClick={() => {
-									router.push(serverLink + 'attendance/' + row.original.id);
+									router.push(serverLink + 'attendance/edit/' + row.original.id);
 								}}
 								color='yellow'>
 								<IconEdit />
@@ -72,7 +72,7 @@ function AttendanceTable({ attendance }: Props) {
 							<Button
 								size='xs'
 								onClick={() => {
-									router.push(`${router.asPath}/${row.original.id}`);
+									router.push(serverLink + 'attendance/' + row.original.id);
 								}}
 								color='gray'>
 								<IconInfoCircle />

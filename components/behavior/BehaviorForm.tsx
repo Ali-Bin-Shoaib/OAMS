@@ -1,6 +1,6 @@
 import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
-import { Behavior } from '../../types';
+import { Behavior, ResponseType, STATUS_CODE } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { serverLink } from '../../shared/links';
@@ -25,6 +25,8 @@ import {
 } from '@mantine/core';
 import { Criteria, Orphan, Prisma } from '@prisma/client';
 import { useSession } from 'next-auth/react';
+import myNotification from 'components/MyNotification';
+import { IconCheck } from '@tabler/icons-react';
 interface Props {
 	behavior?: Behavior;
 	orphans: Orphan[];
@@ -52,15 +54,31 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 		console.log('🚀 ~ file: BehaviorForm.tsx:34 ~ onSubmit ~ data:', data);
 		Number(data.OrphanID) && (data.orphanId = Number(data.OrphanID));
 		delete data.OrphanID;
-		if (!behavior) {
-			console.log('behavior not exist.');
-			const url = serverLink + 'api/behavior/create';
-			const res = await axios.post(url, data).catch((err) => console.log('error at creating new behavior--', err));
-		} else {
-			console.log('behavior exist.', behavior.id);
-			const url = serverLink + '/api/behavior/' + behavior.id;
-			const res = await axios.put(url, data);
-			console.log('🚀 ~ file: BehaviorForm.tsx:59 ~ onSubmit ~ res:', res);
+		try {
+			if (!behavior) {
+				console.log('behavior not exist.');
+				const url = serverLink + 'api/behavior/create';
+				const res = await axios.post<ResponseType>(url, data);
+				if (res.status === STATUS_CODE.OK) {
+					myNotification('Success', res.data.msg, 'green', <IconCheck />);
+				} else {
+					myNotification('Error', res.data.msg, 'red', <IconCheck />);
+				}
+			} else {
+				console.log('behavior exist.', behavior.id);
+				const url = serverLink + '/api/behavior/' + behavior.id;
+				const res = await axios.put<ResponseType>(url, data);
+				if (res.status === STATUS_CODE.OK) {
+					myNotification('Success', res.data.msg, 'green', <IconCheck />);
+				} else {
+					myNotification('Error', res.data.msg, 'red', <IconCheck />);
+				}
+
+				console.log('🚀 ~ file: BehaviorForm.tsx:59 ~ onSubmit ~ res:', res);
+			}
+		} catch (error) {
+			console.log('🚀 ~ file: BehaviorForm.tsx:80 ~ onSubmit ~ error:', error);
+			myNotification('Error', 'Something went wrong.', 'red', <IconCheck />);
 		}
 		router.push(serverLink + 'behavior');
 	};
@@ -70,8 +88,10 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 	if (!hydrate) return <Loader size={100} />;
 	return (
 		<>
-			<Center>{behavior ? <Title>Edit Behavior Info</Title> : <Title>Add New Behavior Info</Title>}</Center>
-			<Container fluid>
+			<Container className='bg-white'>
+				<Center className='shadow p-2 m-2'>
+					{behavior ? <Title>Edit Behavior Info</Title> : <Title>Add New Behavior Info</Title>}
+				</Center>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Container className='flex flex-wrap space-x-5' p={15}>
 						<Controller

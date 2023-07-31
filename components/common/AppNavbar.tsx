@@ -43,7 +43,7 @@ export default function AppNavbar() {
 	const items = Paths.links.map((link) => {
 		const menuItems = link.relatedLinks?.map((item) => {
 			return (
-				<Menu.Item key={v4()} className=''>
+				<Menu.Item key={v4()} sx={{ backgroundColor: '#0077b6' }}>
 					<Link //inside menu 'attendance' ,'goals'
 						href={item.link}
 						aria-label={item.label}
@@ -52,7 +52,7 @@ export default function AppNavbar() {
 						${item.label === currentPage && isActive}`}
 						style={{
 							color: theme.colors.gray[0],
-							background: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[6],
+							backgroundColor: '#0077b6',
 						}}>
 						<Center>{item.label}</Center>
 					</Link>
@@ -80,7 +80,7 @@ export default function AppNavbar() {
 							}`}
 							style={{
 								color: theme.colors.gray[0],
-								background: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[6],
+								background: '#0077b6',
 							}}>
 							<Center>
 								{link.label}
@@ -88,7 +88,7 @@ export default function AppNavbar() {
 							</Center>
 						</Link>
 					</Menu.Target>
-					<Menu.Dropdown bg={'blue'}>{menuItems}</Menu.Dropdown>
+					<Menu.Dropdown style={{ backgroundColor: '#0077b6' }}>{menuItems}</Menu.Dropdown>
 				</Menu>
 			);
 		}
@@ -110,7 +110,7 @@ export default function AppNavbar() {
 	});
 
 	return (
-		<Header height={56} mb={10} bg={'blue'}>
+		<Header height={56} mb={10} sx={{ backgroundColor: '#0077b6' }}>
 			<Container fluid>
 				<div className={`flex flex-row  items-center justify-between h-14`}>
 					<Link

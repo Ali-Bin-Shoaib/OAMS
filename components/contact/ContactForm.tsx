@@ -24,6 +24,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 		defaultValues: contact,
 	});
 	const orphans = useContext(OrphanContext);
+	console.log('🚀 ~ file: ContactForm.tsx:27 ~ ContactForm ~ orphans:', orphans);
 	const router = useRouter();
 	const onSubmit = async (data: Contact) => {
 		console.log('🚀 ~ file: ContactForm.tsx:28 ~ onSubmit ~ data:', data);
@@ -74,7 +75,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 									}}
 									data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
 									size='md'
-									label='Name'
+									label='Orphan Name'
 									placeholder='name'
 									withAsterisk
 									error={errors.Orphan && errors?.Orphan?.name?.message}
@@ -100,7 +101,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 								<TextInput
 									{...field}
 									size='md'
-									label='Name'
+									label='Contact Name'
 									placeholder='name'
 									withAsterisk
 									error={errors.name && errors.name.message}
@@ -111,7 +112,13 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 					<Controller
 						name='phone'
 						control={control}
-						rules={{ required: 'Phone field is required' }}
+						rules={{
+							required: 'Phone is required',
+							pattern: {
+								value: /^(^\+\d{0,3})?(\s)?(\d{9,12})$/,
+								message: 'invalid phone number. valid value: +967 776640541',
+							},
+						}}
 						render={({ field }) => {
 							return (
 								<TextInput

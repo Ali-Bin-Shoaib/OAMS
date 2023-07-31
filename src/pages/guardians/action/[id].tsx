@@ -2,7 +2,7 @@ import { GetServerSideProps, GetServerSidePropsContext, GetStaticProps, GetStati
 import prisma from '../../../../lib/prisma';
 import { useState, useEffect } from 'react';
 import { Loader } from '@mantine/core';
-import { _Orphan } from '../../../../types';
+import { _Orphan, _UserWithGuardianAndSponsor } from '../../../../types';
 import OrphanForm from 'components/orphans/OrphanForm';
 import { Guardian, Orphan, User } from '@prisma/client';
 import UserForm from 'components/users/UserForm';
@@ -35,7 +35,7 @@ interface Props {
 
 function Action({ guardian }: Props) {
 	console.log('🚀 ~ file: [id].tsx:37 ~ Action ~ guardian:', guardian);
-	const { id, relationship, userId, User } = guardian;
+	// const { id, relationship, userId, User } = guardian;
 	const [hydration, setHydration] = useState(false);
 	useEffect(() => {
 		setHydration(true);
@@ -45,7 +45,7 @@ function Action({ guardian }: Props) {
 
 	return (
 		<>
-			<UserForm userType='GUARDIAN' bigUser={guardian} />
+			<UserForm userType='GUARDIAN' bigUser={guardian as unknown as _UserWithGuardianAndSponsor} />
 		</>
 	);
 }

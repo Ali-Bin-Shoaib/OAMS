@@ -5,14 +5,12 @@ import { STATUS_CODE, REQUEST_METHODS, _Orphan, _Attendance } from '../../../../
 import { Attendance, Orphan, OrphanAttendance, Prisma, User } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/next-auth-options';
-import { serverLink } from 'shared/links';
-import { NextResponse } from 'next/server';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);
 	console.log('🚀 ~ file: [id].tsx:13 ~ handler ~ req:', req.url);
 	console.log('🚀 ~ file: [id].tsx:12 ~ handler ~ session:', session);
-	if (!session || session.user.type != ('ORPHANAGE_SUPERVISOR' || 'ADMIN')) {
+	if (!session || (session.user.type != 'ORPHANAGE_SUPERVISOR' && session.user.type != 'ADMIN')) {
 		return res.status(STATUS_CODE.METHOD_NOT_ALLOWED).json({ msg: 'action not allowed' });
 	}
 	const attendanceId = Number(req.query.id);

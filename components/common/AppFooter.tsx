@@ -7,7 +7,7 @@ const useStyles = createStyles((theme) => ({
 	footer: {
 		marginTop: rem(120),
 		borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0]}`,
-		background: theme.colors.blue[7],
+		background: '#0077b6',
 		color: 'white',
 	},
 
@@ -30,7 +30,6 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-
 export default function AppFooter() {
 	const { classes } = useStyles();
 	const items = Paths.links.map((link) => (
@@ -40,7 +39,7 @@ export default function AppFooter() {
 	));
 
 	return (
-		<div className={classes.footer+ ' align-baseline'}>
+		<div className={classes.footer + ' align-baseline'}>
 			<Container className={classes.inner}>
 				<IconHome size={28} />
 				<Group className={classes.links}>{items}</Group>
