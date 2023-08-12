@@ -1,20 +1,15 @@
-import { Attendance, Orphan, OrphanAttendance, Prisma } from '@prisma/client';
 import { useMemo } from 'react';
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Button, Container, Tooltip } from '@mantine/core';
+import { MRT_ColumnDef } from 'mantine-react-table';
 import { _Attendance, _Orphan, _OrphanAttendance } from '../../types';
-import { useRouter } from 'next/router';
-import { serverLink } from '../../shared/links';
-import { IconEdit, IconInfoCircle, IconCheckbox } from '@tabler/icons-react';
-import DeleteModal from 'components/common/DeleteModal';
+import TableComponent from 'components/common/TableComponent';
 
 interface Props {
 	attendance: _Attendance[];
+	action?: boolean;
 }
 
-function AttendanceTable({ attendance }: Props) {
+function AttendanceTable({ attendance, action = true }: Props) {
 	console.log('🚀 ~ file: ~ AttendanceTable');
-	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<_Attendance>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 100, size: 90 },
@@ -47,52 +42,15 @@ function AttendanceTable({ attendance }: Props) {
 	);
 
 	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={attendance}
-				initialState={{ density: 'xs' }}
-				enableRowActions
-				enableToolbarInternalActions
-				// positionActionsColumn='last'
-				renderRowActions={({ row }) => (
-					<Button.Group>
-						<DeleteModal id={row.original.id!} title={'Attendance'} url={'api/attendance/'} />
-						<Tooltip label={'Edit'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(serverLink + 'attendance/edit/' + row.original.id);
-								}}
-								color='yellow'>
-								<IconEdit />
-							</Button>
-						</Tooltip>
-						<Tooltip label={'Info'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(serverLink + 'attendance/' + row.original.id);
-								}}
-								color='gray'>
-								<IconInfoCircle />
-							</Button>
-						</Tooltip>
-					</Button.Group>
-				)}
-				// mantineTableBodyRowProps={(row) => ({
-				// 	onClick: () => {
-				// 		// on row click change the card to the clicked attendance and then user can edit or delete.
-				// 		router.push(serverLink + 'attendance/' + row.row.original.id);
-				// 	},
-				// })}
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				enableColumnResizing
-				columnResizeMode='onEnd'
-			/>
-		</Container>
+		<TableComponent
+			data={attendance}
+			columns={columns}
+			deleteUrl={'api/attendance/'}
+			editUrl={'attendance/edit/'}
+			deleteTitle={'Attendance'}
+			infoUrl={'attendance/'}
+			action={action}
+		/>
 	);
 }
 export default AttendanceTable;

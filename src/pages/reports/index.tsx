@@ -1,7 +1,10 @@
-import { Attendance, OrphanAttendance, User } from '@prisma/client';
+import { Attendance, Orphan, OrphanAttendance, User } from '@prisma/client';
+import AttendanceTable from 'components/attendance/AttendanceTable';
+import TableComponent from 'components/common/TableComponent';
 import prisma from 'lib/prisma';
 import { GetServerSideProps, GetStaticProps } from 'next';
 import SuperJSON from 'superjson';
+import { _Attendance } from 'types';
 
 export const getStaticProps: GetStaticProps = async () => {
 	try {
@@ -19,13 +22,22 @@ export const getStaticProps: GetStaticProps = async () => {
 	}
 };
 interface JsonDataProps {
-	attendances: Attendance & { OrphanAttendance: OrphanAttendance; User: Pick<User, 'id' | 'name'> };
+	attendances: Attendance & { OrphanAttendance: OrphanAttendance; User: Pick<User, 'id' | 'name'> }[];
+	orphans: Pick<Orphan, 'id' | 'name'>[];
 }
 interface Props {
 	jsonData: string;
 }
 function Index({ jsonData }: Props) {
-	console.log('🚀 ~ file: index.tsx:16 ~ Index ~ jsonData:', jsonData);
-	return <div>Index</div>;
+	const { attendances, orphans }: JsonDataProps = SuperJSON.parse<JsonDataProps>(jsonData);
+	console.log('🚀 ~ file: index.tsx:31 ~ Index ~ orphans:', orphans);
+	console.log('🚀 ~ file: index.tsx:31 ~ Index ~ attendances:', attendances);
+	return (
+		<>
+			<div className='p-2 m-2 pt-5'>
+				<AttendanceTable attendance={attendances as unknown as _Attendance[]} />
+			</div>
+		</>
+	);
 }
 export default Index;

@@ -7,6 +7,7 @@ import { IconEdit, IconInfoCircle } from '@tabler/icons-react';
 import DeleteModal from 'components/common/DeleteModal';
 import router from 'next/router';
 import { serverLink } from 'shared/links';
+import TableComponent from 'components/common/TableComponent';
 
 interface Props {
 	users: _User[];
@@ -93,53 +94,63 @@ function UserTable({ users: data, updateCard }: Props) {
 		],
 		[]
 	);
-	const table = useMantineReactTable<_User>({
-		columns,
-		data,
-		enableColumnFilterModes: true,
-		enableColumnOrdering: true,
-		enableFacetedValues: true,
-		enableGrouping: true,
-		enablePinning: true,
-		initialState: { density: 'xs' },
-		enableClickToCopy: true,
-		enableBottomToolbar: true,
-		positionToolbarAlertBanner: 'top',
-		mantineTableBodyRowProps: ({ row }) => ({
-			onClick: (event) => {
-				updateCard(row.original);
-			},
-			sx: { cursor: 'pointer' },
-		}),
-		renderTopToolbarCustomActions: ({ table }) => {
-			return <PrintButton printRef={table.refs.tableContainerRef} />;
-		},
-		mantineTableBodyCellProps: { sx: { border: '2px solid #dee2e6' } },
-		mantineTableHeadCellProps: { sx: { border: '2px solid #dee2e6' } },
-		mantineTableProps: { striped: true, sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' } },
-		enableColumnResizing: true,
-		columnResizeMode: 'onEnd', //instead of the default "onChange" mode
-		enableColumnActions: true,
-		enableRowActions: true,
-		displayColumnDefOptions: { 'mrt-row-actions': { size: 130 } },
-		renderRowActions: ({ row }) => {
-			return (
-				<Button.Group>
-					<DeleteModal id={row.original.id!} title={'User'} url={'api/user/'} />
-					<Tooltip label={'Edit'}>
-						<Button
-							size='xs'
-							onClick={() => {
-								router.push(serverLink + 'users/action/' + row.original.id);
-							}}
-							color='yellow'>
-							<IconEdit />
-						</Button>
-					</Tooltip>
-				</Button.Group>
-			);
-		},
-	});
-	return <MantineReactTable table={table} />;
+	// const table = useMantineReactTable<_User>({
+	// 	columns,
+	// 	data,
+	// 	enableColumnFilterModes: true,
+	// 	enableColumnOrdering: true,
+	// 	enableFacetedValues: true,
+	// 	enableGrouping: true,
+	// 	enablePinning: true,
+	// 	initialState: { density: 'xs' },
+	// 	enableClickToCopy: true,
+	// 	enableBottomToolbar: true,
+	// 	positionToolbarAlertBanner: 'top',
+	// 	mantineTableBodyRowProps: ({ row }) => ({
+	// 		onClick: (event) => {
+	// 			updateCard(row.original);
+	// 		},
+	// 		sx: { cursor: 'pointer' },
+	// 	}),
+	// 	renderTopToolbarCustomActions: ({ table }) => {
+	// 		return <PrintButton table={table} handlePrint={} />;
+	// 	},
+	// 	mantineTableBodyCellProps: { sx: { border: '2px solid #dee2e6' } },
+	// 	mantineTableHeadCellProps: { sx: { border: '2px solid #dee2e6' } },
+	// 	mantineTableProps: { striped: true, sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' } },
+	// 	enableColumnResizing: true,
+	// 	columnResizeMode: 'onEnd', //instead of the default "onChange" mode
+	// 	enableColumnActions: true,
+	// 	enableRowActions: true,
+	// 	displayColumnDefOptions: { 'mrt-row-actions': { size: 130 } },
+	// 	renderRowActions: ({ row }) => {
+	// 		return (
+	// 			<Button.Group>
+	// 				<DeleteModal id={row.original.id!} title={'User'} url={'api/user/'} />
+	// 				<Tooltip label={'Edit'}>
+	// 					<Button
+	// 						size='xs'
+	// 						onClick={() => {
+	// 							router.push(serverLink + 'users/action/' + row.original.id);
+	// 						}}
+	// 						color='yellow'>
+	// 						<IconEdit />
+	// 					</Button>
+	// 				</Tooltip>
+	// 			</Button.Group>
+	// 		);
+	// 	},
+	// });
+	// return <MantineReactTable table={table} />;
+	return (
+		<TableComponent
+			data={data}
+			columns={columns}
+			deleteUrl={'api/user/'}
+			editUrl={'users/action/'}
+			deleteTitle={'User'}
+			infoUrl={'users/action/'}
+		/>
+	);
 }
 export default UserTable;

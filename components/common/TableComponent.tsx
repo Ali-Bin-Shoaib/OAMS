@@ -15,10 +15,19 @@ interface Props<T> {
 	editUrl: string;
 	deleteTitle: string;
 	infoUrl: string;
+	action?: boolean;
 }
 
-function TableComponent({ data, columns, deleteUrl, editUrl, infoUrl, deleteTitle }: Props<typeof data>) {
-	const [isPrinting, setIsPrinting] = useState(false);
+function TableComponent({
+	data,
+	columns,
+	deleteUrl,
+	editUrl,
+	infoUrl,
+	deleteTitle,
+	action = true,
+}: Props<typeof data>) {
+	const [isPrinting, setIsPrinting] = useState(!action);
 	const handlePrint = (value: boolean) => setIsPrinting(value);
 	const table = useMantineReactTable<any>({
 		columns,

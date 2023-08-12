@@ -17,12 +17,8 @@ import {
 	ActivityInfo,
 	GoalEvaluation,
 	Degree,
-	Room,
 	Wings,
 } from '@prisma/client';
-import { AxiosResponse } from 'axios';
-import prisma from '../lib/prisma';
-import { DefaultUser, Session } from 'next-auth';
 export enum REQUEST_METHODS {
 	GET = 'GET',
 	POST = 'POST',
@@ -101,6 +97,11 @@ export enum STATUS_CODE {
 	LOOP_DETECTED = 508, // The server detected an infinite loop while processing the request.
 	NOT_EXTENDED = 510, // Further extensions to the request are required for the server to fulfill it.
 	NETWORK_AUTHENTICATION_REQUIRED = 511, // The client needs to authenticate to gain network access.
+}
+export enum AttendanceReportType {
+	Weekly = 'Weekly',
+	Quarterly = 'Quarterly',
+	Monthly = 'Monthly',
 }
 export type ResponseType = { data: any; msg: string };
 
