@@ -3,32 +3,29 @@ import { useMemo } from 'react';
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
 import { Container } from '@mantine/core';
 import { _Attendance, _Orphan, _OrphanAttendance } from '../../types';
+import TableComponent from 'components/common/TableComponent';
 
 interface Props {
 	orphanAttendance: _OrphanAttendance[];
 }
 
 function OrphanAttendanceTable({ orphanAttendance }: Props) {
-	console.log(
-		'🚀 ~ file: OrphanAttendanceTable.tsx:12 ~ OrphanAttendanceTable ~ orphanAttendance:',
-		orphanAttendance[0]
-	);
 	const columns = useMemo<MRT_ColumnDef<_OrphanAttendance>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
-			{
-				accessorFn: (row) => row.orphanId,
-				id: 'Orphan.name',
-				header: 'Orphan Name',
-				maxSize: 300,
-				size: 200,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.orphanId,
+			// 	id: 'Orphan.name',
+			// 	header: 'Orphan Name',
+			// 	maxSize: 300,
+			// 	size: 200,
+			// 	enableResizing: true,
+			// },
 
 			{
 				accessorFn: (row) => (row.isAttended ? 'yes' : 'no'),
 				id: 'isAttended',
-				header: 'isAttended',
+				header: 'Is Attended',
 				maxSize: 300,
 				size: 120,
 				enableResizing: true,
@@ -36,7 +33,7 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 			{
 				accessorFn: (row) => row.absentReason,
 				id: 'absentReason',
-				header: 'absentReason',
+				header: 'Absent Reason',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -44,7 +41,7 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 			{
 				accessorFn: (row) => row.notes,
 				id: 'notes',
-				header: 'notes',
+				header: 'Notes',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -52,7 +49,7 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 			{
 				accessorFn: (row) => row.justification,
 				id: 'justification',
-				header: 'justification',
+				header: 'Justification',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -60,7 +57,7 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 			{
 				accessorFn: (row) => row.returnDay?.toDateString(),
 				id: 'returnDay',
-				header: 'returnDay',
+				header: 'ReturnDay',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -70,18 +67,15 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 	);
 
 	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={orphanAttendance}
-				initialState={{ density: 'xs' }}
-				mantineTableBodyCellProps={{ sx: { border: '2px solid #dee2e6' } }}
-				mantineTableBodyRowProps={{ sx: { border: '2px solid #dee2e6' } }}
-				mantineTableBodyProps={{ sx: { border: '2px solid #dee2e6' } }}
-				enableColumnResizing
-				// columnResizeMode='onEnd'
-			/>
-		</Container>
+		<TableComponent
+			data={orphanAttendance}
+			columns={columns}
+			deleteUrl={''}
+			editUrl={''}
+			deleteTitle={''}
+			infoUrl={''}
+			action={false}
+		/>
 	);
 }
 export default OrphanAttendanceTable;

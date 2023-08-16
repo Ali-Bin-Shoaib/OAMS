@@ -100,8 +100,8 @@ export enum STATUS_CODE {
 }
 export enum AttendanceReportType {
 	Weekly = 'Weekly',
-	Quarterly = 'Quarterly',
 	Monthly = 'Monthly',
+	Quarterly = 'Quarterly',
 }
 export type ResponseType = { data: any; msg: string };
 
