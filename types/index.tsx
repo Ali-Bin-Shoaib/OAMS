@@ -98,7 +98,7 @@ export enum STATUS_CODE {
 	NOT_EXTENDED = 510, // Further extensions to the request are required for the server to fulfill it.
 	NETWORK_AUTHENTICATION_REQUIRED = 511, // The client needs to authenticate to gain network access.
 }
-export enum AttendanceReportType {
+export enum ReportType {
 	Weekly = 'Weekly',
 	Monthly = 'Monthly',
 	Quarterly = 'Quarterly',

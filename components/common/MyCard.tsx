@@ -6,7 +6,7 @@ import { ColorSchemeContext } from '../../shared/contexts';
 
 interface Props {
 	title: string | 'title';
-	count: number | 55;
+	count?: number;
 	color: MantineColor;
 	icon: JSX.Element;
 	className?: string | 'text-3xl text-white mr-4'; // optional prop

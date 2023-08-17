@@ -1,23 +1,26 @@
 import { Attendance, OrphanAttendance, User } from '@prisma/client';
-import { AttendanceReportType } from 'types';
+import { ReportType } from 'types';
 import moment from 'moment';
 
 type attendance = (Attendance & { OrphanAttendance: OrphanAttendance[]; User: Pick<User, 'id' | 'name'> })[];
-export const filterAttendance = (reportType: AttendanceReportType, attendances: attendance) => {
+export const filterAttendance = (reportType: ReportType, attendances: attendance) => {
 	const currentDate = new Date();
 	switch (reportType) {
-		case AttendanceReportType.Weekly: {
+		case ReportType.Weekly: {
 			return attendances.filter(
 				(x) =>
 					moment(currentDate).isoWeek() === moment(x.date).isoWeek() && currentDate.getFullYear() === x.date.getFullYear()
 			);
 		}
-		case AttendanceReportType.Monthly:
+		case ReportType.Monthly:
 			{
-				return attendances.filter((x) => x.date.getUTCMonth() === currentDate.getUTCMonth());
+				return attendances.filter(
+					(x) =>
+						x.date.getUTCMonth() === currentDate.getUTCMonth() && currentDate.getUTCFullYear() === x.date.getUTCFullYear()
+				);
 			}
 			break;
-		case AttendanceReportType.Quarterly:
+		case ReportType.Quarterly:
 			{
 				const currentMonth = currentDate.getUTCMonth();
 				switch (currentMonth) {
@@ -60,7 +63,7 @@ export const filterAttendance = (reportType: AttendanceReportType, attendances: 
 	return [];
 };
 export const filterOrphanAttendance = (
-	reportType: AttendanceReportType,
+	reportType: ReportType,
 	attendance: attendance,
 	orphanId: number
 ): OrphanAttendance[] => {

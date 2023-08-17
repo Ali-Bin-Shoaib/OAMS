@@ -6,7 +6,7 @@ import { GetStaticProps } from 'next';
 import { useEffect, useState } from 'react';
 import SuperJSON from 'superjson';
 import { $enum } from 'ts-enum-util';
-import { AttendanceReportType, _Attendance, _Orphan, _OrphanAttendance } from 'types';
+import { ReportType, _Attendance, _Orphan, _OrphanAttendance } from 'types';
 import OrphansTable from 'components/orphans/OrphansTable';
 export const getStaticProps: GetStaticProps = async () => {
 	try {

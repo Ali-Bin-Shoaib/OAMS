@@ -6,7 +6,7 @@ import { GetStaticProps } from 'next';
 import { useEffect, useState } from 'react';
 import SuperJSON from 'superjson';
 import { $enum } from 'ts-enum-util';
-import { AttendanceReportType, _Attendance, _OrphanAttendance } from 'types';
+import { ReportType, _Attendance, _OrphanAttendance } from 'types';
 import { filterAttendance, filterOrphanAttendance } from './service';
 import OrphanAttendanceTable from 'components/attendance/OrphanAttendanceTable';
 export const getStaticProps: GetStaticProps = async () => {
@@ -39,7 +39,7 @@ function AttendanceReportIndex({ jsonData }: Props) {
 	const { attendances, orphans }: JsonDataProps = SuperJSON.parse<JsonDataProps>(jsonData);
 
 	const [hydrated, setHydrated] = useState(false);
-	const [period, setPeriod] = useState<AttendanceReportType>(AttendanceReportType.Weekly);
+	const [period, setPeriod] = useState<ReportType>(ReportType.Weekly);
 	const [selectedOrphan, setSelectedOrphan] = useState<(typeof orphans)[0]>();
 	console.log('🚀 ~ file: index.tsx:42 ~ AttendanceReportIndex ~ selectedOrphan:', selectedOrphan);
 	const [orphanAttendance, setOrphanAttendance] = useState<OrphanAttendance[]>();
@@ -76,10 +76,10 @@ function AttendanceReportIndex({ jsonData }: Props) {
 						description='select report type'
 						// width={'35%'}
 						m={5}
-						data={$enum(AttendanceReportType).map((x) => x)}
+						data={$enum(ReportType).map((x) => x)}
 						value={period}
 						onChange={(e) => {
-							$enum(AttendanceReportType).map((x) => {
+							$enum(ReportType).map((x) => {
 								if (x === e) {
 									// if (selectedOrphan) setOrphanAttendance(filterOrphanAttendance(x, attendances, selectedOrphan.id));
 									setPeriod(x);

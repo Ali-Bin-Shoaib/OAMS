@@ -8,13 +8,14 @@ import { Pages, serverLink } from '../../shared/links';
 import { IconCheckbox, IconEdit, IconInfoCircle, IconTrash } from '@tabler/icons-react';
 import DeleteModal from '../common/DeleteModal';
 import axios from 'axios';
+import TableComponent from 'components/common/TableComponent';
 
 interface Props {
 	activitiesExecutions: _ActivityExecutionInfo[];
-	updateCard: (activityExecution?: _ActivityExecutionInfo | undefined) => void;
+	// updateCard: (activityExecution?: _ActivityExecutionInfo | undefined) => void;
 }
 
-function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
+function ActivityExecutionTable({ activitiesExecutions }: Props) {
 	console.log('🚀 ~ file: ~ ActivityExecutionTable');
 	const router = useRouter();
 
@@ -125,75 +126,82 @@ function ActivityExecutionTable({ activitiesExecutions, updateCard }: Props) {
 	);
 
 	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={activitiesExecutions}
-				initialState={{ density: 'xs' }}
-				enableColumnResizing
-				columnResizeMode='onEnd'
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				enableRowActions
-				enableToolbarInternalActions
-				// positionActionsColumn='last'
-				displayColumnDefOptions={{ 'mrt-row-actions': { size: 50 } }}
-				renderRowActions={({ row }) => (
-					<Button.Group>
-						{/* <Tooltip label={'Delete'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${Pages.ActivityExecution.link}${row.original.id}`);
-									const res = deleteExecution(serverLink + 'api/execute/', row.original.id);
-									console.log('🚀 ~ file: ActivityExecutionTable.tsx:144 ~ ActivityExecutionTable ~ res:', res);
-								}}
-								color='red'>
-								<IconTrash />
-							</Button>
-						</Tooltip> */}
-						<Tooltip label={'Delete'}>
-							<DeleteModal
-								id={row.original.id!}
-								title={'Activity Execution'}
-								url={'api/execute/'}
-								// updateCard={updateCard}
-							/>
-						</Tooltip>
+		<TableComponent
+			data={activitiesExecutions}
+			columns={columns}
+			deleteUrl={`${Pages.ActivityExecution.link}`}
+			editUrl={`${Pages.ActivityExecution.link}edit/`}
+			deleteTitle={''}
+			infoUrl={''}
+		/>
+		// <Container fluid>
+		// 	<MantineReactTable
+		// 		columns={columns}
+		// 		data={activitiesExecutions}
+		// 		initialState={{ density: 'xs' }}
+		// 		enableColumnResizing
+		// 		columnResizeMode='onEnd'
+		// 		mantineTableBodyCellProps={{
+		// 			sx: { border: '2px solid #dee2e6' },
+		// 		}}
+		// 		enableRowActions
+		// 		enableToolbarInternalActions
+		// 		// positionActionsColumn='last'
+		// 		displayColumnDefOptions={{ 'mrt-row-actions': { size: 50 } }}
+		// 		renderRowActions={({ row }) => (
+		// 			<Button.Group>
+		// 				{/* <Tooltip label={'Delete'}>
+		// 					<Button
+		// 						size='xs'
+		// 						onClick={() => {
+		// 							router.push(`${Pages.ActivityExecution.link}${row.original.id}`);
+		// 							const res = deleteExecution(serverLink + 'api/execute/', row.original.id);
+		// 							console.log('🚀 ~ file: ActivityExecutionTable.tsx:144 ~ ActivityExecutionTable ~ res:', res);
+		// 						}}
+		// 						color='red'>
+		// 						<IconTrash />
+		// 					</Button>
+		// 				</Tooltip> */}
+		// 				<Tooltip label={'Delete'}>
+		// 					<DeleteModal
+		// 						id={row.original.id!}
+		// 						title={'Activity Execution'}
+		// 						url={'api/execute/'}
+		// 						// updateCard={updateCard}
+		// 					/>
+		// 				</Tooltip>
 
-						<Tooltip label={'Edit'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${Pages.ActivityExecution.link}edit/${row.original.id}`);
-								}}
-								color='yellow'>
-								<IconEdit />
-							</Button>
-						</Tooltip>
-						<Tooltip label={'Info'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${router.asPath}/${row.original.id}`);
-								}}
-								color='gray'>
-								<IconInfoCircle />
-							</Button>
-						</Tooltip>
-					</Button.Group>
-				)}
-				mantineTableBodyRowProps={(row) => ({
-					onClick: () => {
-						// on row click change the card to the clicked activities and then user can edit or delete.
-						// router.push(serverLink + 'activities/' + row.row.original.id);
-
-						updateCard(row.row.original);
-					},
-				})}
-			/>
-		</Container>
+		// 				<Tooltip label={'Edit'}>
+		// 					<Button
+		// 						size='xs'
+		// 						onClick={() => {
+		// 							router.push(`${Pages.ActivityExecution.link}edit/${row.original.id}`);
+		// 						}}
+		// 						color='yellow'>
+		// 						<IconEdit />
+		// 					</Button>
+		// 				</Tooltip>
+		// 				<Tooltip label={'Info'}>
+		// 					<Button
+		// 						size='xs'
+		// 						onClick={() => {
+		// 							router.push(`${router.asPath}/${row.original.id}`);
+		// 						}}
+		// 						color='gray'>
+		// 						<IconInfoCircle />
+		// 					</Button>
+		// 				</Tooltip>
+		// 			</Button.Group>
+		// 		)}
+		// 		mantineTableBodyRowProps={(row) => ({
+		// 			onClick: () => {
+		// 				// on row click change the card to the clicked activities and then user can edit or delete.
+		// 				// router.push(serverLink + 'activities/' + row.row.original.id);
+		// 				// updateCard(row.row.original);
+		// 			},
+		// 		})}
+		// 	/>
+		// </Container>
 	);
 }
 export default ActivityExecutionTable;

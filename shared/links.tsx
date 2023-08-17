@@ -45,6 +45,7 @@ export const Paths: HeaderLinkProps = {
 				{ label: 'Activity Report', link: serverLink + 'reports/activity' },
 				{ label: 'Orphan Report', link: serverLink + 'reports/orphan' },
 				{ label: 'Sponsor Report', link: serverLink + 'reports/sponsor' },
+				{ label: 'Sponsorship Report', link: serverLink + 'reports/sponsorship' },
 				{ label: 'Comprehensive Report', link: serverLink + 'reports/comprehensive' },
 				{ label: 'Yearly Report', link: serverLink + 'reports/yearly' },
 			],

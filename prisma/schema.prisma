@@ -279,7 +279,7 @@ model ActivityExecutionInfo {
   id                      Int                       @id @default(autoincrement())
   cost                    Float?
   description             String?
-  startDate               DateTime?
+  startDate               DateTime
   note                    String?
   // * Relations
   Executor                User                      @relation(fields: [executorId], references: [id])

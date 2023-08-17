@@ -1,7 +1,5 @@
-import { Attendance, Orphan, OrphanAttendance, Prisma } from '@prisma/client';
 import { useMemo } from 'react';
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Container } from '@mantine/core';
+import { MRT_ColumnDef } from 'mantine-react-table';
 import { _Attendance, _Orphan, _OrphanAttendance } from '../../types';
 import TableComponent from 'components/common/TableComponent';
 
@@ -13,14 +11,6 @@ function OrphanAttendanceTable({ orphanAttendance }: Props) {
 	const columns = useMemo<MRT_ColumnDef<_OrphanAttendance>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
-			// {
-			// 	accessorFn: (row) => row.orphanId,
-			// 	id: 'Orphan.name',
-			// 	header: 'Orphan Name',
-			// 	maxSize: 300,
-			// 	size: 200,
-			// 	enableResizing: true,
-			// },
 
 			{
 				accessorFn: (row) => (row.isAttended ? 'yes' : 'no'),
