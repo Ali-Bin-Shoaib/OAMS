@@ -1,16 +1,34 @@
 import { Badge, Center, Select } from '@mantine/core';
-import { Attendance, Orphan, OrphanAttendance, User } from '@prisma/client';
-import AttendanceTable from 'components/attendance/AttendanceTable';
+import {
+	BehaviorCriteria,
+	BehaviorInfo,
+	EducationInfo,
+	Grade,
+	Orphan,
+	OrphanActivityExecution,
+	OrphanAttendance,
+} from '@prisma/client';
 import prisma from 'lib/prisma';
 import { GetStaticProps } from 'next';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SuperJSON from 'superjson';
-import { $enum } from 'ts-enum-util';
-import { ReportType, _Attendance, _Orphan, _OrphanAttendance } from 'types';
 import OrphansTable from 'components/orphans/OrphansTable';
+import { ReportType } from 'types';
+import { $enum } from 'ts-enum-util';
 export const getStaticProps: GetStaticProps = async () => {
 	try {
-		const orphans = await prisma.orphan.findMany();
+		const orphans = await prisma.orphan.findMany({
+			select: {
+				id: true,
+				name: true,
+				evaluation: true,
+				BehaviorInfo: { select: { BehaviorCriteria: { select: { evaluation: true } } } },
+				EducationInfo: { select: { degree: true } },
+				OrphanAttendance: { select: { isAttended: true } },
+				OrphanActivityExecution: { select: { isAttended: true, evaluation: true } },
+			},
+			orderBy: { id: 'asc' },
+		});
 		const data = { orphans };
 		const jsonData = SuperJSON.stringify(data);
 
@@ -20,7 +38,12 @@ export const getStaticProps: GetStaticProps = async () => {
 	}
 };
 interface JsonDataProps {
-	orphans: Orphan[];
+	orphans: (Pick<Orphan, 'id' | 'name' | 'evaluation'> & {
+		BehaviorInfo: BehaviorInfo & { BehaviorCriteria: Pick<BehaviorCriteria, 'evaluation'>[] }[];
+		EducationInfo: Pick<EducationInfo, 'degree'>[];
+		OrphanAttendance: Pick<OrphanAttendance, 'isAttended'>[];
+		OrphanActivityExecution: Pick<OrphanActivityExecution, 'isAttended' | 'evaluation'>[];
+	})[];
 }
 interface Props {
 	jsonData: string;
@@ -29,13 +52,36 @@ function OrphanReportIndex({ jsonData }: Props) {
 	const { orphans }: JsonDataProps = SuperJSON.parse<JsonDataProps>(jsonData);
 
 	const [hydrated, setHydrated] = useState(false);
+	const [selectedOrphan, setSelectedOrphan] = useState<number | null>(null);
+	const [filteredOrphans, setFilteredOrphans] = useState<typeof orphans>(orphans);
+
+	const handleChange = useCallback(() => {
+		console.log('🚀 orphanId:', selectedOrphan);
+		selectedOrphan ? setFilteredOrphans(orphans.filter((x) => x.id === selectedOrphan)) : setFilteredOrphans(orphans);
+	}, [, selectedOrphan]);
+
 	useEffect(() => {
+		handleChange();
 		setHydrated(true);
-	}, []);
+	}, [selectedOrphan]);
 	if (!hydrated) return;
 	return (
 		<>
 			<div className='p-2 m-2 pt-5'>
+				<div className='flex flex-wrap justify-center p-3'>
+					<Select
+						label='Orphans'
+						description='select orphan to show his activity executions'
+						clearable
+						m={5}
+						searchable
+						data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
+						onChange={(e) => {
+							e ? setSelectedOrphan(orphans.filter((x) => x.id === Number(e))[0].id) : setSelectedOrphan(null);
+						}}
+					/>
+				</div>
+
 				<div className=' p-1'>
 					<Center>
 						<Badge size='xl' color='dark'>
@@ -43,7 +89,7 @@ function OrphanReportIndex({ jsonData }: Props) {
 						</Badge>
 					</Center>
 				</div>
-				<OrphansTable orphans={orphans} />
+				<OrphansTable orphans={filteredOrphans} />
 			</div>
 		</>
 	);

@@ -1,17 +1,14 @@
 import { GetStaticProps, GetStaticPropsContext } from 'next';
 import prisma from '../../../lib/prisma';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MyCard from '../../../components/orphans/MyCard';
-import { Button, Card, Divider, Flex, Loader, ScrollArea, Skeleton, TextInput } from '@mantine/core';
+import { Divider, Flex, Loader, TextInput } from '@mantine/core';
 import SuperJSON from 'superjson';
-import { ResponseType, _Guardian, _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../../types';
+import { _Guardian, _Orphan, orphanWithGuardianAndSponsorshipInfo } from '../../../types';
 import { initial } from '../../../utils/CreateEntries';
-import { v4 } from 'uuid';
 import img from '../../img/3.jpg';
 import ListComponent, { ListItemComponent } from '../../../components/common/ListComponent';
-import { IconSearch, IconUserPlus } from '@tabler/icons-react';
-import { useRouter } from 'next/router';
-import { serverLink } from 'shared/links';
+import { IconSearch } from '@tabler/icons-react';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async (context: GetStaticPropsContext) => {
@@ -30,7 +27,6 @@ export const getStaticProps: GetStaticProps = async (context: GetStaticPropsCont
 		},
 		orderBy: { id: 'asc' },
 	});
-
 	const stringData = SuperJSON.stringify({ orphans });
 	return { props: { stringData } };
 };
@@ -47,8 +43,6 @@ export default function Index({ stringData }: Props) {
 	const [orphanList, setOrphanList] = useState<orphanWithGuardianAndSponsorshipInfo[]>(orphans);
 	const [cardInfo, setCardInfo] = useState<orphanWithGuardianAndSponsorshipInfo>(orphans[0]);
 	const [search, setSearch] = useState<string>('');
-	const router = useRouter();
-	//// to show image  const src = URL.createObjectURL(image);
 	const [hydration, setHydration] = useState(false);
 	const updateCard = (orphan: orphanWithGuardianAndSponsorshipInfo) => setCardInfo(orphan);
 	useEffect(() => {
@@ -72,7 +66,6 @@ export default function Index({ stringData }: Props) {
 						}}
 					/>
 					<Divider p={2} />
-					{/* <ScrollArea h={480} p={5}> */}
 					{orphans
 						.filter((x) => x.name.toLowerCase().includes(search))
 						.map((orphan) => (
@@ -83,26 +76,14 @@ export default function Index({ stringData }: Props) {
 								title={orphan.name}
 								leftData={{ label: 'age', data: orphan.age }}
 								middleData={{ label: 'gender', data: orphan.gender }}
-								rightData={{ label: 'rating', data: orphan.evaluation || 3 }}
+								rightData={{ label: 'rating', data: orphan.evaluation || 0 }}
 								onClick={() => updateCard(orphan)}
 							/>
 						))}
-					{/* </ScrollArea> */}
 				</ListComponent>
-				{/* {<OrphanCard orphan={cardInfo} />} */}
 				{<MyCard orphan={cardInfo} />}
 			</Flex>
-			<div className='text-center'>
-				{/* <AddOrphanModal /> */}
-				{/* <Button
-					className='btn btn1'
-					size='xl'
-					leftIcon={<IconUserPlus />}
-					onClick={() => router.push(`${serverLink}orphans/action/create`)}>
-					Add Orphan
-				</Button> */}
-			</div>
-			{/* <OrphansTable orphans={orphanList} updateCard={updateCard} /> */}
+			<div className='text-center'></div>
 		</>
 	);
 }

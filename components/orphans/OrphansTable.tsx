@@ -1,47 +1,98 @@
-import { Orphan } from '@prisma/client';
+import {
+	BehaviorCriteria,
+	BehaviorInfo,
+	EducationInfo,
+	Orphan,
+	OrphanActivityExecution,
+	OrphanAttendance,
+} from '@prisma/client';
 import { useMemo } from 'react';
 import { MRT_ColumnDef } from 'mantine-react-table';
 import TableComponent from 'components/common/TableComponent';
+import {
+	calculateActivityExecutionEvaluation,
+	calculateAttendanceEvaluation,
+	calculateBehaviorEvaluation,
+	calculateEducationEvaluation,
+	calculateOrphanGeneralEvaluation,
+} from './service';
 
 interface Props {
-	orphans: Orphan[];
+	orphans: JsonDataProps['orphans'];
 }
-
+interface JsonDataProps {
+	orphans: (Pick<Orphan, 'id' | 'name' | 'evaluation'> & {
+		BehaviorInfo: BehaviorInfo & { BehaviorCriteria: Pick<BehaviorCriteria, 'evaluation'>[] }[];
+		EducationInfo: Pick<EducationInfo, 'degree'>[];
+		OrphanAttendance: Pick<OrphanAttendance, 'isAttended'>[];
+		OrphanActivityExecution: Pick<OrphanActivityExecution, 'isAttended' | 'evaluation'>[];
+	})[];
+}
 function OrphansTable({ orphans }: Props) {
-	const columns = useMemo<MRT_ColumnDef<Orphan>[]>(
+	const columns = useMemo<MRT_ColumnDef<(typeof orphans)[0]>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 100, size: 90 },
-			{ accessorFn: (row) => row.name, id: 'name', header: 'name', enableResizing: true },
+			{ accessorFn: (row) => row.name, id: 'name', header: 'Name', enableResizing: true },
+			{
+				accessorFn: (row) => calculateBehaviorEvaluation(row.BehaviorInfo).toFixed(2),
+				id: 'BehaviorInfo',
+				header: 'Behavior',
+				enableResizing: true,
+			},
+			{
+				accessorFn: (row) => calculateEducationEvaluation(row.EducationInfo).toFixed(2),
+				id: 'EducationInfo',
+				header: 'Education',
+				enableResizing: true,
+			},
+			{
+				accessorFn: (row) => calculateAttendanceEvaluation(row.OrphanAttendance).toFixed(2),
+				id: 'OrphanAttendance',
+				header: 'Attendance',
+				enableResizing: true,
+			},
+			{
+				accessorFn: (row) => calculateActivityExecutionEvaluation(row.OrphanActivityExecution).toFixed(2),
+				id: 'OrphanActivityExecution',
+				header: 'Activity Execution',
+				enableResizing: true,
+			},
+			{
+				accessorFn: (row) => row.evaluation?.toFixed(2) || calculateOrphanGeneralEvaluation(row).toFixed(2),
+				id: 'evaluation',
+				header: 'General Evaluation',
+				enableResizing: true,
+			},
 
 			// { accessorFn: (row) => row.image, id: 'image', header: 'image', maxSize: 200, size: 100, enableResizing: true },
-			{ accessorFn: (row) => row.gender, id: 'gender', header: 'gender', maxSize: 200, size: 120, enableResizing: true },
-			{ accessorFn: (row) => row.age, id: 'age', header: 'age', maxSize: 200, size: 100, enableResizing: true },
-			{ accessorFn: (row) => row.birthdate?.toDateString(), id: 'birthdate', header: 'birthdate' },
-			{
-				accessorFn: (row) => row.birthplace,
-				id: 'birthplace',
-				header: 'birthplace',
-				maxSize: 200,
-				size: 130,
-				enableResizing: true,
-			},
-			{ accessorFn: (row) => row.joinDate?.toDateString(), id: 'joinDate', header: 'joinDate', size: 130, maxSize: 150 },
-			{
-				accessorFn: (row) => row.schoolName,
-				id: 'schoolName',
-				header: 'schoolName',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
-			{
-				accessorFn: (row) => row.gradeLevel,
-				id: 'gradeLevel',
-				header: 'gradeLevel',
-				maxSize: 200,
-				size: 130,
-				enableResizing: true,
-			},
+			// { accessorFn: (row) => row.gender, id: 'gender', header: 'gender', maxSize: 200, size: 120, enableResizing: true },
+			// { accessorFn: (row) => row.age, id: 'age', header: 'age', maxSize: 200, size: 100, enableResizing: true },
+			// { accessorFn: (row) => row.birthdate?.toDateString(), id: 'birthdate', header: 'birthdate' },
+			// {
+			// 	accessorFn: (row) => row.birthplace,
+			// 	id: 'birthplace',
+			// 	header: 'birthplace',
+			// 	maxSize: 200,
+			// 	size: 130,
+			// 	enableResizing: true,
+			// },
+			// { accessorFn: (row) => row.joinDate?.toDateString(), id: 'joinDate', header: 'joinDate', size: 130, maxSize: 150 },
+			// {
+			// 	accessorFn: (row) => row.schoolName,
+			// 	id: 'schoolName',
+			// 	header: 'schoolName',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
+			// {
+			// 	accessorFn: (row) => row.gradeLevel,
+			// 	id: 'gradeLevel',
+			// 	header: 'gradeLevel',
+			// 	maxSize: 200,
+			// 	size: 130,
+			// 	enableResizing: true,
+			// },
 			// {
 			// 	accessorFn: (row) => row.lastYearPercentage,
 			// 	id: 'lastYearPercentage',
@@ -132,14 +183,14 @@ function OrphansTable({ orphans }: Props) {
 			// 	size: 150,
 			// 	enableResizing: true,
 			// },
-			{
-				accessorFn: (row) => row.liveWith,
-				id: 'liveWith',
-				header: 'liveWith',
-				maxSize: 200,
-				size: 130,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.liveWith,
+			// 	id: 'liveWith',
+			// 	header: 'liveWith',
+			// 	maxSize: 200,
+			// 	size: 130,
+			// 	enableResizing: true,
+			// },
 			// {
 			// 	accessorFn: (row) => row.homeType,
 			// 	id: 'homeType',
@@ -148,30 +199,30 @@ function OrphansTable({ orphans }: Props) {
 			// 	size: 150,
 			// 	enableResizing: true,
 			// },
-			{
-				accessorFn: (row) => row.homePhone,
-				id: 'homePhone',
-				header: 'homePhone',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
-			{
-				accessorFn: (row) => row.currentAddress,
-				id: 'currentAddress',
-				header: 'Address',
-				maxSize: 200,
-				size: 130,
-				enableResizing: true,
-			},
-			{
-				accessorFn: (row) => (row.isSponsored ? 'yes' : 'no'),
-				id: 'isSponsored',
-				header: 'isSponsored',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.homePhone,
+			// 	id: 'homePhone',
+			// 	header: 'homePhone',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
+			// {
+			// 	accessorFn: (row) => row.currentAddress,
+			// 	id: 'currentAddress',
+			// 	header: 'Address',
+			// 	maxSize: 200,
+			// 	size: 130,
+			// 	enableResizing: true,
+			// },
+			// {
+			// 	accessorFn: (row) => (row.isSponsored ? 'yes' : 'no'),
+			// 	id: 'isSponsored',
+			// 	header: 'isSponsored',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 			// {
 			// 	accessorFn: (row) => row.foundationName,
 			// 	id: 'foundationName',
@@ -188,14 +239,14 @@ function OrphansTable({ orphans }: Props) {
 			// 	size: 150,
 			// 	enableResizing: true,
 			// },
-			{
-				accessorFn: (row) => row.evaluation,
-				id: 'evaluation',
-				header: 'evaluation',
-				maxSize: 200,
-				size: 150,
-				enableResizing: true,
-			},
+			// {
+			// 	accessorFn: (row) => row.evaluation,
+			// 	id: 'evaluation',
+			// 	header: 'evaluation',
+			// 	maxSize: 200,
+			// 	size: 150,
+			// 	enableResizing: true,
+			// },
 		],
 		[]
 	);

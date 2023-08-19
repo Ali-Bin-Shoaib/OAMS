@@ -1,6 +1,6 @@
 // applies next auth to all pages by export the default from next-auth/middleware
 // export { default } from 'next-auth/middleware';
-import { url } from 'inspector';
+import prisma from 'lib/prisma';
 import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
 import { isActionAuthorized, isUserAuthorized } from 'utils/CheckAuth';

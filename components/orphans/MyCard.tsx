@@ -103,6 +103,7 @@ function MyCard({ orphan }: Props) {
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Evaluation:</strong>
+								{orphan.evaluation?.toFixed(2) || 0}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
 								<strong>Age:</strong> {orphan.age}
