@@ -1,6 +1,6 @@
 import { Url } from 'next/dist/shared/lib/router/router';
 
-export const serverLink = 'http://localhost:3000/';
+export const serverLink = 'http://localhost:3000/' as const;
 export interface HeaderLinkProps {
 	links: { link: Url; label: string; relatedLinks?: { link: Url; label: string }[] }[];
 }
@@ -56,25 +56,25 @@ export const Paths: HeaderLinkProps = {
 
 export const Pages = {
 	Home: { label: 'Home', link: serverLink },
-	Orphans: { label: 'Orphans', link: serverLink + 'orphans/' },
-	Users: { label: 'Users', link: serverLink + 'users/' },
-	Guardians: { label: 'Guardians', link: serverLink + 'guardians/' },
-	Sponsors: { label: 'Sponsors', link: serverLink + 'sponsors/' },
-	Sponsorships: { label: 'Sponsorships', link: serverLink + 'sponsorships/' },
-	Attendance: { label: 'Attendance', link: serverLink + 'attendance/' },
-	Activities: { label: 'Activities', link: serverLink + 'activities/' },
-	ActivityExecution: { label: 'Activity Execution', link: serverLink + 'activities/execute/' },
-	Goals: { label: 'Goals', link: serverLink + 'goals/' },
-	HealthInfo: { label: 'Health Info', link: serverLink + 'health/' },
-	BehaviorInfo: { label: 'Behavior Info', link: serverLink + 'behavior/' },
-	CriteriaInfo: { label: 'Criteria', link: serverLink + 'criteria/' },
-	EmergenceContactInfo: { label: 'Emergence Contact Info', link: serverLink + 'contact/' },
-	EducationInfo: { label: 'Education Info', link: serverLink + 'education/' },
+	Orphans: { label: 'Orphans', link: `${serverLink}orphans/` },
+	Users: { label: 'Users', link: `${serverLink}users/ ` },
+	Guardians: { label: 'Guardians', link: `${serverLink}guardians/ ` },
+	Sponsors: { label: 'Sponsors', link: `${serverLink}sponsors/ ` },
+	Sponsorships: { label: 'Sponsorships', link: `${serverLink}sponsorships/ ` },
+	Attendance: { label: 'Attendance', link: `${serverLink}attendance/ ` },
+	Activities: { label: 'Activities', link: `${serverLink}activities/ ` },
+	ActivityExecution: { label: 'Activity Execution', link: `${serverLink}activities/execute/` },
+	Goals: { label: 'Goals', link: `${serverLink}goals/ ` },
+	HealthInfo: { label: 'Health Info', link: `${serverLink}health/ ` },
+	BehaviorInfo: { label: 'Behavior Info', link: `${serverLink}behavior/ ` },
+	CriteriaInfo: { label: 'Criteria', link: `${serverLink}criteria/ ` },
+	EmergenceContactInfo: { label: 'Emergence Contact Info', link: `${serverLink}contact/ ` },
+	EducationInfo: { label: 'Education Info', link: `${serverLink}education/ ` },
 	// Rooms: { label: 'Reports', link: serverLink + 'reports/' },
 
 	// HealthInfo: { label: 'Health Info', link: '/healthInfo/' },
 	// BehaviorInfo: { label: 'Behavior Info', link: '/behaviorInfo/' },
-};
+} as const;
 export const ProtectedRoutes = [
 	'/activities/:path*',
 	'/attendance/:path*',

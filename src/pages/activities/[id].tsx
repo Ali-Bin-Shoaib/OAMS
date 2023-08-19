@@ -1,7 +1,6 @@
-import { Group, Paper, Text, Loader, SimpleGrid, Button, Tooltip, Title, Badge, Container } from '@mantine/core';
+import { Group, Paper, Text, Loader, SimpleGrid, Button, Tooltip, Badge, Container } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
-import { record } from 'zod';
 import prisma from '../../../lib/prisma';
 import { Goal, ActivityInfo, User, ActivityGoal } from '@prisma/client';
 import { useState, useEffect } from 'react';
@@ -15,21 +14,27 @@ import { CalculateTotalEvaluation } from '../../../utils/Calculation';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const id = Number(params?.id);
 	console.log('🚀 ~ file: [id].tsx:14 ~ constgetServerSideProps:GetServerSideProps= ~ id:', id);
-	const activity = await prisma.activityInfo.findFirst({
-		where: { id: id },
-		include: {
-			User: { select: { id: true, name: true } },
-			ActivityExecutionInfo: { select: { GoalEvaluation: true, OrphanActivityExecution: true } },
-			ActivityGoal: { select: { Goal: { select: { title: true } } }, orderBy: { id: 'asc' } },
-		},
-	});
+	try {
+		const activity = await prisma.activityInfo.findFirst({
+			where: { id: id },
+			include: {
+				User: { select: { id: true, name: true } },
+				ActivityExecutionInfo: { select: { GoalEvaluation: true, OrphanActivityExecution: true } },
+				ActivityGoal: { select: { Goal: { select: { title: true } } }, orderBy: { id: 'asc' } },
+			},
+		});
+		console.log('🚀 ~ file: [id].tsx:25 ~ constgetServerSideProps:GetServerSideProps= ~ activity:', activity);
 
-	if (!activity) {
+		if (!activity) {
+			return { props: {} };
+		}
+		const data = { activity };
+		const stringData = SuperJSON.stringify(data);
+		return { props: { stringData } };
+	} catch (error) {
+		console.log('🚀 ~ file: [id].tsx:36 ~ constgetServerSideProps:GetServerSideProps= ~ error:', error);
 		return { props: {} };
 	}
-	const data = { activity };
-	const stringData = SuperJSON.stringify(data);
-	return { props: { stringData } };
 };
 
 interface Props {
@@ -47,7 +52,7 @@ function Info({ stringData }: Props) {
 		};
 	} = SuperJSON.parse(stringData);
 	const { activity } = jsonData;
-	// console.log('🚀 ~ file: [id].tsx:39 ~ Edit ~ activity:', activity);
+	console.log('🚀 ~ file: [id].tsx:39 ~ Edit ~ activity:', activity);
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);
@@ -55,7 +60,7 @@ function Info({ stringData }: Props) {
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<div style={{ margin: 'auto', maxWidth: 800 }}>
-			<h1 className='text-center shadow p-2 '>Activity Info</h1>
+			<h1 className='text-center shadow p-2 bg-slate-50'>Activity Info</h1>
 			{/* add other components as needed */}
 			{activity ? (
 				<Paper p={'xl'} withBorder className='hover:shadow-md' m={40}>
@@ -82,7 +87,7 @@ function Info({ stringData }: Props) {
 								<Badge key={x.id}>{x.Goal.title}</Badge>
 							))}
 						</Container>
-						<Text weight={700}>No Of Execution:</Text>
+						<Text weight={700}>Executions:</Text>
 						<Text>{activity.ActivityExecutionInfo.reduce((total, object) => total + 1, 0)}</Text>
 						<Text weight={700}>Total Evaluation:</Text>
 						<Text>

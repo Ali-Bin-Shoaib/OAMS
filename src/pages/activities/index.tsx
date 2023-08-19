@@ -65,7 +65,7 @@ export default function Index({ stringData }: Props) {
 					</Button>
 				</Group>
 				{/* <CardInfo activityInfo={cardInfo} updateCard={updateCard} /> */}
-				<ActivityTable activities={activities} updateCard={updateCard} />
+				<ActivityTable activities={activities} />
 			</div>
 		</>
 	);

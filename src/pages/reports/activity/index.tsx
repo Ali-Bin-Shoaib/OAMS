@@ -1,21 +1,41 @@
 import { Badge, Center, Select } from '@mantine/core';
-import { ActivityExecutionInfo, ActivityInfo, Orphan, OrphanActivityExecution } from '@prisma/client';
+import {
+	ActivityExecutionInfo,
+	ActivityInfo,
+	Goal,
+	GoalEvaluation,
+	Grade,
+	Orphan,
+	OrphanActivityExecution,
+	User,
+} from '@prisma/client';
 import prisma from 'lib/prisma';
 import { GetStaticProps } from 'next';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SuperJSON from 'superjson';
 import { $enum } from 'ts-enum-util';
 import { ReportType, _ActivityExecutionInfo, _Attendance, _OrphanAttendance } from 'types';
-import { filterExecutions, filterOrphanExecutions } from './service';
+import {
+	filterExecutionsByLevel,
+	filterExecutionsByOrphanId,
+	filterExecutionsByType,
+	filterOrphanExecutions,
+} from './service';
 import ActivityExecutionTable from 'components/activityExecution/ActivityExecutionTable';
+import OrphanActivityExecutionTable from 'components/activityExecution/OrphanActivityExecutionTable';
 export const getStaticProps: GetStaticProps = async () => {
 	try {
 		const executions = await prisma.activityExecutionInfo.findMany({
-			include: { OrphanActivityExecution: true },
+			include: {
+				OrphanActivityExecution: true,
+				ActivityInfo: true,
+				GoalEvaluation: true,
+				Executor: { select: { id: true, name: true } },
+			},
+			orderBy: { startDate: 'asc' },
 		});
-		console.log('🚀 ~ file: index.tsx:16 ~ constgetStaticProps:GetStaticProps= ~ executions:', executions.length);
+		const activities = await prisma.activityInfo.findMany({ select: { id: true, title: true, target: true } });
 		const orphans = await prisma.orphan.findMany({ select: { id: true, name: true } });
-		const activities = await prisma.activityInfo.findMany({ select: { id: true, title: true } });
 		const data = { executions, orphans, activities };
 		const jsonData = SuperJSON.stringify(data);
 
@@ -26,64 +46,113 @@ export const getStaticProps: GetStaticProps = async () => {
 	}
 };
 interface JsonDataProps {
-	executions: (ActivityExecutionInfo & { OrphanActivityExecution: OrphanActivityExecution[] })[];
-	activities: Pick<ActivityInfo, 'id' | 'title'>[];
+	executions: (ActivityExecutionInfo & {
+		ActivityInfo: ActivityInfo;
+		Executer: Pick<User, 'id' | 'name'>;
+		GoalEvaluation: (GoalEvaluation & { Goal: Goal })[];
+		OrphanActivityExecution: OrphanActivityExecution[];
+	})[];
 	orphans: Pick<Orphan, 'id' | 'name'>[];
+	activities: Pick<ActivityInfo, 'id' | 'title' | 'target'>[];
 }
 interface Props {
 	jsonData: string;
 }
+interface OrphanExecutionInfo {
+	id: number;
+	title: string;
+	startDate: Date;
+	evaluation: number;
+	isAttended: boolean;
+}
+
 function ActivityReportIndex({ jsonData }: Props) {
 	const { executions, orphans, activities }: JsonDataProps = SuperJSON.parse<JsonDataProps>(jsonData);
-	console.log('🚀 ~ file: index.tsx:41 ~ ActivityReportIndex ~ executions:', executions.length);
 	const [hydrated, setHydrated] = useState(false);
-	const [period, setPeriod] = useState<ReportType>(ReportType.Weekly);
-	const [selectedOrphan, setSelectedOrphan] = useState<(typeof orphans)[0]>();
-	const [orphanExecutions, setOrphanExecutions] = useState<OrphanActivityExecution[]>();
-	const [filteredExecutions, setFilteredExecutions] = useState<JsonDataProps['executions']>(
-		filterExecutions(period, executions)
-	);
-	console.log('🚀 ~ file: index.tsx:42 ~ AttendanceReportIndex ~ filteredAttendance:', filteredExecutions.length);
+	const [type, setType] = useState<ReportType | null>(null);
+	const [selectedOrphan, setSelectedOrphan] = useState<number | null>(null);
+	const [selectedLevel, setSelectedLevel] = useState<Grade | null>(null);
+	const [orphanExecutions, setOrphanExecutions] = useState<OrphanExecutionInfo[]>();
+	const [filteredExecutions, setFilteredExecutions] = useState<JsonDataProps['executions']>(executions);
+	const handleChange = useCallback(() => {
+		console.log('🚀 type:', type);
+		console.log('🚀 orphanId:', selectedOrphan);
+		console.log('🚀 activityId:', selectedLevel);
+		if (type && selectedLevel && selectedOrphan) {
+			setFilteredExecutions(
+				filterExecutionsByOrphanId(
+					filterExecutionsByLevel(filterExecutionsByType(type, executions), selectedLevel),
+					selectedOrphan
+				)
+			);
+		} else if (type && selectedLevel) {
+			setFilteredExecutions(filterExecutionsByLevel(filterExecutionsByType(type, executions), selectedLevel));
+		} else if (type && selectedOrphan) {
+			setFilteredExecutions(filterExecutionsByOrphanId(filterExecutionsByType(type, executions), selectedOrphan));
+		} else if (selectedLevel && selectedOrphan) {
+			setFilteredExecutions(
+				filterExecutionsByOrphanId(filterExecutionsByLevel(executions, selectedLevel), selectedOrphan)
+			);
+		} else if (selectedLevel) {
+			setFilteredExecutions(filterExecutionsByLevel(executions, selectedLevel));
+		} else if (selectedOrphan) {
+			setFilteredExecutions(filterExecutionsByOrphanId(executions, selectedOrphan));
+		} else if (type) {
+			setFilteredExecutions(filterExecutionsByType(type, executions));
+		} else {
+			setFilteredExecutions(executions);
+		}
+	}, [executions, selectedLevel, selectedOrphan, type]);
+
+	const updateOrphanExecution = useCallback(() => {
+		console.log('🚀 ~  updateOrphanExecution ~ filteredExecutions:', filteredExecutions.length);
+		selectedOrphan && setOrphanExecutions(filterOrphanExecutions(filteredExecutions, selectedOrphan));
+	}, [filteredExecutions, selectedOrphan]);
 	useEffect(() => {
-		selectedOrphan
-			? setOrphanExecutions(filterOrphanExecutions(period, executions, selectedOrphan.id))
-			: setOrphanExecutions(undefined);
+		console.log('+++++++++++++++++++++++++use effect runs');
+		!selectedOrphan && setOrphanExecutions(undefined);
+		handleChange();
+		updateOrphanExecution();
+		console.log('🚀 ~  filteredExecutions:', filteredExecutions.length);
+		console.log('🚀 ~  orphanExecution:', orphanExecutions?.length);
 		setHydrated(true);
-	}, [period, selectedOrphan]);
+	}, [filteredExecutions.length, orphanExecutions?.length, selectedLevel, selectedOrphan, type]);
 	if (!hydrated) return;
 	return (
 		<>
 			<div className='p-2 m-2 pt-5'>
 				<div className='flex flex-wrap justify-center p-3'>
 					<Select
-						label='Activity'
-						description='select an Activity to show its executions'
+						label='Level'
+						description='select education level'
 						clearable
 						m={5}
 						searchable
-						data={activities.map((x) => ({ label: x.title!, value: x.id.toString() }))}
+						data={$enum(Grade).map((x) => x)}
 						onChange={(e) => {
-							if (!e) setSelectedOrphan(undefined);
-							const orphan = orphans.filter((x) => x.id === Number(e))[0];
-							setSelectedOrphan(orphan);
+							e ? setSelectedLevel(e as Grade) : setSelectedLevel(null);
+						}}
+					/>
+					<Select
+						label='Orphans'
+						description='select orphan to show his activity executions'
+						clearable
+						m={5}
+						searchable
+						data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
+						onChange={(e) => {
+							e ? setSelectedOrphan(orphans.filter((x) => x.id === Number(e))[0].id) : setSelectedOrphan(null);
 						}}
 					/>
 					<Select
 						label='Type'
 						description='select report type'
-						// width={'35%'}
+						clearable
 						m={5}
 						data={$enum(ReportType).map((x) => x)}
-						value={period}
+						value={type}
 						onChange={(e) => {
-							$enum(ReportType).map((x) => {
-								if (x === e) {
-									// if (selectedOrphan) setOrphanAttendance(filterOrphanAttendance(x, activities, selectedOrphan.id));
-									setPeriod(x);
-									setFilteredExecutions(filterExecutions(x, executions));
-									return;
-								}
-							});
+							e ? setType(e as ReportType) : setType(null);
 						}}
 					/>
 				</div>
@@ -95,8 +164,14 @@ function ActivityReportIndex({ jsonData }: Props) {
 							</Badge>
 						</Center>
 					</div>
-
-					<ActivityExecutionTable activitiesExecutions={filteredExecutions as unknown as _ActivityExecutionInfo[]} />
+					{orphanExecutions ? (
+						<OrphanActivityExecutionTable orphanActivityExecution={orphanExecutions} />
+					) : (
+						<ActivityExecutionTable
+							action={false}
+							activitiesExecutions={filteredExecutions as unknown as _ActivityExecutionInfo[]}
+						/>
+					)}
 				</div>
 			</div>
 		</>

@@ -1,8 +1,28 @@
 import { ReportType } from 'types';
 import moment from 'moment';
-import { ActivityExecutionInfo, OrphanActivityExecution } from '@prisma/client';
-type activitiesExecution = (ActivityExecutionInfo & { OrphanActivityExecution: OrphanActivityExecution[] })[];
-export const filterExecutions = (reportType: ReportType, executions: activitiesExecution) => {
+import {
+	ActivityExecutionInfo,
+	ActivityInfo,
+	Goal,
+	GoalEvaluation,
+	Grade,
+	Orphan,
+	OrphanActivityExecution,
+	User,
+} from '@prisma/client';
+
+interface JsonDataProps {
+	executions: (ActivityExecutionInfo & {
+		ActivityInfo: ActivityInfo;
+		Executer: Pick<User, 'id' | 'name'>;
+		GoalEvaluation: (GoalEvaluation & { Goal: Goal })[];
+		OrphanActivityExecution: OrphanActivityExecution[];
+	})[];
+	orphans: Pick<Orphan, 'id' | 'name'>[];
+	activities: Pick<ActivityInfo, 'id' | 'title' | 'target'>[];
+}
+
+export const filterExecutionsByType = (reportType: ReportType, executions: JsonDataProps['executions']) => {
 	const currentDate = new Date();
 	switch (reportType) {
 		case ReportType.Weekly: {
@@ -67,18 +87,48 @@ export const filterExecutions = (reportType: ReportType, executions: activitiesE
 	}
 	return [];
 };
-export const filterOrphanExecutions = (
+export const filterExecutionsByLevel = (executions: JsonDataProps['executions'], selectedLevel: Grade) => {
+	return executions.filter((x) => x.ActivityInfo.target === selectedLevel);
+};
+export const filterExecutionsByOrphanId = (executions: JsonDataProps['executions'], orphanId: number) => {
+	return executions.filter((x) => x.OrphanActivityExecution.filter((x) => x.orphanId === orphanId));
+};
+export const filterOrphanExecutions = (executions: JsonDataProps['executions'], orphanId: number) => {
+	const orphanExecutions: { id: number; title: string; startDate: Date; evaluation: number; isAttended: boolean }[] = [];
+	const tempExecutions: JsonDataProps['executions'] = [];
+	executions.filter((execution) => {
+		if (execution.OrphanActivityExecution.filter((x) => x.orphanId === orphanId).length !== 0) {
+			tempExecutions.push({
+				...execution,
+				OrphanActivityExecution: execution.OrphanActivityExecution.filter((x) => x.orphanId === orphanId),
+			});
+		}
+	});
+	for (let i = 0; i < tempExecutions.length; i++) {
+		for (let j = 0; j < tempExecutions[i].OrphanActivityExecution.length; j++) {
+			orphanExecutions.push({
+				id: tempExecutions[i].OrphanActivityExecution[j].id,
+				title: tempExecutions[i].ActivityInfo.title!,
+				startDate: tempExecutions[i].startDate,
+				evaluation: tempExecutions[i].OrphanActivityExecution[j].evaluation || 0,
+				isAttended: tempExecutions[i].OrphanActivityExecution[j].isAttended,
+			});
+		}
+	}
+
+	return orphanExecutions;
+};
+export const filterOrphanExecutionsByActivity = (
 	reportType: ReportType,
-	executions: activitiesExecution,
-	orphanId: number
+	executions: JsonDataProps['executions'],
+	orphanId: number,
+	activityId: number
 ): OrphanActivityExecution[] => {
-	const filteredExecutions = filterExecutions(reportType, executions);
+	const filteredExecutions = filterExecutionsByType(reportType, executions);
 	const orphanExecutions: OrphanActivityExecution[] = [];
 
-	executions.map((execution) =>
-		execution.OrphanActivityExecution.filter(
-			(orphanActivityExecution) => orphanActivityExecution.orphanId === orphanId
-		).map((x) => orphanExecutions.push(x))
+	filteredExecutions.map((execution) =>
+		execution.OrphanActivityExecution.filter((x) => x.orphanId === orphanId).map((x) => orphanExecutions.push(x))
 	);
 
 	return orphanExecutions;

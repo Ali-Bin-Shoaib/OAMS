@@ -1,4 +1,4 @@
-import prisma from 'lib/prisma';
+// import { prisma } from 'lib/prisma';
 
 export function CalculateAverage(arr: number[]) {
 	const total = arr.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
@@ -23,15 +23,17 @@ export async function CalculateOrphanEvaluation(
 	 * activity execution info[evaluation]
 	 * attendance[evaluation]
 	 * */
-	const orphansTotalEvaluation = await prisma.orphan.findMany({
-		select: {
-			BehaviorInfo: { select: { BehaviorCriteria: { select: { evaluation: true } } } },
-			EducationInfo: { select: { degree: true } },
-			OrphanAttendance: { select: { isAttended: true } },
-			OrphanActivityExecution: { select: { evaluation: true } },
-		},
-	});
-	const behaviorEvaluation = orphansTotalEvaluation.map((x) =>
-		x.BehaviorInfo.map((x) => CalculateAverage(x.BehaviorCriteria.map((x) => x.evaluation)))
-	);
+	//! this query will lead to an error. can't run prisma client in browser. because this file is called when up functions in called.
+	//* this query make the file server file and can't run above functions because they are client functions
+	// const orphansTotalEvaluation = await prisma.orphan.findMany({
+	// 	select: {
+	// 		BehaviorInfo: { select: { BehaviorCriteria: { select: { evaluation: true } } } },
+	// 		EducationInfo: { select: { degree: true } },
+	// 		OrphanAttendance: { select: { isAttended: true } },
+	// 		OrphanActivityExecution: { select: { evaluation: true } },
+	// 	},
+	// });
+	// const behaviorEvaluation = orphansTotalEvaluation.map((x) =>
+	// 	x.BehaviorInfo.map((x) => CalculateAverage(x.BehaviorCriteria.map((x) => x.evaluation)))
+	// );
 }
