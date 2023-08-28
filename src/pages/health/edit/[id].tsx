@@ -7,6 +7,7 @@ import { Loader } from '@mantine/core';
 import { Orphan } from '@prisma/client';
 import HealthForm from '../../../../components/health/HealthForm';
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+	console.log('🚀 ~ file: [id].tsx:10 ~ constgetServerSideProps:GetServerSideProps= ~ params:', params);
 	const healthId = Number(params?.id);
 	const health = await prisma.healthInfo.findFirst({
 		where: { id: healthId },

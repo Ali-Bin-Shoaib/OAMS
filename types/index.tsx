@@ -18,6 +18,7 @@ import {
 	GoalEvaluation,
 	Degree,
 	Wings,
+	Goal,
 } from '@prisma/client';
 export enum REQUEST_METHODS {
 	GET = 'GET',
@@ -98,6 +99,7 @@ export enum STATUS_CODE {
 	NOT_EXTENDED = 510, // Further extensions to the request are required for the server to fulfill it.
 	NETWORK_AUTHENTICATION_REQUIRED = 511, // The client needs to authenticate to gain network access.
 }
+
 export enum ReportType {
 	Weekly = 'Weekly',
 	Monthly = 'Monthly',
@@ -211,7 +213,7 @@ export type _User = {
 	Criteria?: Prisma.CriteriaCreateNestedManyWithoutUserInput;
 	BehaviorCriteria?: Prisma.BehaviorCriteriaCreateNestedManyWithoutUserInput;
 	Room?: Prisma.RoomCreateNestedManyWithoutUserInput;
-	Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+	// Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 	ActivityInfo?: Prisma.ActivityInfoCreateNestedManyWithoutUserInput;
 	UnAchievedActivity?: Prisma.UnAchievedActivityCreateNestedManyWithoutUserInput;
 	ActivityGoal?: Prisma.ActivityGoalCreateNestedManyWithoutUserInput;
@@ -234,8 +236,8 @@ export type _Sponsorship = {
 	endDate: Date;
 	paymentMethod: PaymentMethod;
 	sponsorshipPeriod: SponsorshipPeriod;
-	// isActive: boolean | undefined;
-	isActive: string | number | readonly string[] | undefined;
+	isActive: boolean | undefined;
+	// isActive: string | number | readonly string[] | undefined;
 	sponsorId: string;
 	orphanId: string;
 };
@@ -323,6 +325,7 @@ export type _ActivityExecutionInfo = {
 	description?: string;
 	startDate?: Date;
 	note?: string;
+	activityEvaluation: number;
 	userId: number;
 	Executor?: User | undefined;
 	activityInfoId: number;
@@ -333,13 +336,15 @@ export type _ActivityExecutionInfo = {
 export type _OrphanActivityExecution = {
 	id?: number;
 	evaluation?: number | null;
-	isAttended: string | number | readonly string[] | undefined;
+	isAttended: boolean | undefined;
 	activityExecutionInfoId?: number | null;
 	orphanId?: number | null;
 	userId?: number | null;
 	ActivityExecutionInfo?: ActivityExecutionInfo;
 	Orphan?: Orphan;
 	User?: User;
+	// Goal?: Goal;
+	// goalId?: number;
 };
 
 export type _UnAchievedActivity = {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Paths, serverLink } from '../shared/links';
+// import { Paths, serverLink } from '../shared/links';
 import { useRouter } from 'next/router';
+import { Paths } from 'shared/links';
 
 export const usePageTitle = () => {
 	const [title, setTitle] = useState('OAMS');

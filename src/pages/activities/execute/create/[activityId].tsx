@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
 import prisma from '../../../../../lib/prisma';
 import { Orphan } from '@prisma/client';
-import ExecutionForm from '../../../../../components/activityExecution/ExecutionForm';
+import ExecutionForm from 'components/activityExecution/ExecutionForm';
 import { _ActivityInfo } from '../../../../../types';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {

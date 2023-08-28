@@ -14,8 +14,17 @@ import {
 
 // export default NextAuth(authOptions);
 export default async function AuthenticationHandler(req: NextApiRequest, res: NextApiResponse) {
+	// checkNotification();
 	updateEvaluation();
 	return await NextAuth(req, res, authOptions);
+}
+interface JsonDataProps {
+	orphans: (Pick<Orphan, 'id' | 'name' | 'evaluation'> & {
+		BehaviorInfo: BehaviorInfo & { BehaviorCriteria: Pick<BehaviorCriteria, 'evaluation'>[] }[];
+		EducationInfo: Pick<EducationInfo, 'degree'>[];
+		OrphanAttendance: Pick<OrphanAttendance, 'isAttended'>[];
+		OrphanActivityExecution: Pick<OrphanActivityExecution, 'isAttended' | 'evaluation'>[];
+	})[];
 }
 const updateEvaluation = async () => {
 	const orphans = await prisma.orphan.findMany({
@@ -35,11 +44,3 @@ const updateEvaluation = async () => {
 			await prisma.orphan.update({ where: { id: x.id }, data: { evaluation: evaluation } });
 	});
 };
-interface JsonDataProps {
-	orphans: (Pick<Orphan, 'id' | 'name' | 'evaluation'> & {
-		BehaviorInfo: BehaviorInfo & { BehaviorCriteria: Pick<BehaviorCriteria, 'evaluation'>[] }[];
-		EducationInfo: Pick<EducationInfo, 'degree'>[];
-		OrphanAttendance: Pick<OrphanAttendance, 'isAttended'>[];
-		OrphanActivityExecution: Pick<OrphanActivityExecution, 'isAttended' | 'evaluation'>[];
-	})[];
-}

@@ -2,7 +2,10 @@ import { Attendance, OrphanAttendance, User } from '@prisma/client';
 import { ReportType } from 'types';
 import moment from 'moment';
 
-type attendance = (Attendance & { OrphanAttendance: OrphanAttendance[]; User: Pick<User, 'id' | 'name'> })[];
+type attendance = (Attendance & {
+	OrphanAttendance: (OrphanAttendance & { Attendance: Pick<Attendance, 'date'> })[];
+	User: Pick<User, 'id' | 'name'>;
+})[];
 export const filterAttendance = (reportType: ReportType, attendances: attendance) => {
 	const currentDate = new Date();
 	switch (reportType) {

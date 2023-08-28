@@ -13,7 +13,7 @@ import { useState, useEffect } from 'react';
 import SuperJSON from 'superjson';
 import prisma from '../../../../../lib/prisma';
 import { _ActivityExecutionInfo, _ActivityInfo } from '../../../../../types';
-import ExecutionForm from '../../../../../components/activityExecution/ExecutionForm';
+import ExecutionForm from 'components/activityExecution/ExecutionForm';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const executionId = Number(params?.executionId);
@@ -59,7 +59,7 @@ function Edit({ stringData }: Props) {
 		orphans: Orphan[];
 	}>(stringData);
 	const { activityExecution, orphans } = jsonData;
-	console.log('🚀 ~ file: [id].tsx:63 ~ Edit ~ activityExecution:', activityExecution);
+	// console.log('🚀 ~ file: [id].tsx:63 ~ Edit ~ activityExecution:', activityExecution);
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);

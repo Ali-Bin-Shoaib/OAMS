@@ -78,7 +78,8 @@ export default function Index({ stringData }: Props) {
 					ModelForm={<SponsorshipForm close={close} orphans={orphans} sponsors={sponsors as _Sponsor[]} />}
 				/>
 			</div>
-			<SponsorshipTable sponsorships={sponsorships} orphans={orphans} sponsors={sponsors} />
+			{/* <SponsorshipTable sponsorships={sponsorships} orphans={orphans} sponsors={sponsors} /> */}
+			<SponsorshipTable sponsorships={sponsorships} />
 		</>
 	);
 }

@@ -41,7 +41,7 @@ function Info({ stringData }: Props) {
 	const [hydration, setHydration] = useState(false);
 	const jsonData: { activityExecution: _ActivityExecutionInfo } = SuperJSON.parse(stringData);
 	const { activityExecution } = jsonData;
-	console.log('🚀 ~ file: [id].tsx:39 ~ Edit ~ activity:', activityExecution);
+	// console.log('🚀 ~ file: [id].tsx:39 ~ Edit ~ activity:', activityExecution);
 	useEffect(() => {
 		setHydration(true);
 	}, [hydration, stringData]);

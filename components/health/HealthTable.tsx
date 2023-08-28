@@ -76,7 +76,7 @@ function HealthTable({ health }: Props) {
 							<Button
 								size='xs'
 								onClick={() => {
-									router.push(`${router.asPath}/edit/${row.original.id}`);
+									router.push(`${router.asPath}edit/${row.original.id}`);
 								}}
 								color='yellow'>
 								<IconEdit />

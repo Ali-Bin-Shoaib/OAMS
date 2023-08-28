@@ -53,7 +53,7 @@ function TableComponent({
 		mantineTableHeadCellProps: { sx: { border: '2px solid #dee2e6' } },
 		mantineTableProps: { striped: true, sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' } },
 		// displayColumnDefOptions: !isPrinting ? { 'mrt-row-actions': { size: 150, enableHiding: true } } : undefined,
-		displayColumnDefOptions: !isPrinting ? { 'mrt-row-actions': { enableHiding: true } } : undefined,
+		displayColumnDefOptions: !isPrinting ? { 'mrt-row-actions': { enableHiding: true, size: 150 } } : undefined,
 
 		// mantineTableBodyRowProps: ({ row }) => ({
 		// 	onClick: (event) => {
@@ -71,12 +71,17 @@ function TableComponent({
 		renderRowActions: ({ row }) => {
 			return !isPrinting ? (
 				<Button.Group>
-					<DeleteModal id={row.original.id!} title={deleteTitle} url={deleteUrl} redirectUrl={redirectUrl} />
+					<DeleteModal
+						id={row.original.user ? row.original.userId : row.original.id!}
+						title={deleteTitle}
+						url={deleteUrl}
+						redirectUrl={redirectUrl}
+					/>
 					<Tooltip label={'Edit'}>
 						<Button
 							size='xs'
 							onClick={() => {
-								router.push(`${serverLink}${editUrl}${row.original.id}`);
+								router.push(`${serverLink}${editUrl}${row.original.user ? row.original.userId : row.original.id}`);
 							}}
 							color='yellow'>
 							<IconEdit />
@@ -86,7 +91,7 @@ function TableComponent({
 						<Button
 							size='xs'
 							onClick={() => {
-								router.push(`${serverLink}${infoUrl}${row.original.id}`);
+								router.push(`${serverLink}${infoUrl}${row.original.user ? row.original.userId : row.original.id}`);
 							}}
 							color='gray'>
 							<IconInfoCircle />
@@ -97,7 +102,7 @@ function TableComponent({
 							<Button
 								size='xs'
 								onClick={() => {
-									router.push(`${serverLink}${executeUrl}${row.original.id}`);
+									router.push(`${serverLink}${executeUrl}${row.original.user ? row.original.userId : row.original.id}`);
 								}}
 								color='green'>
 								<IconCheckbox />

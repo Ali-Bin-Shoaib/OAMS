@@ -3,7 +3,6 @@ import {
 	BehaviorCriteria,
 	BehaviorInfo,
 	EducationInfo,
-	Grade,
 	Orphan,
 	OrphanActivityExecution,
 	OrphanAttendance,
@@ -13,8 +12,6 @@ import { GetStaticProps } from 'next';
 import { useCallback, useEffect, useState } from 'react';
 import SuperJSON from 'superjson';
 import OrphansTable from 'components/orphans/OrphansTable';
-import { ReportType } from 'types';
-import { $enum } from 'ts-enum-util';
 export const getStaticProps: GetStaticProps = async () => {
 	try {
 		const orphans = await prisma.orphan.findMany({

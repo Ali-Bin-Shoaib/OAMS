@@ -6,38 +6,66 @@ import {
 	Burger,
 	Container,
 	ActionIcon,
-	useMantineColorScheme,
 	Transition,
 	Paper,
 	Drawer,
 	useMantineTheme,
 	Tooltip,
+	Loader,
+	Badge,
+	Button,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import {
-	IconBell,
-	IconChevronDown,
-	IconHome,
-	IconLogin,
-	IconLogout,
-	IconMoonStars,
-	IconSun,
-} from '@tabler/icons-react';
-import { Paths } from '../../shared/links';
+import { IconBell, IconChevronDown, IconHome, IconLogin, IconLogout } from '@tabler/icons-react';
+import { Paths, serverLink } from '../../shared/links';
 import Link from 'next/link';
-import { usePageTitle } from '../../hooks/usePageTitle';
+// import { usePageTitle } from 'hooks/usePageTitle';
 import { useEffect, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { v4 } from 'uuid';
+import { usePageTitle } from 'lib/hooks/usePageTitle';
+import NotificationComponent, { updateNotification } from './NotificationComponent';
+import axios from 'axios';
+import { ResponseType, STATUS_CODE } from 'types';
+import SuperJSON from 'superjson';
+import { Notification, UserType } from '@prisma/client';
+import { Url } from 'next/dist/shared/lib/router/router';
 export default function AppNavbar() {
 	const [opened, { toggle, open, close }] = useDisclosure(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const theme = useMantineTheme();
-	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 	const currentPage = usePageTitle();
-	const { data: session, status, update } = useSession();
+	const { data: session } = useSession();
+	const [adminNotifications, setAdminNotifications] = useState<Notification[] | null>(null);
+	console.log('🚀 ~ file: AppNavbar.tsx:40 ~ AppNavbar ~ adminNotifications:', adminNotifications);
+	const [hydration, setHydration] = useState(false);
 	const isActive = ' shadow-md border-b-2 border-x-0 border-t-0 border-white border-solid border';
-	useEffect(() => {}, [currentPage, session, status]);
+	const [isNotificationUpdated, setIsNotificationUpdated] = useState(false);
+	// console.log('🚀 ~ file: AppNavbar.tsx:43 ~ AppNavbar ~ updateNotification:', isNotificationUpdated);
+	const updateNotifications = () => {
+		setIsNotificationUpdated(!isNotificationUpdated);
+	};
+	const toggleDrawer = (value: boolean) => setIsOpen(value);
+	const getNotifications = async () => {
+		try {
+			const response = await axios.get<ResponseType>(`${serverLink}api/notification`);
+			if (response.status === STATUS_CODE.OK) {
+				const notifications = SuperJSON.parse(response.data.data) as Notification[];
+				setAdminNotifications(notifications.length > 0 ? notifications : null);
+			}
+		} catch (error) {
+			if (axios.isAxiosError(error)) setAdminNotifications(null);
+			console.log('🚀 ~ file: AppNavbar.tsx:56 ~ getNotifications ~ error:', error.response?.data);
+		}
+	};
+
+	// useEffect(() => {
+	// }, []);
+	useEffect(() => {
+		(session?.user.type === UserType.ADMIN || !adminNotifications) && getNotifications();
+		setHydration(true);
+		setIsNotificationUpdated(true);
+	}, [session?.user.type, isNotificationUpdated]);
 	const items = Paths.links.map((link) => {
 		const menuItems = link.relatedLinks?.map((item) => {
 			return (
@@ -106,7 +134,7 @@ export default function AppNavbar() {
 			</Link>
 		);
 	});
-
+	if (!hydration) return <Loader />;
 	return (
 		<Header height={60} sx={{ backgroundColor: '#0077b6' }}>
 			<Container fluid>
@@ -130,7 +158,35 @@ export default function AppNavbar() {
 							position='right'
 							overlayProps={{ opacity: 0.5, blur: 4 }}
 							onClose={() => setIsOpen(!isOpen)}
-							title='Notification'></Drawer>
+							title='Notification'>
+							{/* Drawer Content */}
+							{adminNotifications && (
+								<>
+									<Tooltip label={'set all notifications as shown'}>
+										<Center>
+											<Button
+												color='red'
+												onClick={() => {
+													updateNotification();
+													updateNotifications();
+													setIsOpen(!isOpen);
+												}}>
+												Clear all notifications
+											</Button>
+										</Center>
+									</Tooltip>
+									{adminNotifications?.map((x) => (
+										<NotificationComponent
+											key={v4()}
+											updateNotifications={updateNotifications}
+											toggleDrawer={toggleDrawer}
+											notification={x}
+											redirectUrl={x.triggerUrl as Url}
+										/>
+									))}
+								</>
+							)}
+						</Drawer>
 						{session?.user ? (
 							<div className='flex flex-row items-center'>
 								<div className='flex flex-col items-center'>
@@ -153,12 +209,6 @@ export default function AppNavbar() {
 							</div>
 						) : (
 							<>
-								{/* <span
-									className='hidden sm:block text-white text-ellipsis overflow-hidden font-semibold text-base text-end 
-									sx:flex items-center w-52 h-11 md:w-auto md:h-auto md:mr-6'>
-									Logged out
-								</span> */}
-
 								<Tooltip label={'Login'}>
 									<ActionIcon variant='default' size='lg' onClick={() => signIn()}>
 										<IconLogin />
@@ -166,8 +216,15 @@ export default function AppNavbar() {
 								</Tooltip>
 							</>
 						)}
-						<ActionIcon variant='light' onClick={() => setIsOpen(!isOpen)} size='lg'>
-							<IconBell />
+						<ActionIcon variant='default' onClick={() => setIsOpen(!isOpen)} size='lg'>
+							<div className='flex flex-wrap justify-evenly'>
+								<IconBell />
+								{adminNotifications && (
+									<Badge color='red' size='xs' className='absolute ml-9'>
+										{adminNotifications?.length}
+									</Badge>
+								)}
+							</div>
 						</ActionIcon>
 
 						{/* <ActionIcon variant='light' onClick={() => toggleColorScheme()} size='lg'>

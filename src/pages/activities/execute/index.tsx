@@ -62,7 +62,7 @@ function Index({ activitiesExecutions }: Props) {
 					</Button>
 				</Group>
 				{/* <ActivityExecutionCard activityExecutionInfo={cardInfo} updateCard={updateCard} /> */}
-				<ActivityExecutionTable activitiesExecutions={activitiesExecutions} updateCard={updateCard} />
+				<ActivityExecutionTable activitiesExecutions={activitiesExecutions} />
 			</Container>
 		</>
 	);

@@ -13,7 +13,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	try {
 		const attendances = await prisma.attendance.findMany({
 			include: {
-				OrphanAttendance: { orderBy: { Attendance: { date: 'asc' } } },
+				OrphanAttendance: { include: { Attendance: { select: { date: true } } }, orderBy: { Attendance: { date: 'asc' } } },
 				User: { select: { id: true, name: true } },
 			},
 			orderBy: { id: 'asc' },
@@ -29,7 +29,10 @@ export const getStaticProps: GetStaticProps = async () => {
 	}
 };
 interface JsonDataProps {
-	attendances: (Attendance & { OrphanAttendance: OrphanAttendance[]; User: Pick<User, 'id' | 'name'> })[];
+	attendances: (Attendance & {
+		OrphanAttendance: (OrphanAttendance & { Attendance: Pick<Attendance, 'date'> })[];
+		User: Pick<User, 'id' | 'name'>;
+	})[];
 	orphans: Pick<Orphan, 'id' | 'name'>[];
 }
 interface Props {
@@ -37,6 +40,7 @@ interface Props {
 }
 function AttendanceReportIndex({ jsonData }: Props) {
 	const { attendances, orphans }: JsonDataProps = SuperJSON.parse<JsonDataProps>(jsonData);
+	console.log('🚀 ~ file: index.tsx:43 ~ AttendanceReportIndex ~ attendances:', attendances);
 
 	const [hydrated, setHydrated] = useState(false);
 	const [period, setPeriod] = useState<ReportType>(ReportType.Weekly);
@@ -100,7 +104,10 @@ function AttendanceReportIndex({ jsonData }: Props) {
 					</div>
 
 					{orphanAttendance ? (
-						<OrphanAttendanceTable orphanAttendance={orphanAttendance as unknown as _OrphanAttendance[]} />
+						<OrphanAttendanceTable
+							orphanAttendance={orphanAttendance as unknown as OrphanAttendance & { Attendance: Pick<Attendance, 'date'> }[]}
+							actions={false}
+						/>
 					) : (
 						<AttendanceTable attendance={filteredAttendance as unknown as _Attendance[]} action={false} />
 					)}

@@ -69,9 +69,10 @@ enum Degree {
 enum NotificationType {
   Attendance
   Sponsorship
+  Education
   Behavior
   Health
-  Activity
+  Orphan
   ActivityExecution
 }
 
@@ -246,6 +247,7 @@ model Goal {
   //* relations
   ActivityGoal   ActivityGoal[]
   GoalEvaluation GoalEvaluation[]
+  // OrphanActivityExecution OrphanActivityExecution[]
   User           User?            @relation(fields: [userId], references: [id])
   userId         Int?
 }
@@ -281,6 +283,7 @@ model ActivityExecutionInfo {
   description             String?
   startDate               DateTime
   note                    String?
+  activityEvaluation      Float?
   // * Relations
   Executor                User                      @relation(fields: [executorId], references: [id])
   executorId              Int
@@ -302,6 +305,8 @@ model OrphanActivityExecution {
   orphanId                Int?
   User                    User?                  @relation(fields: [userId], references: [id])
   userId                  Int?
+  // Goal                    Goal?                  @relation(fields: [goalId], references: [id])
+  // goalId                  Int?
 }
 
 model BehaviorInfo {
@@ -419,7 +424,7 @@ model User {
   Criteria                Criteria[]
   BehaviorCriteria        BehaviorCriteria[]
   Room                    Room[]
-  Notification            Notification[]
+  // Notification            Notification[]
   ActivityInfo            ActivityInfo[]
   UnAchievedActivity      UnAchievedActivity[]
   ActivityGoal            ActivityGoal[]
@@ -441,11 +446,13 @@ model UnAchievedActivity {
 }
 
 model Notification {
-  id   Int               @id @default(autoincrement())
-  date DateTime?         @default(now())
-  type NotificationType?
+  id         Int               @id @default(autoincrement())
+  date       DateTime?         @default(now())
+  type       NotificationType?
+  isShown    Boolean           @default(false)
+  triggerUrl String?
   //* relations
 
-  User   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  // User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // userId Int?
 }

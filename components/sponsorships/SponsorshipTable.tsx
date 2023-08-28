@@ -1,24 +1,17 @@
 import { Orphan, Prisma, Sponsor, Sponsorship, User } from '@prisma/client';
 import { useMemo } from 'react';
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Button, Container, Tooltip } from '@mantine/core';
+import { MRT_ColumnDef } from 'mantine-react-table';
 import { _Sponsor } from '../../types';
-import { IconEdit } from '@tabler/icons-react';
-import DeleteModal from 'components/common/DeleteModal';
-import router from 'next/router';
-import { serverLink } from 'shared/links';
-import MyModal from 'components/common/MyModal';
-import orphans from 'src/pages/orphans';
-import sponsors from 'src/pages/sponsors';
-import SponsorshipForm from './SponsorshipForm';
+import TableComponent from 'components/common/TableComponent';
+import { Badge } from '@mantine/core';
 
 interface Props {
-	sponsorships: (Sponsorship & { Sponsor: Sponsor & { user: User }; Orphan: Orphan })[];
-	orphans: Orphan[];
-	sponsors: _Sponsor[];
+	sponsorships: (Sponsorship & { Orphan: Pick<Orphan, 'id' | 'name' | 'gender' | 'evaluation'> })[];
+	actions?: boolean;
 }
 
-function SponsorshipTable({ sponsorships, orphans, sponsors }: Props) {
+function SponsorshipTable({ sponsorships, actions = true }: Props) {
+	console.log('🚀 ~ file: SponsorshipTable.tsx:14 ~ SponsorshipTable ~ sponsorships:', sponsorships);
 	const columns = useMemo<MRT_ColumnDef<Sponsorship & { Sponsor: Sponsor & { user: User }; Orphan: Orphan }>[]>(
 		() => [
 			{
@@ -43,6 +36,15 @@ function SponsorshipTable({ sponsorships, orphans, sponsors }: Props) {
 				accessorFn: (row) => row.Orphan?.name,
 				id: 'Orphan.name',
 				header: 'Orphan name',
+				maxSize: 300,
+				minSize: 80,
+				size: 120,
+				enableResizing: true,
+			},
+			{
+				accessorFn: (row) => row.Orphan?.evaluation?.toFixed(2),
+				id: 'Orphan.evaluation',
+				header: 'evaluation',
 				maxSize: 300,
 				minSize: 80,
 				size: 120,
@@ -85,7 +87,7 @@ function SponsorshipTable({ sponsorships, orphans, sponsors }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => (row.isActive ? 'yes' : 'no'),
+				accessorFn: (row) => (row.isActive ? <Badge color='lime'>Yes</Badge> : <Badge color='red'>No</Badge>),
 				id: 'isActive',
 				header: 'isActive',
 				maxSize: 90,
@@ -96,65 +98,18 @@ function SponsorshipTable({ sponsorships, orphans, sponsors }: Props) {
 		],
 		[]
 	);
-
 	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={sponsorships}
-				initialState={{ density: 'xs' }}
-				enableColumnResizing
-				displayColumnDefOptions={{ 'mrt-row-actions': { size: 100 } }}
-				enableRowActions
-				renderRowActions={({ row }) => {
-					return (
-						<Button.Group>
-							<DeleteModal id={row.original.id!} title={'Sponsorship'} url={'api/sponsorship/'} />
-							<MyModal
-								modalTitle='Add Sponsorship'
-								icon={<IconEdit />}
-								modalSize='calc(100vw - 3rem)'
-								size='xs'
-								buttonColor='yellow'
-								m={0}
-								disabled={true}
-								// close={close}
-								// open={open}
-								// opened={opened}
-								ModelForm={<SponsorshipForm close={close} orphans={orphans} sponsors={sponsors as _Sponsor[]} />}
-							/>
-
-							{/* <Tooltip label={'Edit'}>
-								<Button
-									size='xs'
-									onClick={() => {
-										router.push(serverLink + 'sponsorship/action/' + row.original.userId);
-									}}
-									color='yellow'>
-									<IconEdit />
-								</Button>
-							</Tooltip> */}
-						</Button.Group>
-					);
-				}}
-				// mantineTableBodyRowProps={({ row }) => ({
-				// 	onClick: () => {
-				// 		updateCard(row.original);
-				// 	},
-				// 	sx: { border: '2px solid #dee2e6' },
-				// })}
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				mantineTableHeadCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				mantineTableProps={{
-					striped: true,
-					sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' },
-				}}
-			/>
-		</Container>
+		<TableComponent
+			data={sponsorships}
+			columns={
+				actions ? columns.filter((x) => x.id !== 'Orphan.evaluation') : columns.filter((x) => x.id !== 'Sponsor.user.name')
+			}
+			deleteUrl={'api/sponsorship'}
+			editUrl={'sponsorship/action/'}
+			deleteTitle={'Sponsorship'}
+			infoUrl={'sponsorship/'}
+			action={actions}
+		/>
 	);
 }
 export default SponsorshipTable;
