@@ -213,7 +213,6 @@ export default function AttendanceForm({ orphans, attendance, disabled }: Props)
 																		console.log('🚀 ~absentReason:', item.absentReason);
 																		if (e.target.checked) {
 																			console.log('++++++true');
-
 																			setValue(`OrphanAttendance.${index}.absentReason`, '');
 																			setValue(`OrphanAttendance.${index}.justification`, '');
 																			setValue(`OrphanAttendance.${index}.notes`, '');

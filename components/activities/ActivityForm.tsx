@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { ResponseType, STATUS_CODE, _ActivityInfo } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { Paths, serverLink } from '../../shared/links';
-import { DatePickerInput, DateInput } from '@mantine/dates';
+import { serverLink } from '../../shared/links';
+import { DatePickerInput } from '@mantine/dates';
 import React from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import {
 	Button,
 	Group,
@@ -18,9 +18,8 @@ import {
 	NumberInput,
 	Title,
 	MultiSelect,
-	Modal,
 } from '@mantine/core';
-import { Goal, Prisma, Quarter, ActivityInfo, User, Grade } from '@prisma/client';
+import { Goal, Grade, Quarter } from '@prisma/client';
 import myNotification from 'components/MyNotification';
 import { IconCheck } from '@tabler/icons-react';
 import { useSession } from 'next-auth/react';
@@ -108,7 +107,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='title'
 						control={control}
-						rules={{ required: 'title is required' }}
+						rules={{ required: 'title is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
@@ -125,7 +124,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='budget'
 						control={control}
-						rules={{ required: 'budget is required' }}
+						rules={{ required: 'budget is required', min: { value: 0, message: 'Value must be zero or more.' } }}
 						render={({ field }) => {
 							return (
 								<NumberInput
@@ -160,7 +159,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='type'
 						control={control}
-						rules={{ required: 'type is required' }}
+						rules={{ required: 'type is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput

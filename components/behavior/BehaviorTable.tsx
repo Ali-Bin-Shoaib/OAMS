@@ -1,11 +1,7 @@
 import { useMemo } from 'react';
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Button, Container, Tooltip } from '@mantine/core';
-import { useRouter } from 'next/router';
-import { serverLink } from '../../shared/links';
+import { MRT_ColumnDef } from 'mantine-react-table';
 import { Behavior } from '../../types';
-import { IconEdit, IconInfoCircle, IconCheckbox } from '@tabler/icons-react';
-import DeleteModal from '../common/DeleteModal';
+import TableComponent from 'components/common/TableComponent';
 interface Props {
 	behavior: Behavior[];
 }
@@ -13,7 +9,6 @@ interface Props {
 export default function BehaviorTable({ behavior }: Props) {
 	console.log('🚀 ~ file: ~ BehaviorTable');
 	console.log('🚀 ~ file: BehaviorTable.tsx:14 ~ BehaviorTable ~ behavior:', behavior);
-	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<Behavior>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
@@ -48,51 +43,15 @@ export default function BehaviorTable({ behavior }: Props) {
 	);
 
 	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={behavior}
-				initialState={{ density: 'xs' }}
-				renderRowActions={({ row }) => (
-					<Button.Group>
-						<DeleteModal id={row.original.id!} title={'Behavior'} url={'api/behavior/'} />
-						<Tooltip label={'Edit'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${router.asPath}/edit/${row.original.id}`);
-								}}
-								color='yellow'>
-								<IconEdit />
-							</Button>
-						</Tooltip>
-						<Tooltip label={'Info'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${router.asPath}/${row.original.id}`);
-								}}
-								color='gray'>
-								<IconInfoCircle />
-							</Button>
-						</Tooltip>
-					</Button.Group>
-				)}
-				// positionActionsColumn='last'
-				enableRowActions
-				enableColumnActions
-				// mantineTableBodyRowProps={(row) => ({
-				// 	onClick: () => {
-				// on row click change the card to the clicked attendance and then user can edit or delete.
-				// 		router.push(serverLink + 'behavior/' + row.row.original.id);
-				// 	},
-				// })}
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				enableColumnResizing
-				columnResizeMode='onEnd'
-			/>
-		</Container>
+		<TableComponent
+			data={behavior}
+			columns={columns}
+			deleteUrl={'api/behavior/'}
+			editUrl={'edit/'}
+			deleteTitle={'Behavior'}
+			infoUrl={''}
+			action={false}
+			title='Behavior Table'
+		/>
 	);
 }

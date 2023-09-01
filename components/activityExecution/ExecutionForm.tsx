@@ -165,7 +165,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 					<Controller
 						name='description'
 						control={control}
-						rules={{ required: 'description is required' }}
+						rules={{ required: 'description is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
@@ -182,7 +182,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 					<Controller
 						name='cost'
 						control={control}
-						rules={{ required: 'cost is required' }}
+						rules={{ required: 'cost is required', min: { value: 0, message: 'value must be zero or more.' } }}
 						render={({ field }) => {
 							return (
 								<NumberInput
@@ -199,7 +199,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 					<Controller
 						name='note'
 						control={control}
-						rules={{ required: 'note is required' }}
+						rules={{ required: 'note is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput

@@ -18,6 +18,7 @@ interface Props<T> {
 	executeUrl?: string;
 	redirectUrl?: string;
 	action?: boolean;
+	title?: string;
 }
 
 function TableComponent({
@@ -30,6 +31,7 @@ function TableComponent({
 	executeUrl,
 	redirectUrl,
 	action = true,
+	title,
 }: Props<typeof data>) {
 	const [isPrinting, setIsPrinting] = useState(!action);
 	const handlePrint = (value: boolean) => setIsPrinting(value);
@@ -65,6 +67,7 @@ function TableComponent({
 			return (
 				<>
 					<PrintButton table={table} handlePrint={handlePrint} />
+					<h4>{title}</h4>
 				</>
 			);
 		},

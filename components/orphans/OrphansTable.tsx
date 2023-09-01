@@ -260,6 +260,7 @@ function OrphansTable({ orphans }: Props) {
 			deleteTitle={''}
 			infoUrl={''}
 			action={false}
+			title='Orphans Table'
 		/>
 	);
 }

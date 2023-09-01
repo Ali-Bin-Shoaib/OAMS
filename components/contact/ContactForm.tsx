@@ -95,7 +95,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 					<Controller
 						name='name'
 						control={control}
-						rules={{ required: 'Name field is required' }}
+						rules={{ required: 'Name field is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput

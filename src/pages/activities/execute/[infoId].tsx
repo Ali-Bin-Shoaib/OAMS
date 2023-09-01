@@ -98,7 +98,7 @@ function Info({ stringData }: Props) {
 					<Group position='right'>
 						<Button.Group>
 							<DeleteModal
-								id={activityExecution.id!}
+								id={activityExecution?.id!}
 								title={'ActivityExecution'}
 								url={'api/execute/'}
 								redirectUrl={Pages.ActivityExecution.link}

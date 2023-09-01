@@ -117,7 +117,15 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 							control={control}
 							// rules={{ required: 'User' }}
 							render={({ field }) => {
-								return <TextInput {...field} disabled label='User' value={behavior?.User?.name} w={'45%'} />;
+								return (
+									<TextInput
+										{...field}
+										disabled
+										label='User'
+										value={behavior ? behavior?.User?.name : session?.user.username}
+										w={'45%'}
+									/>
+								);
 							}}
 						/>
 						<Controller

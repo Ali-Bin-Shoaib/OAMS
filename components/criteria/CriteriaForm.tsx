@@ -64,7 +64,7 @@ export default function CriteriaForm({ criteria, close }: Props): JSX.Element {
 					<Controller
 						name='title'
 						control={control}
-						rules={{ required: 'title is required' }}
+						rules={{ required: 'title is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput

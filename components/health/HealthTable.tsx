@@ -6,11 +6,14 @@ import { IconEdit, IconInfoCircle } from '@tabler/icons-react';
 import router from 'next/router';
 import DeleteModal from '../common/DeleteModal';
 import { Education, Health } from '../../types';
+import TableComponent from 'components/common/TableComponent';
 // type Education = EducationInfo & { User: User; Orphan: Orphan };
 interface Props {
 	health: Health[];
+	action?: boolean;
 }
-function HealthTable({ health }: Props) {
+function HealthTable({ health, action }: Props) {
+	console.log('🚀 ~ file: HealthTable.tsx:15 ~ HealthTable ~ health:', health);
 	console.log('🚀 ~ file: ~ HealthTable');
 	const columns = useMemo<MRT_ColumnDef<Health>[]>(
 		() => [
@@ -52,52 +55,16 @@ function HealthTable({ health }: Props) {
 	);
 
 	return (
-		<Container fluid>
-			<MantineReactTable
-				columns={columns}
-				data={health}
-				initialState={{ density: 'xs' }}
-				// mantineTableBodyRowProps={(row) => ({
-				// 	onClick: () => {
-				// 		// on row click change the card to the clicked attendance and then user can edit or delete.
-				// 		router.push(serverLink + 'attendance/' + row.row.original.id);
-				// 	},
-				// })}
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				enableColumnResizing
-				columnResizeMode='onEnd'
-				renderRowActions={({ row }) => (
-					<Button.Group>
-						<DeleteModal id={row.original.id!} title={'Health'} url={'api/health/'} />
-
-						<Tooltip label={'Edit'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${router.asPath}edit/${row.original.id}`);
-								}}
-								color='yellow'>
-								<IconEdit />
-							</Button>
-						</Tooltip>
-						<Tooltip label={'Info'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${router.asPath}/${row.original.id}`);
-								}}
-								color='blue'>
-								<IconInfoCircle />
-							</Button>
-						</Tooltip>
-					</Button.Group>
-				)}
-				// positionActionsColumn='last'
-				enableRowActions
-			/>
-		</Container>
+		<TableComponent
+			data={health}
+			columns={columns}
+			deleteUrl={'api/health/'}
+			editUrl={'edit/'}
+			deleteTitle={'Health'}
+			infoUrl={''}
+			title='Health Table'
+			action={action}
+		/>
 	);
 }
 export default HealthTable;

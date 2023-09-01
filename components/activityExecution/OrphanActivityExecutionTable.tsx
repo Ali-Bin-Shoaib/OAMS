@@ -46,14 +46,6 @@ function OrphanActivityExecutionTable({ orphanActivityExecution }: Props) {
 				size: 200,
 				enableResizing: true,
 			},
-			// {
-			// 	accessorFn: (row) => row.returnDay?.toDateString(),
-			// 	id: 'returnDay',
-			// 	header: 'ReturnDay',
-			// 	maxSize: 300,
-			// 	size: 200,
-			// 	enableResizing: true,
-			// },
 		],
 		[]
 	);

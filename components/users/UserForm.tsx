@@ -1,15 +1,15 @@
-import { Box, Button, Card, Group, Loader, PasswordInput, Radio, Select, TextInput } from '@mantine/core';
+import { Button, Card, Group, Loader, PasswordInput, Radio, Select, TextInput } from '@mantine/core';
 import { $enum } from 'ts-enum-util';
 import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { useForm, Controller } from 'react-hook-form';
 import { ResponseType, STATUS_CODE, _UserWithGuardianAndSponsor } from '../../types';
 import { useRouter } from 'next/router';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { serverLink } from '../../shared/links';
 import { IconCheck, IconEye, IconEyeOff, IconX } from '@tabler/icons-react';
 import { DatePickerInput } from '@mantine/dates';
-import { Gender, Guardian, UserType } from '@prisma/client';
+import { Gender, UserType } from '@prisma/client';
 import myNotification from 'components/MyNotification';
 
 interface Props {
@@ -80,7 +80,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						<Controller
 							name='name'
 							control={control}
-							rules={{ required: 'name is required' }}
+							rules={{ required: 'name is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 							render={({ field }) => {
 								return (
 									<TextInput
@@ -112,7 +112,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						<Controller
 							name='username'
 							control={control}
-							rules={{ required: 'username is required' }}
+							rules={{ required: 'username is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 							render={({ field }) => {
 								return (
 									<TextInput
@@ -132,6 +132,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							control={control}
 							rules={{
 								required: 'password is required',
+								pattern: { value: /^[\w\S]/, message: 'invalid input.' },
 								// pattern: {
 								// 	value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+-]).{8,}$/,
 								// 	message: `invalid password. it should contains:At least: 8 characters, one lowercase letter, one uppercase letter, one digit, one special character`,
@@ -178,7 +179,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						<Controller
 							name='address'
 							control={control}
-							rules={{ required: 'address is required' }}
+							rules={{ required: 'address is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 							render={({ field }) => {
 								return (
 									<TextInput
@@ -195,7 +196,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							name='phone'
 							control={control}
 							rules={{
-								required: false,
+								required: 'Phone number is required.',
 								// max: { value: 799999999, message: '> 799999999' },
 								// min: { value: 699999999, message: '> 699999999' },
 								// $/^(?:(?:\+|00)9677|0?7)[01378]\d{7}|(?:(?:\+|00)967|0)[1-7]\d{6}$/
@@ -206,7 +207,14 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							}}
 							render={({ field }) => {
 								return (
-									<TextInput {...field} type='tel' error={errors.phone && errors.phone.message} label='phone' name='phone' />
+									<TextInput
+										{...field}
+										type='tel'
+										withAsterisk
+										error={errors.phone && errors.phone.message}
+										label='phone'
+										name='phone'
+									/>
 								);
 							}}
 						/>
@@ -225,6 +233,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 											data={$enum(UserType).map((t) => t)}
 											error={errors.type && errors.type.message}
 											defaultValue={bigUser?.type}
+											withAsterisk
 											label='userType'
 											name='type'
 											// dropdownPosition='bottom'
@@ -238,7 +247,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							<Controller
 								name='Guardian.relationship'
 								control={control}
-								rules={{ required: 'relationship is required' }}
+								rules={{ required: 'relationship is required', pattern: { value: /^[\w\S]/, message: 'invalid input' } }}
 								render={({ field }) => {
 									return (
 										<TextInput
@@ -292,7 +301,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 								<Controller
 									name='Sponsor.identityNumber'
 									control={control}
-									rules={{ required: 'identityNumber is required' }}
+									rules={{ required: 'Identity Number is required' }}
 									render={({ field }) => {
 										return (
 											<TextInput

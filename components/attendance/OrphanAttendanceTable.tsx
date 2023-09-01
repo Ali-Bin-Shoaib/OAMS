@@ -5,11 +5,12 @@ import TableComponent from 'components/common/TableComponent';
 import { Attendance, OrphanAttendance } from '@prisma/client';
 
 interface Props {
-	orphanAttendance: OrphanAttendance & { Attendance: Pick<Attendance, 'date'> }[];
+	orphanAttendance: (OrphanAttendance & { Attendance: Pick<Attendance, 'date'> })[];
 	actions: boolean;
 }
 
 function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
+	console.log('🚀 ~ file: OrphanAttendanceTable.tsx:13 ~ OrphanAttendanceTable ~ orphanAttendance:', orphanAttendance);
 	const columns = useMemo<MRT_ColumnDef<OrphanAttendance & { Attendance: Pick<Attendance, 'date'> }>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 300, size: 90 },
@@ -74,6 +75,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			deleteTitle={''}
 			infoUrl={''}
 			action={false}
+			title='Attendance Table'
 		/>
 	);
 }

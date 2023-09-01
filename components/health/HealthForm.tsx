@@ -1,34 +1,13 @@
 import { useEffect, useState } from 'react';
-import {
-	Education,
-	Health,
-	STATUS_CODE,
-	_Attendance,
-	_Orphan,
-	_OrphanAttendance,
-	_UserWithGuardianAndSponsor,
-} from '../../types';
+import { Health, STATUS_CODE, _Attendance, _Orphan, _OrphanAttendance, _UserWithGuardianAndSponsor } from '../../types';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { serverLink } from '../../shared/links';
 import { DatePickerInput } from '@mantine/dates';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-	Button,
-	Group,
-	Loader,
-	Select,
-	TextInput,
-	FileInput,
-	Title,
-	Center,
-	Paper,
-	Textarea,
-	Text,
-} from '@mantine/core';
-import { Degree, Orphan } from '@prisma/client';
-import { $enum } from 'ts-enum-util';
+import { Button, Group, Loader, Select, TextInput, Title, Center, Paper } from '@mantine/core';
+import { Orphan } from '@prisma/client';
 import myNotification from '../MyNotification';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { useSession } from 'next-auth/react';
@@ -175,7 +154,10 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 						<Controller
 							name='description'
 							control={control}
-							rules={{ required: 'Description  is required' }}
+							rules={{
+								required: 'Description  is required',
+								pattern: { value: /^[\w\S]/, message: 'invalid input' },
+							}}
 							render={({ field }) => {
 								return (
 									// @ts-ignore
@@ -192,6 +174,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 						/>
 						<Controller
 							name='disease'
+							rules={{ required: 'Disease  is required', pattern: { value: /^[\w\S]/, message: 'invalid input' } }}
 							control={control}
 							render={({ field }) => {
 								return (

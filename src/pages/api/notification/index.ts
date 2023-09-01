@@ -29,7 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					};
 
 					const updatedNotification = await prisma.notification.updateMany(updateNotification);
-					console.log('🚀 ~ file: index.ts:32 ~ handler ~ updatedNotification:', updatedNotification);
 					return res.status(STATUS_CODE.OK).json({
 						data: updatedNotification,
 						msg: `Update all Notifications`,
@@ -44,7 +43,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				};
 
 				const updatedNotification = await prisma.notification.update(updateNotification);
-				console.log('🚀 ~ file: index.ts:46 ~ handler ~ updatedNotification:', updatedNotification);
 				return res.status(STATUS_CODE.OK).json({
 					data: updatedNotification,
 					msg: `Notification with id:${updatedNotification.id} was update successfully`,
@@ -102,7 +100,6 @@ const checkNotification = async () => {
 			createNotification({ type: NotificationType.Health, triggerUrl: `${Pages.HealthInfo.link}${health.id}` });
 	});
 	const attendance = await prisma.attendance.findMany({ where: { OrphanAttendance: { every: { isAttended: false } } } });
-	console.log('🚀 ~ file: index.ts:90 ~ checkNotification ~ attendance:', attendance);
 	attendance.map(async (attendance) => {
 		if (
 			(await isNotificationCreated({ notifications, triggerUrl: `${Pages.Attendance.link}${attendance.id}` })) === false
@@ -111,7 +108,6 @@ const checkNotification = async () => {
 	});
 
 	const behaviorInfo = await prisma.behaviorCriteria.groupBy({ by: ['behaviorInfoId'], _avg: { evaluation: true } });
-	console.log('🚀 ~ file: index.ts:98 ~ checkNotification ~ behaviorInfo:', behaviorInfo);
 	behaviorInfo.map(async (behavior) => {
 		if (
 			(await isNotificationCreated({
@@ -129,7 +125,6 @@ const checkNotification = async () => {
 		by: ['id'],
 		where: { degree: { in: ['FAIL', 'ACCEPTED'] } },
 	});
-	console.log('🚀 ~ file: index.ts:115 ~ checkNotification ~ educationInfo:', educationInfo);
 	educationInfo.map(async (education) => {
 		if (
 			(await isNotificationCreated({
@@ -147,7 +142,6 @@ const checkNotification = async () => {
 		by: ['activityExecutionInfoId'],
 		where: { evaluation: { lte: 2.5 } },
 	});
-	console.log('🚀 ~ file: index.ts:132 ~ checkNotification ~ activityExecutionInfo:', activityExecutionInfo);
 	activityExecutionInfo.map(async (execution) => {
 		if (
 			(await isNotificationCreated({
@@ -164,7 +158,6 @@ const checkNotification = async () => {
 	const sponsorship = await prisma.sponsorship.findMany({
 		where: { endDate: { lte: new Date(date.getFullYear(), date.getMonth() - 1, date.getDate()) } },
 	});
-	console.log('🚀 ~ file: index.ts:148 ~ checkNotification ~ sponsorship:', sponsorship);
 	sponsorship.map(async (x) => {
 		if (
 			(await isNotificationCreated({
@@ -179,7 +172,6 @@ const checkNotification = async () => {
 	});
 
 	const orphan = await prisma.orphan.findMany({ where: { evaluation: { lte: 2.5 } } });
-	console.log('🚀 ~ file: index.ts:163 ~ checkNotification ~ orphan:', orphan);
 	orphan.map(async (x) => {
 		if (
 			(await isNotificationCreated({
@@ -200,7 +192,6 @@ interface CreateNotification {
 	notifications: Notification[];
 }
 const createNotification = async ({ type, triggerUrl }: Pick<CreateNotification, 'triggerUrl' | 'type'>) => {
-	console.log('🚀createNotification ');
 	try {
 		const createNotification: Prisma.NotificationCreateArgs = {
 			data: { type, triggerUrl },
@@ -215,9 +206,7 @@ const isNotificationCreated = async ({
 	triggerUrl,
 	notifications,
 }: Pick<CreateNotification, 'triggerUrl' | 'notifications'>) => {
-	console.log('🚀isNotificationCreated');
 	try {
-		console.log('🚀 ~ notifications:', notifications.length);
 		if (notifications.length === 0) {
 			console.log(false);
 			return false;

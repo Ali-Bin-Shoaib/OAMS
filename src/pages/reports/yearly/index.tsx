@@ -120,7 +120,10 @@ function YearlyReportIndex({ stringData }: Props) {
 					<Badge size='xl'>{new Date().toDateString()}</Badge>
 				</Center>
 				<Paper shadow='xl'>
-					<InfoComponent data={yearData.map((x) => ({ label: x.label, value: x.value }))} title='Year Entries' />
+					<InfoComponent
+						data={yearData.map((x) => ({ label: x.label, value: x.value }))}
+						title={new Date().getUTCFullYear() + ' Entries'}
+					/>
 				</Paper>
 			</div>
 			<OrphansTable orphans={orphans} />

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-	Education,
 	ROOM,
 	ResponseType,
 	STATUS_CODE,
@@ -12,25 +11,10 @@ import {
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { serverLink } from '../../shared/links';
-import { DatePickerInput } from '@mantine/dates';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-	Button,
-	Group,
-	Loader,
-	Select,
-	TextInput,
-	FileInput,
-	Title,
-	Center,
-	Paper,
-	Textarea,
-	Text,
-	NumberInput,
-	Container,
-} from '@mantine/core';
-import { Degree, Orphan, Wings } from '@prisma/client';
+import { Button, Group, Loader, Select, NumberInput, Container } from '@mantine/core';
+import { Wings } from '@prisma/client';
 import { $enum } from 'ts-enum-util';
 import myNotification from '../MyNotification';
 import { IconCheck, IconX } from '@tabler/icons-react';

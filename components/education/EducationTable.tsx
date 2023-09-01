@@ -1,18 +1,14 @@
 import { useMemo } from 'react';
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table';
-import { Button, Container, Tooltip } from '@mantine/core';
-import { User, EducationInfo, Orphan } from '@prisma/client';
-import { IconEdit, IconInfoCircle } from '@tabler/icons-react';
-import router from 'next/router';
-import DeleteModal from '../common/DeleteModal';
-import { Education } from '../../types';
-// type Education = EducationInfo & { User: User; Orphan: Orphan };
+import { MRT_ColumnDef } from 'mantine-react-table';
+import { EducationInfo } from '@prisma/client';
+import TableComponent from 'components/common/TableComponent';
 interface Props {
-	education: Education[];
+	education: EducationInfo[];
+	action: boolean;
 }
-function EducationTable({ education }: Props) {
+function EducationTable({ education, action }: Props) {
 	console.log('🚀 ~ file: ~ EducationTable');
-	const columns = useMemo<MRT_ColumnDef<Education>[]>(
+	const columns = useMemo<MRT_ColumnDef<EducationInfo>[]>(
 		() => [
 			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
 			{
@@ -24,19 +20,19 @@ function EducationTable({ education }: Props) {
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.User?.name,
-				id: 'User.name',
-				header: 'Taken By',
-				maxSize: 120,
-				size: 100,
+				accessorFn: (row) => row.degree,
+				id: 'degree',
+				header: 'Degree',
+				maxSize: 65,
+				size: 60,
 				enableResizing: true,
 			},
 			{
-				accessorFn: (row) => row.Orphan?.name,
-				id: 'Orphan.name',
-				header: 'Orphan Name',
-				maxSize: 200,
-				size: 120,
+				accessorFn: (row) => row.note,
+				id: 'note',
+				header: 'Note',
+				maxSize: 120,
+				size: 100,
 				enableResizing: true,
 			},
 		],
@@ -44,46 +40,16 @@ function EducationTable({ education }: Props) {
 	);
 
 	return (
-		<Container fluid>
-			{/* @ts-ignore */}
-			<MantineReactTable
-				columns={columns}
-				data={education}
-				initialState={{ density: 'xs' }}
-				mantineTableBodyCellProps={{
-					sx: { border: '2px solid #dee2e6' },
-				}}
-				enableColumnResizing
-				columnResizeMode='onEnd'
-				renderRowActions={({ row }) => (
-					<Button.Group>
-						<DeleteModal id={row.original.id!} title={'Education'} url={'api/education/'} />
-						<Tooltip label={'Edit'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${router.asPath}/edit/${row.original.id}`);
-								}}
-								color='yellow'>
-								<IconEdit />
-							</Button>
-						</Tooltip>
-						<Tooltip label={'Info'}>
-							<Button
-								size='xs'
-								onClick={() => {
-									router.push(`${router.asPath}/${row.original.id}`);
-								}}
-								color='gray'>
-								<IconInfoCircle />
-							</Button>
-						</Tooltip>
-					</Button.Group>
-				)}
-				// positionActionsColumn='last'
-				enableRowActions
-			/>
-		</Container>
+		<TableComponent
+			data={education}
+			columns={columns}
+			deleteUrl={'api/education/'}
+			editUrl={'edit/'}
+			deleteTitle={'Education'}
+			infoUrl={'education/'}
+			action={action}
+			title='Education Table'
+		/>
 	);
 }
 export default EducationTable;

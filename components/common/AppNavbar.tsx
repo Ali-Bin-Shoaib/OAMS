@@ -37,7 +37,6 @@ export default function AppNavbar() {
 	const currentPage = usePageTitle();
 	const { data: session } = useSession();
 	const [adminNotifications, setAdminNotifications] = useState<Notification[] | null>(null);
-	console.log('🚀 ~ file: AppNavbar.tsx:40 ~ AppNavbar ~ adminNotifications:', adminNotifications);
 	const [hydration, setHydration] = useState(false);
 	const isActive = ' shadow-md border-b-2 border-x-0 border-t-0 border-white border-solid border';
 	const [isNotificationUpdated, setIsNotificationUpdated] = useState(false);

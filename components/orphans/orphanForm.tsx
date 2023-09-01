@@ -1,10 +1,7 @@
 import {
 	Button,
-	Card,
 	Checkbox,
-	Container,
 	FileInput,
-	Flex,
 	Group,
 	NumberInput,
 	Radio,
@@ -14,16 +11,15 @@ import {
 	Title,
 } from '@mantine/core';
 import { $enum } from 'ts-enum-util';
-import { useContext, useEffect, useState } from 'react';
-import { Gender, Grade, Guardian, HomeType, Status, User } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { Gender, Grade, Guardian, HomeType, Status } from '@prisma/client';
 import { v4 } from 'uuid';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm, Controller } from 'react-hook-form';
 import { _Orphan, _Guardian, ResponseType, STATUS_CODE } from '../../types';
 import { useRouter } from 'next/router';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { serverLink } from '../../shared/links';
-import { GuardianContext } from '../../shared/contexts';
 import myNotification from 'components/MyNotification';
 import { IconCheck } from '@tabler/icons-react';
 interface Props {
@@ -309,7 +305,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='fatherDeathDate'
 						control={control}
-						rules={{ required: 'fatherDeathDate is required' }}
+						// rules={{ required: 'fatherDeathDate is required' }}
 						render={({ field }) => {
 							return (
 								<DatePickerInput
@@ -317,8 +313,8 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									valueFormat='D M YYYY'
 									label='Father Death Date'
 									placeholder='father death date'
-									withAsterisk
-									error={errors.fatherDeathDate && errors.fatherDeathDate.message}
+									// withAsterisk
+									// error={errors.fatherDeathDate && errors.fatherDeathDate.message}
 								/>
 							);
 						}}
@@ -326,7 +322,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='fatherWork'
 						control={control}
-						rules={{ required: 'fatherWork is required' }}
+						// rules={{ required: 'fatherWork is required' }}
 						render={({ field }) => {
 							return (
 								<TextInput
@@ -334,7 +330,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									label='Father Work'
 									placeholder='fatherWork'
 									// withAsterisk
-									error={errors.fatherWork && errors.fatherWork.message}
+									// error={errors.fatherWork && errors.fatherWork.message}
 								/>
 							);
 						}}
@@ -342,15 +338,15 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='fatherDeathCos'
 						control={control}
-						rules={{ required: 'fatherDeathCos is required' }}
+						// rules={{ required: 'fatherDeathCos is required' }}
 						render={({ field }) => {
 							return (
 								<Textarea
 									{...field}
-									error={errors.fatherDeathCos && errors.fatherDeathCos.message}
+									// error={errors.fatherDeathCos && errors.fatherDeathCos.message}
 									label='Father Death Cos'
 									placeholder='father death cos'
-									withAsterisk
+									// withAsterisk
 								/>
 							);
 						}}
@@ -359,16 +355,16 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='males'
 						control={control}
-						rules={{ required: 'males is required' }}
+						// rules={{ required: 'males is required' }}
 						render={({ field }) => {
 							return (
 								<NumberInput
 									{...field}
-									error={errors.males && errors.males.message}
+									// error={errors.males && errors.males.message}
 									label='Males'
 									description='males members in the family'
 									placeholder='males'
-									withAsterisk
+									// withAsterisk
 								/>
 							);
 						}}
@@ -376,17 +372,17 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='females'
 						control={control}
-						rules={{ required: 'females is required' }}
+						// rules={{ required: 'females is required' }}
 						render={({ field }) => {
 							return (
 								<NumberInput
 									{...field}
-									error={errors.females && errors.females.message}
+									// error={errors.females && errors.females.message}
 									label='Females'
 									description='Females members in the family'
 									placeholder='females'
 									// w={99}
-									withAsterisk
+									// withAsterisk
 								/>
 							);
 						}}
@@ -395,12 +391,19 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='liveWith'
 						control={control}
-						rules={{
-							required: 'live with is required.',
-						}}
+						rules={
+							{
+								// required: 'live with is required.',
+							}
+						}
 						render={({ field }) => {
 							return (
-								<TextInput {...field} error={errors.liveWith && errors.liveWith.message} label='Live With' withAsterisk />
+								<TextInput
+									{...field}
+									error={errors.liveWith && errors.liveWith.message}
+									label='Live With'
+									// withAsterisk
+								/>
 							);
 						}}
 					/>
@@ -408,15 +411,17 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='homeType'
 						control={control}
-						rules={{
-							required: 'home type is required',
-						}}
+						rules={
+							{
+								// required: 'home type is required',
+							}
+						}
 						render={({ field }) => {
 							return (
 								<Select
 									{...field}
 									data={$enum(HomeType).map((type) => type)}
-									error={errors.homeType && errors.homeType.message}
+									// error={errors.homeType && errors.homeType.message}
 									label='Home Type'
 									name='homeType'
 								/>
@@ -578,7 +583,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									className='flex flex-col justify-center'
 									defaultChecked={orphan && (orphan.isSponsored as unknown as boolean)}
 									error={errors.isSponsored && errors.isSponsored.message}
-									label='Is Sponsord'
+									label='Is Sponsored'
 									{...field}
 								/>
 							);

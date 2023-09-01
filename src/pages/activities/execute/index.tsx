@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/router';
 import activities from '..';
-import { usePageTitle } from '../../../../hooks/usePageTitle';
 import { Pages, Paths } from '../../../../shared/links';
 import { IconPlus } from '@tabler/icons-react';
 
@@ -34,11 +33,10 @@ function Index({ activitiesExecutions }: Props) {
 	console.log('ActivityExecution Index');
 	// const jsonData: { activities: _ActivityExecutionInfo[] } = SuperJSON.parse(stringData);
 	// const { activities } = jsonData;
-	const [activitiesExecutionList, setActivitiesExecutionList] = useState<_ActivityExecutionInfo[]>(activitiesExecutions);
+	// const [activitiesExecutionList, setActivitiesExecutionList] = useState<_ActivityExecutionInfo[]>(activitiesExecutions);
 	const [cardInfo, setCardInfo] = useState<_ActivityExecutionInfo>(activitiesExecutions[0]);
 	const [hydration, setHydration] = useState(false);
 	const [opened, { open, close }] = useDisclosure(false);
-	const title = usePageTitle();
 	const router = useRouter();
 	const updateCard = (activityExecution: _ActivityExecutionInfo) => {
 		activityExecution ? setCardInfo(activityExecution) : setCardInfo(activities[0]);
