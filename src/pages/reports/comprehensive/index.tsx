@@ -21,7 +21,7 @@ import OrphansTable from 'components/orphans/OrphansTable';
 import prisma from 'lib/prisma';
 import { GetStaticProps } from 'next';
 import { useCallback, useState } from 'react';
-import { Behavior, Health } from 'types';
+import { Behavior, Education, Health } from 'types';
 
 export const getStaticProps: GetStaticProps = async () => {
 	try {
@@ -77,7 +77,9 @@ function ComprehensiveReport({ orphans }: Props) {
 				<>
 					<div className='m-2 py-5'>
 						<EducationTable
-							education={selectedOrphan ? orphans.filter((x) => x.id === selectedOrphan)[0].EducationInfo : []}
+							education={
+								selectedOrphan ? (orphans.filter((x) => x.id === selectedOrphan)[0].EducationInfo as Education[]) : []
+							}
 							action={false}
 						/>
 					</div>

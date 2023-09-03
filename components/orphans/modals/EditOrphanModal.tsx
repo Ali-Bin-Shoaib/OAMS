@@ -19,7 +19,7 @@ export default function EditOrphanModal({ orphan, size = 'xs' }: Props) {
 			<Modal opened={opened} size={'auto'} onClose={close} title='Edit Orphan'>
 				{/* Modal content */}
 				<h1>{orphan.id}</h1>
-				<OrphanForm orphan={orphan} close={close} />
+				<OrphanForm orphan={orphan} close={close} guardians={[]} />
 			</Modal>
 			<Tooltip label='Edit'>
 				<Button onClick={open} color='yellow' size={size}>

@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					cost: cost as number,
 					description: description,
 					note: note,
-					startDate: startDate,
+					startDate: startDate as Date,
 					ActivityInfo: { connect: { id: activityInfoId } },
 					Executor: { connect: { id: userId } },
 					GoalEvaluation: {

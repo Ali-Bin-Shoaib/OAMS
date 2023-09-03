@@ -12,7 +12,7 @@ export default function AddOrphanModal() {
 			<Modal opened={opened} size={'auto'} onClose={close}>
 				{/* Modal content */}
 				<Title align='center'>Add Orphan</Title>
-				<OrphanForm close={close} />
+				<OrphanForm close={close} guardians={[]} />
 				{/* <FormTest /> */}
 			</Modal>
 			<Group position='center'>

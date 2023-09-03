@@ -105,7 +105,7 @@ function AttendanceReportIndex({ jsonData }: Props) {
 
 					{orphanAttendance ? (
 						<OrphanAttendanceTable
-							orphanAttendance={orphanAttendance as unknown as OrphanAttendance & { Attendance: Pick<Attendance, 'date'> }[]}
+							orphanAttendance={orphanAttendance as unknown as (OrphanAttendance & { Attendance: Pick<Attendance, 'date'> })[]}
 							actions={false}
 						/>
 					) : (

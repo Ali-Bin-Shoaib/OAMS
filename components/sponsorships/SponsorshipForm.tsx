@@ -34,7 +34,7 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 		handleSubmit,
 		setValue,
 		formState: { errors },
-	} = useForm<_Sponsorship>({ defaultValues: { ...sponsorship, isActive: false as unknown as string } });
+	} = useForm<_Sponsorship>({ defaultValues: { ...sponsorship, isActive: false } });
 	const onSubmit = async (data: _Sponsorship) => {
 		console.log('🚀 ~ file: SponsorshipForm.tsx:30 ~ onSubmit ~ data:', data);
 		// const config: AxiosRequestConfig = {
@@ -201,16 +201,20 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 						control={control}
 						// rules={{ required: 'isActive is required' }}
 						// render={({ field:{name,onBlur,onChange,ref,value} }) => {
-						render={({ field }) => {
+						render={({ field: { onChange } }) => {
 							return (
 								<Checkbox
 									pt={15}
 									// defaultChecked={sponsorship?.isActive === undefined ? false : (sponsorship.isActive as unknown as boolean)}
-									defaultChecked={sponsorship?.isActive === undefined ? false : (sponsorship.isActive as unknown as boolean)}
+									defaultChecked={sponsorship?.isActive === undefined ? false : sponsorship.isActive}
+									onChange={(e) => {
+										setValue('isActive', e.target.checked);
+										// const isActive = e.target.checked;
+									}}
 									// defaultChecked={sponsorship ? (sponsorship.isActive ? true : false) : false}
 									error={errors?.isActive && errors.isActive.message}
 									label='isActive'
-									{...field}
+									// {...field}
 								/>
 							);
 						}}

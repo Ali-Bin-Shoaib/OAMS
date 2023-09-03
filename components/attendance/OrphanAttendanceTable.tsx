@@ -6,7 +6,7 @@ import { Attendance, OrphanAttendance } from '@prisma/client';
 
 interface Props {
 	orphanAttendance: (OrphanAttendance & { Attendance: Pick<Attendance, 'date'> })[];
-	actions: boolean;
+	actions?: boolean;
 }
 
 function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {

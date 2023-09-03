@@ -1,5 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { Loader, Tooltip, UnstyledButton } from '@mantine/core';
+import { Anchor, Loader, Tooltip, UnstyledButton } from '@mantine/core';
 import img1 from '../../public/static_imgs/2.jpg';
 import withsponsor from '../../public/static_imgs/withsponsor.png';
 import withoutsponsor from '../../public/static_imgs/withoutsponsor.png';
@@ -76,7 +76,7 @@ export default function Home() {
 				</nav>
 			)} */}
 			<section className='home'>
-				<a name={'home'}></a>
+				<Anchor target={'home'}></Anchor>
 				<div className='content'>
 					<div className='content-texts'>
 						<h1>Dar Al-Fajr</h1>
@@ -118,7 +118,7 @@ export default function Home() {
 				</div>
 			</section>
 
-			<a name='about'></a>
+			<Anchor target='about'></Anchor>
 			<section className='about'>
 				<div className='depabout1'>
 					<div className=' content-imgs '>
@@ -225,7 +225,7 @@ export default function Home() {
 				</div>
 			</section>
 
-			<a name='services'></a>
+			<Anchor target='services'></Anchor>
 			<section className='services'>
 				<h1 className='text-center'>Services</h1>
 				<div className='box'>

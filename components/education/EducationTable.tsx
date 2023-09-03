@@ -2,8 +2,9 @@ import { useMemo } from 'react';
 import { MRT_ColumnDef } from 'mantine-react-table';
 import { EducationInfo } from '@prisma/client';
 import TableComponent from 'components/common/TableComponent';
+import { Education } from 'types';
 interface Props {
-	education: EducationInfo[];
+	education: Education[];
 	action: boolean;
 }
 function EducationTable({ education, action }: Props) {

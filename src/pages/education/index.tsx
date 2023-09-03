@@ -3,15 +3,14 @@ import prisma from '../../../lib/prisma';
 import { useEffect, useState } from 'react';
 import { Button, Container, Loader, Select } from '@mantine/core';
 import SuperJSON from 'superjson';
-import { EducationInfo, Orphan, User } from '@prisma/client';
+import { Orphan } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { serverLink } from '../../../shared/links';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons-react';
 import EducationTable from '../../../components/education/EducationTable';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import myNotification from '../../../components/MyNotification';
-import { STATUS_CODE, Behavior, Education, ResponseType } from '../../../types';
-import orphans from '../orphans';
+import { STATUS_CODE, Education, ResponseType } from '../../../types';
 
 // * get orphans from database and pass the result as props to Index page.
 export const getStaticProps: GetStaticProps = async () => {
@@ -84,7 +83,7 @@ export default function Index({ stringJson }: Props) {
 				/>
 			</Container>
 
-			<EducationTable education={orphanEducation || []} />
+			<EducationTable education={orphanEducation || []} action={true} />
 		</>
 	);
 }
