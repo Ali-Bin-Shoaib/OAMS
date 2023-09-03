@@ -20,7 +20,7 @@ import {
 	filterExecutionsByOrphanId,
 	filterExecutionsByType,
 	filterOrphanExecutions,
-} from './service';
+} from '../../../../utils/activity/service';
 import ActivityExecutionTable from 'components/activityExecution/ActivityExecutionTable';
 import OrphanActivityExecutionTable from 'components/activityExecution/OrphanActivityExecutionTable';
 export const getStaticProps: GetStaticProps = async () => {
