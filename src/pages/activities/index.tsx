@@ -41,7 +41,6 @@ export default function Index({ stringData }: Props) {
 	const [activitiesList, setActivitiesList] = useState<_ActivityInfo[]>(activities);
 	const [cardInfo, setCardInfo] = useState<_ActivityInfo>(activitiesList[0]);
 	const [hydration, setHydration] = useState(false);
-	// const [opened, { open, close }] = useDisclosure(false);
 	const router = useRouter();
 	const updateCard = (activityInfo: _ActivityInfo) => {
 		activityInfo ? setCardInfo(activityInfo) : setCardInfo(activities[0]);
@@ -64,7 +63,6 @@ export default function Index({ stringData }: Props) {
 						Add New Activity
 					</Button>
 				</Group>
-				{/* <CardInfo activityInfo={cardInfo} updateCard={updateCard} /> */}
 				<ActivityTable activities={activities} />
 			</div>
 		</>
