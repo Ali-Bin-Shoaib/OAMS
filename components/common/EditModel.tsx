@@ -4,7 +4,7 @@ import { Guardian, User } from '@prisma/client';
 import { IconEdit } from '@tabler/icons-react';
 import { useContext } from 'react';
 import { _Orphan } from '../../types';
-import OrphanForm from '../orphans/OrphanForm';
+import OrphanForm from 'components/orphans/OrphanForm';
 interface Props {
 	orphan: _Orphan;
 	guardians: (Guardian & {
