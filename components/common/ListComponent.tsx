@@ -56,7 +56,7 @@ export function ListItemComponent({
 						</Avatar>
 					)
 				}>
-				<div className='flex  flex-row content-between w-full'>
+				<div className='flex  flex-row content-between w-full mr-3'>
 					<div>
 						<h3 className='text-ellipsis overflow-hidden m-0 max-w-xs w-52 whitespace-nowrap'>{title}</h3>
 						<Group position='apart'>

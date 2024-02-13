@@ -78,6 +78,7 @@ h2 {
 	display: flex;
 	align-items: center;
 	padding: 2rem;
+	position: relative;
 }
 
 .card-image {
@@ -98,8 +99,11 @@ h2 {
 	margin-top: -100%;
 }
 .card-curd {
-	margin-top: 30%;
-	margin-left: -25%;
+	position: absolute;
+	top: 60%;
+	right: 1%;
+	/* margin-top: 30%;
+	margin-left: -25%; */
 }
 
 .card-curd button {

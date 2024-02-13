@@ -23,16 +23,16 @@ function MyCard({ orphan }: Props) {
 		<div className='all'>
 			<div className='card'>
 				<div className='card-header'>
-					<h2>Orphan Information</h2>
+					<h2>معلومات اليتيم</h2>
 				</div>
 				<div className='card-body'>
 					<div className='card-image'>
 						<Image src={logo} alt={orphan.name} />
 					</div>
 					{session?.user?.type === 'ADMIN' && (
-						<div className='card-curd'>
+						<div className='card-curd '>
 							<>
-								<Tooltip label='Info'>
+								<Tooltip label='معلومات اليتيم'>
 									{/* <Button w={50} color='gray' onClick={() => router.push(Pages?.Orphans.link + orphan?.id)}> */}
 									<IconInfoCircle
 										color={theme.colors.gray[9]}
@@ -42,7 +42,7 @@ function MyCard({ orphan }: Props) {
 									/>
 									{/* </Button> */}
 								</Tooltip>
-								<Tooltip label='Edit'>
+								<Tooltip label='تعديل'>
 									{/* <Button w={50} color='yellow' onClick={() => router.push(`${serverLink}orphans/action/${orphan?.id}`)}> */}
 									<IconEdit
 										color={theme.colors.yellow[9]}
@@ -52,22 +52,25 @@ function MyCard({ orphan }: Props) {
 									/>
 									{/* </Button> */}
 								</Tooltip>
-								<Tooltip label='Delete'>
+								<Tooltip label='حذف'>
 									<IconTrash
 										color='red'
 										className='bg-red-100 rounded-xl hover:cursor-pointer'
 										size={40}
 										onClick={() => {
 											modals.openConfirmModal({
-												title: `Delete ${orphan.name} Info.`,
+												title: `حذف معلومات ${orphan.name}.`,
+												dir: 'rtl',
 												centered: true,
-												children: <Text size='sm'>Are you sure you want to delete this {orphan.name}?</Text>,
-												labels: { confirm: `Delete`, cancel: `No don't Delete it` },
+												children: <Text size='sm'>هل أنت متأكد من حذف معلومات {orphan.name}?</Text>,
+												labels: { confirm: `حذف`, cancel: `إلغاء ` },
 												confirmProps: { color: 'red' },
 												onCancel: () =>
 													notifications.show({
-														title: 'Cancel',
-														message: `Cancel Delete`,
+														title: 'إلغاء',
+														dir: 'rtl',
+
+														message: `إلغاء الحذف`,
 														color: 'gray',
 														icon: <IconInfoCircle />,
 													}),
@@ -99,32 +102,32 @@ function MyCard({ orphan }: Props) {
 					<div className='card-details'>
 						<ul>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Name:</strong> {orphan.name}
+								<strong>الإسم:</strong> {orphan.name}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Evaluation:</strong>
+								<strong>التقييم:</strong>
 								{orphan.evaluation?.toFixed(2) || 0}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Age:</strong> {orphan.age}
+								<strong>العمر:</strong> {orphan.age}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Sex:</strong> {orphan.gender}
+								<strong>الحنس:</strong> {orphan.gender}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Location:</strong> {orphan.currentAddress}
+								<strong>العنوان:</strong> {orphan.currentAddress}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Birthdate:</strong> {orphan.birthdate.toDateString()}
+								<strong>اريخ الميلاد:</strong> {orphan.birthdate.toDateString()}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>School:</strong> {orphan.schoolName}
+								<strong>المدرسة:</strong> {orphan.schoolName}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Level:</strong> {orphan.gradeLevel}
+								<strong>المستوى:</strong> {orphan.gradeLevel}
 							</li>
 							<li className='text-ellipsis overflow-hidden text-white'>
-								<strong>Guardian:</strong> {orphan.Guardian?.user?.name}
+								<strong>الوصي:</strong> {orphan.Guardian?.user?.name}
 							</li>
 						</ul>
 					</div>
@@ -137,7 +140,7 @@ function MyCard({ orphan }: Props) {
 						size='xl'
 						leftIcon={<IconUserPlus />}
 						onClick={() => router.push(`${serverLink}orphans/action/create`)}>
-						Add Orphan
+						إضافة يتيم
 					</Button>
 				)}
 			</div>

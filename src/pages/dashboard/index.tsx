@@ -46,42 +46,42 @@ export default function Home({ orphans, sponsors, guardians, sponsorships, activ
 	return (
 		<div className='flex flex-wrap mx-auto justify-evenly'>
 			<MyCard
-				title={'Orphans'}
+				title={'الأيتام'}
 				count={orphans}
 				color={'blue'}
 				icon={<IconUserStar size={100} />}
 				path={Pages.Orphans.link}
 			/>
 			<MyCard
-				title={'Sponsors'}
+				title={'الكفلاء'}
 				count={sponsors}
 				color={'red'}
 				icon={<IconUserPlus size={100} />}
 				path={Pages.Sponsors.link}
 			/>
 			<MyCard
-				title={'Sponsorships'}
+				title={'الكفالات'}
 				count={sponsorships}
 				color={'cyan'}
 				icon={<IconReceipt size={100} />}
 				path={Pages.Sponsorships.link}
 			/>
 			<MyCard
-				title={'Guardians'}
+				title={'الأوصياء'}
 				count={guardians}
 				color={'teal'}
 				icon={<IconUserShield size={100} />}
 				path={Pages.Guardians.link}
 			/>
 			<MyCard
-				title={'Activities'}
+				title={'الأنشطة'}
 				count={activities}
 				color={'yellow'}
 				icon={<IconActivity size={100} />}
 				path={Pages.Activities.link}
 			/>
 			<MyCard
-				title={'Activities Execution'}
+				title={'الأنشظة المنفّذة'}
 				count={activityExecution}
 				color={'indigo'}
 				icon={<IconActivityHeartbeat size={100} />}

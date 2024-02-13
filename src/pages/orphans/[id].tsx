@@ -64,7 +64,7 @@ function OrphanDetails({ data }: Props) {
 	return (
 		<>
 			<div className='container mx-auto border border-sky-100 shadow px-4 p-2 my-4'>
-				<Title className='text-center'>Orphan Info</Title>
+				<Title className='text-center'>معلومات اليتيم</Title>
 				<div className='container text-center'>
 					<Image src={orphanImage} width={250} alt='asd' className='rounded-3xl  my-2 ' />{' '}
 					<Tooltip label='Evaluation' className='mx-auto py-3 my-3'>
@@ -74,93 +74,93 @@ function OrphanDetails({ data }: Props) {
 				{/* <Box className='flex flex-wrap'> */}
 				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-3'>
 					<Text>
-						<Text weight={'bold'}>ID:</Text>
+						<Text weight={'bold'}>الرقم:</Text>
 						{orphan.id}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Name:</Text> {orphan.name || '---'}
+						<Text weight={'bold'}>الاسم:</Text> {orphan.name || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Birthdate:</Text> {orphan.birthdate?.toUTCString() || '---'}
+						<Text weight={'bold'}>تاريخ الميلاد:</Text> {orphan.birthdate?.toUTCString() || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Gender:</Text> {orphan.gender || '---'}
+						<Text weight={'bold'}>الحنس:</Text> {orphan.gender || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Grade Level:</Text> {orphan.gradeLevel || '---'}
+						<Text weight={'bold'}>المستوى الدراسي:</Text> {orphan.gradeLevel || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>School Name:</Text> {orphan.schoolName || '---'}
+						<Text weight={'bold'}>اسم المدرسة:</Text> {orphan.schoolName || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Mother Name:</Text> {orphan.motherName || '---'}
+						<Text weight={'bold'}>اسم الأم:</Text> {orphan.motherName || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Birthplace:</Text> {orphan.birthplace}
+						<Text weight={'bold'}>مكان الميلاد:</Text> {orphan.birthplace}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Join Date:</Text> {orphan.joinDate?.toDateString()}
+						<Text weight={'bold'}>تاريخ الإنضمام:</Text> {orphan.joinDate?.toDateString()}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Last Year Percentage:</Text> {orphan.lastYearPercentage}
+						<Text weight={'bold'}>نسبة آخر سنة دراسية:</Text> {orphan.lastYearPercentage}
 					</Text>
 					<Text>
-						Father Death Date:
+						تاريخ وفاة الأب:
 						{orphan.fatherDeathDate?.toUTCString()}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Father Work:</Text> {orphan.fatherWork}
+						<Text weight={'bold'}>عمل الأب:</Text> {orphan.fatherWork}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>FatherDeathCos:</Text> {orphan.fatherDeathCos}
+						<Text weight={'bold'}>أسباب وفاة الأب:</Text> {orphan.fatherDeathCos}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>No Of Family Members:</Text> {orphan.noOfFamilyMembers}
+						<Text weight={'bold'}>عدد أعضاء العائلة:</Text> {orphan.noOfFamilyMembers}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Males:</Text> {orphan.males}
+						<Text weight={'bold'}>الذكور:</Text> {orphan.males}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Females:</Text> {orphan.females}
+						<Text weight={'bold'}>الإناث:</Text> {orphan.females}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Mother Name:</Text> {orphan.motherName}
+						<Text weight={'bold'}>اسم الأم:</Text> {orphan.motherName}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Mother Status:</Text> {orphan.motherStatus}
+						<Text weight={'bold'}>حالة الأم:</Text> {orphan.motherStatus}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Is Mother Works:</Text> {orphan.isMotherWorks ? 'yes' : 'no'}
+						<Text weight={'bold'}>هل الأم تعمل:</Text> {orphan.isMotherWorks ? 'yes' : 'no'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Mother Job:</Text> {orphan.motherJob || 'none'}
+						<Text weight={'bold'}>عمل الأم:</Text> {orphan.motherJob || 'none'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Mother Job Phone:</Text> {orphan.motherJobPhone || '---'}
+						<Text weight={'bold'}>رقم هاتف الأم:</Text> {orphan.motherJobPhone || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Monthly Income:</Text> {orphan.monthlyIncome || '---'}
+						<Text weight={'bold'}>الدخل الشهري:</Text> {orphan.monthlyIncome || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Live With:</Text> {orphan.liveWith || '---'}
+						<Text weight={'bold'}>اليتيم يعيش مع:</Text> {orphan.liveWith || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Home Type:</Text> {orphan.homeType || '---'}
+						<Text weight={'bold'}>نوع المنزل:</Text> {orphan.homeType || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Home Phone:</Text> {orphan.homePhone || '---'}
+						<Text weight={'bold'}>رقم المنزل:</Text> {orphan.homePhone || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Current Address:</Text> {orphan.currentAddress || '---'}
+						<Text weight={'bold'}>العنوان الحالي:</Text> {orphan.currentAddress || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Is Sponsored:</Text> {orphan.isSponsored || '---'}
+						<Text weight={'bold'}>هل اليتيم مكفول:</Text> {orphan.isSponsored || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Foundation Name:</Text> {orphan.foundationName || '---'}
+						<Text weight={'bold'}>اسم المؤسسة:</Text> {orphan.foundationName || '---'}
 					</Text>
 					<Text>
-						<Text weight={'bold'}>Foundation Amount:</Text> {orphan.foundationAmount || '---'}
+						<Text weight={'bold'}>مبلغ الكفالة:</Text> {orphan.foundationAmount || '---'}
 					</Text>
 				</div>
 				{/* </Box> */}
@@ -168,13 +168,13 @@ function OrphanDetails({ data }: Props) {
 				<Group position='right'>
 					<Button.Group>
 						{/* <EditOrphanModal orphan={orphan as unknown as _Orphan} /> */}
-						<Tooltip label='Edit'>
+						<Tooltip label='تعديل'>
 							<Button color='yellow' size='xs' onClick={() => router.push(`${serverLink}orphans/action/${orphan.id}`)}>
 								<IconEdit />
 							</Button>
 						</Tooltip>
 						{/* <DeleteOrphanModal id={orphan.id} /> */}
-						<DeleteModal id={orphan.id} title={'Orphan'} url={`api/orphan`} redirectUrl={`${Pages.Orphans.link}`} />
+						<DeleteModal id={orphan.id} title={orphan.name} url={`api/orphan`} redirectUrl={`${Pages.Orphans.link}`} />
 					</Button.Group>
 				</Group>
 			</div>

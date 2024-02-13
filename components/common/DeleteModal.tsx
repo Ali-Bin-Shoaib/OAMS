@@ -31,15 +31,17 @@ export default function DeleteModal({
 	const router = useRouter();
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
-			title: `Delete ${title} Info.`,
+			title: `حذف معلومات  ${title} .`,
 			centered: true,
-			children: <Text size='sm'>Are you sure you want to delete this {title}?</Text>,
-			labels: { confirm: `Delete`, cancel: `No don't Delete it` },
+			dir:'rtl',
+			children: <Text size='sm'>هل أنت متأكد من حذف معلومات {title}?</Text>,
+			labels: { confirm: `حذف`, cancel: `إلغاء العملية` },
 			confirmProps: { color: 'red' },
 			onCancel: () =>
 				notifications.show({
-					title: 'Cancel',
-					message: `Cancel Delete`,
+					title: 'إلغاء',
+					message: `إلغاء الحذف`,
+					dir:'rtl',
 					color: 'gray',
 					icon: <IconInfoCircle />,
 				}),

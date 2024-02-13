@@ -90,13 +90,13 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 	return (
 		<div className='container p-1 mx-auto'>
 			<Title align='center' className='shadow-md p-3 m-3 rounded-xl'>
-				{orphan ? 'Edit Orphan Info' : 'Add Orphan Info'}
+				{orphan ? 'تعديل بيانات اليتيم' : 'إضافة معلومات اليتيم'}
 			</Title>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Controller
 					name='guardianId'
 					control={control}
-					rules={{ required: "select orphan's guardian." }}
+					rules={{ required: 'اختر وصي اليتيم.' }}
 					render={({ field: { onChange } }) => {
 						return (
 							<Select
@@ -110,10 +110,10 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								allowDeselect
 								onChange={(id) => setValue('guardianId', Number(id))}
 								className=' mx-auto py-2 mb-2'
-								label="Select Orphan's Guardian"
+								label='اختر وصي اليتيم'
 								defaultValue={orphan?.guardianId.toString()}
 								withAsterisk
-								description='Link orphan with existing guardian'
+								description='اربط اليتيم بوصي موجود'
 								error={errors.guardianId && errors.guardianId.message}
 							/>
 						);
@@ -128,9 +128,9 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 							return (
 								<TextInput
 									{...field}
-									label='Name'
+									label='الاسم'
 									error={errors.name && errors.name.message}
-									placeholder='name'
+									placeholder='أحمد'
 									defaultValue={orphan && (orphan.image as unknown as string | number | readonly string[] | undefined)}
 									withAsterisk
 								/>
@@ -140,16 +140,16 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='image'
 						control={control}
-						rules={{ required: 'image is required' }}
+						rules={{ required: 'الصورة مطلوبة' }}
 						render={({ field }) => {
 							return (
 								<FileInput
 									{...field}
 									error={errors.image && errors.image.message}
-									label='Image'
+									label='صورة اليتيم'
 									accept='image/*'
 									// w={200}
-									placeholder='choose orphan image'
+									placeholder='اختر صورة اليتيم'
 									withAsterisk
 								/>
 							);
@@ -158,10 +158,10 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='gender'
 						control={control}
-						rules={{ required: 'gender is required' }}
+						rules={{ required: 'الجنس مطلوب' }}
 						render={({ field }) => {
 							return (
-								<Radio.Group {...field} label={'Gender'} error={errors.gender && errors.gender.message} withAsterisk>
+								<Radio.Group {...field} label={'الجنس'} error={errors.gender && errors.gender.message} withAsterisk>
 									<Group mt='md'>
 										{$enum(Gender).map((g) => (
 											<Radio key={v4()} value={g} label={g.toLowerCase()} />
@@ -174,7 +174,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='birthdate'
 						control={control}
-						rules={{ required: 'birthdate is required' }}
+						rules={{ required: 'تاريخ الميلاد مطلوب' }}
 						render={({ field }) => {
 							return (
 								<DatePickerInput
@@ -183,8 +183,8 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									minDate={new Date(2008, 1, 1)}
 									maxDate={new Date(2017, 1, 1)}
 									date={new Date(new Date().getFullYear() - 10, 5, 20)}
-									label='Birthdate'
-									placeholder='birthdate'
+									label='تاريخ الميلاد'
+									placeholder='تاريخ الميلاد'
 									// w={100}
 									withAsterisk
 									error={errors.birthdate && errors.birthdate.message}
@@ -196,13 +196,13 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='birthplace'
 						control={control}
-						rules={{ required: 'birthplace is required' }}
+						rules={{ required: 'مكان الميلاد مطلوب' }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
-									label='Birthplace'
-									placeholder='birthplace'
+									label='مكان الميلاد '
+									placeholder='مكان الميلاد '
 									withAsterisk
 									error={errors.birthplace && errors.birthplace.message}
 								/>
@@ -213,13 +213,19 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						name='age'
 						control={control}
 						rules={{
-							required: 'age is required',
-							min: { value: 6, message: 'Age must be 6 or higher' },
-							max: { value: 15, message: 'Age must be 15 or less' },
+							required: 'العمر مطلوب',
+							min: { value: 6, message: ' يجيب ان بكون العمر 6 أو أكبر' },
+							max: { value: 15, message: 'يجب أن يكون العمر أقل من 16' },
 						}}
 						render={({ field }) => {
 							return (
-								<NumberInput {...field} label='Age' placeholder='age' withAsterisk error={errors.age && errors.age.message} />
+								<NumberInput
+									{...field}
+									label='العمر'
+									placeholder='العمر'
+									withAsterisk
+									error={errors.age && errors.age.message}
+								/>
 							);
 						}}
 					/>
@@ -233,7 +239,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								<DatePickerInput
 									{...field}
 									valueFormat='D M YYYY'
-									label='Join Date'
+									label='تاريخ الإنضمام'
 									date={new Date()}
 									defaultValue={new Date()}
 									placeholder={new Date().toDateString()}
@@ -246,13 +252,13 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='schoolName'
 						control={control}
-						rules={{ required: 'school name is required' }}
+						rules={{ required: 'اسم المدرسة مطلوب' }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
-									label='School Name'
-									placeholder='school name'
+									label='اسم المدرسة'
+									placeholder='اسم المدرسة'
 									withAsterisk
 									error={errors.schoolName && errors.schoolName.message}
 								/>
@@ -262,13 +268,13 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='gradeLevel'
 						control={control}
-						rules={{ required: 'gradeLevel is required' }}
+						rules={{ required: 'المستوى الدراسي مطلوب' }}
 						render={({ field }) => {
 							return (
 								<Select
 									{...field}
 									data={$enum(Grade).map((g) => g)}
-									label='Grade level'
+									label='المستوى الدراسي'
 									withAsterisk
 									error={errors.gradeLevel && errors.gradeLevel.message}
 								/>
@@ -279,22 +285,22 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						name='lastYearPercentage'
 						control={control}
 						rules={{
-							required: 'last year percentage is required',
+							required: 'نسبة آخر سنة دراسية مطلوبة',
 							max: {
 								value: 100,
-								message: 'percentage must be less than or equal 100',
+								message: 'نسبة آخر سنة دراسية يجب أن تكون أقل من أو تساوي 100',
 							},
 							min: {
 								value: 50,
-								message: 'percentage must be greater than or equal 50',
+								message: 'نسبة آخر سنة دراسية يجب أن تكون أكبر من 50',
 							},
 						}}
 						render={({ field }) => {
 							return (
 								<NumberInput
 									{...field}
-									placeholder='last year percentage'
-									label='Last Year Percentage'
+									placeholder=' نسبة آخر سنة دراسية'
+									label=' نسبة آخر سنة دراسية'
 									precision={2}
 									withAsterisk
 									error={errors.lastYearPercentage && errors.lastYearPercentage.message}
@@ -311,8 +317,8 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								<DatePickerInput
 									{...field}
 									valueFormat='D M YYYY'
-									label='Father Death Date'
-									placeholder='father death date'
+									label='تاريخ وفاة الأب'
+									placeholder='تاريخ وفاة الأب'
 									// withAsterisk
 									// error={errors.fatherDeathDate && errors.fatherDeathDate.message}
 								/>
@@ -327,8 +333,8 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 							return (
 								<TextInput
 									{...field}
-									label='Father Work'
-									placeholder='fatherWork'
+									label='عمل الأب'
+									placeholder='عمل الأب'
 									// withAsterisk
 									// error={errors.fatherWork && errors.fatherWork.message}
 								/>
@@ -344,8 +350,8 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								<Textarea
 									{...field}
 									// error={errors.fatherDeathCos && errors.fatherDeathCos.message}
-									label='Father Death Cos'
-									placeholder='father death cos'
+									label='أسباب وفاة الأب'
+									placeholder='أسباب وفاة الأب'
 									// withAsterisk
 								/>
 							);
@@ -361,9 +367,9 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								<NumberInput
 									{...field}
 									// error={errors.males && errors.males.message}
-									label='Males'
-									description='males members in the family'
-									placeholder='males'
+									label='عدد الذكور في الأسرة'
+									// description='males members in the family'
+									placeholder='عدد الذكور في الأسرة'
 									// withAsterisk
 								/>
 							);
@@ -378,9 +384,9 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								<NumberInput
 									{...field}
 									// error={errors.females && errors.females.message}
-									label='Females'
-									description='Females members in the family'
-									placeholder='females'
+									label='عدد الإناث في الأسرة'
+									// description='Females members in the family'
+									placeholder='عدد الإناث في الأسرة'
 									// w={99}
 									// withAsterisk
 								/>
@@ -401,7 +407,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								<TextInput
 									{...field}
 									error={errors.liveWith && errors.liveWith.message}
-									label='Live With'
+									label='يسكن مع'
 									// withAsterisk
 								/>
 							);
@@ -422,7 +428,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									{...field}
 									data={$enum(HomeType).map((type) => type)}
 									// error={errors.homeType && errors.homeType.message}
-									label='Home Type'
+									label='نوع السكن'
 									name='homeType'
 								/>
 							);
@@ -432,10 +438,10 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						name='homePhone'
 						control={control}
 						rules={{
-							required: 'home phone is required',
+							required: 'رقم المنزل مطلوب',
 							pattern: {
 								value: homePhoneRegex,
-								message: 'invalid telephone value',
+								message: 'رقم المنزل خاطىء',
 							},
 						}}
 						render={({ field }) => {
@@ -444,7 +450,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									{...field}
 									type='tel'
 									error={errors.homePhone && errors.homePhone.message}
-									label='Home Phone'
+									label='رقم المنزل'
 									placeholder='05 514640'
 									withAsterisk
 								/>
@@ -455,15 +461,15 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						name='currentAddress'
 						control={control}
 						rules={{
-							required: 'current address is required.',
+							required: 'العنوان الحالي مطلوب.',
 						}}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									error={errors.currentAddress && errors.currentAddress.message}
-									label='Current Address'
-									placeholder='currentAddress'
+									label='العنوان الحالي'
+									placeholder='العنوان الحالي'
 									withAsterisk
 								/>
 							);
@@ -472,14 +478,14 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					<Controller
 						name='motherName'
 						control={control}
-						rules={{ required: 'mother name is required' }}
+						rules={{ required: 'اسم الأم مطلوب' }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									error={errors.motherName && errors.motherName.message}
-									label='Mother Name'
-									placeholder='mother name'
+									label='اسم الأم'
+									placeholder='اسم الأم'
 									withAsterisk
 								/>
 							);
@@ -489,7 +495,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 						name='motherStatus'
 						control={control}
 						rules={{
-							required: 'mother status is required',
+							required: 'حالة الأم مطلوبة',
 						}}
 						render={({ field }) => {
 							return (
@@ -497,7 +503,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									{...field}
 									data={$enum(Status).map((s) => s)}
 									error={errors.motherStatus && errors.motherStatus.message}
-									label='Mother Status'
+									label='حالة الأم'
 								/>
 							);
 						}}
@@ -515,7 +521,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									className='flex flex-col justify-center'
 									defaultChecked={orphan && (orphan.isMotherWorks as unknown as boolean)}
 									error={errors.isMotherWorks && errors.isMotherWorks.message}
-									label='Is Mother Works'
+									label='هل الأم تعمل؟'
 									{...field}
 								/>
 							);
@@ -530,7 +536,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									required: false,
 								}}
 								render={({ field }) => {
-									return <TextInput {...field} error={errors.motherJob && errors.motherJob.message} label='Mother Job' />;
+									return <TextInput {...field} error={errors.motherJob && errors.motherJob.message} label='عمل الأم' />;
 								}}
 							/>
 							<Controller
@@ -538,7 +544,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 								control={control}
 								rules={{
 									required: false,
-									pattern: { value: homePhoneRegex, message: 'invalid phone number.' },
+									pattern: { value: homePhoneRegex, message: 'رقم خاطئ.' },
 								}}
 								render={({ field }) => {
 									return (
@@ -546,7 +552,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 											{...field}
 											type='tel'
 											error={errors.motherJobPhone && errors.motherJobPhone.message}
-											label='Mother Job Phone'
+											label='رقم جوال العمل'
 										/>
 									);
 								}}
@@ -561,9 +567,9 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									return (
 										<NumberInput
 											{...field}
-											placeholder='monthlyIncome'
+											placeholder='الدخل الشهري'
 											error={errors.monthlyIncome && errors.monthlyIncome.message}
-											label='Monthly Income'
+											label='الدخل الشهري'
 											precision={2}
 										/>
 									);
@@ -583,7 +589,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 									className='flex flex-col justify-center'
 									defaultChecked={orphan && (orphan.isSponsored as unknown as boolean)}
 									error={errors.isSponsored && errors.isSponsored.message}
-									label='Is Sponsored'
+									label='هل اليتيم مكفول من جهة أخرى؟'
 									{...field}
 								/>
 							);
@@ -602,8 +608,8 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 										<TextInput
 											{...field}
 											error={errors.foundationName && errors.foundationName.message}
-											label='Foundation Name'
-											placeholder='foundationName'
+											label='اسم المؤسسة'
+											placeholder='اسم المؤسسة'
 										/>
 									);
 								}}
@@ -620,7 +626,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 											{...field}
 											placeholder='15000.00'
 											error={errors.foundationAmount && errors.foundationAmount.message}
-											label='Foundation Amount'
+											label='مبلغ الكفالة'
 											precision={2}
 											withAsterisk
 										/>
@@ -631,7 +637,7 @@ export default function OrphanForm({ orphan, guardians }: Props): JSX.Element {
 					)}
 				</div>
 				<div className='text-center'>
-					<Button type='submit'>Submit</Button>
+					<Button type='submit'>{orphan ? 'تعديل' : 'إضافة'}</Button>
 				</div>
 			</form>
 		</div>
