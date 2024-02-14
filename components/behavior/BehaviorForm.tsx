@@ -88,24 +88,24 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 	if (!hydrate) return <Loader size={100} />;
 	return (
 		<>
-			<Container className='bg-white'>
+			<Container className='bg-white py-3'>
 				<Center className='shadow p-2 m-2'>
-					{behavior ? <Title>Edit Behavior Info</Title> : <Title>Add New Behavior Info</Title>}
+					{behavior ? <Title>تعديل معلومات السلوك</Title> : <Title>معلومات السلوك</Title>}
 				</Center>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Container className='flex flex-wrap space-x-5' p={15}>
 						<Controller
 							name='date'
-							rules={{ required: 'Date is required' }}
+							rules={{ required: 'التاريخ مطلوب' }}
 							control={control}
 							render={({ field }) => {
 								return (
 									<DateInput
 										{...field}
-										label='Behavior data'
+										label='التاريخ'
 										w={'45%'}
 										defaultDate={behavior?.date as Date}
-										placeholder='date'
+										placeholder='التاريخ'
 										withAsterisk
 										error={errors.date && errors.date.message}
 									/>
@@ -121,7 +121,7 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 									<TextInput
 										{...field}
 										disabled
-										label='User'
+										label='بواسطة'
 										value={behavior ? behavior?.User?.name : session?.user.username}
 										w={'45%'}
 									/>
@@ -133,27 +133,27 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 							control={control}
 							// rules={{ required: 'User' }}
 							render={({ field }) => {
-								return <Textarea {...field} name='note' label='Note' defaultValue={behavior?.note} w={'45%'} />;
+								return <Textarea {...field} name='note' label='ملاحظة' defaultValue={behavior?.note} w={'45%'} />;
 							}}
 						/>
 						<Controller
 							name='OrphanID'
 							control={control}
 							rules={{
-								required: 'Orphan is required',
+								required: 'اختر يتيم ',
 								//  pattern: { value: /^\d/i, message: 'select orphan' }
 							}}
 							render={({ field }) => {
 								return (
 									<Select
 										{...field}
-										label='Orphans'
-										placeholder='choose orphan'
+										label='الايتام'
+										placeholder='اختر يتيم'
 										searchable
 										w={'45%'}
 										withAsterisk
 										error={errors.OrphanID && errors.OrphanID.message}
-										nothingFound='Not Found'
+										nothingFound='لا يوجد'
 										data={orphans.map((x) => ({ value: x.id.toString(), label: x.name }))}
 									/>
 								);
@@ -165,9 +165,9 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 						<Table striped highlightOnHover withBorder p={10}>
 							<thead>
 								<tr>
-									<th>id</th>
-									<th>title</th>
-									<th>evaluation</th>
+									<th>#</th>
+									<th>المعيار</th>
+									<th>التقييم</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -185,10 +185,10 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 												control={control}
 												defaultValue={field.evaluation}
 												rules={{
-													required: 'Rate orphan performance',
+													required: 'قيم أداء اليتيم',
 												}}
 												render={({ field }) => {
-													return <Rating {...field} placeholder='choose orphan' />;
+													return <Rating {...field} placeholder='اختر يتيم' />;
 												}}
 											/>
 										</td>
@@ -205,7 +205,7 @@ export default function BehaviorForm({ orphans, behavior, criteria }: Props): JS
 						</Table>
 					</Container>
 					<Group position='center' pt={45}>
-						<Button type='submit'>Submit</Button>
+						<Button type='submit'>إرسال</Button>
 					</Group>
 				</form>
 			</Container>

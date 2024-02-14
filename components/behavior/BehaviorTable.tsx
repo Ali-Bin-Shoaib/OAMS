@@ -15,7 +15,7 @@ export default function BehaviorTable({ behavior }: Props) {
 			{
 				accessorFn: (row) => row.date.toDateString(),
 				id: 'date',
-				header: 'date',
+				header: 'التاريخ',
 				maxSize: 100,
 				size: 90,
 				enableResizing: true,
@@ -23,7 +23,7 @@ export default function BehaviorTable({ behavior }: Props) {
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User.name',
-				header: 'taken by',
+				header: 'بواسطة',
 				maxSize: 150,
 				size: 140,
 				enableResizing: true,
@@ -33,7 +33,7 @@ export default function BehaviorTable({ behavior }: Props) {
 					row.BehaviorCriteria &&
 					(row.BehaviorCriteria.reduce((total, x) => total + x.evaluation, 0) / row.BehaviorCriteria.length).toFixed(2),
 				id: 'behavior.length',
-				header: 'evaluation',
+				header: 'التقييم',
 				maxSize: 100,
 				size: 90,
 				enableResizing: true,
@@ -47,11 +47,11 @@ export default function BehaviorTable({ behavior }: Props) {
 			data={behavior}
 			columns={columns}
 			deleteUrl={'api/behavior/'}
-			editUrl={'edit/'}
+			editUrl={'behavior/edit/'}
 			deleteTitle={'Behavior'}
-			infoUrl={''}
-			action={false}
-			title='Behavior Table'
+			infoUrl={'behavior/'}
+			action={true}
+			title='جدول السلوك'
 		/>
 	);
 }

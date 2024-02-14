@@ -58,8 +58,8 @@ export default function Index({ orphans }: Props) {
 		<>
 			<div className='text-center'>
 				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}behavior/create`)}>
+					أضف معلومات سلوك جديدة
 					<IconPlus />
-					Add new Behavior
 				</Button>
 			</div>
 			<Container p={10}>
@@ -68,13 +68,13 @@ export default function Index({ orphans }: Props) {
 						console.log('🚀 ~ file: index.tsx:71 ~ onChange={ ~ id:', id);
 						setId(Number(id));
 					}}
-					label='Orphans'
-					placeholder='choose orphan'
-					description={'Select an orphan to show related behavior info'}
+					label='الايتام'
+					placeholder='اختر يتيم'
+					description={'اختر يتيم لعرض معلومات سلوكة'}
 					searchable
 					w={'45%'}
 					withAsterisk
-					nothingFound='Not Found'
+					nothingFound='لا يوجد'
 					data={orphans?.map((x) => ({ value: x.id.toString(), label: x.name }))}
 				/>
 			</Container>

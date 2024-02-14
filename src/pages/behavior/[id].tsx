@@ -48,34 +48,32 @@ function Info({ stringData }: Props) {
 
 	if (!hydration || !behavior) return <Loader size={100} />;
 	return (
-		<div style={{ margin: 'auto', maxWidth: 800 }}>
+		<div style={{ margin: 'auto', maxWidth: 800 }} className='py-3' >
 			<Group position='center' style={{ margin: 20 }}>
-				<Title weight={700}>behavior Info</Title>
+				<Title weight={700}>معلومات السلوك</Title>
 				{/* add other components as needed */}
 			</Group>
 			{behavior ? (
 				<Paper p={'xl'} shadow='sm' m={0} withBorder>
 					<SimpleGrid cols={2} p={10}>
-						<Text weight={700}>ID:</Text>
+						<Text weight={700}>#:</Text>
 						<Text>{behavior.id}</Text>
-						<Text weight={700}>Orphan Name:</Text>
+						<Text weight={700}>الاسم:</Text>
 						<Text>{behavior.Orphan.name}</Text>
-						<Text weight={700}>Created by:</Text>
+						<Text weight={700}>بواسطة:</Text>
 						<Text>{behavior.User.name}</Text>
-						<Text weight={700}>Date:</Text>
+						<Text weight={700}>التاريخ:</Text>
 						<Text>{behavior?.date?.toDateString()}</Text>
-						<Text weight={700}>Note:</Text>
+						<Text weight={700}>ملاحظة:</Text>
 						<Text>{behavior.note}</Text>
 						<Text weight={700}>Total Evaluation:</Text>
 						<Text>{CalculateAverage(behavior.BehaviorCriteria.map((x) => x.evaluation)).toFixed(2)}</Text>
 					</SimpleGrid>
 					<Table striped highlightOnHover withBorder p={10}>
-						<thead>
-							<tr>
-								<th></th>
-								<th>title</th>
-								<th>evaluation</th>
-							</tr>
+						<thead className='text-right'>
+								<th>#</th>
+								<th>المعيار</th>
+								<th>التقييم</th>
 						</thead>
 						<tbody>
 							{behavior.BehaviorCriteria.map((field, index) => (
@@ -91,20 +89,14 @@ function Info({ stringData }: Props) {
 									</td>
 								</tr>
 							))}
-							{/* <tr>
-									<td>
-										<Button.Group>
-											<ActionIcon></ActionIcon>
-										</Button.Group>
-									</td>
-								</tr> */}
+
 						</tbody>
 					</Table>
 					<Group position='right' p={10}>
 						<Button.Group>
 							<DeleteModal id={behavior.id!} title={'behavior'} url={'api/behavior/'} redirectUrl={`${serverLink}behavior`} />
 
-							<Tooltip label={'Edit'}>
+							<Tooltip label={'تعديل'}>
 								<Button
 									size='xs'
 									onClick={() => {
@@ -119,7 +111,7 @@ function Info({ stringData }: Props) {
 				</Paper>
 			) : (
 				<Text>
-					Loading...
+					تحميل...
 					<Loader />
 				</Text>
 			)}
