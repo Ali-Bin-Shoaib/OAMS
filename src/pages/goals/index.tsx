@@ -29,7 +29,7 @@ function Index({ goals }: Props) {
 	return (
 		<>
 			{/* <div>Index</div> */}
-			<MyModal ModelForm={<GoalForm />} modalTitle={'Add Goal'} buttonText={'Add Goal'} modalSize={'md'} />
+			<MyModal ModelForm={<GoalForm />} modalTitle={'إضافة هدف'} buttonText={'إضافة هدف'} modalSize={'md'} />
 			<GoalTable goals={goals} />
 		</>
 	);

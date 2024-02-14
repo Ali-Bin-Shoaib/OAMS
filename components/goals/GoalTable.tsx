@@ -27,11 +27,11 @@ function GoalTable({ goals, updateCard }: Props) {
 	const [goalInfo, setGoalInfo] = useState(null);
 	const columns = useMemo<MRT_ColumnDef<Goal & { User: User }>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 30 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 60, size: 30 },
 			{
 				accessorFn: (row) => row?.title,
 				id: 'title',
-				header: 'title',
+				header: 'الهدف',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -39,7 +39,7 @@ function GoalTable({ goals, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User',
-				header: 'Created by',
+				header: 'بواسطة',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -65,31 +65,31 @@ function GoalTable({ goals, updateCard }: Props) {
 				displayColumnDefOptions={{ 'mrt-row-actions': { size: 0 } }}
 				renderRowActions={({ row }) => (
 					<Button.Group>
-						<DeleteModal id={row.original.id!} title={'Goal'} url={'api/goal/'} />
+						<DeleteModal id={row.original.id!} title={'الهدف'} url={'api/goal/'} />
 
 						<MyModal
 							ModelForm={<GoalForm goal={row.original} />}
-							modalTitle={'Edit Goal'}
+							modalTitle={'تعديل الهدف'}
 							buttonColor='yellow'
 							icon={<IconEdit />}
 							size='xs'
-							tooltip='Edit'
+							tooltip='تعديل'
 							modalSize={'md'}
 							m={0}
 						/>
 
 						<Modal opened={opened} size={'lg'} onClose={close}>
-							<Title align='center'>Goal Info</Title>
+							<Title align='center'>معلومات الهدف</Title>
 							<Divider m={10} p={10} />
 							{goalInfo && <GoalCard goal={goalInfo} />}
 							<Group position='center'>
 								<Button color='gray' m={15} onClick={close}>
-									Close
+									إغلاق
 								</Button>
 							</Group>
 						</Modal>
 						<Group>
-							<Tooltip label={'Info'}>
+							<Tooltip label={'تفاصيل'}>
 								<Button
 									size={'xs'}
 									onClick={async () => {

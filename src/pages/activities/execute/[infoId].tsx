@@ -55,21 +55,21 @@ function Info({ stringData }: Props) {
 			{activityExecution ? (
 				<Paper p={'xl'} shadow='sm' m={40}>
 					<SimpleGrid cols={2}>
-						<Text weight={700}>ID:</Text>
+						<Text weight={700}>#:</Text>
 						<Text>{activityExecution.id}</Text>
-						<Text weight={700}>Activity Title:</Text>
+						<Text weight={700}>عنوان النشاط:</Text>
 						<Text>{activityExecution?.ActivityInfo?.title}</Text>
-						<Text weight={700}>Executer:</Text>
+						<Text weight={700}>المنفذ:</Text>
 						<Text>{activityExecution?.Executor?.name}</Text>
-						<Text weight={700}>Start Date:</Text>
+						<Text weight={700}>تاريخ البداية:</Text>
 						<Text>{activityExecution?.startDate?.toDateString()}</Text>
-						<Text weight={700}>Cost:</Text>
+						<Text weight={700}>التكلفة:</Text>
 						<Text>{activityExecution.cost}</Text>
-						<Text weight={700}>Description:</Text>
+						<Text weight={700}>الوصف:</Text>
 						<Text>{activityExecution.description}</Text>
-						<Text weight={700}>Note:</Text>
+						<Text weight={700}>ملاحظة:</Text>
 						<Text>{activityExecution.note}</Text>
-						<Text weight={700}>Goals:</Text>
+						<Text weight={700}>الأهداف:</Text>
 						{/* <Text>{activityExecution.GoalEvaluation.map((x) => x.Goal.title).join(',')}</Text> */}
 						<Group>
 							{activityExecution?.GoalEvaluation?.map((x) => {
@@ -80,7 +80,7 @@ function Info({ stringData }: Props) {
 								);
 							})}
 						</Group>
-						<Text weight={700}>Evaluation:</Text>
+						<Text weight={700}>التقييم:</Text>
 						<Text>
 							{activityExecution?.GoalEvaluation
 								? activityExecution.OrphanActivityExecution
@@ -103,7 +103,7 @@ function Info({ stringData }: Props) {
 								url={'api/execute/'}
 								redirectUrl={Pages.ActivityExecution.link}
 							/>
-							<Tooltip label={'Edit'}>
+							<Tooltip label={'تعديل'}>
 								<Button
 									size='xs'
 									onClick={() => {
@@ -117,7 +117,7 @@ function Info({ stringData }: Props) {
 					</Group>
 				</Paper>
 			) : (
-				<Text>Loading...</Text>
+				<Text>تحميل...</Text>
 			)}
 		</div>
 	);

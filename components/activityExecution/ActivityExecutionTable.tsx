@@ -12,11 +12,11 @@ function ActivityExecutionTable({ activitiesExecutions, action = true }: Props) 
 	console.log('🚀 ~ file: ~ ActivityExecutionTable');
 	const columns = useMemo<MRT_ColumnDef<_ActivityExecutionInfo>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 60, size: 50 },
 			{
 				accessorFn: (row) => row.ActivityInfo?.title,
 				id: 'title',
-				header: 'title',
+				header: 'العنوان',
 				maxSize: 100,
 				size: 100,
 				enableResizing: true,
@@ -24,7 +24,7 @@ function ActivityExecutionTable({ activitiesExecutions, action = true }: Props) 
 			{
 				accessorFn: (row) => row.startDate?.toDateString(),
 				id: 'date',
-				header: 'date',
+				header: 'التاريخ',
 				maxSize: 110,
 				size: 80,
 				enableResizing: true,
@@ -32,7 +32,7 @@ function ActivityExecutionTable({ activitiesExecutions, action = true }: Props) 
 			{
 				accessorFn: (row) => row.Executor?.name,
 				id: 'Executer',
-				header: 'Executer',
+				header: 'المنفذ',
 				maxSize: 100,
 				size: 100,
 				enableResizing: true,
@@ -40,7 +40,7 @@ function ActivityExecutionTable({ activitiesExecutions, action = true }: Props) 
 			{
 				accessorFn: (row) => row.cost,
 				id: 'Cost',
-				header: 'Cost',
+				header: 'التكلفة',
 				maxSize: 70,
 				size: 70,
 				enableResizing: true,
@@ -48,7 +48,7 @@ function ActivityExecutionTable({ activitiesExecutions, action = true }: Props) 
 			{
 				accessorFn: (row) => row?.OrphanActivityExecution?.filter((x) => x.isAttended).length,
 				id: 'Attended Orphans',
-				header: 'Attended Orphans',
+				header: 'عدد الأيتام الحاضرين',
 				maxSize: 100,
 				size: 100,
 				enableResizing: true,
@@ -56,7 +56,7 @@ function ActivityExecutionTable({ activitiesExecutions, action = true }: Props) 
 			{
 				accessorFn: (row) => row.activityEvaluation?.toFixed(2),
 				id: 'Evaluation',
-				header: 'Evaluation',
+				header: 'التقييم',
 				maxSize: 110,
 				size: 80,
 				enableResizing: true,
