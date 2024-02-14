@@ -62,8 +62,8 @@ export default function Index({ stringJson }: Props) {
 		<>
 			<div className='text-center'>
 				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}education/create`)}>
+					أضف معلومات تعليمية جديدة
 					<IconPlus />
-					Add new Education info
 				</Button>
 			</div>
 			<Container p={10}>
@@ -72,13 +72,13 @@ export default function Index({ stringJson }: Props) {
 						console.log('🚀 ~ file: index.tsx:71 ~ onChange={ ~ id:', id);
 						setId(Number(id));
 					}}
-					label='Orphans'
-					placeholder='choose orphan'
-					description={'Select an orphan to show related education info'}
+					label='الأيتام'
+					placeholder='اختر يتيم'
+					description={'اختر يتيم لعرض معلوماته التعليمية'}
 					searchable
 					w={'45%'}
 					withAsterisk
-					nothingFound='Orphan Not Found'
+					nothingFound='اليتيم غير موجود'
 					data={orphans?.map((x) => ({ value: x.id.toString(), label: x.name }))}
 				/>
 			</Container>

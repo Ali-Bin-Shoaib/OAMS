@@ -1,5 +1,5 @@
 {
-	"cSpell.words": ["birthdate", "cuid", "nextauth", "signin", "signout", "tanstack"],
+	"cSpell.words": ["birthdate", "cuid", "nextauth", "signin", "signout", "tanstack", "بيانات"],
 	"turboConsoleLog.addSemicolonInTheEnd": true,
 	"turboConsoleLog.insertEnclosingFunction": true,
 	"turboConsoleLog.insertEnclosingClass": false

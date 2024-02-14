@@ -17,11 +17,11 @@ function HealthTable({ health, action }: Props) {
 	console.log('🚀 ~ file: ~ HealthTable');
 	const columns = useMemo<MRT_ColumnDef<Health>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 60, size: 50 },
 			{
 				accessorFn: (row) => row.date.toDateString(),
 				id: 'date',
-				header: 'Date',
+				header: 'التاريخ',
 				maxSize: 60,
 				size: 50,
 				enableResizing: true,
@@ -29,7 +29,7 @@ function HealthTable({ health, action }: Props) {
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User.name',
-				header: 'Taken By',
+				header: 'بواسطة',
 				maxSize: 120,
 				size: 100,
 				enableResizing: true,
@@ -37,7 +37,7 @@ function HealthTable({ health, action }: Props) {
 			{
 				accessorFn: (row) => row.disease,
 				id: 'disease',
-				header: 'Disease',
+				header: 'المرض',
 				maxSize: 200,
 				size: 120,
 				enableResizing: true,
@@ -45,7 +45,7 @@ function HealthTable({ health, action }: Props) {
 			{
 				accessorFn: (row) => row.description,
 				id: 'description',
-				header: 'Description',
+				header: 'الوصف',
 				maxSize: 200,
 				size: 120,
 				enableResizing: true,
@@ -61,7 +61,7 @@ function HealthTable({ health, action }: Props) {
 			deleteUrl={'api/health/'}
 			editUrl={'edit/'}
 			deleteTitle={'Health'}
-			infoUrl={''}
+			infoUrl={'health/'}
 			title='Health Table'
 			action={action}
 		/>

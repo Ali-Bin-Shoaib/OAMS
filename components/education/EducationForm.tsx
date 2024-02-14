@@ -99,7 +99,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 	if (!hydrate) return <Loader size={100} />;
 	return (
 		<>
-			<Center p={10}>{education ? <Title>Edit Education Info</Title> : <Title>Education Info</Title>}</Center>
+			<Center p={10}>{education ? <Title>تعديل المعلومات التعليمية</Title> : <Title>المعلومات التعليمية</Title>}</Center>
 			<Paper shadow='sm' withBorder p={10} mx={100}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Center pb={20}>
@@ -107,7 +107,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 							name='orphanId'
 							control={control}
 							rules={{
-								required: 'Orphan is required',
+								required: 'يجب اختيار يتيم لعرض معلوماته',
 							}}
 							render={({ field: { onChange } }) => {
 								return (
@@ -119,8 +119,8 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 												orphans.find((x) => x.id === Number(id))
 											);
 										}}
-										label='Orphans'
-										placeholder='choose orphan'
+										label='الأيتام'
+										placeholder='اختر يتيم'
 										// description='select an orphan '
 										required
 										defaultValue={education?.orphanId?.toString()}
@@ -129,7 +129,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										w={'45%'}
 										withAsterisk
 										error={errors.orphanId && errors.orphanId.message}
-										nothingFound='Not Found'
+										nothingFound='غير موجود'
 										data={orphans.map((x) => ({ value: x.id.toString(), label: x.name }))}
 										hoverOnSearchChange
 									/>
@@ -142,14 +142,14 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 
 						<Controller
 							name='date'
-							rules={{ required: 'Date is required' }}
+							rules={{ required: 'التاريخ مطلوب' }}
 							control={control}
 							defaultValue={education ? education.date : new Date()}
 							render={({ field }) => {
 								return (
 									<DatePickerInput
 										{...field}
-										label='data'
+										label='التاريخ'
 										w={'45%'}
 										placeholder='date'
 										withAsterisk
@@ -170,7 +170,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										{...field}
 										disabled
 										name='User.name'
-										label='User name'
+										label='بواسطة'
 										defaultValue={education?.User?.name || session?.user.name}
 										w={'45%'}
 									/>
@@ -186,10 +186,10 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 									<FileInput
 										{...field}
 										error={errors.scoreSheet && errors.scoreSheet.message}
-										label='Score Sheet'
+										label='كشف الدرجات'
 										accept='image/*'
 										w={'45%'}
-										placeholder='upload Score Sheet'
+										placeholder='ارفع كشف الدرجات'
 										withAsterisk
 									/>
 								);
@@ -198,7 +198,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 						<Controller
 							name='schoolYear'
 							control={control}
-							rules={{ required: 'School Year  is required' }}
+							rules={{ required: 'السنة الدراسية مطلوبة' }}
 							render={({ field: { onChange } }) => {
 								return (
 									<Select
@@ -210,7 +210,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										defaultValue={education?.schoolYear?.toString()}
 										w={'45%'}
 										multiple={true}
-										label='School Year'
+										label='السنة الدراسية'
 										withAsterisk
 										error={errors.schoolYear?.message && errors.schoolYear.message}
 									/>
@@ -220,7 +220,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 						<Controller
 							name='degree'
 							control={control}
-							rules={{ required: 'degree  is required' }}
+							rules={{ required: 'الدرجة مطلوبة' }}
 							render={({ field }) => {
 								return (
 									<Select
@@ -228,7 +228,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										data={$enum(Degree).map((x) => x.toString())}
 										w={'45%'}
 										multiple={true}
-										label='Degree'
+										label='الدجة'
 										withAsterisk
 										error={errors.schoolYear?.message && errors.schoolYear.message}
 									/>
@@ -240,7 +240,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 						<Controller
 							name='Orphan.schoolName'
 							control={control}
-							rules={{ required: 'School Name  is required' }}
+							rules={{ required: 'اسم المدرسة مطلوب' }}
 							render={({ field }) => {
 								return (
 									// @ts-ignore
@@ -249,7 +249,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										w={'45%'}
 										multiple={true}
 										disabled
-										label='School Name'
+										label='اسم المدرسة'
 										withAsterisk
 										error={errors.Orphan?.schoolName?.message && errors.Orphan.schoolName.message}
 									/>
@@ -262,14 +262,14 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 							render={({ field }) => {
 								return (
 									// @ts-ignore
-									<Textarea {...field} name='note' label='Note' autosize minRows={3} maxRows={5} w={'80%'} />
+									<Textarea {...field} name='note' label='ملاحظة' autosize minRows={3} maxRows={5} w={'80%'} />
 								);
 							}}
 						/>
 					</Group>
 					<Group position='center' p={50}>
 						<Button type='submit' size='md' w={'100%'}>
-							Submit
+							اضافة
 						</Button>
 					</Group>
 				</form>

@@ -75,7 +75,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 	if (!hydrate) return <Loader size={100} />;
 	return (
 		<>
-			<Center p={10}>{health ? <Title>Edit Health Info</Title> : <Title>Health Info</Title>}</Center>
+			<Center p={10}>{health ? <Title>تعديل المعلومات الصحية</Title> : <Title>المعلومات الصحية</Title>}</Center>
 			<Paper shadow='sm' withBorder p={10} mx={100}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Center pb={20}>
@@ -95,8 +95,8 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 												orphans.find((x) => x.id === Number(id))
 											);
 										}}
-										label='Orphans'
-										placeholder='choose orphan'
+										label='الايتام'
+										placeholder='اختر يتيم'
 										// description='select an orphan '
 
 										defaultValue={health?.orphanId.toString()}
@@ -104,7 +104,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 										w={'45%'}
 										withAsterisk
 										error={errors.orphanId && errors.orphanId.message}
-										nothingFound='Not Found'
+										nothingFound='غير موجود'
 										data={orphans.map((x) => ({ value: x.id.toString(), label: x.name }))}
 									/>
 								);
@@ -116,16 +116,16 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 
 						<Controller
 							name='date'
-							rules={{ required: 'Date is required' }}
+							rules={{ required: 'التاريخ مطلوب' }}
 							control={control}
 							defaultValue={health ? health.date : new Date()}
 							render={({ field }) => {
 								return (
 									<DatePickerInput
 										{...field}
-										label='data'
+										label='التاريخ'
 										w={'45%'}
-										placeholder='date'
+										placeholder='التاريخ'
 										withAsterisk
 										error={errors.date && errors.date.message}
 									/>
@@ -143,7 +143,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 									<TextInput
 										{...field}
 										disabled
-										label='Created by'
+										label='بواسطة'
 										defaultValue={health?.User?.name || session?.user.name}
 										w={'45%'}
 									/>
@@ -155,8 +155,8 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 							name='description'
 							control={control}
 							rules={{
-								required: 'Description  is required',
-								pattern: { value: /^[\w\S]/, message: 'invalid input' },
+								required: 'الوصف مطلوب',
+								pattern: { value: /^[\w\S]/, message: 'إدخال غير صحيح' },
 							}}
 							render={({ field }) => {
 								return (
@@ -165,7 +165,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 										{...field}
 										w={'45%'}
 										multiple={true}
-										label='Description'
+										label='الوصف'
 										withAsterisk
 										error={errors.description && errors.description.message}
 									/>
@@ -174,7 +174,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 						/>
 						<Controller
 							name='disease'
-							rules={{ required: 'Disease  is required', pattern: { value: /^[\w\S]/, message: 'invalid input' } }}
+							rules={{ required: 'اسم المرض مطلوب', pattern: { value: /^[\w\S]/, message: 'invalid input' } }}
 							control={control}
 							render={({ field }) => {
 								return (
@@ -183,7 +183,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 										{...field}
 										w={'45%'}
 										multiple={true}
-										label='Disease'
+										label='المرض'
 										withAsterisk
 										error={errors.disease && errors.disease.message}
 									/>
@@ -193,7 +193,7 @@ export default function HealthForm({ orphans, health }: Props): JSX.Element {
 					</Group>
 					<Group position='center' p={50}>
 						<Button type='submit' size='md' w={'100%'}>
-							Submit
+							إضافة
 						</Button>
 					</Group>
 				</form>

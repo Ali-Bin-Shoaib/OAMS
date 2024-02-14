@@ -11,11 +11,11 @@ function EducationTable({ education, action }: Props) {
 	console.log('🚀 ~ file: ~ EducationTable');
 	const columns = useMemo<MRT_ColumnDef<EducationInfo>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 50 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 60, size: 50 },
 			{
 				accessorFn: (row) => row.date.toDateString(),
 				id: 'date',
-				header: 'Date',
+				header: 'التاريخ',
 				maxSize: 60,
 				size: 50,
 				enableResizing: true,
@@ -23,7 +23,7 @@ function EducationTable({ education, action }: Props) {
 			{
 				accessorFn: (row) => row.degree,
 				id: 'degree',
-				header: 'Degree',
+				header: 'الدرجة',
 				maxSize: 65,
 				size: 60,
 				enableResizing: true,
@@ -31,7 +31,7 @@ function EducationTable({ education, action }: Props) {
 			{
 				accessorFn: (row) => row.note,
 				id: 'note',
-				header: 'Note',
+				header: 'ملاحظة',
 				maxSize: 120,
 				size: 100,
 				enableResizing: true,
@@ -45,7 +45,7 @@ function EducationTable({ education, action }: Props) {
 			data={education}
 			columns={columns}
 			deleteUrl={'api/education/'}
-			editUrl={'edit/'}
+			editUrl={'education/edit/'}
 			deleteTitle={'Education'}
 			infoUrl={'education/'}
 			action={action}

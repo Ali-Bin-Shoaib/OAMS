@@ -50,23 +50,23 @@ function Info({ stringData }: Props) {
 			{education ? (
 				<Paper p={'xl'} shadow='sm' m={0} withBorder>
 					<SimpleGrid cols={2} p={10}>
-						<Text weight={700}>ID:</Text>
+						<Text weight={700}>#:</Text>
 						<Text>{education.id}</Text>
-						<Text weight={700}>Orphan Name:</Text>
+						<Text weight={700}>الاسم:</Text>
 						<Text>{education.Orphan?.name}</Text>
-						<Text weight={700}>Created by:</Text>
+						<Text weight={700}>بواسطة:</Text>
 						<Text>{education?.User?.name}</Text>
-						<Text weight={700}>Date:</Text>
+						<Text weight={700}>التاريخ:</Text>
 						<Text>{education.date.toDateString()}</Text>
-						<Text weight={700}>School Name:</Text>
+						<Text weight={700}>اسم المدرسة:</Text>
 						<Text>{education.Orphan?.schoolName}</Text>
-						<Text weight={700}>School Year:</Text>
+						<Text weight={700}>السنة الدراسية:</Text>
 						<Text>{education.schoolYear}</Text>
-						<Text weight={700}>Degree:</Text>
+						<Text weight={700}>الدرجة:</Text>
 						<Text>{education.degree}</Text>
-						<Text weight={700}>Note:</Text>
+						<Text weight={700}>ملاحظة:</Text>
 						<Text className='text-ellipsis overflow-hidden'>{education.note}</Text>
-						<Text weight={700}>Score Sheet:</Text>
+						<Text weight={700}>كشف الدرجات:</Text>
 					</SimpleGrid>
 					<Group position='right' p={10}>
 						<Button.Group>
@@ -76,7 +76,7 @@ function Info({ stringData }: Props) {
 								url={'api/education/'}
 								redirectUrl={Pages.EducationInfo.link}
 							/>
-							<Tooltip label={'Edit'}>
+							<Tooltip label={'تعديل'}>
 								<Button
 									size='xs'
 									onClick={() => {

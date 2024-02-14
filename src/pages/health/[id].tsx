@@ -50,23 +50,23 @@ function Info({ stringData }: Props) {
 			{health ? (
 				<Paper p={'xl'} shadow='sm' m={0} withBorder>
 					<SimpleGrid cols={2} p={10}>
-						<Text weight={700}>ID:</Text>
+						<Text weight={700}>#:</Text>
 						<Text>{health.id}</Text>
-						<Text weight={700}>Orphan Name:</Text>
+						<Text weight={700}>الاسم:</Text>
 						<Text>{health.Orphan?.name}</Text>
-						<Text weight={700}>Created by:</Text>
+						<Text weight={700}>بواسطة:</Text>
 						<Text>{health.User?.name}</Text>
-						<Text weight={700}>Date:</Text>
+						<Text weight={700}>التاريخ:</Text>
 						<Text>{health.date.toDateString()}</Text>
-						<Text weight={700}>Disease:</Text>
+						<Text weight={700}>المرض:</Text>
 						<Text>{health.disease}</Text>
-						<Text weight={700}>Description:</Text>
+						<Text weight={700}>الوصف:</Text>
 						<Text>{health.description}</Text>
 					</SimpleGrid>
 					<Group position='right' p={10}>
 						<Button.Group>
 							<DeleteModal id={health.id!} title={'health'} url={'api/health/'} redirectUrl={Pages.HealthInfo.link} />
-							<Tooltip label={'Edit'}>
+							<Tooltip label={'تعديل'}>
 								<Button
 									size='xs'
 									onClick={() => {
@@ -81,8 +81,7 @@ function Info({ stringData }: Props) {
 				</Paper>
 			) : (
 				<Text>
-					No data...
-					<Loader />
+					لا يوجد بيانات ... <Loader />
 				</Text>
 			)}
 		</div>
