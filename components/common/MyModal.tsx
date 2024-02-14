@@ -48,7 +48,7 @@ export default function MyModal({
 	const [opened, { open, close }] = useDisclosure(isOpen || false);
 	return (
 		<>
-			<Modal opened={opened} size={modalSize} padding={0} onClose={close} closeOnClickOutside={false}>
+			<Modal opened={opened} size={modalSize} padding={0} onClose={close} closeOnClickOutside={false} dir='rtl'>
 				{/* Modal content */}
 				<Title align='center'>{modalTitle}</Title>
 				<Divider m={10} p={10} />

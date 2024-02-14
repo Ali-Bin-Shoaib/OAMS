@@ -33,8 +33,7 @@ function Index({ criteria }: Props) {
 	if (!hydration) return <Loader />;
 	return (
 		<>
-			<div>Index</div>
-			<MyModal ModelForm={<CriteriaForm />} modalTitle={'Add Criterion'} buttonText={'Add Criterion'} modalSize={'md'} />
+			<MyModal ModelForm={<CriteriaForm />} modalTitle={'أضف معيار'} buttonText={'أضف معيار'} modalSize={'md'} />
 			<CriteriaTable criteria={criteria} />
 		</>
 	);

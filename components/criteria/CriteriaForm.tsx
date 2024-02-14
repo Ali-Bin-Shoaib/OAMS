@@ -64,14 +64,14 @@ export default function CriteriaForm({ criteria, close }: Props): JSX.Element {
 					<Controller
 						name='title'
 						control={control}
-						rules={{ required: 'title is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+						rules={{ required: 'المعيار مطلوب', pattern: { value: /^[\w\S]/, message: 'إدخال غير صحيح.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									size='md'
-									label='title'
-									placeholder='title'
+									label='المعيار'
+									placeholder='المعيار'
 									withAsterisk
 									error={errors.title && errors.title.message}
 								/>
@@ -80,7 +80,7 @@ export default function CriteriaForm({ criteria, close }: Props): JSX.Element {
 					/>
 					<Group position='center' pt={50}>
 						<Button type='submit' fullWidth>
-							Submit
+							إرسال
 						</Button>
 					</Group>
 				</form>

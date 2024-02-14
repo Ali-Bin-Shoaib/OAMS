@@ -21,11 +21,11 @@ function CriteriaTable({ criteria }: Props) {
 	const [criterion, setCriterion] = useState(null);
 	const columns = useMemo<MRT_ColumnDef<Criteria & { User: User }>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 30 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 60, size: 30 },
 			{
 				accessorFn: (row) => row?.title,
 				id: 'title',
-				header: 'title',
+				header: 'المعيار',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -33,7 +33,7 @@ function CriteriaTable({ criteria }: Props) {
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User',
-				header: 'Created by',
+				header: 'بواسطة',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -63,38 +63,16 @@ function CriteriaTable({ criteria }: Props) {
 
 						<MyModal
 							ModelForm={<CriteriaForm criteria={row.original} />}
-							modalTitle={'Edit Criteria'}
+							modalTitle={'تعديل معيار'}
 							buttonColor='yellow'
 							icon={<IconEdit />}
 							size='xs'
-							tooltip='Edit'
+							tooltip='تعديل'
 							modalSize={'md'}
 							m={0}
 						/>
 
-						{/* <Modal opened={opened} size={'lg'} onClose={close}>
-							<Title align='center'>Criteria Info</Title>
-							<Divider m={10} p={10} />
-							{criteria && <CriteriaCard criterion={criterion} />}
-							<Group position='center'>
-								<Button color='gray' m={15} onClick={close}>
-									Close
-								</Button>
-							</Group>
-						</Modal>
-						<Group>
-							<Tooltip label={'Info'}>
-								<Button
-									size={'xs'}
-									onClick={async () => {
-										const res = await axios.get<{ data: any; msg: string }>(`${serverLink}api/criteria/${row.original.id}`);
-										setCriterion(res.data.data);
-										open();
-									}}>
-									{<IconInfoCircle />}
-								</Button>
-							</Tooltip>
-						</Group> */}
+		
 					</Button.Group>
 				)}
 			/>
