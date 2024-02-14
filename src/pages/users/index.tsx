@@ -43,7 +43,7 @@ export default function Index({ stringUsers }: Props) {
 			<div className='text-center pb-4'>
 				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}users/action/create`)}>
 					<IconPlus />
-					Add User
+					أضف مستخدم للنظام
 				</Button>
 			</div>
 			<UserTable users={users} updateCard={updateCard} />

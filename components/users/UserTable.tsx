@@ -18,11 +18,11 @@ function UserTable({ users: data, updateCard }: Props) {
 	console.log('🚀 ~ file: UserTable.tsx');
 	const columns = useMemo<MRT_ColumnDef<_User>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 100, minSize: 80, size: 80, enableResizing: true },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 100, minSize: 80, size: 80, enableResizing: true },
 			{
 				accessorFn: (row) => row.name,
 				id: 'name',
-				header: 'name',
+				header: ' الاسم الكامل',
 				maxSize: 120,
 				minSize: 80,
 				size: 150,
@@ -31,7 +31,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.gender,
 				id: 'gender',
-				header: 'gender',
+				header: 'الجنس',
 				maxSize: 90,
 				minSize: 80,
 				size: 150,
@@ -40,7 +40,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.username,
 				id: 'userName',
-				header: 'userName',
+				header: 'اسم المستخدم',
 				maxSize: 120,
 				minSize: 80,
 				size: 150,
@@ -49,7 +49,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.password,
 				id: 'password',
-				header: 'password',
+				header: 'كلمة المرور',
 				maxSize: 120,
 				minSize: 80,
 				size: 150,
@@ -58,7 +58,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.email,
 				id: 'email',
-				header: 'email',
+				header: 'البريد الإلكتروني',
 				maxSize: 120,
 				minSize: 80,
 				size: 150,
@@ -67,7 +67,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.address,
 				id: 'address',
-				header: 'address',
+				header: 'العنوان',
 				maxSize: 120,
 				minSize: 80,
 				size: 150,
@@ -76,7 +76,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.phone,
 				id: 'phone',
-				header: 'phone',
+				header: 'رقم الجوال',
 				maxSize: 120,
 				minSize: 80,
 				size: 150,
@@ -85,7 +85,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			{
 				accessorFn: (row) => row.type,
 				id: 'type',
-				header: 'type',
+				header: 'نوع المستخدم',
 				maxSize: 120,
 				minSize: 80,
 				size: 150,
@@ -94,54 +94,6 @@ function UserTable({ users: data, updateCard }: Props) {
 		],
 		[]
 	);
-	// const table = useMantineReactTable<_User>({
-	// 	columns,
-	// 	data,
-	// 	enableColumnFilterModes: true,
-	// 	enableColumnOrdering: true,
-	// 	enableFacetedValues: true,
-	// 	enableGrouping: true,
-	// 	enablePinning: true,
-	// 	initialState: { density: 'xs' },
-	// 	enableClickToCopy: true,
-	// 	enableBottomToolbar: true,
-	// 	positionToolbarAlertBanner: 'top',
-	// 	mantineTableBodyRowProps: ({ row }) => ({
-	// 		onClick: (event) => {
-	// 			updateCard(row.original);
-	// 		},
-	// 		sx: { cursor: 'pointer' },
-	// 	}),
-	// 	renderTopToolbarCustomActions: ({ table }) => {
-	// 		return <PrintButton table={table} handlePrint={} />;
-	// 	},
-	// 	mantineTableBodyCellProps: { sx: { border: '2px solid #dee2e6' } },
-	// 	mantineTableHeadCellProps: { sx: { border: '2px solid #dee2e6' } },
-	// 	mantineTableProps: { striped: true, sx: { border: '2px solid #dee2e6', tableLayout: 'fixed' } },
-	// 	enableColumnResizing: true,
-	// 	columnResizeMode: 'onEnd', //instead of the default "onChange" mode
-	// 	enableColumnActions: true,
-	// 	enableRowActions: true,
-	// 	displayColumnDefOptions: { 'mrt-row-actions': { size: 130 } },
-	// 	renderRowActions: ({ row }) => {
-	// 		return (
-	// 			<Button.Group>
-	// 				<DeleteModal id={row.original.id!} title={'User'} url={'api/user/'} />
-	// 				<Tooltip label={'Edit'}>
-	// 					<Button
-	// 						size='xs'
-	// 						onClick={() => {
-	// 							router.push(serverLink + 'users/action/' + row.original.id);
-	// 						}}
-	// 						color='yellow'>
-	// 						<IconEdit />
-	// 					</Button>
-	// 				</Tooltip>
-	// 			</Button.Group>
-	// 		);
-	// 	},
-	// });
-	// return <MantineReactTable table={table} />;
 	return (
 		<TableComponent
 			data={data}

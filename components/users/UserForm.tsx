@@ -85,9 +85,9 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 								return (
 									<TextInput
 										{...field}
-										label='name'
+										label='الاسم'
 										error={errors.name && errors.name.message}
-										placeholder='name'
+										placeholder='الاسم'
 										withAsterisk
 									/>
 								);
@@ -96,10 +96,10 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						<Controller
 							name='gender'
 							control={control}
-							rules={{ required: 'gender is required' }}
+							rules={{ required: 'الجنس مطلوب' }}
 							render={({ field }) => {
 								return (
-									<Radio.Group {...field} label={'Gender'} error={errors.gender && errors.gender.message} withAsterisk>
+									<Radio.Group {...field} label={'الجنس'} error={errors.gender && errors.gender.message} withAsterisk>
 										<Group mt='md'>
 											{$enum(Gender).map((g) => (
 												<Radio key={v4()} value={g} label={g.toLowerCase()} />
@@ -112,15 +112,15 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						<Controller
 							name='username'
 							control={control}
-							rules={{ required: 'username is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+							rules={{ required: 'اسم المستخدم مطلوب', pattern: { value: /^[\w\S]/, message: 'ادخال خاطئ.' } }}
 							render={({ field }) => {
 								return (
 									<TextInput
 										{...field}
 										// onChange={(value)=>{
 										// }}
-										label='username'
-										placeholder='username'
+										label='اسم المستخدم'
+										placeholder='اسم المستخدم'
 										withAsterisk
 										error={errors.username && errors.username.message}
 									/>
@@ -131,8 +131,8 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							name='password'
 							control={control}
 							rules={{
-								required: 'password is required',
-								pattern: { value: /^[\w\S]/, message: 'invalid input.' },
+								required: 'كلمة المرور مطلوبة',
+								pattern: { value: /^[\w\S]/, message: 'ادخال خاطئ.' },
 								// pattern: {
 								// 	value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+-]).{8,}$/,
 								// 	message: `invalid password. it should contains:At least: 8 characters, one lowercase letter, one uppercase letter, one digit, one special character`,
@@ -141,9 +141,10 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							render={({ field }) => {
 								return (
 									<PasswordInput
+									dir='ltr'
 										{...field}
-										label='password'
-										placeholder='password'
+										label='كملة المرور'
+										placeholder='كملة المرور'
 										withAsterisk
 										visibilityToggleIcon={({ reveal, size }) => (!reveal ? <IconEye size={size} /> : <IconEyeOff size={size} />)}
 										error={errors.password && errors.password.message}
@@ -155,18 +156,18 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							name='email'
 							control={control}
 							rules={{
-								required: 'email is required',
+								required: 'البريد الإلكتروني مطلوب',
 								pattern: {
 									value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-									message: 'Invalid Email. example: yourEmail@gmail.com ',
+									message: 'بريد إلكتروني خاطئ. مثال للإدخال الصحيح: yourEmail@gmail.com ',
 								},
 							}}
 							render={({ field }) => {
 								return (
 									<TextInput
 										{...field}
-										label='email'
-										placeholder='email'
+										label='البريد الإلكتروني'
+										placeholder='البريد الإلكتروني'
 										type='email'
 										required
 										withAsterisk
@@ -179,15 +180,15 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						<Controller
 							name='address'
 							control={control}
-							rules={{ required: 'address is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+							// rules={{ required: 'address is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
 							render={({ field }) => {
 								return (
 									<TextInput
 										{...field}
 										error={errors.address && errors.address.message}
-										label='address'
-										placeholder='address'
-										withAsterisk
+										label='العنوان'
+										placeholder='العنوان'
+										// withAsterisk
 									/>
 								);
 							}}
@@ -195,25 +196,25 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						<Controller
 							name='phone'
 							control={control}
-							rules={{
-								required: 'Phone number is required.',
-								// max: { value: 799999999, message: '> 799999999' },
-								// min: { value: 699999999, message: '> 699999999' },
-								// $/^(?:(?:\+|00)9677|0?7)[01378]\d{7}|(?:(?:\+|00)967|0)[1-7]\d{6}$/
-								pattern: {
-									value: /^(^\+\d{0,3})?(\s)?(\d{9,12})$/,
-									message: 'invalid phone number. valid value: +967 776640541',
-								},
-							}}
+							// rules={{
+							// 	required: 'Phone number is required.',
+							// 	// max: { value: 799999999, message: '> 799999999' },
+							// 	// min: { value: 699999999, message: '> 699999999' },
+							// 	// $/^(?:(?:\+|00)9677|0?7)[01378]\d{7}|(?:(?:\+|00)967|0)[1-7]\d{6}$/
+							// 	pattern: {
+							// 		value: /^(^\+\d{0,3})?(\s)?(\d{9,12})$/,
+							// 		message: 'invalid phone number. valid value: +967 776640541',
+							// 	},
+							// }}
 							render={({ field }) => {
 								return (
 									<TextInput
 										{...field}
 										type='tel'
-										withAsterisk
+										// withAsterisk
 										error={errors.phone && errors.phone.message}
-										label='phone'
-										name='phone'
+										label='رقم الجوال'
+										name='رقم الجوال'
 									/>
 								);
 							}}
@@ -224,7 +225,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 								name='type'
 								control={control}
 								rules={{
-									required: 'User type is required',
+									required: 'نوع المستخدم مطلوب',
 								}}
 								render={({ field }) => {
 									return (
@@ -234,7 +235,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 											error={errors.type && errors.type.message}
 											defaultValue={bigUser?.type}
 											withAsterisk
-											label='userType'
+											label='نوع المستخدم'
 											name='type'
 											// dropdownPosition='bottom'
 										/>
@@ -247,14 +248,14 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 							<Controller
 								name='Guardian.relationship'
 								control={control}
-								rules={{ required: 'relationship is required', pattern: { value: /^[\w\S]/, message: 'invalid input' } }}
+								rules={{ required: 'علاقة الوصي باليتيم مطلوبة', pattern: { value: /^[\w\S]/, message: 'ادخال خاطئ' } }}
 								render={({ field }) => {
 									return (
 										<TextInput
 											{...field}
 											error={errors.Guardian?.relationship && errors.Guardian.message}
-											label='Relationship'
-											placeholder='relationship'
+											label='العلاقة'
+											placeholder='العلاقة'
 											withAsterisk
 										/>
 									);
@@ -268,14 +269,14 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 								<Controller
 									name='Sponsor.birthdate'
 									control={control}
-									rules={{ required: 'birthdate is required' }}
+									// rules={{ required: 'birthdate is required' }}
 									render={({ field }) => {
 										return (
 											<DatePickerInput
 												{...field}
 												valueFormat='YYYY MM D'
-												label='Birthdate'
-												placeholder='birthdate'
+												label='تاريخ الميلاد'
+												placeholder='تاريخ الميلاد'
 												withAsterisk
 												error={errors.Sponsor?.birthdate && errors.Sponsor.birthdate.message}
 											/>
@@ -285,14 +286,14 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 								<Controller
 									name='Sponsor.fax'
 									control={control}
-									rules={{ required: 'fax is required' }}
+									// rules={{ required: 'fax is required' }}
 									render={({ field }) => {
 										return (
 											<TextInput
 												{...field}
 												error={errors.Sponsor?.fax && errors.Sponsor.fax.message}
-												label='fax'
-												placeholder='fax'
+												label='الفاكس'
+												placeholder='الفاكس'
 												withAsterisk
 											/>
 										);
@@ -301,14 +302,14 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 								<Controller
 									name='Sponsor.identityNumber'
 									control={control}
-									rules={{ required: 'Identity Number is required' }}
+									rules={{ required: 'رقم الهوية مطلوب' }}
 									render={({ field }) => {
 										return (
 											<TextInput
 												{...field}
 												error={errors.Sponsor?.identityNumber && errors.Sponsor.identityNumber.message}
-												label='identityNumber'
-												placeholder='identityNumber'
+												label='رقم الهوية مطلوب'
+												placeholder='رقم الهوية مطلوب'
 												// hideControls
 												withAsterisk
 											/>
@@ -321,7 +322,7 @@ export default function UserForm({ bigUser, userType }: Props): JSX.Element {
 						)}
 						<Group position='center' pt={50}>
 							<Button type='submit' fullWidth loading={isLoading}>
-								Submit
+								إرسال
 							</Button>
 						</Group>
 					</form>
