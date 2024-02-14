@@ -83,7 +83,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 	return (
 		<Container>
 			<Card withBorder p={'xl'}>
-				<Title align='center'>Activity Info</Title>
+				<Title align='center'>معلومات النشاط</Title>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Controller
 						name='date'
@@ -95,8 +95,8 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 								<DatePickerInput
 									{...field}
 									size={'md'}
-									label='data'
-									placeholder='date'
+									label='التاريخ'
+									placeholder='التاريخ'
 									withAsterisk
 									error={errors.date && errors.date.message}
 								/>
@@ -107,14 +107,14 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='title'
 						control={control}
-						rules={{ required: 'title is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+						rules={{ required: 'العنوان مطلوب', pattern: { value: /^[\w\S]/, message: 'إدخال خاطئ.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									size={'md'}
-									label='title'
-									placeholder='title'
+									label='العنوان'
+									placeholder='العنوان'
 									withAsterisk
 									error={errors.title && errors.title.message}
 								/>
@@ -124,14 +124,14 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='budget'
 						control={control}
-						rules={{ required: 'budget is required', min: { value: 0, message: 'Value must be zero or more.' } }}
+						rules={{ required: 'الميزانية مطلوبة', min: { value: 0, message: 'لا يمكن إدخال قيمة أقل من صفر.' } }}
 						render={({ field }) => {
 							return (
 								<NumberInput
 									{...field}
 									size={'md'}
-									label='budget'
-									placeholder='budget'
+									label='الميزانية'
+									placeholder='الميزانية'
 									withAsterisk
 									error={errors.budget && errors.budget.message}
 								/>
@@ -141,14 +141,14 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='target'
 						control={control}
-						rules={{ required: 'target is required' }}
+						rules={{ required: 'المستهدفين مطلوب' }}
 						render={({ field }) => {
 							return (
 								<Select
 									{...field}
 									size={'md'}
-									label='target'
-									placeholder='target'
+									label='المستهدفين'
+									placeholder='المستهدفين'
 									data={$enum(Grade).map((x) => x)}
 									withAsterisk
 									error={errors.target && errors.target.message}
@@ -159,14 +159,14 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='type'
 						control={control}
-						rules={{ required: 'type is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+						rules={{ required: 'النوع مطلوب', pattern: { value: /^[\w\S]/, message: 'ادخال خاطئ.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									size={'md'}
-									label='type'
-									placeholder='type'
+									label='النوع'
+									placeholder='النوع'
 									withAsterisk
 									error={errors.type && errors.type.message}
 								/>
@@ -176,7 +176,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='quarter'
 						control={control}
-						rules={{ required: 'startDate is required' }}
+						rules={{ required: 'الربع السنوي مطلوب' }}
 						render={({ field }) => {
 							return (
 								<Select
@@ -184,7 +184,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 									size={'md'}
 									data={$enum(Quarter).map((x) => x.toString())}
 									multiple={true}
-									label='quarter'
+									label='الربع السنوي'
 									withAsterisk
 									error={errors.quarter?.message && errors.quarter.message}
 								/>
@@ -194,7 +194,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					<Controller
 						name='ActivityGoal'
 						control={control}
-						rules={{ required: 'select at lest one goal' }}
+						rules={{ required: 'اختر هدف واحد على الأقل' }}
 						render={({ field: { onChange } }) => {
 							return (
 								<MultiSelect
@@ -213,7 +213,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 									}}
 									clearable
 									size={'md'}
-									label='Select activity goals'
+									label='اختر أهداف النشاط'
 									withAsterisk
 									error={errors.ActivityGoal?.message && errors.ActivityGoal.message}
 								/>
@@ -222,7 +222,7 @@ export default function ActivityForm({ activityInfo, goalInfo }: Props): JSX.Ele
 					/>
 					<Group position='center' pt={50}>
 						<Button type='submit' fullWidth>
-							Submit
+							إرسال
 						</Button>
 					</Group>
 				</form>

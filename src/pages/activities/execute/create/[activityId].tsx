@@ -44,7 +44,7 @@ function Create({ stringData }: Props) {
 
 	return (
 		<>
-			<h1>Create ActivityExecutionInfo </h1>
+			<h1 className='text-center'>إضافة معلومات تنفيذ النشاط </h1>
 			<ExecutionForm activityInfo={activity} orphans={orphans} />
 		</>
 	);

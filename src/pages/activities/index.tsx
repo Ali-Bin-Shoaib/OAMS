@@ -60,7 +60,7 @@ export default function Index({ stringData }: Props) {
 				<Group position='center'>
 					<Button size='xl' m={15} onClick={() => router.push(serverLink + 'activities/create')}>
 						<IconPlus />
-						Add New Activity
+						أضف نشاط جديد
 					</Button>
 				</Group>
 				<ActivityTable activities={activities} />

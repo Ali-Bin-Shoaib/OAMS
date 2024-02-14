@@ -49,7 +49,7 @@ function Info({ stringData }: Props) {
 	return (
 		<div style={{ margin: 'auto', maxWidth: 800 }}>
 			<Group position='center' style={{ margin: 20 }}>
-				<Title weight={700}>Activity Execution Info</Title>
+				<Title weight={700}>معلومات تنفيذ النشاط</Title>
 				{/* add other components as needed */}
 			</Group>
 			{activityExecution ? (

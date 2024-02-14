@@ -12,11 +12,11 @@ function ActivityTable({ activities }: Props) {
 	console.log('🚀 ~ file: ~ ActivityTable');
 	const columns = useMemo<MRT_ColumnDef<_ActivityInfo>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 50, size: 50 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 50, size: 50 },
 			{
 				accessorFn: (row) => row.title,
 				id: 'title',
-				header: 'title',
+				header: 'العنوان',
 				maxSize: 60,
 				size: 50,
 				enableResizing: true,
@@ -24,7 +24,7 @@ function ActivityTable({ activities }: Props) {
 			{
 				accessorFn: (row) => row.date?.toDateString(),
 				id: 'date',
-				header: 'date',
+				header: 'التاريخ',
 				maxSize: 60,
 				size: 50,
 				enableResizing: true,
@@ -33,7 +33,7 @@ function ActivityTable({ activities }: Props) {
 			{
 				accessorFn: (row) => row.budget,
 				id: 'budget',
-				header: 'Budget',
+				header: 'الميزانية',
 				maxSize: 60,
 				size: 50,
 				enableResizing: true,
@@ -41,7 +41,7 @@ function ActivityTable({ activities }: Props) {
 			{
 				accessorFn: (row) => row.quarter,
 				id: 'quarter',
-				header: 'quarter',
+				header: 'الربع',
 				maxSize: 60,
 				size: 50,
 				enableResizing: true,
@@ -49,7 +49,7 @@ function ActivityTable({ activities }: Props) {
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User',
-				header: 'User',
+				header: 'بواسطة',
 				maxSize: 80,
 				size: 70,
 				enableResizing: true,

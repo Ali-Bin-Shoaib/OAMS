@@ -138,9 +138,9 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 		<Container fluid>
 			<Card withBorder p={'xl'}>
 				<Group position='apart' mt='md' mb='xs'>
-					<Title order={3}>activity id:{activityExecutionInfo?.ActivityInfo?.id || activityInfo?.id}</Title>
-					<Title order={3}>activity title:{activityExecutionInfo?.ActivityInfo?.title || activityInfo?.title}</Title>
-					<Title order={3}>created by:{activityExecutionInfo?.ActivityInfo?.User.name || activityInfo?.User?.name}</Title>
+					<Title order={3}>رقم النشاط:{activityExecutionInfo?.ActivityInfo?.id || activityInfo?.id}</Title>
+					<Title order={3}>عنوان النشاط:{activityExecutionInfo?.ActivityInfo?.title || activityInfo?.title}</Title>
+					<Title order={3}>بواسطة:{activityExecutionInfo?.ActivityInfo?.User.name || activityInfo?.User?.name}</Title>
 				</Group>
 				<Divider />
 				<form onSubmit={handleSubmit(onSubmit)}>
@@ -153,8 +153,8 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 							return (
 								<DatePickerInput
 									{...field}
-									label='startDate'
-									placeholder='startDate'
+									label='تاريخ البداية'
+									placeholder='تاريخ البداية'
 									size='md'
 									withAsterisk
 									error={errors.startDate && errors.startDate.message}
@@ -165,14 +165,14 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 					<Controller
 						name='description'
 						control={control}
-						rules={{ required: 'description is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+						rules={{ required: 'الوصف مطلوب', pattern: { value: /^[\w\S]/, message: 'إدخال خاطئ.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									size='md'
-									label='description'
-									placeholder='description'
+									label='الوصف'
+									placeholder='الوصف'
 									withAsterisk
 									error={errors.description && errors.description.message}
 								/>
@@ -182,14 +182,14 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 					<Controller
 						name='cost'
 						control={control}
-						rules={{ required: 'cost is required', min: { value: 0, message: 'value must be zero or more.' } }}
+						rules={{ required: 'التكلفة مطلوبة', min: { value: 0, message: 'لا يمكن إدخال قيمة أقل من صفر.' } }}
 						render={({ field }) => {
 							return (
 								<NumberInput
 									{...field}
 									size={'md'}
-									label='cost'
-									placeholder='cost'
+									label='التكلفة'
+									placeholder='التكلفة'
 									withAsterisk
 									error={errors.cost && errors.cost.message}
 								/>
@@ -199,22 +199,22 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 					<Controller
 						name='note'
 						control={control}
-						rules={{ required: 'note is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+						// rules={{ required: 'الملاحظة مطلوبة', pattern: { value: /^[\w\S]/, message: 'إج.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									size={'md'}
-									label='note'
-									placeholder='note'
-									withAsterisk
+									label='ملاحظة'
+									placeholder='ملاحظة'
+									// withAsterisk
 									error={errors.note && errors.note.message}
 								/>
 							);
 						}}
 					/>
 					<Divider m={10} />
-					<Title align='center'>Activity Goals</Title>
+					<Title align='center'>أهداف النشاط</Title>
 					<Divider m={10} />
 					<Group position='apart'>
 						<SimpleGrid
@@ -235,18 +235,18 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 								</Card>
 							))}
 						</SimpleGrid>
-						<Text className='text-center font-bold'>Activity Evaluation:{activityEvaluation?.toFixed(2)}</Text>
+						<Text className='text-center font-bold'>تقييم النشاط:{activityEvaluation?.toFixed(2)}</Text>
 					</Group>
 					<Divider m={10} />
-					<Title align='center'>Attend Orphans and Evaluate Their Performance</Title>
+					<Title align='center'>حضر الأيتام وقيم أداءهم في النشاط</Title>
 					<Divider m={10} />
 					<Table withBorder>
 						<thead>
 							<tr className='text-center'>
-								<th>id</th>
-								<th>Name</th>
-								<th>Is Attended</th>
-								<th>Evaluation</th>
+								<th>#</th>
+								<th>الاسم</th>
+								<th>حاضر</th>
+								<th>التقييم</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -317,7 +317,7 @@ export default function ExecutionForm({ activityInfo, activityExecutionInfo, orp
 
 					<Group position='center' pt={50}>
 						<Button type='submit' fullWidth>
-							Submit
+							إرسال
 						</Button>
 					</Group>
 				</form>

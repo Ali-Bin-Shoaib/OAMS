@@ -60,36 +60,36 @@ function Info({ stringData }: Props) {
 	if (!hydration || !jsonData) return <Loader size={100} />;
 	return (
 		<div style={{ margin: 'auto', maxWidth: 800 }}>
-			<h1 className='text-center shadow p-2 bg-slate-50'>Activity Info</h1>
+			<h1 className='text-center shadow p-2 bg-slate-50'>معلومات النشاط</h1>
 			{/* add other components as needed */}
 			{activity ? (
 				<Paper p={'xl'} withBorder className='hover:shadow-md' m={40}>
 					<SimpleGrid cols={2}>
-						<Text weight={700}>ID:</Text>
+						<Text weight={700}>#:</Text>
 						<Text>{activity.id}</Text>
-						<Text weight={700}>Title:</Text>
+						<Text weight={700}>العنوان:</Text>
 						<Text>{activity.title}</Text>
-						<Text weight={700}>User:</Text>
+						<Text weight={700}>بواسطة:</Text>
 						<Text>{activity.User.name}</Text>
-						<Text weight={700}>Date:</Text>
+						<Text weight={700}>التاريخ:</Text>
 						<Text>{activity.date.toDateString()}</Text>
-						<Text weight={700}>Budget:</Text>
+						<Text weight={700}>الميزانية:</Text>
 						<Text>{activity.budget}</Text>
-						<Text weight={700}>Target:</Text>
+						<Text weight={700}>المستهدفين:</Text>
 						<Text>{activity.target}</Text>
-						<Text weight={700}>Type:</Text>
+						<Text weight={700}>النوع:</Text>
 						<Text>{activity.type}</Text>
-						<Text weight={700}>Quarter:</Text>
+						<Text weight={700}>الربع السنوي:</Text>
 						<Text>{activity.quarter}</Text>
-						<Text weight={700}>Goals:</Text>
+						<Text weight={700}>اللأهداف:</Text>
 						<Container p={0} m={0}>
 							{activity.ActivityGoal.map((x) => (
 								<Badge key={x.id}>{x.Goal.title}</Badge>
 							))}
 						</Container>
-						<Text weight={700}>Executions:</Text>
+						<Text weight={700}>مرات التنفيذ:</Text>
 						<Text>{activity.ActivityExecutionInfo.reduce((total, object) => total + 1, 0)}</Text>
-						<Text weight={700}>Total Evaluation:</Text>
+						<Text weight={700}>إجمالي تقييمات التنفيذات السابقة :</Text>
 						<Text>
 							{activity.ActivityExecutionInfo.map((x) => x) &&
 							CalculateTotalEvaluation(
@@ -106,7 +106,7 @@ function Info({ stringData }: Props) {
 					<Group position='right'>
 						<Button.Group>
 							<DeleteModal id={activity.id!} title={'activity'} url={'api/activity/'} redirectUrl={Pages.Activities.link} />
-							<Tooltip label={'Edit'}>
+							<Tooltip label={'تعديل'}>
 								<Button
 									size='xs'
 									onClick={() => {
@@ -120,7 +120,7 @@ function Info({ stringData }: Props) {
 					</Group>
 				</Paper>
 			) : (
-				<Text>Loading...</Text>
+				<Text>تحميل...</Text>
 			)}
 		</div>
 	);

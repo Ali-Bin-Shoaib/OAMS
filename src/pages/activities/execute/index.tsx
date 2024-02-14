@@ -56,7 +56,7 @@ function Index({ activitiesExecutions }: Props) {
 				<Group position='center'>
 					<Button size='xl' m={15} onClick={() => router.push(Pages.Activities.link)}>
 						<IconPlus />
-						Execute Activity
+						تنفيذ النشاط
 					</Button>
 				</Group>
 				{/* <ActivityExecutionCard activityExecutionInfo={cardInfo} updateCard={updateCard} /> */}
