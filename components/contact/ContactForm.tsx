@@ -62,7 +62,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 					<Controller
 						name='Orphan.id'
 						control={control}
-						rules={{ required: 'Name field is required' }}
+						rules={{ required: 'الاسم مطلوب' }}
 						render={({ field: { onChange } }) => {
 							return (
 								<Select
@@ -75,8 +75,8 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 									}}
 									data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
 									size='md'
-									label='Orphan Name'
-									placeholder='name'
+									label='اسم اليتيم'
+									placeholder='الاسم'
 									withAsterisk
 									error={errors.Orphan && errors?.Orphan?.name?.message}
 									// description='select an orphan '
@@ -85,7 +85,7 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 									searchable
 									selectOnBlur
 									// w={'45%'}
-									nothingFound='Not Found'
+									nothingFound='لا يوجد'
 									hoverOnSearchChange
 								/>
 							);
@@ -95,14 +95,14 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 					<Controller
 						name='name'
 						control={control}
-						rules={{ required: 'Name field is required', pattern: { value: /^[\w\S]/, message: 'invalid input.' } }}
+						rules={{ required: 'الاسم مطلوب', pattern: { value: /^[\w\S]/, message: 'ادخال خاطىء.' } }}
 						render={({ field }) => {
 							return (
 								<TextInput
 									{...field}
 									size='md'
-									label='Contact Name'
-									placeholder='name'
+									label='اسم جهة الاتصال'
+									placeholder='الاسم'
 									withAsterisk
 									error={errors.name && errors.name.message}
 								/>
@@ -113,10 +113,10 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 						name='phone'
 						control={control}
 						rules={{
-							required: 'Phone is required',
+							required: 'رقم الجوال مطلوب',
 							pattern: {
 								value: /^(^\+\d{0,3})?(\s)?(\d{9,12})$/,
-								message: 'invalid phone number. valid value: +967 776640541',
+								message: 'صيغة الرقم خاطئة، الصغية المقبولة: +967 776640541',
 							},
 						}}
 						render={({ field }) => {
@@ -125,8 +125,8 @@ export default function ContactForm({ contact, close }: Props): JSX.Element {
 									{...field}
 									type='tel'
 									size='md'
-									label='Phone'
-									placeholder='Phone'
+									label='رقم الجوال'
+									placeholder='الرقم'
 									withAsterisk
 									error={errors.phone && errors.phone.message}
 								/>

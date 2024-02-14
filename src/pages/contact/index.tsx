@@ -58,11 +58,11 @@ function Index({ orphans }: Props) {
 		setHydration(true);
 	}, [id, orphans]);
 	if (!hydration) return <Loader />;
-	if (!orphans) return <h1>No Orphans Registered</h1>;
+	if (!orphans) return <h1>لا يوجد أيتام</h1>;
 	return (
 		<>
 			<OrphanContext.Provider value={orphansList || []}>
-				<Group px={'xl'} py={'xs'} position='apart'>
+				<Group px={'xl'} py={'xs'} position='apart' >
 					<Select
 						onChange={(id) => {
 							console.log('🚀 ~ file: index.tsx:61 ~ Index ~ id:', id);
@@ -75,20 +75,25 @@ function Index({ orphans }: Props) {
 						}}
 						data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
 						size='md'
-						label='Orphan name'
-						placeholder='Orphan name'
+						label='الاسم'
+						placeholder='الاسم'
 						withAsterisk
 						// error={errors.Orphan && errors.Orphan.name.message}
-						description={<h4 className='text-orange-300 p-0 m-0'>select an orphan to show related emergency contact info</h4>}
+						description={<h4 className='text-orange-300 p-0 m-0'>اختر يتيم لعرض معلومات الاتصال</h4>}
 						required
 						// defaultValue={contact?.orphanId.toString()}
 						searchable
 						selectOnBlur
 						w={'45%'}
-						nothingFound='Not Found'
+						nothingFound='لا يوجد'
 						hoverOnSearchChange
 					/>
-					<MyModal ModelForm={<ContactForm />} modalTitle={'Add Contact'} buttonText={'Add Contact'} modalSize={'md'} />
+					<MyModal
+						ModelForm={<ContactForm />}
+						modalTitle={'أضف معلومات اتصال'}
+						buttonText={'أضف معلومات اتصال'}
+						modalSize={'md'}
+					/>
 				</Group>
 				<Skeleton visible={isLoading}>
 					<ContactTable contact={orphanContact || []} />

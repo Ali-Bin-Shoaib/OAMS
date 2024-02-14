@@ -23,11 +23,11 @@ function ContactTable({ contact }: Props) {
 	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<Contact>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 30 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 60, size: 30 },
 			{
 				accessorFn: (row) => row?.User?.name,
 				id: 'User.name',
-				header: 'Created By',
+				header: 'بواسطة',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -35,7 +35,7 @@ function ContactTable({ contact }: Props) {
 			{
 				accessorFn: (row) => row.name,
 				id: 'name',
-				header: 'Name',
+				header: 'الاسم',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -43,7 +43,7 @@ function ContactTable({ contact }: Props) {
 			{
 				accessorFn: (row) => row.phone,
 				id: 'phone',
-				header: 'Phone number',
+				header: 'رقم الجوال',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -69,14 +69,14 @@ function ContactTable({ contact }: Props) {
 				enableToolbarInternalActions
 				renderRowActions={({ row }) => (
 					<Button.Group>
-						<DeleteModal id={row.original.id!} title={'Contact'} url={'api/contact/'} />
+						<DeleteModal id={row.original.id!} title={'جهة الاتصال'} url={'api/contact/'} />
 						<MyModal
 							ModelForm={<ContactForm contact={row.original} />}
-							modalTitle={'Edit Contact'}
+							modalTitle={'تعديل جهة الاتصال'}
 							buttonColor='yellow'
 							icon={<IconEdit />}
 							size='xs'
-							tooltip='Edit'
+							tooltip='تعديل'
 							modalSize={'md'}
 							m={0}
 						/>
@@ -97,17 +97,17 @@ export function ContactInfo({ id }: CardProps) {
 	return (
 		<>
 			<Modal opened={opened} size={'lg'} onClose={close}>
-				<Title align='center'>Contact Info</Title>
+				<Title align='center'>معلومات جهة الاتصال</Title>
 				<Divider m={10} p={10} />
 				{contact && <ContactCard contact={contact} />}
 				<Group position='center'>
 					<Button color='gray' m={15} onClick={close}>
-						Close
+						إغلاق
 					</Button>
 				</Group>
 			</Modal>
 			<Group>
-				<Tooltip label={'Info'}>
+				<Tooltip label={'تفاصيل'}>
 					<Button
 						color='gray'
 						size={'xs'}
