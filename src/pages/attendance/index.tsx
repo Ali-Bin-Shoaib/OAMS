@@ -44,8 +44,8 @@ export default function Index({ stringJson }: Props) {
 		<>
 			<div className='text-center'>
 				<Button size='xl' m={15} onClick={() => router.push(serverLink + 'attendance/create')}>
+					أضف تحضير جديد
 					<IconPlus />
-					Add new Attendance
 				</Button>
 			</div>
 			<div className=' p-0.5 mx-auto my-0.5 flex flex-wrap justify-center'>
@@ -56,9 +56,9 @@ export default function Index({ stringJson }: Props) {
 						setSearchByName('');
 						e.target.value = '';
 					}}
-					label='Orphan Name'
-					placeholder='Search'
-					description='search about orphan by name'
+					label='اسم اليتيم'
+					placeholder='ابحث عن يتيم محدد'
+					description='ابحث بواسطة الاسم'
 					icon={<IconSearch />}
 				/>
 				<DateInput
@@ -67,8 +67,8 @@ export default function Index({ stringJson }: Props) {
 						setSearchByDate(new Date(input));
 						return new Date(input);
 					}}
-					label='Date'
-					description='search about orphan by attendance date'
+					label='التاريخ'
+					description='ابحث عن يتيم بتاريخ التحضير'
 					onChange={(e) => setSearchByDate(e as Date)}
 					w={'40%'}
 					clearable

@@ -80,7 +80,7 @@ function TableComponent({
 						url={deleteUrl}
 						redirectUrl={redirectUrl}
 					/>
-					<Tooltip label={'Edit'}>
+					<Tooltip label={'تعديل'}>
 						<Button
 							size='xs'
 							onClick={() => {
@@ -90,7 +90,7 @@ function TableComponent({
 							<IconEdit />
 						</Button>
 					</Tooltip>
-					<Tooltip label={'Info'}>
+					<Tooltip label={'تفاصيل'}>
 						<Button
 							size='xs'
 							onClick={() => {
@@ -101,7 +101,7 @@ function TableComponent({
 						</Button>
 					</Tooltip>
 					{executeUrl && (
-						<Tooltip label={'Execute'}>
+						<Tooltip label={'تنفيذ'}>
 							<Button
 								size='xs'
 								onClick={() => {

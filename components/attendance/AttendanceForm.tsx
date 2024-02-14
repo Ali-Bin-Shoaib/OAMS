@@ -139,10 +139,10 @@ export default function AttendanceForm({ orphans, attendance, disabled }: Props)
 									<DateInput
 										{...field}
 										disabled={disabled}
-										label='Attendance data'
+										label='التاريخ'
 										w={'45%'}
 										// defaultDate={attendance?.date || new Date()}
-										placeholder='date'
+										placeholder='تاريخ التحضير'
 										withAsterisk
 										error={errors.date && errors.date.message}
 									/>
@@ -157,7 +157,7 @@ export default function AttendanceForm({ orphans, attendance, disabled }: Props)
 									<TextInput
 										{...field}
 										disabled
-										label='Created by'
+										label='بواسطة'
 										defaultValue={attendance?.User?.name || session?.user.name}
 										w={'45%'}
 									/>
@@ -169,8 +169,9 @@ export default function AttendanceForm({ orphans, attendance, disabled }: Props)
 					<div className='container p-2 mx-auto my-2'>
 						<TextInput
 							onChange={(e) => setSearchByName(e.target.value)}
-							placeholder='Search'
-							description='search about orphan by name'
+							placeholder='ابحث'
+							dir='rtl'
+							description='ابحث عن يتيم بواسطة الاسم'
 							icon={<IconSearch />}
 						/>
 					</div>
@@ -178,19 +179,19 @@ export default function AttendanceForm({ orphans, attendance, disabled }: Props)
 					<Container fluid className='text-center overflow-y-auto max-h-screen '>
 						<Table withBorder className='bg-white table'>
 							<thead>
-								<tr className='text-center'>
-									<th className='text-center'>ID</th>
-									<th className='text-center'>Name</th>
-									<th className='text-center'>Is Attended</th>
+								{/* <tr className='text-center'> */}
+									<th className='text-center'>#</th>
+									<th className='text-center'>الاسم</th>
+									<th className='text-center'>حاضر</th>
 									{watch(`OrphanAttendance`).filter((x) => x.isAttended !== true).length !== 0 && (
 										<>
-											<th className='text-center'>Absent Reason</th>
-											<th className='text-center'>Justification</th>
-											<th className='text-center'>Notes</th>
-											<th className='text-center'>Return Day</th>
+											<th className='text-center'>أسباب الغياب</th>
+											<th className='text-center'>التبرير</th>
+											<th className='text-center'>ملاحضات</th>
+											<th className='text-center'>يوم العودة</th>
 										</>
 									)}
-								</tr>
+								{/* </tr> */}
 							</thead>
 							<tbody>
 								{fields.map(

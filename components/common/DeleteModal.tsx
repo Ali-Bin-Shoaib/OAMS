@@ -23,7 +23,7 @@ export default function DeleteModal({
 	id,
 	title,
 	url,
-	tooltip = 'Delete',
+	tooltip = 'حذف',
 	redirectUrl,
 	size = 'xs',
 	buttonOrIcon,

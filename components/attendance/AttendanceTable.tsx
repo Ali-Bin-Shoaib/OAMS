@@ -12,11 +12,11 @@ function AttendanceTable({ attendance, action = true }: Props) {
 	console.log('🚀 ~ file: ~ AttendanceTable');
 	const columns = useMemo<MRT_ColumnDef<_Attendance>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 100, size: 90 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 100, size: 90 },
 			{
 				accessorFn: (row) => row.date.toDateString(),
 				id: 'date',
-				header: 'date',
+				header: 'التاريخ',
 				maxSize: 110,
 				size: 100,
 				enableResizing: true,
@@ -24,7 +24,7 @@ function AttendanceTable({ attendance, action = true }: Props) {
 			{
 				accessorFn: (row) => row.User?.name,
 				id: 'User.name',
-				header: 'taken by',
+				header: 'بواسطة',
 				maxSize: 120,
 				size: 100,
 				enableResizing: true,
@@ -32,7 +32,7 @@ function AttendanceTable({ attendance, action = true }: Props) {
 			{
 				accessorFn: (row) => row.OrphanAttendance.filter((x) => x.isAttended === false).length,
 				id: 'OrphanAttendance.length',
-				header: 'Absent orphans',
+				header: 'عدد الغياب',
 				maxSize: 110,
 				size: 100,
 				enableResizing: true,

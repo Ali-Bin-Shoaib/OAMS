@@ -17,7 +17,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.Attendance.date?.toDateString(),
 				id: 'Attendance.date',
-				header: 'Date',
+				header: 'التاريخ',
 				maxSize: 100,
 				size: 100,
 				enableResizing: true,
@@ -25,7 +25,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			{
 				accessorFn: (row) => (row.isAttended ? 'yes' : 'no'),
 				id: 'isAttended',
-				header: 'Is Attended',
+				header: 'حاضر',
 				maxSize: 300,
 				size: 120,
 				enableResizing: true,
@@ -33,7 +33,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.absentReason,
 				id: 'absentReason',
-				header: 'Absent Reason',
+				header: 'أسباب الغياب',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -41,7 +41,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.notes,
 				id: 'notes',
-				header: 'Notes',
+				header: 'ملاحظات',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -49,7 +49,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.justification,
 				id: 'justification',
-				header: 'Justification',
+				header: 'التبرير',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -57,7 +57,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.returnDay?.toDateString(),
 				id: 'returnDay',
-				header: 'ReturnDay',
+				header: 'يوم العودة',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -75,7 +75,7 @@ function OrphanAttendanceTable({ orphanAttendance, actions = true }: Props) {
 			deleteTitle={''}
 			infoUrl={''}
 			action={false}
-			title='Attendance Table'
+			title='جدول الحضور'
 		/>
 	);
 }
