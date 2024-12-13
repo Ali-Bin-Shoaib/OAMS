@@ -72,7 +72,7 @@ function Info({ stringData }: Props) {
 						<Button.Group>
 							<DeleteModal
 								id={education.id!}
-								title={'education'}
+								title={'الحالة التعليمية'}
 								url={'api/education/'}
 								redirectUrl={Pages.EducationInfo.link}
 							/>
@@ -100,7 +100,7 @@ function Info({ stringData }: Props) {
 				</Paper>
 			) : (
 				<Text>
-					Loading...
+					تحميل...
 					<Loader />
 				</Text>
 			)}

@@ -60,9 +60,9 @@ function HealthTable({ health, action }: Props) {
 			columns={columns}
 			deleteUrl={'api/health/'}
 			editUrl={'edit/'}
-			deleteTitle={'Health'}
+			deleteTitle={'الحالة الصحية'}
 			infoUrl={'health/'}
-			title='Health Table'
+			title='جدول الحالة الصحية'
 			action={action}
 		/>
 	);

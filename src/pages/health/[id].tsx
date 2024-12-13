@@ -65,7 +65,7 @@ function Info({ stringData }: Props) {
 					</SimpleGrid>
 					<Group position='right' p={10}>
 						<Button.Group>
-							<DeleteModal id={health.id!} title={'health'} url={'api/health/'} redirectUrl={Pages.HealthInfo.link} />
+							<DeleteModal id={health.id!} title={'الحالة الصحية'} url={'api/health/'} redirectUrl={Pages.HealthInfo.link} />
 							<Tooltip label={'تعديل'}>
 								<Button
 									size='xs'

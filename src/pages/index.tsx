@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { IconLogin } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+
 export default function Home() {
 	const [hydration, setHydration] = useState(false);
 	const { data: session } = useSession();
@@ -31,38 +32,39 @@ export default function Home() {
 	if (!hydration) return <Loader />;
 	return (
 		<div>
-			{/* {!session && (
+			{/* الكود الخاص بالتسجيل / تسجيل الدخول مخفي حالياً
+			{!session && (
 				<nav className='nav'>
 					<div className='title'>
 						<Image className='icon' src={img1} alt='logo' />
 						<h2 className='title-home'>
-							Dar <span>Al-Fajar</span>
+							دار <span>الفجر</span>
 						</h2>
 					</div>
 					<ul className='pages' id='action'>
 						<li className='l-pages'>
 							<a href='#home' className='a'>
-								Home
+								الصفحة الرئيسية
 							</a>
 						</li>
 						<li className='l-pages'>
 							<a href='#about' className='a'>
-								About
+								من نحن
 							</a>
 						</li>
 						<li className='l-pages'>
 							<a href='#services' className='a'>
-								Services
+								خدماتنا
 							</a>
 						</li>
 						<li className='l-pages'>
 							<a href='#content' className='a'>
-								contact
+								تواصل معنا
 							</a>
 						</li>
 					</ul>
 					{!session && (
-						<Tooltip label='Login'>
+						<Tooltip label='تسجيل الدخول'>
 							<UnstyledButton className='btnlog'>
 								<IconLogin onClick={() => signIn()} />
 							</UnstyledButton>
@@ -75,13 +77,14 @@ export default function Home() {
 					</button>
 				</nav>
 			)} */}
+
 			<section className='home'>
 				<Anchor target={'home'}></Anchor>
 				<div className='content'>
 					<div className='content-texts'>
-						<h1>Dar Al-Fajr</h1>
+						<h1>دار الفجر</h1>
 						<h4>
-							For the Care and Rehabilitation of <span>Orphans </span>
+							لرعاية وتأهيل <span>الأيتام</span>
 						</h4>
 						<div className='social'>
 							<a href='https://instagram.com/daralfjr' target='_blank' className='social-img'>
@@ -102,12 +105,12 @@ export default function Home() {
 					<div className='sponsor'>
 						<div className='imgspon'>
 							<Image width={70} src={withsponsor} alt='' />
-							<h2> Sponsored orphans </h2>
+							<h2> الأيتام المكفولون </h2>
 							<h5>42</h5>
 						</div>
 						<div className='imgspon'>
 							<Image width={70} src={withoutsponsor} alt='' />
-							<h2> Unsponsored orphans </h2>
+							<h2> الأيتام غير المكفولين </h2>
 							<h5>21</h5>
 						</div>
 					</div>
@@ -125,28 +128,25 @@ export default function Home() {
 						<Image src={aboutus} alt='' />
 					</div>
 					<div className='content-texts'>
-						<h1> About us </h1>
+						<h1> من نحن </h1>
 						<p>
-							This Dar is an important vital project, and it is one of the pioneering social projects at the level of Hadramout
-							governorate in sponsoring orphans, raising them, caring for them, and rehabilitating them since 2009.
+							تعتبر هذه الدار مشروعاً حيوياً هاماً، وهي من المشاريع الاجتماعية الرائدة على مستوى محافظة حضرموت في كفالة الأيتام وتربيتهم ورعايتهم وتأهيلهم منذ عام 2009.
 						</p>
 						<p>
-							<span className='span'>Locatio : </span>
-							Republic of Yemen / Hadramout / Mukalla / Fuwa - Al Masaken / behind Fuwa Educational Complex for Girls
+							<span className='span'>الموقع : </span>
+							الجمهورية اليمنية / حضرموت / المكلا / فوة - المساكن / خلف المجمع التربوي للبنات
 						</p>
 						<p>
-							<span className='span'>Authority : </span>
-							Office of the Ministry of Social Affairs and Labor in Hadramout Coast, in partnership with Al-Fajr Social Charity
-							Foundation
+							<span className='span'>الجهة المشرفة : </span>
+							مكتب وزارة الشؤون الاجتماعية والعمل بساحل حضرموت، بالشراكة مع مؤسسة الفجر الخيرية الاجتماعية
 						</p>
 						<p>
-							<span className='span'>Our Vision : </span>
-							Distinguished care in social, psychological and developmental services aimed at rehabilitating the orphan and
-							raising his own abilities to live a decent life
+							<span className='span'>رؤيتنا : </span>
+							رعاية متميزة في الخدمات الاجتماعية والنفسية والتنموية تهدف إلى تأهيل اليتيم وتنمية قدراته ليحيا حياة كريمة
 						</p>
 						<p>
-							<span className='span'>Our Mission : </span>
-							lead in the care and rehabilitation of orphans through distinguished competencies and comprehensive programs
+							<span className='span'>رسالتنا : </span>
+							الريادة في رعاية وتأهيل الأيتام من خلال كفاءات متميزة وبرامج شاملة
 						</p>
 					</div>
 				</div>
@@ -156,24 +156,19 @@ export default function Home() {
 						<Image src={offer} alt='' />
 					</div>
 					<div className='content-texts'>
-						<h1> What the home offers to orphans </h1>
+						<h1> ما تقدمه الدار للأيتام </h1>
 
 						<p>
-							<span className='span'>Accommodation Program : </span> <br />
-							This program provides orphans residing in the home with social care, including subsistence, housing, clothing,
-							nutrition, educational care, health care, integrated educational care, rehabilitation, developmental,
-							professional and vocational courses, and targeted recreational activities
+							<span className='span'>برنامج الإيواء : </span> <br />
+							يوفر هذا البرنامج للأيتام المقيمين في الدار رعاية اجتماعية شاملة تشمل الإعاشة والإيواء والكسوة والتغذية والرعاية التعليمية والصحية ورعاية تربوية متكاملة، بالإضافة إلى الدورات التأهيلية والتنموية والمهنية والحرفية والأنشطة الترفيهية الهادفة.
 						</p>
 						<p>
-							<span className='span'>Sponsorship program : </span> <br />
-							This program provides monthly cash assistance and in-kind assistance to orphans who reside outside the home with
-							their families, and establishes educational, rehabilitative and recreational programs and activities as well as
-							developmental, vocational and craft courses.
+							<span className='span'>برنامج الكفالة : </span> <br />
+							يوفر هذا البرنامج مساعدات نقدية شهرية ومساعدات عينية للأيتام الذين يقيمون خارج الدار مع عائلاتهم، ويقيم برامج وأنشطة تعليمية وتأهيلية وترفيهية، وكذلك دورات تنموية ومهنية وحرفية.
 						</p>
 						<p>
-							<span className='span'>Honors program : </span> <br />
-							They are material and in-kind benefits for the orphans who are not sponsored by it, so they console them in their
-							difficult circumstances, motivate them in their education, and help them in their lives.
+							<span className='span'>برنامج التشريفات : </span> <br />
+							هي فوائد مادية وعينية للأيتام غير المكفولين، تواسيهم في ظروفهم الصعبة، تحفزهم في تعليمهم، وتساعدهم في حياتهم.
 						</p>
 					</div>
 				</div>
@@ -183,23 +178,15 @@ export default function Home() {
 						<Image src={output} alt='pages' />
 					</div>
 					<div className='content-texts'>
-						<h1> The most prominent outputs of Dar Al-Fajr </h1>
+						<h1> أبرز مخرجات دار الفجر </h1>
 						<p>
-							<span className='span'>Accommodation Program : </span> <br />
+							<span className='span'>مخرجات الدار : </span> <br />
 							<ul>
-								<li>Improving the standard of living of hundreds of families at the level of Hadramout governorate.</li>
-								<li>
-									Rehabilitating hundreds of orphans professionally and professionally and launching them into the labor market.
-								</li>
-								<li>
-									Rehabilitation of hundreds of orphans developmentally and intellectually through the establishment of many
-									rehabilitation programs.
-								</li>
-								<li>Improving the educational level of hundreds of orphans with a low educational level.</li>
-								<li>
-									Rehabilitating hundreds of mothers of orphans professionally through the establishment of vocational and craft
-									programs, and providing material and moral support for their own projects
-								</li>
+								<li>تحسين المستوى المعيشي لمئات الأسر في محافظة حضرموت.</li>
+								<li>تأهيل مئات الأيتام مهنياً وحرفياً وإطلاقهم إلى سوق العمل.</li>
+								<li>تأهيل مئات الأيتام تنموياً وفكرياً من خلال إقامة العديد من البرامج التأهيلية.</li>
+								<li>تحسين المستوى التعليمي لمئات الأيتام ذوي المستوى التعليمي المنخفض.</li>
+								<li>تأهيل مئات أمهات الأيتام مهنياً عبر إقامة برامج مهنية وحرفية، وتقديم الدعم المادي والمعنوي لمشاريعهن الخاصة.</li>
 							</ul>
 						</p>
 					</div>
@@ -210,15 +197,15 @@ export default function Home() {
 						<Image width={200} src={house} alt='' />
 					</div>
 					<div className='content-texts'>
-						<h1> House facilities and components </h1>
+						<h1> مرافق الدار ومكوناتها </h1>
 						<p>
-							<span className='span'>The house is divided into three modern bulildings containing </span> <br />
+							<span className='span'>تنقسم الدار إلى ثلاثة مبانٍ حديثة تحتوي على : </span> <br />
 							<ul>
-								<li>The number of (62) rooms that can accommodate (300) orphans.</li>
-								<li>The administration building, the dining hall and its annexes.</li>
-								<li>A mosque, classrooms and a health unit.</li>
-								<li>A computer room and a hall for training, rehabilitation and events.</li>
-								<li>A games room, a football field, and a volleyball court.</li>
+								<li>عدد (62) غرفة تستوعب (300) يتيم.</li>
+								<li>مبنى الإدارة وصالة الطعام وملحقاتها.</li>
+								<li>مسجد، وفصول دراسية، ووحدة صحية.</li>
+								<li>غرفة حاسوب وقاعة للتدريب والتأهيل والفعاليات.</li>
+								<li>غرفة ألعاب، وملعب كرة قدم، وملعب كرة طائرة.</li>
 							</ul>
 						</p>
 					</div>
@@ -227,62 +214,54 @@ export default function Home() {
 
 			<Anchor target='services'></Anchor>
 			<section className='services'>
-				<h1 className='text-center'>Services</h1>
+				<h1 className='text-center'>خدماتنا</h1>
 				<div className='box'>
 					<div className='card1'>
 						<Image src={socials} alt='' />
-						<h5>Social services</h5>
+						<h5>الخدمات الاجتماعية</h5>
 						<div className='par'>
 							<p>
-								It include many of the projects that it presented in this aspect, such as cash guarantees, food basket
-								distribution,and the distribution of clothes and shoes
+								تشمل العديد من المشاريع التي قدمتها في هذا الجانب، مثل الكفالات النقدية، توزيع السلات الغذائية، وتوزيع الملابس والأحذية.
 							</p>
 						</div>
 					</div>
 
 					<div className='card2'>
 						<Image src={Education} alt='' />
-						<h5>Education Services</h5>
+						<h5>الخدمات التعليمية</h5>
 						<div className='par'>
 							<p>
-								This aspect includes some methodes that help in the success of educational process, such as distributing the bag
-								and school uniforms, educational sponsorship, holding courses and remedial lessons
+								يشمل هذا الجانب بعض الأساليب التي تساعد في نجاح العملية التعليمية، مثل توزيع الحقيبة والزي المدرسي، والكفالة التعليمية، وعقد الدورات والدروس التقوية.
 							</p>
 						</div>
 					</div>
 					<div className='card3'>
 						<Image src={helgh} alt='' />
-						<h5>Health Services</h5>
+						<h5>الخدمات الصحية</h5>
 						<div className='par'>
 							<p>
-								On the health side, it also contributed to several operations, such as ensuring surgical operations, such as
-								ensuring surgical operations,taking care of treatments and medications, and periodic medical examination
+								على الجانب الصحي، ساهمت الدار أيضاً في إجراء العديد من العمليات الجراحية، والعناية بالعلاجات والأدوية، والكشف الطبي الدوري.
 							</p>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* <a name='skills'></a>
-
-			<a name='content'></a> */}
-			{/* <footer className='footer'>
+			{/*  
+			<footer className='footer'>
 				<div className='content-footer'>
-					<h2>Contact</h2>
-					<p> Yemen / Hadramout / Mukalla / Fuwa - Al Masaken / behind Fuwa Educational Complex for Girls </p>
+					<h2>تواصل معنا</h2>
+					<p> اليمن / حضرموت / المكلا / فوة - المساكن / خلف المجمع التربوي للبنات </p>
 
 					<a className='a' href='tel:00967777543654'>
-						{' '}
-						<h3>00967 - 777 543 654</h3>{' '}
+						<h3>00967 - 777 543 654</h3>
 					</a>
 					<a className='a' href='tel:00967772730370'>
-						{' '}
-						<h3>00967 - 772 730 370</h3>{' '}
+						<h3>00967 - 772 730 370</h3>
 					</a>
-
-					<h2></h2>
 				</div>
-			</footer> */}
+			</footer>
+			*/}
 		</div>
 	);
 }

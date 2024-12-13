@@ -13,7 +13,7 @@ const PrintButton = ({ table, handlePrint }: Props) => {
 			<ReactToPrint
 				pageStyle={'landscape'}
 				trigger={() => (
-					<Tooltip label='Print'>
+					<Tooltip label='طباعة'>
 						<Button>
 							<IconPrinter />
 						</Button>

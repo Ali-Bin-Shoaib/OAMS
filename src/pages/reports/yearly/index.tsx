@@ -80,14 +80,14 @@ export const getStaticProps: GetStaticProps = async () => {
 		});
 
 		const yearData: { label: string; value: number }[] = [
-			{ label: 'New Orphans:', value: orphansCount },
-			{ label: 'New Sponsorships:', value: sponsorshipsCount },
-			{ label: 'New Activities:', value: activitiesCount },
-			{ label: 'New Attendance:', value: attendancesCount },
-			{ label: 'New Executions:', value: executionsCount },
-			{ label: 'New Behaviors:', value: behaviorsCount },
-			{ label: 'New Health:', value: healthCount },
-			{ label: 'New Notifications:', value: notificationsCount },
+			{ label: 'الأيتام الجدد:', value: orphansCount },
+			{ label: 'الكفالات الجديدة:', value: sponsorshipsCount },
+			{ label: 'الأنشطة الجديدة:', value: activitiesCount },
+			{ label: 'التحضير الجديد:', value: attendancesCount },
+			{ label: 'المشاريع المنفذة الجديدة:', value: executionsCount },
+			{ label: 'معلومات السلوك الجديدة:', value: behaviorsCount },
+			{ label: 'المعلومات الصحية الجديدة:', value: healthCount },
+			{ label: 'الإشعارات الجديدة:', value: notificationsCount },
 		];
 		const data = { yearData, orphans };
 		const stringData = SuperJSON.stringify(data);
@@ -122,7 +122,7 @@ function YearlyReportIndex({ stringData }: Props) {
 				<Paper shadow='xl'>
 					<InfoComponent
 						data={yearData.map((x) => ({ label: x.label, value: x.value }))}
-						title={new Date().getUTCFullYear() + ' Entries'}
+						title={new Date().getUTCFullYear() + ' مدخلات'}
 					/>
 				</Paper>
 			</div>

@@ -16,7 +16,7 @@ export default function EditOrphanModal({ orphan, size = 'xs' }: Props) {
 	const [opened, { open, close }] = useDisclosure(false);
 	return (
 		<>
-			<Modal opened={opened} size={'auto'} onClose={close} title='Edit Orphan'>
+			<Modal opened={opened} size={'auto'} onClose={close} title='تعديل بيانات اليتيم'>
 				{/* Modal content */}
 				<h1>{orphan.id}</h1>
 				<OrphanForm orphan={orphan} close={close} guardians={[]} />

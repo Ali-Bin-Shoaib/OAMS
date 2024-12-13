@@ -60,13 +60,13 @@ export function UserAuthForm() {
 						<Controller
 							name='username'
 							control={control}
-							rules={{ required: 'User name is required' }}
+							rules={{ required: 'اسم المستخدم مطلوب' }}
 							render={({ field }) => (
 								<TextInput
 									{...field}
 									required
-									label='User Name'
-									placeholder='Your Name'
+									label='اسم المستخدم'
+									placeholder='أدخل اسمك هنا'
 									error={errors.username && errors.username.message}
 								/>
 							)}
@@ -76,13 +76,13 @@ export function UserAuthForm() {
 						<Controller
 							name='password'
 							control={control}
-							rules={{ required: 'Password is required' }}
+							rules={{ required: 'كلمة المرور مطلوبة' }}
 							render={({ field }) => (
 								<PasswordInput
 									{...field}
 									required
-									label='Password'
-									placeholder='Your password'
+									label='كلمة المرور'
+									placeholder='أدخل كلمة المرور هنا'
 									error={errors.password && errors.password.message}
 								/>
 							)}
@@ -91,7 +91,7 @@ export function UserAuthForm() {
 				</div>
 				<Group position='center' mt='xl'>
 					<Button type='submit' fullWidth size='lg' loading={isLoading}>
-						Login
+						تسجيل الدخول
 					</Button>
 				</Group>
 			</form>

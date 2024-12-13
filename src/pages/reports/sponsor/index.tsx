@@ -59,8 +59,8 @@ function SponsorReportIndex({ jsonData }: Props) {
 			<div className='p-2 m-2 pt-5'>
 				<div className='flex flex-wrap justify-around p-3'>
 					<Select
-						label='Sponsors'
-						description='select a sponsor to show his sponsorship info'
+						label='الكفلاء'
+						description='اختر كفيل لعرض تفاصيل الكفالة'
 						clearable
 						m={5}
 						searchable
@@ -81,14 +81,14 @@ function SponsorReportIndex({ jsonData }: Props) {
 				<div className=' p-1'>
 					<Center>
 						<Badge size='lg' color='cyan'>
-							<Text color='dark'>Sponsors: {sponsors.length}</Text>
+							<Text color='dark'>الكفلاء: {sponsors.length}</Text>
 						</Badge>
 						<Badge size='lg' color='cyan'>
-							<Text color='dark'>Sponsorships: {sponsorshipsCount}</Text>
+							<Text color='dark'>الكفالات: {sponsorshipsCount}</Text>
 						</Badge>
 						<Badge size='lg' color='cyan'>
 							<Text color='dark'>
-								Sponsored Orphans: {sponsoredOrphans} Of {orphansCount}
+								الأيتام المكفولين: {sponsoredOrphans} Of {orphansCount}
 							</Text>
 						</Badge>
 					</Center>

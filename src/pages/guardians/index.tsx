@@ -42,7 +42,7 @@ export default function Index({ stringGuardians }: Props) {
 			<div className='text-center'>
 				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}guardians/action/create`)}>
 					<IconPlus />
-					Add Guardian info
+					أضف وصي 
 				</Button>
 			</div>
 			<GuardianTable guardians={guardians} />

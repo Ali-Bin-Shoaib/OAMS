@@ -46,10 +46,10 @@ function EducationTable({ education, action }: Props) {
 			columns={columns}
 			deleteUrl={'api/education/'}
 			editUrl={'education/edit/'}
-			deleteTitle={'Education'}
+			deleteTitle={'الحالة التعليمية'}
 			infoUrl={'education/'}
 			action={action}
-			title='Education Table'
+			title='جدول الحالة التعليمية'
 		/>
 	);
 }

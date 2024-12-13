@@ -16,7 +16,7 @@ function OrphanActivityExecutionTable({ orphanActivityExecution }: Props) {
 			{
 				accessorFn: (row) => row.title,
 				id: 'activity',
-				header: 'Activity Title',
+				header: 'عنوان النشاط',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,
@@ -25,7 +25,7 @@ function OrphanActivityExecutionTable({ orphanActivityExecution }: Props) {
 			{
 				accessorFn: (row) => (row.isAttended ? 'yes' : 'no'),
 				id: 'isAttended',
-				header: 'Is Attended',
+				header: 'حاضر',
 				maxSize: 300,
 				size: 120,
 				enableResizing: true,
@@ -33,7 +33,7 @@ function OrphanActivityExecutionTable({ orphanActivityExecution }: Props) {
 			{
 				accessorFn: (row) => row.evaluation,
 				id: 'evaluation',
-				header: 'Evaluation',
+				header: 'التقييم',
 				maxSize: 150,
 				size: 130,
 				enableResizing: true,
@@ -41,7 +41,7 @@ function OrphanActivityExecutionTable({ orphanActivityExecution }: Props) {
 			{
 				accessorFn: (row) => row.startDate.toDateString(),
 				id: 'startDate',
-				header: 'Start Date',
+				header: 'تاريخ البداية',
 				maxSize: 300,
 				size: 200,
 				enableResizing: true,

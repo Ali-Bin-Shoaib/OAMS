@@ -27,8 +27,8 @@ export default function DeleteOrphanModal({ id = -1 }) {
 				try {
 					if (result) {
 						notifications.show({
-							title: `${result.orphan.name} Deleted`,
-							message: `${result.orphan.id}: ${result.orphan.name} Was Deleted`,
+							title: `${result.orphan.name} حذف`,
+							message: `${result.orphan.id}: ${result.orphan.name} حذف`,
 							color: 'green',
 							icon: <IconCheck />,
 						});
@@ -36,7 +36,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 					} else {
 						notifications.show({
 							title: 'Error',
-							message: `Orphan dose not exist.`,
+							message: `اليتيم غير موجود.`,
 							color: 'red',
 							icon: <IconX />,
 						});
@@ -48,7 +48,7 @@ export default function DeleteOrphanModal({ id = -1 }) {
 		});
 
 	return (
-		<Tooltip label={'Delete'}>
+		<Tooltip label={'حذف'}>
 			<Button onClick={openDeleteModal} color='red'>
 				<IconTrash />
 			</Button>

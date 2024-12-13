@@ -85,7 +85,7 @@ function Info({ stringData }: Props) {
 										<Text>{field.Criteria.title}</Text>
 									</td>
 									<td>
-										<Rating placeholder='choose orphan' value={field.evaluation} readOnly />
+										<Rating placeholder='اختر يتيم' value={field.evaluation} readOnly />
 									</td>
 								</tr>
 							))}
@@ -94,7 +94,7 @@ function Info({ stringData }: Props) {
 					</Table>
 					<Group position='right' p={10}>
 						<Button.Group>
-							<DeleteModal id={behavior.id!} title={'behavior'} url={'api/behavior/'} redirectUrl={`${serverLink}behavior`} />
+							<DeleteModal id={behavior.id!} title={'السلوك'} url={'api/behavior/'} redirectUrl={`${serverLink}behavior`} />
 
 							<Tooltip label={'تعديل'}>
 								<Button

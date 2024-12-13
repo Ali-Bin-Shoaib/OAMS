@@ -47,7 +47,7 @@ function AttendanceTable({ attendance, action = true }: Props) {
 			columns={columns}
 			deleteUrl={'api/attendance/'}
 			editUrl={'attendance/edit/'}
-			deleteTitle={'Attendance'}
+			deleteTitle={'الحضور'}
 			infoUrl={'attendance/'}
 			action={action}
 		/>

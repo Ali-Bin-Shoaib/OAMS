@@ -25,13 +25,13 @@ function OrphanCard({ orphan }: Props) {
 				</div>
 				<h2 className='font-bold text-center text-ellipsis overflow-hidden whitespace-nowrap '>{orphan?.name}</h2>
 				<div className='p-2 m-2'>
-					<Text size='xl'>Gender: {orphan?.gender}</Text>
-					<Text size='xl'>Age: {orphan?.age}</Text>
-					<Text size='xl'>School Name: {orphan?.schoolName}</Text>
-					<Text size='xl'>Grade Level: {orphan?.gradeLevel}</Text>
-					<Text size='xl'>Evaluation: {orphan?.evaluation}</Text>
-					<Text size='xl'>Guardian: {orphan?.Guardian?.user?.name}</Text>
-					<Text size='xl'>Sponsor: {orphan?.Sponsorship?.find((x) => x.isActive === true)?.Sponsor?.user?.name}</Text>
+					<Text size='xl'>الجنس: {orphan?.gender}</Text>
+					<Text size='xl'>العمر: {orphan?.age}</Text>
+					<Text size='xl'>اسم المدرسة: {orphan?.schoolName}</Text>
+					<Text size='xl'>المستوى الدراسي: {orphan?.gradeLevel}</Text>
+					<Text size='xl'>التقييم: {orphan?.evaluation}</Text>
+					<Text size='xl'>الوصي: {orphan?.Guardian?.user?.name}</Text>
+					<Text size='xl'>الكفيل: {orphan?.Sponsorship?.find((x) => x.isActive === true)?.Sponsor?.user?.name}</Text>
 				</div>
 			</>
 			<Divider />
@@ -40,12 +40,12 @@ function OrphanCard({ orphan }: Props) {
 					{/* <Tooltip label='Evaluate orphan'>
 							<Button>Evaluate</Button>
 						</Tooltip> */}
-					<Tooltip label='Orphan Info'>
+					<Tooltip label='تفاصيل اليتيم'>
 						<Button color='gray' onClick={() => router.push(Pages?.Orphans.link + orphan?.id)}>
 							<IconInfoCircle />
 						</Button>
 					</Tooltip>
-					<Tooltip label='Edit'>
+					<Tooltip label='تعديل'>
 						<Button color='yellow' onClick={() => router.push(`${serverLink}orphans/action/${orphan?.id}`)}>
 							<IconEdit />
 						</Button>

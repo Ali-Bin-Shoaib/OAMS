@@ -39,7 +39,7 @@ function NotificationComponent({ notification, redirectUrl = '', toggleDrawer, u
 							toggleDrawer(false);
 							router.push(redirectUrl);
 						}}>
-						Open
+						إظهار
 					</Button>
 					<Button
 						color='gray'
@@ -51,7 +51,7 @@ function NotificationComponent({ notification, redirectUrl = '', toggleDrawer, u
 
 							toggleDrawer(true);
 						}}>
-						Hide
+						إخفاء
 					</Button>
 				</Button.Group>
 			</Group>
@@ -69,19 +69,19 @@ export const updateNotification = async (notification?: Notification) => {
 const createNotificationContent = (type: NotificationType) => {
 	switch (type) {
 		case 'Attendance':
-			return `One or more orphan are absent.`;
+			return `غياب يتيم واحد أو أكثر.`;
 		case 'Education':
-			return `Orphan has bad grades.`;
+			return `يتيم لديه درجات سيئة.`;
 		case 'Behavior':
-			return `Orphan has bad behaviors.`;
+			return `يتيم لديه سولكيات سيئة.`;
 		case 'Health':
-			return `Orphan has health issue.`;
+			return `يتيم لديه مشاكل صحية.`;
 		case 'ActivityExecution':
-			return `One or more orphan has bad performance in activity execution.`;
+			return `يتيم أو أكثر لديهم أداء سيئ في تنفيذ نشاط.`;
 		case 'Orphan':
-			return `Orphan has total evaluation less than 2.5.`;
+			return `يتيم لديه تقيم إجمالي أقل من 2.5.`;
 		case 'Sponsorship':
-			return `Sponsorship will be expired in less than one month.`;
+			return `كفالة تنتهي في أقل من شهر.`;
 		default:
 			console.log('switch default ');
 			break;

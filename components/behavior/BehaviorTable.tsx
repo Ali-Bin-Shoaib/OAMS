@@ -48,7 +48,7 @@ export default function BehaviorTable({ behavior }: Props) {
 			columns={columns}
 			deleteUrl={'api/behavior/'}
 			editUrl={'behavior/edit/'}
-			deleteTitle={'Behavior'}
+			deleteTitle={'السلوك'}
 			infoUrl={'behavior/'}
 			action={true}
 			title='جدول السلوك'

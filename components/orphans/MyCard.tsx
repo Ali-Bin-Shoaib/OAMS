@@ -83,10 +83,10 @@ function MyCard({ orphan }: Props) {
 															myNotification('Success', res.data.msg, 'green', <IconCheck />);
 															router.reload();
 														} else {
-															myNotification('Error', res.data.msg || 'Record to be deleted was not found.', 'red', <IconX />);
+															myNotification('Error', res.data.msg || 'البيانات غير موجودة.', 'red', <IconX />);
 														}
 													} catch (error) {
-														if (axios.isAxiosError(error)) myNotification('Error', 'Something went wrong.', 'red', <IconX />);
+														if (axios.isAxiosError(error)) myNotification('Error', 'حدث خطأ ما.', 'red', <IconX />);
 														router.push(router.asPath);
 														console.log('🚀 ~ file: DeleteModal.tsx:55 ~ onConfirm: ~ error:', error);
 													}

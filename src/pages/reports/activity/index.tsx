@@ -123,8 +123,8 @@ function ActivityReportIndex({ jsonData }: Props) {
 			<div className='p-2 m-2 pt-5'>
 				<div className='flex flex-wrap justify-center p-3'>
 					<Select
-						label='Level'
-						description='select education level'
+						label='المستوى الدراسي'
+						description='اختر المستوى الدراسي'
 						clearable
 						m={5}
 						searchable
@@ -134,8 +134,8 @@ function ActivityReportIndex({ jsonData }: Props) {
 						}}
 					/>
 					<Select
-						label='Orphans'
-						description='select orphan to show his activity executions'
+						label='الأيتام'
+						description='اختر يتيم لعرض الأنشطة التي شارك فيها'
 						clearable
 						m={5}
 						searchable
@@ -145,8 +145,8 @@ function ActivityReportIndex({ jsonData }: Props) {
 						}}
 					/>
 					<Select
-						label='Type'
-						description='select report type'
+						label='النوع'
+						description='اختر نوع التقرير'
 						clearable
 						m={5}
 						data={$enum(ReportType).map((x) => x)}

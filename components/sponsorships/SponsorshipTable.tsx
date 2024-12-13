@@ -17,7 +17,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.id,
 				id: 'id',
-				header: 'id',
+				header: '#',
 				maxSize: 100,
 				minSize: 80,
 				size: 80,
@@ -26,7 +26,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.Sponsor?.user?.name,
 				id: 'Sponsor.user.name',
-				header: 'Sponsor name',
+				header: 'اسم الكفيل',
 				maxSize: 300,
 				minSize: 80,
 				size: 120,
@@ -35,7 +35,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.Orphan?.name,
 				id: 'Orphan.name',
-				header: 'Orphan name',
+				header: 'اسم اليتيم',
 				maxSize: 300,
 				minSize: 80,
 				size: 120,
@@ -44,7 +44,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.Orphan?.evaluation?.toFixed(2),
 				id: 'Orphan.evaluation',
-				header: 'evaluation',
+				header: 'التقييم',
 				maxSize: 300,
 				minSize: 80,
 				size: 120,
@@ -53,7 +53,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.startDate.toDateString(),
 				id: 'startDate',
-				header: 'startDate',
+				header: 'تاريخ البداية',
 				maxSize: 100,
 				minSize: 80,
 				size: 90,
@@ -62,7 +62,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.endDate.toDateString(),
 				id: 'endDate',
-				header: 'endDate',
+				header: 'تاريخ النهاية',
 				maxSize: 100,
 				minSize: 80,
 				size: 90,
@@ -71,7 +71,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.paymentMethod,
 				id: 'paymentMethod',
-				header: 'paymentMethod',
+				header: 'طريقة الدفع',
 				maxSize: 100,
 				minSize: 80,
 				size: 90,
@@ -80,7 +80,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.sponsorshipPeriod,
 				id: 'sponsorshipPeriod',
-				header: 'sponsorshipPeriod',
+				header: 'فترة الكفالة',
 				maxSize: 100,
 				minSize: 80,
 				size: 90,
@@ -89,7 +89,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			{
 				accessorFn: (row) => (row.isActive ? <Badge color='lime'>Yes</Badge> : <Badge color='red'>No</Badge>),
 				id: 'isActive',
-				header: 'isActive',
+				header: 'الكفالة سارية',
 				maxSize: 90,
 				minSize: 80,
 				size: 80,
@@ -106,7 +106,7 @@ function SponsorshipTable({ sponsorships, actions = true }: Props) {
 			}
 			deleteUrl={'api/sponsorship'}
 			editUrl={'sponsorship/action/'}
-			deleteTitle={'Sponsorship'}
+			deleteTitle={'الكفالة'}
 			infoUrl={'sponsorship/'}
 			action={actions}
 		/>

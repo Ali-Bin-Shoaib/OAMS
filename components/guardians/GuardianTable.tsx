@@ -13,7 +13,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.userId,
 				id: 'id',
-				header: 'ID',
+				header: '#',
 				minSize: 80,
 				size: 100,
 				enableResizing: true,
@@ -21,7 +21,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.user.name,
 				id: 'name',
-				header: 'Name',
+				header: 'الاسم',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -29,7 +29,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.user.gender,
 				id: 'gender',
-				header: 'Gender',
+				header: 'الجنس',
 				minSize: 80,
 				size: 110,
 				enableResizing: true,
@@ -37,7 +37,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.user.username,
 				id: 'username',
-				header: 'Username',
+				header: 'اسم المستخدم',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -45,7 +45,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.user.password,
 				id: 'password',
-				header: 'Password',
+				header: 'كلمة المرور',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -53,7 +53,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.user.email,
 				id: 'email',
-				header: 'Email',
+				header: 'البريد الإلكتروني',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -61,7 +61,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.user.address,
 				id: 'address',
-				header: 'Address',
+				header: 'العنوان',
 				minSize: 80,
 				size: 120,
 				enableResizing: true,
@@ -69,7 +69,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.user.phone,
 				id: 'phone',
-				header: 'Phone',
+				header: 'الهاتف',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -77,7 +77,7 @@ function GuardianTable({ guardians: data }: Props) {
 			{
 				accessorFn: (row) => row.relationship,
 				id: 'relationship',
-				header: 'Relationship',
+				header: 'العلاقة',
 				minSize: 80,
 				size: 150,
 				enableResizing: true,
@@ -92,7 +92,7 @@ function GuardianTable({ guardians: data }: Props) {
 			columns={columns}
 			deleteUrl={'api/user/'}
 			editUrl={'guardians/action/'}
-			deleteTitle={'Guardian'}
+			deleteTitle={'الوصي'}
 			infoUrl={'guardians/action/'}
 		/>
 	);

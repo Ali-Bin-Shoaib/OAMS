@@ -14,36 +14,36 @@ export default function ActivityExecutionCard({ activityExecutionInfo }: Props) 
 		<Card shadow='sm' padding='lg' radius='md' withBorder>
 			<Group position='apart' mt='md' mb='xs'>
 				<Title order={2} weight={500}>
-					Title:{activityExecutionInfo.ActivityInfo?.title}
+					العنوان:{activityExecutionInfo.ActivityInfo?.title}
 				</Title>
 				<Title order={2} weight={500}>
-					Type:{activityExecutionInfo.ActivityInfo?.type}
+					النوع:{activityExecutionInfo.ActivityInfo?.type}
 				</Title>
 				<Title order={2} weight={500}>
-					StartDate:{activityExecutionInfo?.startDate?.toDateString()}
+					تاريخ البداية:{activityExecutionInfo?.startDate?.toDateString()}
 				</Title>
 			</Group>
 
 			<Divider mt='md' mb='md' />
 			<Group position='apart' mt='md' mb='xs'>
 				<Text>
-					Evaluation:
+					التقييم:
 					{activityExecutionInfo?.GoalEvaluation!.reduce((total, goal) => total + goal.evaluation!, 0) /
 						activityExecutionInfo?.GoalEvaluation!.length}
 				</Text>
-				<Text>Cost: {activityExecutionInfo.cost}</Text>
+				<Text>التكلفة: {activityExecutionInfo.cost}</Text>
 			</Group>
 			<Group position='right' mt='md'>
 				<Button.Group>
 					<DeleteModal
 						id={activityExecutionInfo.id!}
-						title={'activity'}
+						title={'النشاط'}
 						url={'api/activity/'}
 						// type='Delete'
 						// updateCard={updateCard(undefined)}
 					/>
 
-					<Tooltip label={'Edit'}>
+					<Tooltip label={'تعديل'}>
 						<Button
 							onClick={() => {
 								router.push(serverLink + 'activities/' + activityExecutionInfo.id);
@@ -52,7 +52,7 @@ export default function ActivityExecutionCard({ activityExecutionInfo }: Props) 
 							<IconEdit />
 						</Button>
 					</Tooltip>
-					<Tooltip label={'Info'}>
+					<Tooltip label={'تفاصيل'}>
 						<Button
 							onClick={() => {
 								router.push(`${router.asPath}/${activityExecutionInfo.id}`);

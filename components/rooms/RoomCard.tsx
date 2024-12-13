@@ -10,15 +10,15 @@ function RoomCard({ room }: Props) {
 		<>
 			<Card shadow='sm' padding='lg' radius='md' withBorder>
 				<SimpleGrid cols={2} spacing={'xl'} verticalSpacing={'md'}>
-					<Text weight={700}>ID: </Text>
+					<Text weight={700}>#: </Text>
 					<Text>{room.id}</Text>
-					<Text weight={700}>Created By: </Text>
+					<Text weight={700}>تمت الإضافة بواسطة: </Text>
 					<Text> {room?.User?.name}</Text>
-					<Text weight={700}>Person Name: </Text>
+					<Text weight={700}>اسم الشخص: </Text>
 					<Text> {room.wing}</Text>
-					<Text weight={700}>Phone Number: </Text>
+					<Text weight={700}>رقم الجوال: </Text>
 					<Text> {room.number}</Text>
-					<Text weight={700}>Orphans in the room: </Text>
+					<Text weight={700}>أسماء الأيتام في الغرفة: </Text>
 					<Text className='text-ellipsis overflow-hidden'> {room.Orphan.map((x) => x.name).join(',')}</Text>
 				</SimpleGrid>
 			</Card>

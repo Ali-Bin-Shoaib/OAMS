@@ -65,8 +65,8 @@ function ComprehensiveReport({ orphans }: Props) {
 					data={orphans.map((x) => ({ label: x.name, value: x.id.toString() }))}
 					onChange={(value) => setSelectedOrphan(value ? Number(value) : undefined)}
 					w={'50%'}
-					label='Orphans'
-					description='Select Orphan to show his data.'
+					label='الأيتام'
+					description='اختر يتيم لعرض بياناته.'
 					clearable
 				/>
 			</div>

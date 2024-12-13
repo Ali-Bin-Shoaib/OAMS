@@ -52,13 +52,13 @@ export default function Index({ stringJson }: Props) {
 				console.log('🚀 ~ file: index.tsx:46 ~ .then ~ data:', data);
 				data.status === STATUS_CODE.OK
 					? (setOrphanRoom(SuperJSON.parse(data.data.data) as ROOM[]),
-					  myNotification('Get Info', data.data.msg, 'green', <IconCheck />))
-					: myNotification('Get Info', data.data.msg, 'red', <IconX />);
+					  myNotification('جلب البيانات', data.data.msg, 'green', <IconCheck />))
+					: myNotification('جلب البيانات', data.data.msg, 'red', <IconX />);
 			})
 			.catch((e) => {
 				if (isAxiosError(e)) {
 					console.log('🚀 ~ file: index.tsx:57 ~ fetchOrphanRoom ~ e:', e);
-					myNotification('Not Found', e.response?.data.msg, 'red', <IconX />);
+					myNotification('لا يوجد بيانات', e.response?.data.msg, 'red', <IconX />);
 				}
 			});
 	};
@@ -79,13 +79,13 @@ export default function Index({ stringJson }: Props) {
 						console.log('🚀 ~ file: index.tsx:71 ~ onChange={ ~ id:', id);
 						setId(Number(id));
 					}}
-					label='Orphans'
-					placeholder='choose orphan'
-					description={'Select an orphan to show related education info'}
+					label='الأيتام'
+					placeholder='اختر يتيم'
+					description={'اختر يتيم لعرض البيانات التعليمية'}
 					searchable
 					w={'45%'}
 					withAsterisk
-					nothingFound='Orphan Not Found'
+					nothingFound='اليتيم غير موجود'
 					data={orphans?.map((x) => ({ value: x.id.toString(), label: x.name }))}
 				/>
 			</Container>

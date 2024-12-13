@@ -17,33 +17,33 @@ export default function ActivityCard({ activityInfo, updateCard }: Props) {
 		<Card shadow='sm' padding='lg' radius='md' withBorder>
 			<Group position='apart' mt='md' mb='xs'>
 				<Title order={2} weight={500}>
-					Title: {activityInfo.title}
+					العنوان: {activityInfo.title}
 				</Title>
 				<Title order={2} weight={500}>
-					Type: {activityInfo.type}
+					النوع: {activityInfo.type}
 				</Title>
 				<Title order={2} weight={500}>
-					Date: {activityInfo?.date?.toDateString()}
+					التاريخ: {activityInfo?.date?.toDateString()}
 				</Title>
 			</Group>
 			<Divider mt='md' mb='md' />
 			<Group position='apart' mt='md' mb='xs'>
-				<Text>Goals: {activityInfo?.ActivityGoal?.map((x) => x.Goal?.title).join(', ') || ''}</Text>
-				<Text>Budget: {activityInfo.budget}</Text>
-				<Text>Target: {activityInfo.target}</Text>
-				<Text>Quarter: {activityInfo.quarter}</Text>
+				<Text>الأهداف: {activityInfo?.ActivityGoal?.map((x) => x.Goal?.title).join(', ') || ''}</Text>
+				<Text>الميزانية: {activityInfo.budget}</Text>
+				<Text>الهدف: {activityInfo.target}</Text>
+				<Text>الربع: {activityInfo.quarter}</Text>
 			</Group>
 			<Group position='right' mt='md'>
 				<Button.Group>
 					<DeleteModal
 						id={activityInfo.id!}
-						title={'activity'}
+						title={'النشاط'}
 						url={'api/activity/'}
 						// type='Delete'
 						// updateCard={updateCard}
 					/>
 
-					<Tooltip label={'Edit'}>
+					<Tooltip label={'تعديل'}>
 						<Button
 							onClick={() => {
 								router.push(`${router.asPath}/edit/${activityInfo.id}`);
@@ -52,7 +52,7 @@ export default function ActivityCard({ activityInfo, updateCard }: Props) {
 							<IconEdit />
 						</Button>
 					</Tooltip>
-					<Tooltip label={'Info'}>
+					<Tooltip label={'تفاصيل'}>
 						<Button
 							onClick={() => {
 								router.push(`${router.asPath}/${activityInfo.id}`);
@@ -61,7 +61,7 @@ export default function ActivityCard({ activityInfo, updateCard }: Props) {
 							<IconInfoCircle />
 						</Button>
 					</Tooltip>
-					<Tooltip label={'Execute'}>
+					<Tooltip label={'تنفيذ'}>
 						<Button
 							onClick={() => {
 								router.push(`${router.asPath}/execute/create/${activityInfo.id}`);

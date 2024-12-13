@@ -11,14 +11,14 @@ export default function AddOrphanModal() {
 		<>
 			<Modal opened={opened} size={'auto'} onClose={close}>
 				{/* Modal content */}
-				<Title align='center'>Add Orphan</Title>
+				<Title align='center'>إضافة يتيم</Title>
 				<OrphanForm close={close} guardians={[]} />
 				{/* <FormTest /> */}
 			</Modal>
 			<Group position='center'>
 				<Button size='xl' onClick={open}>
 					<IconPlus />
-					Add New Orphan
+					أضف يتيم جديد
 				</Button>
 			</Group>
 		</>

@@ -63,8 +63,8 @@ function AttendanceReportIndex({ jsonData }: Props) {
 			<div className='p-2 m-2 pt-5'>
 				<div className='flex flex-wrap justify-center p-3'>
 					<Select
-						label='Orphans'
-						description='select orphan to show his attendance'
+						label='الأيتام'
+						description='اختر يتيم لعرض بيانات حضوره'
 						clearable
 						m={5}
 						searchable
@@ -76,8 +76,8 @@ function AttendanceReportIndex({ jsonData }: Props) {
 						}}
 					/>
 					<Select
-						label='Type'
-						description='select report type'
+						label='النوع'
+						description='اختر نوع التقرير'
 						// width={'35%'}
 						m={5}
 						data={$enum(ReportType).map((x) => x)}

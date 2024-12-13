@@ -31,36 +31,36 @@ interface JsonDataProps {
 function OrphansTable({ orphans }: Props) {
 	const columns = useMemo<MRT_ColumnDef<(typeof orphans)[0]>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 100, size: 90 },
-			{ accessorFn: (row) => row.name, id: 'name', header: 'Name', enableResizing: true },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 100, size: 90 },
+			{ accessorFn: (row) => row.name, id: 'name', header: 'الاسم', enableResizing: true },
 			{
 				accessorFn: (row) => calculateBehaviorEvaluation(row.BehaviorInfo).toFixed(2),
 				id: 'BehaviorInfo',
-				header: 'Behavior',
+				header: 'السلوك',
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => calculateEducationEvaluation(row.EducationInfo).toFixed(2),
 				id: 'EducationInfo',
-				header: 'Education',
+				header: 'التعليم',
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => calculateAttendanceEvaluation(row.OrphanAttendance).toFixed(2),
 				id: 'OrphanAttendance',
-				header: 'Attendance',
+				header: 'الحضور',
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => calculateActivityExecutionEvaluation(row.OrphanActivityExecution).toFixed(2),
 				id: 'OrphanActivityExecution',
-				header: 'Activity Execution',
+				header: 'تنفيذ الأنشطة',
 				enableResizing: true,
 			},
 			{
 				accessorFn: (row) => row.evaluation?.toFixed(2) || calculateOrphanGeneralEvaluation(row).toFixed(2),
 				id: 'evaluation',
-				header: 'General Evaluation',
+				header: 'التقييم العام',
 				enableResizing: true,
 			},
 
@@ -260,7 +260,7 @@ function OrphansTable({ orphans }: Props) {
 			deleteTitle={''}
 			infoUrl={''}
 			action={false}
-			title='Orphans Table'
+			title='جدول الأيتام'
 		/>
 	);
 }

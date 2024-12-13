@@ -74,9 +74,9 @@ export default function Index({ stringData }: Props) {
 								id={orphan.id}
 								img={orphan.image || img}
 								title={orphan.name}
-								leftData={{ label: 'age', data: orphan.age }}
-								middleData={{ label: 'gender', data: orphan.gender }}
-								rightData={{ label: 'rating', data: orphan.evaluation || 0 }}
+								leftData={{ label: 'العمر', data: orphan.age }}
+								middleData={{ label: 'الجنس', data: orphan.gender }}
+								rightData={{ label: 'التقييم', data: orphan.evaluation || 0 }}
 								onClick={() => updateCard(orphan)}
 							/>
 						))}

@@ -65,7 +65,7 @@ function EducationTableNew  ({ stringJson }: Props)  {
                   <div className="flex-1 min-w-0 ">
                     <span className="absolute inset-0" />
                     <p className="text-sm font-bold text-blue-600">
-                      Hamood alattas
+                      حمود العطاس
                     </p>
                     <p className="text-sm text-gray-500 truncate">12</p>
                   </div>
@@ -220,31 +220,31 @@ function EducationTableNew  ({ stringJson }: Props)  {
                      
                      </div>
                       <div className="mt-2 text-gray-800  font-bold cursor-pointer">
-                        Created by:
+                        الإضافة بواسطة:
                         <p> {education.User.name}</p>
                       </div>
 
                       <div>
                         <div className="my-4">
                         <div className="flex space-x-1 items-center">
-                        <h3>Note:</h3>
+                        <h3>ملاحظة:</h3>
                           <p>{education.note}</p>
                           </div>
                           <div className="flex space-x-1 items-center">
-                          <h3>ٍchoolYear:</h3>
+                          <h3>السنة الدراسية:</h3>
                           <p>{education.schoolYear}</p>
                           </div>
 
                           <div className="flex space-x-1 items-center">
-                            <h3>ScoreSheet:</h3>
+                            <h3>كشف الدرجات:</h3>
                             <p>{education.scoreSheet}</p>
                           </div>
                           <div className="flex space-x-1 items-center">
-                            <h3>school:</h3>
+                            <h3>المدرسة:</h3>
                             <p>{education.Orphan.schoolName}</p>
                           </div>
                           <div className="flex space-x-1 items-center">
-                            <h3>Degree:</h3>
+                            <h3>الدرجة:</h3>
                             <p> {education.degree}</p>
                           </div>
                           

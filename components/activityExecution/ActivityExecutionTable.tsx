@@ -71,7 +71,7 @@ function ActivityExecutionTable({ activitiesExecutions, action = true }: Props) 
 			columns={columns}
 			deleteUrl={`api/execute/`}
 			editUrl={`activities/execute/edit/`}
-			deleteTitle={'Execution'}
+			deleteTitle={'تفيذ النشاط'}
 			infoUrl={`activities/execute/`}
 			action={action}
 		/>

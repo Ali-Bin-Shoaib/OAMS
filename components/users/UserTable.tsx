@@ -100,7 +100,7 @@ function UserTable({ users: data, updateCard }: Props) {
 			columns={columns}
 			deleteUrl={'api/user/'}
 			editUrl={'users/action/'}
-			deleteTitle={'User'}
+			deleteTitle={'المستخدم'}
 			infoUrl={'users/action/'}
 		/>
 	);

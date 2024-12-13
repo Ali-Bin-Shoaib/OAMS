@@ -69,8 +69,8 @@ export default function Index({ stringData }: Props) {
 		<>
 			<div className='text-center p-5'>
 				<MyModal
-					modalTitle='Add Sponsorship'
-					buttonText='Add New Sponsorship'
+					modalTitle='إضافة كفالة'
+					buttonText='أضف كفالة جديدة'
 					modalSize='calc(100vw - 3rem)'
 					// close={close}
 					// open={open}

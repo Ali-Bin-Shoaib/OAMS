@@ -67,8 +67,8 @@ function OrphanReportIndex({ jsonData }: Props) {
 			<div className='p-2 m-2 pt-5'>
 				<div className='flex flex-wrap justify-center p-3'>
 					<Select
-						label='Orphans'
-						description='select orphan to show his activity executions'
+						label='الايتام'
+						description='اختر يتيم لعرض الأنشطة التي شارك فيها'
 						clearable
 						m={5}
 						searchable

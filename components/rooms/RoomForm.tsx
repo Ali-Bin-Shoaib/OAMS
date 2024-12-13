@@ -87,21 +87,21 @@ export default function RoomForm({ room }: Props): JSX.Element {
 							name='wing'
 							control={control}
 							rules={{
-								required: 'Wing is required',
+								required: 'الجناح مطلوب',
 							}}
 							render={({ field }) => {
 								return (
 									<Select
 										{...field}
 										label='Wing'
-										placeholder='choose room wing.'
+										placeholder='اختر جناح الغرفة.'
 										required
 										defaultValue={room?.wing}
 										searchable
 										selectOnBlur
 										withAsterisk
 										error={errors.wing && errors.wing.message}
-										nothingFound='Not Found'
+										nothingFound='غير موجود'
 										data={$enum(Wings).map((x) => x)}
 										hoverOnSearchChange
 									/>
@@ -119,7 +119,7 @@ export default function RoomForm({ room }: Props): JSX.Element {
 										// w={'45%'}
 										required
 										hideControls
-										label='Room number'
+										label='رقم الغرفة'
 										withAsterisk
 										error={errors.number && errors.number.message}
 										defaultValue={room?.number}
@@ -138,7 +138,7 @@ export default function RoomForm({ room }: Props): JSX.Element {
 										// w={'45%'}
 										required
 										hideControls
-										label='Room Capacity'
+										label='سعة الغرفة'
 										withAsterisk
 										error={errors.capacity && errors.capacity.message}
 										defaultValue={room?.capacity}
@@ -149,7 +149,7 @@ export default function RoomForm({ room }: Props): JSX.Element {
 					</Container>
 					<Group position='center' p={50}>
 						<Button type='submit' size='md' w={'100%'}>
-							Submit
+							إضافة
 						</Button>
 					</Group>
 				</form>

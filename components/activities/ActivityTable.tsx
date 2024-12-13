@@ -64,7 +64,7 @@ function ActivityTable({ activities }: Props) {
 			columns={columns}
 			deleteUrl={'api/activity/'}
 			editUrl={'activities/edit/'}
-			deleteTitle={'Activity'}
+			deleteTitle={'النشاط'}
 			infoUrl={'activities/'}
 			executeUrl='activities/execute/create/'
 		/>

@@ -17,8 +17,8 @@ function CriteriaCard({ criterion, id }: Props) {
 			<Card shadow='sm' padding='lg' radius='md' withBorder>
 				<SimpleGrid cols={1} spacing={'xl'} verticalSpacing={'md'}>
 					<Text>ID: {criterion?.id}</Text>
-					<Text>Title: {criterion?.title}</Text>
-					<Text>Created By: {criterion?.User.name}</Text>
+					<Text>العنوان: {criterion?.title}</Text>
+					<Text>تمت الإضافة بواسطة: {criterion?.User.name}</Text>
 					{/* <Text>
 						Total Evaluation in all Activity Executions:{' '}
 						{(

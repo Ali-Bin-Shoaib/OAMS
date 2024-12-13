@@ -20,7 +20,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.userId,
 				id: 'id',
-				header: 'id',
+				header: '#',
 				maxSize: 300,
 				minSize: 80,
 				size: 90,
@@ -29,7 +29,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.user.name,
 				id: 'name',
-				header: 'name',
+				header: 'الاسم',
 				maxSize: 300,
 				minSize: 80,
 				size: 150,
@@ -38,7 +38,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.user.gender,
 				id: 'gender',
-				header: 'gender',
+				header: 'الجنس',
 				maxSize: 300,
 				minSize: 80,
 				size: 90,
@@ -74,7 +74,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.user.address,
 				id: 'address',
-				header: 'address',
+				header: 'العنوان',
 				maxSize: 300,
 				minSize: 80,
 				size: 150,
@@ -83,7 +83,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.user.phone,
 				id: 'phone',
-				header: 'phone',
+				header: 'رقم الهاتف',
 				maxSize: 300,
 				minSize: 80,
 				size: 120,
@@ -92,7 +92,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.birthdate?.toDateString(),
 				id: 'birthdate',
-				header: 'birthdate',
+				header: 'تاريخ الميلاد',
 				maxSize: 300,
 				minSize: 80,
 				size: 130,
@@ -101,7 +101,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			{
 				accessorFn: (row) => row.identityNumber,
 				id: 'identityNumber',
-				header: 'identityNumber',
+				header: 'رقم الهوية الوطنية',
 				maxSize: 300,
 				minSize: 80,
 				size: 150,
@@ -117,7 +117,7 @@ function SponsorTable({ sponsors, actions = true }: Props) {
 			columns={columns}
 			deleteUrl={'api/user/'}
 			editUrl={'sponsors/action/'}
-			deleteTitle={'Sponsor'}
+			deleteTitle={'الكفيل'}
 			infoUrl={'sponsors/'}
 			action={actions}
 		/>

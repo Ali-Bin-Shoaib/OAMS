@@ -7,43 +7,43 @@ export default function Index() {
 		<>
 			<div className='flex flex-wrap mx-auto justify-evenly'>
 				<MyCard
-					title={'Attendance Report'}
+					title={'تقرير الحضور'}
 					color={'blue'}
 					icon={<IconReport size={100} />}
 					path={`${serverLink}reports/attendance`}
 				/>
 				<MyCard
-					title={'Activity Report'}
+					title={'تقرير الأنشطة'}
 					color={'blue'}
 					icon={<IconReport size={100} />}
 					path={`${serverLink}reports/activity`}
 				/>
 				<MyCard
-					title={'Orphans Report'}
+					title={'تقرير الأيتام'}
 					color={'blue'}
 					icon={<IconReport size={100} />}
 					path={`${serverLink}reports/orphan`}
 				/>
 				<MyCard
-					title={'Sponsor Report'}
+					title={'تقرير الكفلاء'}
 					color={'blue'}
 					icon={<IconReport size={100} />}
 					path={`${serverLink}reports/sponsor`}
 				/>
 				<MyCard
-					title={'Yearly Report'}
+					title={'التقرير السنوي'}
 					color={'blue'}
 					icon={<IconReport size={100} />}
 					path={`${serverLink}reports/yearly`}
 				/>
 				<MyCard
-					title={'Sponsorship Report'}
+					title={'تقرير الكفالات'}
 					color={'blue'}
 					icon={<IconReport size={100} />}
 					path={`${serverLink}reports/sponsorship`}
 				/>
 				<MyCard
-					title={'Attendance Report'}
+					title={'تقرير الحضور'}
 					color={'blue'}
 					icon={<IconReport size={100} />}
 					path={`${serverLink}reports/attendance`}

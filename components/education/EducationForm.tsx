@@ -228,7 +228,7 @@ export default function EducationForm({ orphans, education }: Props): JSX.Elemen
 										data={$enum(Degree).map((x) => x.toString())}
 										w={'45%'}
 										multiple={true}
-										label='الدجة'
+										label='الدرجة'
 										withAsterisk
 										error={errors.schoolYear?.message && errors.schoolYear.message}
 									/>

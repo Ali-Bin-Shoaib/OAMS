@@ -24,11 +24,11 @@ function RoomTable({ rooms }: Props) {
 	const router = useRouter();
 	const columns = useMemo<MRT_ColumnDef<ROOM>[]>(
 		() => [
-			{ accessorFn: (row) => row.id, id: 'id', header: 'ID', maxSize: 60, size: 30 },
+			{ accessorFn: (row) => row.id, id: 'id', header: '#', maxSize: 60, size: 30 },
 			{
 				accessorFn: (row) => row?.User?.name,
 				id: 'User.name',
-				header: 'Created By',
+				header: 'تمت الإضافة بواسطة',
 				maxSize: 70,
 				size: 50,
 				enableResizing: true,
@@ -36,7 +36,7 @@ function RoomTable({ rooms }: Props) {
 			{
 				accessorFn: (row) => row.wing,
 				id: 'wing',
-				header: 'Room Wing',
+				header: 'جناح الغرفة',
 				maxSize: 50,
 				size: 40,
 				enableResizing: true,
@@ -44,7 +44,7 @@ function RoomTable({ rooms }: Props) {
 			{
 				accessorFn: (row) => row.number,
 				id: 'number',
-				header: 'Room Number',
+				header: 'رقم الغرفة',
 				maxSize: 50,
 				size: 40,
 				enableResizing: true,
@@ -52,7 +52,7 @@ function RoomTable({ rooms }: Props) {
 			{
 				accessorFn: (row) => row.capacity,
 				id: 'capacity',
-				header: 'Room Capacity',
+				header: 'سعة الغرفة',
 				maxSize: 50,
 				size: 40,
 				enableResizing: true,
@@ -60,7 +60,7 @@ function RoomTable({ rooms }: Props) {
 			{
 				accessorFn: (row) => row.Orphan.length,
 				id: 'Orphan.length',
-				header: 'Orphans number',
+				header: 'عدد الأيتام',
 				maxSize: 50,
 				size: 40,
 				enableResizing: true,
@@ -88,7 +88,7 @@ function RoomTable({ rooms }: Props) {
 						<DeleteModal id={row.original.id!} title={'Room'} url={'api/room/'} />
 						<MyModal
 							ModelForm={<RoomForm room={row.original} />}
-							modalTitle={'Edit Room'}
+							modalTitle={'تعديل بيانات الغرفة'}
 							buttonColor='yellow'
 							icon={<IconEdit />}
 							size='xs'
@@ -113,17 +113,17 @@ export function RoomInfo({ id }: CardProps) {
 	return (
 		<>
 			<Modal opened={opened} size={'lg'} onClose={close}>
-				<Title align='center'>Contact Info</Title>
+				<Title align='center'>معلومات التواصل</Title>
 				<Divider m={10} p={10} />
 				{room && <RoomCard room={room} />}
 				<Group position='center'>
 					<Button color='gray' m={15} onClick={close}>
-						Close
+						إغلاق
 					</Button>
 				</Group>
 			</Modal>
 			<Group>
-				<Tooltip label={'Info'}>
+				<Tooltip label={'تفاصيل'}>
 					<Button
 						size={'xs'}
 						onClick={async () => {

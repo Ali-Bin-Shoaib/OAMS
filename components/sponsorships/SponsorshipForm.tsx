@@ -48,7 +48,7 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 				.post(url, data)
 				.then((data) => {
 					console.log(data);
-					myNotification('Success', 'create new sponsorship successfully', 'green', <IconCheck />);
+					myNotification('Success', 'تم إضافة كفيل بنجاح', 'green', <IconCheck />);
 				})
 				.catch((err: AxiosError<{ msg: string }>) => {
 					console.log('error at creating new sponsorship', err);
@@ -88,15 +88,15 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 					<Controller
 						name='orphanId'
 						control={control}
-						rules={{ required: 'startDate is required' }}
+						rules={{ required: 'اختيار يتيم مطلوب' }}
 						render={({ field }) => {
 							return (
 								<Select
 									{...field}
-									label='Orphans'
-									placeholder='choose orphan'
+									label='الأيتام'
+									placeholder='اختر يتيم'
 									searchable
-									nothingFound='No Orphans'
+									nothingFound='لا يوجد أيتام'
 									data={orphansSelectData}
 								/>
 							);
@@ -105,15 +105,15 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 					<Controller
 						name='sponsorId'
 						control={control}
-						rules={{ required: 'startDate is required' }}
+						rules={{ required: 'اختيار كفيل مطلوب' }}
 						render={({ field }) => {
 							return (
 								<Select
 									{...field}
-									label='Sponsors'
-									placeholder='choose sponsor'
+									label='الكفلاء'
+									placeholder='اختر كفيل'
 									searchable
-									nothingFound='No Sponsor'
+									nothingFound='لا يوجد كفلاء'
 									data={sponsorsSelectData}
 								/>
 							);
@@ -122,15 +122,15 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 					<Controller
 						name='startDate'
 						control={control}
-						rules={{ required: 'startDate is required' }}
+						rules={{ required: 'تاريخ البداية مطلوب' }}
 						render={({ field }) => {
 							return (
 								<DatePickerInput
 									{...field}
 									valueFormat='YYYY MM D'
 									name='startDate'
-									label='startDate'
-									placeholder='startDate'
+									label='تاريخ البداية'
+									placeholder='تاريخ البداية'
 									withAsterisk
 									error={errors.startDate && errors.startDate.message}
 								/>
@@ -140,15 +140,15 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 					<Controller
 						name='endDate'
 						control={control}
-						rules={{ required: 'endDate is required' }}
+						rules={{ required: 'تاريخ النهاية مطلوب' }}
 						render={({ field }) => {
 							return (
 								<DatePickerInput
 									{...field}
 									valueFormat='YYYY MM D'
 									name='endDate'
-									label='endDate'
-									placeholder='endDate'
+									label='تاريخ النهاية'
+									placeholder='تاريخ النهاية'
 									withAsterisk
 									error={errors.endDate && errors.endDate.message}
 								/>
@@ -158,12 +158,12 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 					<Controller
 						name='paymentMethod'
 						control={control}
-						rules={{ required: 'paymentMethod is required' }}
+						rules={{ required: 'طريقة الدفع مطلوبة' }}
 						render={({ field }) => {
 							return (
 								<Radio.Group
 									{...field}
-									label={'Payment Method'}
+									label={'طريقة الدفع'}
 									error={errors?.paymentMethod && errors.paymentMethod.message}
 									withAsterisk>
 									<Group mt='md'>
@@ -179,12 +179,12 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 					<Controller
 						name='sponsorshipPeriod'
 						control={control}
-						rules={{ required: 'sponsorshipPeriod is required' }}
+						rules={{ required: 'فترة الكفالة مطلوبة' }}
 						render={({ field }) => {
 							return (
 								<Radio.Group
 									{...field}
-									label={'Sponsorship Period'}
+									label={'فترة الكفالة'}
 									error={errors?.sponsorshipPeriod && errors.sponsorshipPeriod.message}
 									withAsterisk>
 									<Group mt='md'>
@@ -213,7 +213,7 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 									}}
 									// defaultChecked={sponsorship ? (sponsorship.isActive ? true : false) : false}
 									error={errors?.isActive && errors.isActive.message}
-									label='isActive'
+									label='الكفالة سارية'
 									// {...field}
 								/>
 							);
@@ -222,7 +222,7 @@ export default function SponsorshipForm({ sponsorship, sponsors, orphans, close 
 
 					<Group position='center' pt={50}>
 						<Button type='submit' fullWidth>
-							Submit
+							إضافة
 						</Button>
 					</Group>
 				</Card>

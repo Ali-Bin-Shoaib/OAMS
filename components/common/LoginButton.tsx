@@ -6,15 +6,15 @@ export default function LoginButton() {
 	if (session) {
 		return (
 			<>
-				Signed in as {session?.user?.email} <br />
-				<button onClick={() => signOut()}>Sign out</button>
+				 {session?.user?.email} <br />
+				<button onClick={() => signOut()}>تسجيل الخروج</button>
 			</>
 		);
 	}
 	return (
 		<>
-			Not signed in <br />
-			<button onClick={() => signIn()}>Sign in</button>
+			لم يتم تسجيل الدخول <br />
+			<button onClick={() => signIn()}>تسجيل الدخول</button>
 		</>
 	);
 }

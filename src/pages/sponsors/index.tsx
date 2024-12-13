@@ -37,7 +37,7 @@ export default function Index({ stringSponsor }: Props) {
 			<div className='text-center'>
 				<Button size='xl' m={15} onClick={() => router.push(`${serverLink}sponsors/action/create`)}>
 					<IconPlus />
-					Add Sponsor
+					أضف كفيل
 				</Button>
 			</div>
 			<SponsorTable sponsors={sponsors} />

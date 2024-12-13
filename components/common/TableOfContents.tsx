@@ -58,7 +58,7 @@ export function TableOfContents({ orphans, active, updateCard }: Props) {
 		<div>
 			<Group mb='md'>
 				<IconListSearch size='1.1rem' stroke={1.5} />
-				<Text>Orphans List</Text>
+				<Text>قائمة الأيتام</Text>
 			</Group>
 			{items}
 		</div>

@@ -57,17 +57,17 @@ function Info({ stringData }: Props) {
 				<Paper p={'xl'} withBorder className='hover:shadow-md' m={40}>
 					<InfoComponent
 						data={[
-							{ label: 'ID', value: sponsor.userId },
-							{ label: 'Name', value: sponsor.user.name },
-							{ label: 'Gender', value: sponsor.user.gender },
-							{ label: 'ID Number', value: sponsor.identityNumber },
-							{ label: 'Birth Date', value: sponsor.birthdate?.toDateString() },
-							{ label: 'Address', value: sponsor.user.address },
-							{ label: 'Email', value: sponsor.user.email },
-							{ label: 'Phone', value: sponsor.user.phone },
-							{ label: 'Fax', value: sponsor.fax },
+							{ label: '#', value: sponsor.userId },
+							{ label: 'الاسم', value: sponsor.user.name },
+							{ label: 'الجنس', value: sponsor.user.gender },
+							{ label: 'رقم البطاقة', value: sponsor.identityNumber },
+							{ label: 'تاريخ الميلاد', value: sponsor.birthdate?.toDateString() },
+							{ label: 'العنوان', value: sponsor.user.address },
+							{ label: 'البريد الإلكتروني', value: sponsor.user.email },
+							{ label: 'الهاتف', value: sponsor.user.phone },
+							{ label: 'الفاكس', value: sponsor.fax },
 						]}
-						title='Sponsor Info'
+						title='تفاصيل الكفيل'
 					/>
 					{/* <SimpleGrid cols={2}>
 						<Text weight={700}>ID:</Text>
@@ -91,8 +91,8 @@ function Info({ stringData }: Props) {
 					</SimpleGrid> */}
 					<Group position='right'>
 						<Button.Group>
-							<DeleteModal id={sponsor.userId} title={'Sponsor'} url={'api/user/'} redirectUrl={Pages.Sponsors.link} />
-							<Tooltip label={'Edit'}>
+							<DeleteModal id={sponsor.userId} title={'الكفيل'} url={'api/user/'} redirectUrl={Pages.Sponsors.link} />
+							<Tooltip label={'تعديل'}>
 								<Button
 									size='xs'
 									onClick={() => {
@@ -106,7 +106,7 @@ function Info({ stringData }: Props) {
 					</Group>
 				</Paper>
 			) : (
-				<Text>Loading...</Text>
+				<Text>تحميل...</Text>
 			)}
 		</div>
 	);
